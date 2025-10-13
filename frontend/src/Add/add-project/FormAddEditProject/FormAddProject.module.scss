@@ -365,7 +365,7 @@
     font-weight: 400;
     line-height: 16px;
     margin-bottom: 4px;
-    margin-top: 16px;
+    margin-top: 10px;    
   }
 
   &__textarea_length {
@@ -852,7 +852,7 @@
   &__close_button {
     position: absolute;
     top: 15px;
-    right: 20px;
+    right: 16px;
     width: 25px;
     height: 25px;
     background-color: transparent;
@@ -992,6 +992,24 @@
     transform: scale(1.2);
   }
 }
+
+
+/* Подпись под полями при ошибке/обязательности */
+.required_hint {
+  color: var(--crimson-E00747);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 14px;
+}
+
+.input_error {
+  border-color: var(--crimson-E00747)!important;
+  outline: none;
+}
+
 
 @media screen and (min-width: 1025px) and (max-width: 1600px) {
   .form_container {

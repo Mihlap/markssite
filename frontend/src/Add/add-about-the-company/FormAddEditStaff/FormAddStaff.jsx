@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import compressImageFile from 'browser-image-compression';
 
 import styles from '../../../Add/add-project/FormAddEditProject/FormAddProject.module.scss';
 import adminStyles from '../../../Add/style/style-card.module.scss';
@@ -11,38 +10,29 @@ import DescriptionBlock from './DescriptionBlock';
 import SubmitButtons from '../../../UI/SubmitButtons/SubmitButtons';
 import ExitConfirmModal from '../../../UI/ExitConfirmModal/ExitConfirmModal';
 
-import { usePreviewHandlers } from '../utils/hooks/usePreviewHandlers';
-import useInterceptExternalClose from '../../hooks/useInterceptExternalClose';
-
-import { createStaffAsync } from '../../../store/Slice/StaffSliceNew';
+import { createStaffAsync, uploadStaffMarkdownFile, deleteStaffMarkdownFile } from '../../../store/Slice/StaffSliceNew';
 
 import ConstructorSection from './ConstructorSection';
 import ConstructorPage from '../constructor/ConstructorPage';
 
-const compressOptions = {
-  maxSizeMB: 1.5,
-  maxWidthOrHeight: 1600,
-  useWebWorker: true,
-};
-
-async function maybeCompressFile(file) {
-  try {
-    if (!file || !file.type?.startsWith?.('image/')) return file;
-    const compressed = await compressImageFile(file, compressOptions);
-    return compressed instanceof File ? compressed : new File([compressed], file.name, { type: file.type });
-  } catch (err) {
-    console.warn('compress fail, using original file', err);
-    return file;
-  }
-}
+import { usePreviewHandlers } from '../utils/hooks/usePreviewHandlers';
+import useInterceptExternalClose from '../../hooks/useInterceptExternalClose';
+import {
+  sharedHandleDynamicInputChange,
+  sharedHandleDeletePreview,
+  getPreviewClassName as sharedGetPreviewClassName,
+} from '../utils/formShared';
+import { validateDynamicBlocks } from '../utils/dynamicValidation';
 
 export default function FormAddStaff({ initial = null, onClose, registerCloseGuard, currentCategory = null }) {
   const dispatch = useDispatch();
 
   const [previewPhotoAva, setPreviewPhotoAva] = useState([]);
-  const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
+  const [, setIsPhotoAvaVisible] = useState(true);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState({});
+  const [forceValidateTick, setForceValidateTick] = useState(0);
 
   const [inputData, setInputData] = useState({
     name: '',
@@ -57,12 +47,15 @@ export default function FormAddStaff({ initial = null, onClose, registerCloseGua
   const [blocks, setBlocks] = useState([]);
   const [dynamicPreviews, setDynamicPreviews] = useState([]);
   const [dynamicData, setDynamicData] = useState([]);
-  const [inputValue, setInputValue] = useState('');
+  const dynamicDataRef = useRef(dynamicData);
 
   const openExitConfirm = useCallback(() => setShowExitConfirm(true), []);
   useInterceptExternalClose(`.${adminStyles.card_components_admin__close_button}`, openExitConfirm);
-
   if (registerCloseGuard) registerCloseGuard(() => setShowExitConfirm(true));
+
+  useEffect(() => {
+    dynamicDataRef.current = dynamicData;
+  }, [dynamicData]);
 
   useEffect(() => {
     if (initial) {
@@ -70,6 +63,12 @@ export default function FormAddStaff({ initial = null, onClose, registerCloseGua
       if (initial.img) setPreviewPhotoAva([{ url: initial.img }]);
     }
   }, [initial]);
+
+  useEffect(() => {
+    if (currentCategory && (!Array.isArray(inputData.category) || !inputData.category.length)) {
+      setInputData((p) => ({ ...p, category: [currentCategory] }));
+    }
+  }, [currentCategory, inputData.category]);
 
   const { handleRemovePreviewPhotoAva } = usePreviewHandlers({
     previewPhotoAva,
@@ -86,110 +85,25 @@ export default function FormAddStaff({ initial = null, onClose, registerCloseGua
     setIsPhotoCloseVisible: () => {},
   });
 
-  const validate = useCallback(() => {
-    if (!inputData.name || !inputData.category || inputData.category.length === 0) {
-      setShowNotification(true);
-      setTimeout(() => setShowNotification(false), 3500);
-      return false;
-    }
-    return true;
-  }, [inputData]);
-
-  const areAllBlocksFilled = useCallback(() => {
-    for (let block of dynamicData) {
-      for (let input of block) {
-        if (input.required && (input.value === undefined || input.value === null || input.value === '')) {
-          return false;
-        }
-      }
-    }
-    return true;
-  }, [dynamicData]);
-
-  const submitHandler = useCallback(
-    async (e) => {
-      e?.preventDefault?.();
-      if (!validate()) return;
-
-      const form = new FormData();
-
-      const metadata = {
-        ...inputData,
-        category: Array.isArray(inputData.category) ? inputData.category : [inputData.category],
-        dynamicBlocks: dynamicData.map((block) =>
-          block.map((inp) => {
-            const copy = { ...inp };
-            if (Array.isArray(copy.value)) {
-              copy.value = copy.value.map((v) => (v instanceof File ? v.name : v));
-            } else if (copy.value instanceof File) {
-              copy.value = copy.value.name;
-            }
-            return copy;
-          })
-        ),
-      };
-
-      form.append('meta', JSON.stringify(metadata));
-   
-      if (inputData.img instanceof File) {
-        const compressed = await maybeCompressFile(inputData.img);
-        form.append('photoAva', compressed, compressed.name);
-      }
-     
-      for (let b = 0; b < dynamicData.length; b++) {
-        const block = dynamicData[b] || [];
-        for (let i = 0; i < block.length; i++) {
-          const inp = block[i];
-          const val = inp?.value;
-          if (Array.isArray(val)) {
-            for (let k = 0; k < val.length; k++) {
-              const v = val[k];
-              if (v instanceof File) {
-                const compressed = await maybeCompressFile(v);
-                form.append(`dynamic_block_${b}_input_${i}[]`, compressed, compressed.name);
-              }
-            }
-          } else if (val instanceof File) {
-            const compressed = await maybeCompressFile(val);
-            form.append(`dynamic_block_${b}_input_${i}`, compressed, compressed.name);
-          }
-        }
-      }
-
-      try {     
-        await dispatch(createStaffAsync(form));
-        onClose?.();
-      } catch (err) {
-        console.error('submit error', err);
-      }
-    },
-    [dispatch, inputData, dynamicData, onClose, validate]
-  );
-
-
-  const handlerOpenConstructor = useCallback(() => {
-    setOpenConstructor((prev) => !prev);
+  const changeBasic = useCallback((e) => {
+    const { name, value } = e.target;
+    setInputData((p) => ({ ...p, [name]: value }));
   }, []);
 
-  const handleClick = useCallback(
-    (inputs, _blockType) => {
-      if (!areAllBlocksFilled()) {
-        setShowNotification(true);
-        setTimeout(() => setShowNotification(false), 3500);
-        return;
-      }
-      const blockKey = Date.now().toString();
-      const newInputs = inputs.map((input) => ({
-        ...input,
-        key: blockKey + '_' + input.type,
-        value: input.defaultValue ?? '',
-      }));
-      setBlocks((prev) => [...prev, newInputs]);
-      setDynamicData((prev) => [...prev, newInputs.map((ni) => ({ ...ni }))]);
-      setDynamicPreviews((prev) => [...prev, new Array(newInputs.length).fill([])]);    
-    },
-    [areAllBlocksFilled]
-  );
+  const handleDynamicInputChange = useCallback(async (blockIndex, inputIndex, value) => {
+    await sharedHandleDynamicInputChange(
+      blockIndex,
+      inputIndex,
+      value,
+      dynamicDataRef.current,
+      setDynamicData,
+      setDynamicPreviews
+    );
+  }, []);
+
+  const handleDeletePreview = useCallback((event, blockIndex, inputIndex, previewIndex) => {
+    sharedHandleDeletePreview(event, blockIndex, inputIndex, previewIndex, setDynamicPreviews, setDynamicData);
+  }, []);
 
   const handleRemoveBlock = useCallback((blockIndex) => {
     setDynamicData((prev) => prev.filter((_, i) => i !== blockIndex));
@@ -197,106 +111,105 @@ export default function FormAddStaff({ initial = null, onClose, registerCloseGua
     setDynamicPreviews((prev) => prev.filter((_, i) => i !== blockIndex));
   }, []);
 
-  const handleDynamicInputChange = useCallback(async (blockIndex, inputIndex, value) => { 
-    if (Array.isArray(value) && value[0] instanceof File) {
-      const compressedFiles = await Promise.all(value.map((f) => maybeCompressFile(f)));
-      const previews = compressedFiles.map((f) => URL.createObjectURL(f));
+  const validateAll = useCallback(() => {
+    const { ok, errors } = validateDynamicBlocks(dynamicData);
+    setFieldErrors(errors);
+    return ok;
+  }, [dynamicData]);
 
-      setDynamicPreviews((prev) => {
-        const next = prev.map((b) => (Array.isArray(b) ? b.slice() : []));
-        if (!next[blockIndex]) next[blockIndex] = [];
-        next[blockIndex][inputIndex] = previews;
-        return next;
-      });
+  const handlerOpenConstructor = useCallback(() => setOpenConstructor((v) => !v), []);
 
-      setDynamicData((prev) => {
-        const next = prev.map((b) => (Array.isArray(b) ? b.slice() : []));
-        if (!next[blockIndex]) next[blockIndex] = [];
-        next[blockIndex][inputIndex] = { ...(next[blockIndex][inputIndex] || {}), value: compressedFiles };
-        return next;
-      });
-      return;
-    }
-
-    if (value instanceof File) {
-      const compressed = await maybeCompressFile(value);
-      const preview = URL.createObjectURL(compressed);
-
-      setDynamicPreviews((prev) => {
-        const next = prev.map((b) => (Array.isArray(b) ? b.slice() : []));
-        if (!next[blockIndex]) next[blockIndex] = [];
-        next[blockIndex][inputIndex] = [preview];
-        return next;
-      });
-
-      setDynamicData((prev) => {
-        const next = prev.map((b) => (Array.isArray(b) ? b.slice() : []));
-        if (!next[blockIndex]) next[blockIndex] = [];
-        next[blockIndex][inputIndex] = { ...(next[blockIndex][inputIndex] || {}), value: compressed };
-        return next;
-      });
-      return;
-    }
-
-    setDynamicData((prev) => {
-      const next = prev.map((b) => (Array.isArray(b) ? b.slice() : []));
-      if (!next[blockIndex]) next[blockIndex] = [];
-      next[blockIndex][inputIndex] = { ...(next[blockIndex][inputIndex] || {}), value };
-      return next;
-    });
-  }, []);
-
-  const handleDeletePreview = useCallback((event, blockIndex, inputIndex, previewIndex) => {
-    event?.stopPropagation?.(); 
-    setDynamicPreviews((prev) => {
-      const next = prev.map((b) => (Array.isArray(b) ? b.slice() : []));
-      if (!next[blockIndex] || !next[blockIndex][inputIndex]) return prev;
-      next[blockIndex][inputIndex] = next[blockIndex][inputIndex].filter((_, i) => i !== previewIndex);
-      return next;
-    });
-    setDynamicData((prev) => {
-      const next = prev.map((b) => (Array.isArray(b) ? b.slice() : []));
-      if (!next[blockIndex] || !next[blockIndex][inputIndex]) return prev;
-      const val = next[blockIndex][inputIndex].value;
-      if (Array.isArray(val)) {
-        next[blockIndex][inputIndex] = {
-          ...next[blockIndex][inputIndex],
-          value: val.filter((_, i) => i !== previewIndex),
-        };
-      } else if (val instanceof File && previewIndex === 0) {
-        next[blockIndex][inputIndex] = { ...next[blockIndex][inputIndex], value: '' };
+  const handleClick = useCallback(
+    (inputs) => {
+      if (!validateAll()) {
+        setShowNotification(true);
+        setForceValidateTick((n) => n + 1);
+        setTimeout(() => setShowNotification(false), 3500);
+        return;
       }
-      return next;
-    });
-  }, []);
+      const key = Date.now().toString();
+      const newBlock = inputs.map((f) => ({ ...f, key: `${key}_${f.type}`, value: f.defaultValue ?? '' }));
+      setBlocks((prev) => [...prev, newBlock]);
+      setDynamicData((prev) => [...prev, newBlock.map((x) => ({ ...x }))]);
+      setDynamicPreviews((prev) => [...prev, new Array(newBlock.length).fill([])]);
+    },
+    [validateAll]
+  );
 
-  const getPreviewClassName = useCallback((label) => {
-    if (!label) return { outerDiv: styles.previewContainer, innerDiv: styles.previewItem };
-    const l = label.toLowerCase();
-    if (l.includes('видеоролик') || l.includes('видео')) {
-      return { outerDiv: styles.videoPreview, innerDiv: styles.videoInnerDiv, verticalImgTwo: styles.videoStyle };
-    }
-    if (l.includes('слайдер')) {
-      return { outerDiv: styles.sliderPreview, innerDiv: styles.sliderPreviewDiv };
-    }
-    if (l.includes('2е вертикальные') || l.includes('вертикальные')) {
-      return {
-        outerDiv: styles.verticallyBlock,
-        innerDiv: styles.previewWerticallyBlock,
-        verticalImgTwo: styles.verticalTwoImg,
+  const getPreviewClassName = useCallback((label) => sharedGetPreviewClassName(label, styles), []);
+
+  const submitHandler = useCallback(
+    async (e) => {
+      e?.preventDefault?.();
+
+      const blocksOk = validateAll();
+
+      const photoOk = Boolean(inputData?.img) || (Array.isArray(previewPhotoAva) && previewPhotoAva.length > 0);
+
+      const topOk =
+        photoOk &&
+        Boolean(String(inputData.name || '').trim()) &&
+        Array.isArray(inputData.category) &&
+        inputData.category.length > 0 &&
+        Boolean(String(inputData.description || '').trim());
+
+      if (!blocksOk || !topOk) {
+        setShowNotification(true);
+        setForceValidateTick((n) => n + 1);
+        setTimeout(() => setShowNotification(false), 3500);
+        return;
+      }
+
+      const form = new FormData();
+      const meta = {
+        ...inputData,
+        category: Array.isArray(inputData.category) ? inputData.category : [inputData.category],
+        dynamicBlocks: (dynamicData || []).map((block) =>
+          (block || []).map((inp) => {
+            const copy = { ...inp };
+            const v = copy.value;
+            if (Array.isArray(v)) copy.value = v.map((vv) => (vv instanceof File ? vv.name : vv));
+            else if (v instanceof File) copy.value = v.name;
+            return copy;
+          })
+        ),
       };
-    }
-    if (l.includes('картинка с описанием')) {
-      return { outerDiv: styles.imgWithDescriptionPreview, innerDiv: styles.someInnerDivStyle };
-    }
-    return { outerDiv: styles.previewContainer, innerDiv: styles.previewItem };
-  }, []);
+      form.append('meta', JSON.stringify(meta));
 
-  const setIsFocused = () => {};
+      if (inputData.img instanceof File) {
+        form.append('photoAva', inputData.img, inputData.img.name);
+      }
+
+      for (let b = 0; b < dynamicData.length; b++) {
+        const block = dynamicData[b] || [];
+        for (let i = 0; i < block.length; i++) {
+          const inp = block[i];
+          if (inp?.type !== 'file') continue;
+          const val = inp?.value;
+          if (Array.isArray(val)) {
+            for (let k = 0; k < val.length; k++) {
+              const v = val[k];
+              if (v instanceof File) form.append(`dynamic_block_${b}_input_${i}[]`, v, v.name);
+            }
+          } else if (val instanceof File) {
+            form.append(`dynamic_block_${b}_input_${i}`, val, val.name);
+          }
+        }
+      }
+
+      try {
+        await dispatch(createStaffAsync(form));
+        onClose?.();
+      } catch (err) {
+        console.error('createStaff failed', err);
+      }
+    },
+    [dispatch, inputData, dynamicData, onClose, validateAll, previewPhotoAva]
+  );
 
   return (
     <div className={styles.form_container}>
-      {showNotification && <div className={styles.form_container__notification}>Заполните обязательные поля!</div>}
+      {/* {showNotification && <div className={styles.form_container__notification}>Заполните необходимые поля!</div>} */}
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div className={styles.form_container__title}>Новый сотрудник</div>
@@ -310,7 +223,7 @@ export default function FormAddStaff({ initial = null, onClose, registerCloseGua
       </div>
 
       <div className={styles.form_container__block_form}>
-        <form className={styles.form_container__form} onSubmit={submitHandler}>
+        <form className={styles.form_container__form} onSubmit={submitHandler} noValidate>
           <PhotoNameBlock
             styles={styles}
             inputData={inputData}
@@ -318,36 +231,44 @@ export default function FormAddStaff({ initial = null, onClose, registerCloseGua
             previewPhotoAva={previewPhotoAva}
             setPreviewPhotoAva={setPreviewPhotoAva}
             handleRemovePreviewPhotoAva={handleRemovePreviewPhotoAva}
-            changeHandler={(e) => setInputData((p) => ({ ...p, [e.target.name]: e.target.value }))}
+            changeHandler={changeBasic}
+            forceValidate={forceValidateTick}
           />
 
           <CategoryBlock
             styles={styles}
             inputData={inputData}
             setInputData={setInputData}
-            setIsFocused={setIsFocused}
+            setIsFocused={() => {}}
             currentCategory={currentCategory}
             isEditing={!!initial}
           />
 
-          <DescriptionBlock styles={styles} inputData={inputData} setInputData={setInputData} />
+          <DescriptionBlock
+            styles={styles}
+            inputData={inputData}
+            setInputData={setInputData}
+            forceValidate={forceValidateTick}
+          />
 
           <ConstructorSection
             styles={styles}
             blocks={blocks}
-            dynamicData={dynamicData}
-            setDynamicData={setDynamicData}
             openConstructor={openConstructor}
-            setDynamicPreviews={setDynamicPreviews}
-            setInputValue={setInputValue}
-            dynamicPreviews={dynamicPreviews}
-            handleRemoveBlock={handleRemoveBlock}
             handlerOpenConstructor={handlerOpenConstructor}
+            ConstructorPage={ConstructorPage}
+            handleClick={handleClick}
             getPreviewClassName={getPreviewClassName}
+            dynamicData={dynamicData}
+            dynamicPreviews={dynamicPreviews}
             handleDynamicInputChange={handleDynamicInputChange}
             handleDeletePreview={handleDeletePreview}
-            handleClick={handleClick}
-            ConstructorPage={ConstructorPage}
+            setDynamicPreviews={setDynamicPreviews}
+            handleRemoveBlock={handleRemoveBlock}
+            mdUpload={(file) => dispatch(uploadStaffMarkdownFile(file)).unwrap()}
+            mdDelete={(url) => dispatch(deleteStaffMarkdownFile(url)).unwrap()}
+            fieldErrors={fieldErrors}
+            forceValidate={forceValidateTick}
           />
 
           <SubmitButtons

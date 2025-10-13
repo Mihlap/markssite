@@ -1,5 +1,4 @@
-// src/components/Company/Company.jsx
-import { useCallback, useEffect, useRef, useState, useMemo } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './Company.module.css';
@@ -26,8 +25,6 @@ import CounterCompanyMobile from '../UI/CounterCompanyMobile';
 import CounterCompanyMobile2 from '../UI/CounterCompanyMobile2';
 import CompanySlider from './CompanySlider/CompanySlider';
 import ModalVacancyFormSend from '../UI/VacancyFormContact/ModalVacancyFormSend';
-
-// ⬇️ подключаем новый публичный блок специалистов
 import CompanyStaffPublic from './CompanyStaffPublic';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
@@ -354,9 +351,7 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
             handleMouseLeave={handleMouseLeave}
             handleMouseHover={handleMouseHover}
           />
-        )}
-
-        {/* ⬇️ Блок специалистов теперь отдельным компонентом с новым слайсом */}
+        )}  
         <CompanyStaffPublic
           handleMouseEnter={handleMouseEnter}
           handleMouseLeave={handleMouseLeave}
@@ -479,7 +474,7 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
               </div>
             )}
 
-            <div className={styles.companySubscriptionForm_wrapper}>{/* место под форму подписки*/}</div>
+            {/* <div className={styles.companySubscriptionForm_wrapper}>место под форму подписки</div> */}
           </div>
         </div>
       </div>
