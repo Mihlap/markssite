@@ -1,6 +1,8 @@
-import { memo, useCallback, useEffect, useRef } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { PORTRAIT_CONTAINER_STYLE, PORTRAIT_IMG_STYLE } from '../utils/portraitPreview';
+import ErrorTooltip from '../../../UI/ErrorTooltip/ErrorTooltip';
 import InfoTooltip from './InfoTooltip';
-import { useInfoTooltip } from './useInfoTooltip';
+import { useInfoTooltip } from '../utils/useInfoTooltip';
 
 export default memo(function PhotoNameBlock({
   styles,
@@ -11,9 +13,16 @@ export default memo(function PhotoNameBlock({
   handleRemovePreviewPhotoAva,
   changeHandler,
   isLoading,
+  forceValidate = 0,
 }) {
   const fileInputRef = useRef(null);
-  const { ref: infoBtnRef, open: tooltipOpen, toggle: toggleTooltip, closeTooltip } = useInfoTooltip(false);
+  const uploadBtnRef = useRef(null);
+  const nameInputRef = useRef(null);
+
+ 
+  const { ref: infoBtnRef, open: helpOpen, toggle: toggleHelp, closeTooltip: closeHelp } = useInfoTooltip(false);
+
+  const [touched, setTouched] = useState({ photo: false, name: false });
 
   const revokeAllPreviews = useCallback((arr) => {
     try {
@@ -24,6 +33,7 @@ export default memo(function PhotoNameBlock({
   const onFile = useCallback(
     (e) => {
       const file = e.target.files?.[0];
+      setTouched((t) => ({ ...t, photo: true }));
       if (!file) return;
       revokeAllPreviews(previewPhotoAva);
       const url = URL.createObjectURL(file);
@@ -40,11 +50,31 @@ export default memo(function PhotoNameBlock({
     setPreviewPhotoAva([]);
     setInputData((p) => ({ ...p, img: null }));
     if (fileInputRef.current) fileInputRef.current.value = '';
+    setTouched((t) => ({ ...t, photo: true }));
   }, [handleRemovePreviewPhotoAva, previewPhotoAva, revokeAllPreviews, setInputData, setPreviewPhotoAva]);
 
   useEffect(() => {
     return () => revokeAllPreviews(previewPhotoAva);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const photoEmpty = !previewPhotoAva?.length && !inputData?.img;
+  const nameEmpty = !String(inputData?.name || '').trim();
+ 
+  useEffect(() => {
+    if (!forceValidate) return;
+    setTouched({ photo: true, name: true });
+
+    const firstInvalid = (photoEmpty && uploadBtnRef.current) || (nameEmpty && nameInputRef.current) || null;
+    if (firstInvalid) {
+      firstInvalid.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      if (firstInvalid === nameInputRef.current) {
+        nameInputRef.current.focus({ preventScroll: true });
+      } else {
+        firstInvalid.focus?.({ preventScroll: true });
+      }
+    }
+  }, [forceValidate, photoEmpty, nameEmpty]);
 
   return (
     <div className={styles.form_container__block_gray_one} style={{ paddingTop: '16.44px', marginBottom: 0 }}>
@@ -54,9 +84,16 @@ export default memo(function PhotoNameBlock({
             Портрет сотрудника
           </div>
         </div>
-
-        <div>
-          <label className={styles.slider_container__customFileUploadStaff}>
+   
+        <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+          <label
+            ref={uploadBtnRef}
+            className={`${styles.slider_container__customFileUploadStaff} ${
+              touched.photo && photoEmpty ? styles.input_error : ''
+            }`}
+            onBlur={() => setTouched((t) => ({ ...t, photo: true }))}
+            tabIndex={0}
+            aria-invalid={touched.photo && photoEmpty ? 'true' : 'false'}>
             <input
               ref={fileInputRef}
               type="file"
@@ -79,14 +116,12 @@ export default memo(function PhotoNameBlock({
             <div className={styles.slider_container__uploadTextForm}>Загрузить изображения</div>
           </label>
 
-          {isLoading && <div className={styles.preview_photos_container__loading}>Загрузка . . .</div>}
-
           <button
             ref={infoBtnRef}
             type="button"
-            style={{ display: 'inline-block', paddingLeft: '0.5rem', background: 'transparent', border: 'none' }}
-            onClick={toggleTooltip}
-            aria-label="Помощь">
+            onClick={toggleHelp}
+            aria-label="Помощь"
+            style={{ background: 'transparent', border: 'none', padding: 0, cursor: 'pointer' }}>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path
                 d="M7.9987 10.6087V7.27539M7.99479 5.27539H8.00078M7.9987 1.27539C11.6654 1.27539 14.6654 4.27539 14.6654 7.94206C14.6654 11.6087 11.6654 14.6087 7.9987 14.6087C4.33203 14.6087 1.33203 11.6087 1.33203 7.94206C1.33203 4.27539 4.33203 1.27539 7.9987 1.27539Z"
@@ -96,7 +131,7 @@ export default memo(function PhotoNameBlock({
               />
             </svg>
           </button>
-
+      
           <InfoTooltip
             title="Ознакомьтесь"
             linkText="с рекомендациями"
@@ -104,37 +139,77 @@ export default memo(function PhotoNameBlock({
             placement="top"
             tipStyle={{ width: 203 }}
             anchorRef={infoBtnRef}
-            isOpen={tooltipOpen}
+            isOpen={helpOpen}
             onOpenChange={(v) => {
-              if (!v) closeTooltip();
+              if (!v) closeHelp();
             }}
-            onClose={closeTooltip}
+            onClose={closeHelp}
+          />
+
+          {isLoading && <div className={styles.preview_photos_container__loading}>Загрузка . . .</div>}
+       
+          <ErrorTooltip
+            anchorRef={uploadBtnRef}
+            text="Загрузите портрет сотрудника"
+            isOpen={touched.photo && photoEmpty}
+            onOpenChange={(open) => {
+              if (!open) setTouched((t) => ({ ...t, photo: false }));
+            }}
           />
         </div>
 
         <div>
           {Array.isArray(previewPhotoAva) &&
             previewPhotoAva.map((preview, index) => (
-              <div key={index} className={styles.preview_photos_container__block}>
-                <img className={styles.preview_photos_container__img} src={preview.url} alt={`Preview ${index}`} />
+              <div key={index} className={styles.preview_photos_container__block} style={PORTRAIT_CONTAINER_STYLE}>
+                <img
+                  className={styles.preview_photos_container__img}
+                  src={preview.url}
+                  alt=""
+                  style={PORTRAIT_IMG_STYLE}
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                    const parent = e.currentTarget.parentElement;
+                    if (parent) {
+                      parent.style.minHeight = '5rem';
+                      parent.style.display = 'inline-block';
+                    }
+                  }}
+                />
                 <div className={styles.preview_photos_container__remove_icon} onClick={remove}>
                   <span></span>
                 </div>
               </div>
             ))}
         </div>
-
-        <div className={styles.form_container__heading_block}>
+   
+        <div className={styles.form_container__heading_block} style={{ position: 'relative' }}>
           <input
+            ref={nameInputRef}
             type="text"
-            className={styles.form_container__heading_block_input}
+            className={`${styles.form_container__heading_block_input} ${
+              touched.name && nameEmpty ? styles.input_error : ''
+            }`}
             placeholder="ФИО"
             name="name"
             id="name"
             value={inputData.name}
-            onChange={(event) => changeHandler(event, inputData, setInputData)}
+            onBlur={() => setTouched((t) => ({ ...t, name: true }))}
+            onChange={(event) => {
+              if (!touched.name) setTouched((t) => ({ ...t, name: true }));
+              changeHandler(event, inputData, setInputData);
+            }}
             autoComplete="off"
-            required
+            aria-invalid={touched.name && nameEmpty ? 'true' : 'false'}
+          />
+
+          <ErrorTooltip
+            anchorRef={nameInputRef}
+            text="Укажите ФИО сотрудника"
+            isOpen={touched.name && nameEmpty}
+            onOpenChange={(open) => {
+              if (!open) setTouched((t) => ({ ...t, name: false }));
+            }}
           />
         </div>
       </div>
