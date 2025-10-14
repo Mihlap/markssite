@@ -659,6 +659,7 @@ svg path {
 }
 
 @media screen and (min-width: 2000px) and (max-width: 3000px) {
+  
   .card_item_2 {
     height: 68vh;
   }
@@ -711,7 +712,8 @@ svg path {
   .bg_video {
     width: 100%;
     height: 100%;
-    min-height: 70vh;
+    /* min-height: 71.38vh; */
+    height: 975px;
     object-fit: cover;
     object-position: center;
   }
@@ -936,8 +938,7 @@ svg path {
 
   .bg_video {
     width: 100%;
-    height: 100%;
-    /* min-height: 100vh; */
+    height: 100%;   
     object-fit: cover;
     object-position: center;
   }
@@ -1052,7 +1053,7 @@ svg path {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 12%;
+  top: 15%;
   display: flex;
   align-items: center;
   gap: 2px;
@@ -1073,9 +1074,28 @@ svg path {
   line-height: 31.385px;
 }
 
+@media screen and (min-width: 2600px) {
+  .heroBadge {
+      top: 17%;
+    }
+  
+    .mainIcon {
+      width: 16rem;  
+    }
+  
+    .heroBadgeText {
+      color: var(--white-F6F6F6);
+      font-family: var(--font-raleway);
+      font-size: 27.897px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 31.385px;
+    }
+}
+
 @media screen and (min-width: 1025px) and (max-width: 1600px) {
   .heroBadge {
-    top: 15%;
+    top: 16%;
   }
 
   .mainIcon {
@@ -1095,12 +1115,11 @@ svg path {
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
   .heroBadge {
-    top: 14%;
+    top: 16%;
   }
 
   .mainIcon {
     width: 11.44rem;
-
   }
 
   .heroBadgeText {
