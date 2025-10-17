@@ -27,7 +27,7 @@ export default function Add({ user, onPageChange, handleReturn }) {
           <Route path="add-a-project" element={<AddProject user={user} />} />
           <Route path="add-a-articles" element={<AddArticles user={user} />} />
           <Route path="add-hr-portal" element={<AddHRPortal user={user} />} />
-          {/* <Route path="add-a-company" element={<AddCompany user={user} />} /> */}
+          <Route path="add-a-company" element={<AddCompany user={user} />} />
           <Route path="add-a-applications" element={<Applications />} />
         </Routes>
       </div>
