@@ -26,6 +26,8 @@ import { validateDynamicBlocks } from '../utils/dynamicValidation';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
+const REQUIRED_BLOCK_IDS = ['imageWithCaption', 'quote', 'fact'];
+
 export default function FormEditStaff({ initial = null, onClose, registerCloseGuard, currentCategory = null }) {
   const dispatch = useDispatch();
 
@@ -113,10 +115,13 @@ export default function FormEditStaff({ initial = null, onClose, registerCloseGu
         (Array.isArray(group) ? group : []).map((inp, ii) => ({
           type: inp?.type ?? 'text',
           label: inp?.label ?? '',
+          placeholder: inp?.placeholder ?? '',
           value: inp?.value ?? '',
           key: inp?.key ?? `g${gi}-i${ii}-${Date.now()}`,
           required: Boolean(inp?.required),
           pairKey: inp?.pairKey || undefined,
+          blockId: inp?.blockId ?? null,
+          blockRequired: Boolean(inp?.blockRequired),
         }))
       );
 
@@ -164,8 +169,12 @@ export default function FormEditStaff({ initial = null, onClose, registerCloseGu
   const handlerOpenConstructor = useCallback(() => setOpenConstructor((v) => !v), []);
 
   const handleClick = useCallback(
-    (inputs) => {
-      const { ok, errors } = validateDynamicBlocks(dynamicData);
+    (inputs, meta = {}) => {
+      const { ok, errors } = validateDynamicBlocks(dynamicData, dynamicPreviews, {
+        requiredBlockIds: REQUIRED_BLOCK_IDS,
+        checkMissingBlocks: false,
+      });
+
       setFieldErrors(errors);
       if (!ok) {
         setShowNotification(true);
@@ -174,11 +183,17 @@ export default function FormEditStaff({ initial = null, onClose, registerCloseGu
         return;
       }
       const key = Date.now().toString();
-      const newBlock = inputs.map((f) => ({ ...f, key: `${key}_${f.type}`, value: f.defaultValue ?? '' }));
+      const newBlock = inputs.map((f, idx) => ({
+        ...f,
+        key: `${key}_${f.type}_${idx}`,
+        value: f.defaultValue ?? '',
+        blockId: meta.blockId || null,
+        blockRequired: !!meta.requiredBlock,
+      }));
       setDynamicData((prev) => [...prev, newBlock.map((x) => ({ ...x }))]);
       setDynamicPreviews((prev) => [...prev, new Array(newBlock.length).fill([])]);
     },
-    [dynamicData]
+    [dynamicData, dynamicPreviews]
   );
 
   const handleRemoveBlock = useCallback((blockIndex) => {
@@ -204,17 +219,23 @@ export default function FormEditStaff({ initial = null, onClose, registerCloseGu
   const getPreviewClassName = useCallback((label) => sharedGetPreviewClassName(label, styles), []);
 
   const validateAll = useCallback(() => {
-    const { ok, errors } = validateDynamicBlocks(dynamicData);
+    const { ok, errors } = validateDynamicBlocks(dynamicData, dynamicPreviews, {
+      requiredBlockIds: REQUIRED_BLOCK_IDS,
+      checkMissingBlocks: false,
+    });
     setFieldErrors(errors);
     return ok;
-  }, [dynamicData]);
+  }, [dynamicData, dynamicPreviews]);
 
   const submitHandler = useCallback(
     async (e) => {
       e?.preventDefault?.();
 
       const blocksOk = validateAll();
+      const photoOk = Array.isArray(previewPhotoAva) && previewPhotoAva.length > 0;
+
       const topOk =
+        photoOk &&
         Boolean(String(inputData.name || '').trim()) &&
         Array.isArray(inputData.category) &&
         inputData.category.length > 0 &&
@@ -271,12 +292,14 @@ export default function FormEditStaff({ initial = null, onClose, registerCloseGu
         console.error(err);
       }
     },
-    [dispatch, inputData, dynamicData, initial, onClose, validateAll]
+    [dispatch, inputData, dynamicData, initial, onClose, validateAll, previewPhotoAva]
   );
 
   return (
     <div className={styles.form_container}>
-      {/* {showNotification && <div className={styles.form_container__notification}>Заполните необходимые поля!</div>} */}
+      {showNotification && (
+         <div className={styles.form_container__notification}>Заполните открытый блок либо закройте блок!</div>
+      )}
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div className={styles.form_container__title}>Редактировать сотрудника</div>
