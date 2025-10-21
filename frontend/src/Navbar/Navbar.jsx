@@ -3,38 +3,36 @@ import styles from './Navbar.module.scss';
 import { NavLink } from 'react-router-dom';
 import NavBarPhone from './NavBarPhone/NavBarPhone';
 
-
 const Navbar = memo(({ handleMouseEnter, handleMouseLeave }) => {
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
-  const [scrollDelta, setScrollDelta] = useState(0);  
+  const [scrollDelta, setScrollDelta] = useState(0);
 
-const handleScroll = useCallback(() => {
-  const currentScrollPos = window.scrollY;
-  const delta = currentScrollPos - prevScrollPos; 
+  const handleScroll = useCallback(() => {
+    const currentScrollPos = window.scrollY;
+    const delta = currentScrollPos - prevScrollPos;
 
-  if (window.innerWidth > 1200) {
-    if (prevScrollPos > currentScrollPos || currentScrollPos <= 0) {
-      setVisible(true);
-      setScrollDelta(0);
-    } else {
-      setScrollDelta((prevDelta) => prevDelta + delta); 
+    if (window.innerWidth > 1200) {
+      if (prevScrollPos > currentScrollPos || currentScrollPos <= 0) {
+        setVisible(true);
+        setScrollDelta(0);
+      } else {
+        setScrollDelta((prevDelta) => prevDelta + delta);
 
-      if (scrollDelta > 100) {
-        setVisible(false);
+        if (scrollDelta > 100) {
+          setVisible(false);
+        }
       }
     }
-  }
 
-  setPrevScrollPos(currentScrollPos);
-}, [prevScrollPos, scrollDelta]);
-  
+    setPrevScrollPos(currentScrollPos);
+  }, [prevScrollPos, scrollDelta]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
-  
+
   return (
     <header className={`${styles.Navbar} ${visible ? '' : styles.hidden}`}>
       <nav className={styles.Navbar__nav}>
@@ -106,7 +104,7 @@ const handleScroll = useCallback(() => {
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               className={({ isActive }) => `${styles.Navbar__item} ${isActive ? styles.Navbar__item_open : ''}`}
-              to="/portal/vacanciesMain"
+              to="/hr/vacanciesMain"
               target="_blank">
               <div>HR портал</div>
             </NavLink>

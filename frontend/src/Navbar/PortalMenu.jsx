@@ -10,30 +10,30 @@ export default function PortalMenu({ user, handleMouseEnter, handleMouseLeave })
   const [visible, setVisible] = useState(true);
   const [scrollDelta, setScrollDelta] = useState(0);
 
- const handleScroll = useCallback(() => {
-   const currentScrollPos = window.scrollY;
-   const delta = currentScrollPos - prevScrollPos;
+  const handleScroll = useCallback(() => {
+    const currentScrollPos = window.scrollY;
+    const delta = currentScrollPos - prevScrollPos;
 
-   if (window.innerWidth > 1024) {
-     if (prevScrollPos > currentScrollPos || currentScrollPos <= 0) {
-       setVisible(true);
-       setScrollDelta(0);
-     } else {
-       setScrollDelta((prevDelta) => prevDelta + delta);
+    if (window.innerWidth > 1024) {
+      if (prevScrollPos > currentScrollPos || currentScrollPos <= 0) {
+        setVisible(true);
+        setScrollDelta(0);
+      } else {
+        setScrollDelta((prevDelta) => prevDelta + delta);
 
-       if (scrollDelta > 100) {
-         setVisible(false);
-       }
-     }
-   }
+        if (scrollDelta > 100) {
+          setVisible(false);
+        }
+      }
+    }
 
-   setPrevScrollPos(currentScrollPos);
- }, [prevScrollPos, scrollDelta]);
+    setPrevScrollPos(currentScrollPos);
+  }, [prevScrollPos, scrollDelta]);
 
- useEffect(() => {
-   window.addEventListener('scroll', handleScroll);
-   return () => window.removeEventListener('scroll', handleScroll);
- }, [handleScroll]);
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
 
   const location = useLocation();
 
@@ -61,13 +61,12 @@ export default function PortalMenu({ user, handleMouseEnter, handleMouseLeave })
             <Link
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              className={` ${styles.Navbar__title} ${activeClass === '/portal/vacanciesMain'}`}
-              to="/portal/vacanciesMain"
-              onClick={() => handleItemClick('/portal/vacanciesMain')}
-            >
+              className={` ${styles.Navbar__title} ${activeClass === '/hr/vacanciesMain'}`}
+              to="/hr/vacanciesMain"
+              onClick={() => handleItemClick('/hr/vacanciesMain')}>
               <h1>MARKS GROUP</h1>
 
-              <p className={styles.Navbar__title__hr}>HR</p>            
+              <p className={styles.Navbar__title__hr}>HR</p>
             </Link>
           </div>
           <ul className={styles.Navbar__list}>
@@ -75,35 +74,28 @@ export default function PortalMenu({ user, handleMouseEnter, handleMouseLeave })
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               className={`${styles.Navbar__item} ${
-                activeClass === '/portal/vacanciesMain' ? styles.Navbar__item_open : ''
+                activeClass === '/hr/vacanciesMain' ? styles.Navbar__item_open : ''
               }`}
-              to="/portal/vacanciesMain"
-              onClick={() => handleItemClick('/portal/vacanciesMain')}
-            >
+              to="/hr/vacanciesMain"
+              onClick={() => handleItemClick('/hr/vacanciesMain')}>
               <div>Главная</div>
             </Link>
 
             <Link
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              className={`${styles.Navbar__item} ${
-                activeClass === '/portal/vacancies' ? styles.Navbar__item_open : ''
-              }`}
-              to="/portal/vacancies"
-              onClick={() => handleItemClick('/portal/vacancies')}
-            >
+              className={`${styles.Navbar__item} ${activeClass === '/hr/vacancies' ? styles.Navbar__item_open : ''}`}
+              to="/hr/vacancies"
+              onClick={() => handleItemClick('/hr/vacancies')}>
               <div>Работа у нас</div>
             </Link>
 
             <Link
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              className={`${styles.Navbar__item} ${
-                activeClass === '/portal/internships' ? styles.Navbar__item_open : ''
-              }`}
-              to="/portal/internships"
-              onClick={() => handleItemClick('/portal/internships')}
-            >
+              className={`${styles.Navbar__item} ${activeClass === '/hr/internships' ? styles.Navbar__item_open : ''}`}
+              to="/hr/internships"
+              onClick={() => handleItemClick('/hr/internships')}>
               <div>Стажировки</div>
             </Link>
           </ul>

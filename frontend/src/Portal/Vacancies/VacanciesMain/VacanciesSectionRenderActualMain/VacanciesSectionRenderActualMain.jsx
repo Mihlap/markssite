@@ -125,7 +125,7 @@ const VacanciesSectionRenderActualMain = ({ handleMouseEnter, handleMouseLeave }
           <div className={`${styles.showVacanciesOfTotalVacancies} ${styles.actualMain}`}>
             {getAnnouncementText() && <div className={styles.vacancyAnnouncement}>{getAnnouncementText()}</div>}
             <Link
-              to="/portal/vacancies"
+              to="/hr/vacancies"
               className={styles.showManyButton}
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}>
