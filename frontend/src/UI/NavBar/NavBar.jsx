@@ -1,15 +1,15 @@
-import React from 'react';
 import { NavLink } from 'react-router-dom';
 import clsx from 'clsx';
 import { useNavLinks } from './hooks/useNavLinks';
 
 import styles from './style.module.scss';
+import Logo from './Logo';
 
 const NavBar = () => {
   const { primary, cta } = useNavLinks();
   return (
     <nav className={styles['navbar']}>
-      <div>logo</div>
+      <Logo />
       <ul className={styles['navbar-list']}>
         {primary.map((l) => (
           <li className={styles['navbar-item']} key={l.path}>

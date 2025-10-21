@@ -15,6 +15,13 @@
     }
 }
 
+@mixin circle($bg) {
+    background-color: var($bg);
+    width: 13.5px;
+    height: 13.5px;
+    border-radius: 50%;
+}
+
 .navbar {
     display: flex;
     align-items: center;
@@ -23,6 +30,25 @@
     font-family: var(--font-raleway);
     font-style: normal;
     white-space: nowrap;
+    padding-left: 27px;
+
+    &-logo {
+
+        &-block {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px
+        }
+
+        &-circle {
+            @include circle(--black-1D2E43);
+        }
+
+        &-circle-blue {
+            @include circle(--color-mg-blue);
+        }
+    }
 
     &-list {
         display: flex;
@@ -83,6 +109,10 @@
 }
 
 @media screen and (min-width: 2560px) {
+    .navbar {
+        padding-left: 48px;
+    }
+
     .navbar-list {
         gap: 60px;
     }
