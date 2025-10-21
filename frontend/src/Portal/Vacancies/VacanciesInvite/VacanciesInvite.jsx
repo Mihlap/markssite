@@ -32,7 +32,7 @@ const VacanciesInvite = ({ isInternship = true }) => {
             <ButtonLink
               text="Смотреть стажировки"
               to={{
-                pathname: '/portal/internships',
+                pathname: '/hr/internships',
                 search: `?type=${isInternship ? 'internship' : 'vacancy'}`,
               }}
             />

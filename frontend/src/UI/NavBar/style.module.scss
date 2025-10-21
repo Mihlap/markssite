@@ -1,0 +1,93 @@
+@mixin navbar-cta-button($bg: null, $color: null, $hover-color: null, $hover-bg: null, $padding: 20px 24px) {
+    padding: $padding;
+    background: var($bg);
+    color: var($color);
+    font-variant-numeric: lining-nums proportional-nums;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px;
+
+
+    &:hover {
+        color: var($hover-color);
+        background-color: var($hover-bg);
+    }
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--white-F6F6F6);
+    font-family: var(--font-raleway);
+    font-style: normal;
+    white-space: nowrap;
+
+    &-list {
+        display: flex;
+        align-items: center;
+        gap: 33px;
+    }
+
+    &-item {
+        color: var(--dark-gray-566272);
+        font-size: 14px;
+        line-height: 20px;
+        width: 100%;
+        letter-spacing: 0.3px;
+        text-align: center;
+        transition: text-shadow 0.3s ease, color 0.3s ease;
+
+        &-en {
+            padding: 20px 27px;
+        }
+
+        &:hover {
+            color: var(--dark-gray-566272);
+            text-shadow:
+                0.3px 0 var(--dark-gray-566272),
+                -0.3px 0 var(--dark-gray-566272);
+        }
+
+        &-active {
+            color: var(--black-1D2E43);
+            text-align: center;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 20px;
+        }
+    }
+
+    &-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        transition: color 0.3s linear, background-color 0.3s linear;
+
+        &--active {
+            color: var(--black-1D2E43);
+            font-weight: 700;
+        }
+
+        &--cta-primary {
+            @include navbar-cta-button(--light-light-gray-EBECEE, --gray-959DA6, --originWhite-FFFFFF, --black-1D2E43)
+        }
+
+        &--cta-secondary {
+            @include navbar-cta-button(--black-1D2E43, --originWhite-FFFFFF, --originWhite-FFFFFF, --dark-gray-566272, 22px 66px)
+        }
+    }
+}
+
+@media screen and (min-width: 2560px) {
+    .navbar-list {
+        gap: 60px;
+    }
+
+    .navbar-item {
+        font-size: 18px;
+    }
+}

@@ -26,17 +26,14 @@ export default function PortalMenuMobile() {
       <div className={styles.navbar_block}>
         <div className={styles.container}>
           <section className={styles.wrapper}>
-            <Link to="/portal/vacanciesMain" className={styles.brand}>
-              
+            <Link to="/hr/vacanciesMain" className={styles.brand}>
               MARKS GROUP
-              
-            <p className={styles.Navbar__title__hr}>HR</p>          
+              <p className={styles.Navbar__title__hr}>HR</p>
             </Link>
             <button
               type="button"
               className={`${styles.burger} ${isMenuActive ? styles['is-active'] : ''}`}
-              onClick={handleBurgerClick}
-            >
+              onClick={handleBurgerClick}>
               <span className={styles['burger-line']}></span>
               <span className={styles['burger-line']}></span>
               <span className={styles['burger-line']}></span>
@@ -44,21 +41,20 @@ export default function PortalMenuMobile() {
             </button>
             <div
               className={`${styles.menu} ${isMenuActive ? styles['is-active'] : ''}`}
-              style={isMenuActive ? { maxHeight: '1200px' } : { maxHeight: '0', visibility: 'hidden', opacity: 0 }}
-            >
+              style={isMenuActive ? { maxHeight: '1200px' } : { maxHeight: '0', visibility: 'hidden', opacity: 0 }}>
               <ul className={styles['menu-inner']}>
                 <li className={styles['menu-item']}>
-                  <Link onClick={handleBurgerClick} to="/portal/vacanciesMain" className={styles['menu-link']}>
+                  <Link onClick={handleBurgerClick} to="/hr/vacanciesMain" className={styles['menu-link']}>
                     Главная
                   </Link>
                 </li>
                 <li className={styles['menu-item']}>
-                  <Link onClick={handleBurgerClick} to="/portal/vacancies" className={styles['menu-link']}>
+                  <Link onClick={handleBurgerClick} to="/hr/vacancies" className={styles['menu-link']}>
                     Работа у нас
                   </Link>
                 </li>
                 <li className={styles['menu-item']}>
-                  <Link onClick={handleBurgerClick} to="/portal/internships" className={styles['menu-link']}>
+                  <Link onClick={handleBurgerClick} to="/hr/internships" className={styles['menu-link']}>
                     Стажировки
                   </Link>
                 </li>
@@ -72,8 +68,7 @@ export default function PortalMenuMobile() {
                   <Link
                     to={'tel:+74951201226'}
                     className={styles.contact_info_phone}
-                    style={{ fontVariantNumeric: 'lining-nums' }}
-                  >
+                    style={{ fontVariantNumeric: 'lining-nums' }}>
                     +7(495)&nbsp;120-12-26
                   </Link>
                 </div>
