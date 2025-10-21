@@ -49,20 +49,23 @@ const sessionConfig = {
   },
 };
 
-app.use(cors({
-  origin: [
-    'https://www.marksgroup.ru',
-    'https://marksgroup.ru',
-    'http://localhost:3002',
-    'http://localhost:3000',
-  ],
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: [
+      'https://www.marksgroup.ru',
+      'https://marksgroup.ru',
+      'http://localhost:3002',
+      'http://localhost:3000',
+      'http://localhost:3001',
+    ],
+    credentials: true,
+  }),
+);
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Methods', 'HEAD, GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Content-Security-Policy', 'default-src \'self\'');
+  res.header('Content-Security-Policy', "default-src 'self'");
   next();
 });
 
@@ -82,7 +85,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/images', express.static(imagesPath, { maxAge: '5d' }));
-app.use('/videos', express.static(videoPath, { maxAge: '5d', immutable: true, }));
+app.use('/videos', express.static(videoPath, { maxAge: '5d', immutable: true }));
 app.use('/public/assets', express.static(path.join(__dirname, 'assets'), { maxAge: '5d' }));
 app.use(session(sessionConfig));
 app.use(express.static(path.join(__dirname, 'build')));
@@ -90,6 +93,10 @@ app.use(express.static(path.join(__dirname, 'build')));
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('Something went wrong!');
+});
+
+app.get('/test', (req, res) => {
+  res.send('Hello World!');
 });
 
 app.get('/', indexRouter);

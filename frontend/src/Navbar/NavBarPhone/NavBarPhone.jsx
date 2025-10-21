@@ -71,7 +71,7 @@ const NavBarPhone = memo(() => {
                   <Link
                     onClick={handleBurgerClick}
                     target="_blank"
-                    to="/portal/vacanciesMain"
+                    to="/hr/vacanciesMain"
                     className={styles['menu-link']}>
                     HR портал
                   </Link>

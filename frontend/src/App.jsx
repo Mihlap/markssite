@@ -9,7 +9,6 @@ import Contacts from './Contacts/Contacts';
 import Project from './Project/Project';
 import Publics from './Publics/Publics';
 import NotFound from './NotFound/NotFound';
-import Navbar from './Navbar/Navbar';
 import Information from './Information/Information';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import LoadingNew from './Loading/LoadingNew';
@@ -39,7 +38,6 @@ import {
   textLeaveWhiteFooter,
 } from './store/Slice/cursorSlice';
 import CookieComponent from './UI/CookieComponent/CookieComponent';
-import PortalMenu from './Navbar/PortalMenu';
 import VacanciesMainCard from './Portal/Vacancies/VacanciesMainCard/VacanciesMainCard';
 import VacanciesMain3 from './Portal/Vacancies/VacanciesMain/VacanciesMain3';
 import Internships from './Portal/Internships/Internships';
@@ -49,6 +47,8 @@ import FooterCircle from './Footer/FooterCircle';
 import FooterForm from './Footer/FooterForm';
 import JournalMain from './Journal/JournalMain';
 import ArticleJournalPage from './Journal/JournalArticlePage/ArticleJournalPage';
+import { IS_DEV } from './const/is-dev';
+import NavBar from './UI/NavBar/NavBar';
 
 export default function App() {
   const user = useSelector((state) => state.auth.user);
@@ -57,28 +57,16 @@ export default function App() {
   const isActive = useSelector((state) => state.toggle.isActiveForButton3);
   const location = useLocation();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
-  const [showPortalMenu, setShowPortalMenu] = useState(false);
+  const [loading, setLoading] = useState(!IS_DEV);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const nodeRef = useRef(null);
 
   const isPortalPage =
-    location.pathname.startsWith('/portal/vacancies') ||
-    location.pathname.startsWith('/portal/internships') ||
+    location.pathname.startsWith('/hr/vacancies') ||
+    location.pathname.startsWith('/hr/internships') ||
     location.pathname.startsWith('/portal/vacancy');
 
   const isFooterFormPage = location.pathname === '/footerForm';
-  
-
-  useEffect(() => {
-    const vacancyDetailPath = /^\/portal\/vacancy\/\d+$/;
-    setShowPortalMenu(
-      location.pathname === '/portal/vacancies' ||
-        location.pathname === '/portal/internships' ||
-        vacancyDetailPath.test(location.pathname) ||
-        location.pathname === '/portal/vacanciesMain'
-    );
-  }, [location.pathname]);
 
   useEffect(() => {
     dispatch(checkUserAuth());
@@ -116,6 +104,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    if (IS_DEV) return;
     if (videoLoaded) {
       setLoading(false);
     }
@@ -129,29 +118,22 @@ export default function App() {
 
   return (
     <HelmetProvider>
-      {loading &&
+      {!IS_DEV &&
+      loading &&
       location.pathname !== '/information' &&
-      location.pathname !== '/portal/vacanciesMain' &&
+      location.pathname !== '/hr/vacanciesMain' &&
       location.pathname !== '/footerForm' ? (
         <LoadingNew />
       ) : (
         <>
-          {showNavbarFooter && currentPage !== 'add' && (
-            <>
-              {showPortalMenu ? (
-                <PortalMenu user={user} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} />
-              ) : (
-                <Navbar handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} />
-              )}
-            </>
-          )}
+          <NavBar />
           {showNavbarFooter && currentPage !== 'add' && (
             <ButtonAdmin user={user} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} />
           )}
           <TransitionGroup>
             <CSSTransition key={location.key} classNames="fade" timeout={300} nodeRef={nodeRef}>
               <div ref={nodeRef}>
-                <Routes location={location}>
+                {/* <Routes location={location}>
                   <Route
                     path="/"
                     element={
@@ -247,7 +229,7 @@ export default function App() {
                     }
                   />
                   <Route
-                    path="/portal/vacanciesMain"
+                    path="/hr/vacanciesMain"
                     element={
                       <VacanciesMain3
                         handleMouseEnter={handleMouseEnter}
@@ -257,7 +239,7 @@ export default function App() {
                     }
                   />
                   <Route
-                    path="/portal/vacancies"
+                    path="/hr/vacancies"
                     element={
                       <VacanciesComponent
                         handleMouseEnter={handleMouseEnter}
@@ -267,7 +249,7 @@ export default function App() {
                     }
                   />
                   <Route
-                    path="/portal/internships"
+                    path="/hr/internships"
                     element={
                       <Internships
                         handleMouseEnter={handleMouseEnter}
@@ -302,13 +284,13 @@ export default function App() {
                   {isActive && <Route path="/signup" element={<SignUpPage />} />}
                   <Route path="/test" element={<LoadingModal />} />
                   {user && <Route path="/admin/*" element={<Add user={user} onPageChange={handlePageChange} />} />}
-                </Routes>
+                </Routes> */}
               </div>
             </CSSTransition>
           </TransitionGroup>
           <CookieComponent />
 
-          {!isFooterFormPage && showNavbarFooter && currentPage !== 'add' && (
+          {/* {!isFooterFormPage && showNavbarFooter && currentPage !== 'add' && (
             <>
               {isPortalPage ? (
                 <Footer
@@ -326,7 +308,7 @@ export default function App() {
                 />
               )}
             </>
-          )}
+          )} */}
           {showNavbarFooter && currentPage !== 'add' && <CustomCursor />}
         </>
       )}
