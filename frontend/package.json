@@ -4,6 +4,7 @@
   "private": true,
   "proxy": "http://localhost:5000",
   "dependencies": {
+    "@gsap/react": "^2.1.2",
     "@mapbox/mapbox-gl-draw": "^1.4.1",
     "@mediapipe/tasks-vision": "^0.10.14",
     "@r3flector/react-yandex-maps": "^1.2.7",

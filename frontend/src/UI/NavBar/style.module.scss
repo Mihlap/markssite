@@ -24,16 +24,20 @@
 
 .navbar {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
     background-color: var(--white-F6F6F6);
     font-family: var(--font-raleway);
     font-style: normal;
     white-space: nowrap;
     padding-left: 27px;
 
-    &-logo {
+    &-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 
+    &-logo {
         &-block {
             display: flex;
             align-items: center;
@@ -57,6 +61,7 @@
     }
 
     &-item {
+        position: relative;
         color: var(--dark-gray-566272);
         font-size: 14px;
         line-height: 20px;
@@ -105,6 +110,20 @@
         &--cta-secondary {
             @include navbar-cta-button(--black-1D2E43, --originWhite-FFFFFF, --originWhite-FFFFFF, --dark-gray-566272, 22px 66px)
         }
+    }
+
+    &-dropdown {
+        // position: fixed;
+        // z-index: 9999;
+        background-color: rebeccapurple;
+    }
+
+    &-children {
+        background-color: antiquewhite;
+        display: none;
+        overflow: hidden;
+        transform-origin: top;
+        will-change: transform, opacity;
     }
 }
 
