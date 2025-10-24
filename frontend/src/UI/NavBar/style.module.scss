@@ -17,8 +17,8 @@
 
 @mixin circle($bg) {
     background-color: var($bg);
-    width: 13.5px;
-    height: 13.5px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
 }
 
@@ -29,12 +29,12 @@
     font-family: var(--font-raleway);
     font-style: normal;
     white-space: nowrap;
-    padding-left: 27px;
 
     &-top {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        padding-left: 27px;
     }
 
     &-logo {
@@ -42,15 +42,59 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px
+            gap: 8px;
+            position: relative; // на всякий: нормальный стек
+
+            /* когда внутри блока активен синий круг с классом -animate,
+               запускаем спин у hr через 1.0s */
+            &:has(.navbar-logo-circle-blue-animate) .navbar-logo-hr {
+                animation: spinOnce 0.6s ease 1.0s both;
+            }
         }
 
         &-circle {
             @include circle(--black-1D2E43);
+            transition: transform 100ms ease;
+
+            &-animate {
+                transform: translateX(10px);
+            }
+        }
+
+        &-image {
+            transition: transform 150ms ease;
+            z-index: 4;
+
+            &--shifted {
+                transform: translateX(-22px);
+            }
+        }
+
+        &-hr {
+            opacity: 0;
+            transform-origin: center;
+            will-change: transform, opacity;
+
+            &-animate {
+                // 0.6s подождать, затем 0.4s сжаться
+                animation: spinOnce 0.4s ease forwards;
+                animation-delay: 0.6s;
+            }
         }
 
         &-circle-blue {
             @include circle(--color-mg-blue);
+            z-index: 3;
+            // ВАЖНО: сразу задаём полный transform со scale(1)
+            transform: translateX(-24px) scale(1);
+            transform-origin: center;
+            will-change: transform, opacity;
+
+            &-animate {
+                // 0.6s подождать, затем 0.4s сжаться
+                animation: shrinkAndHide 0.4s ease forwards;
+                animation-delay: 0.6s;
+            }
         }
     }
 
@@ -81,9 +125,17 @@
                 -0.3px 0 var(--dark-gray-566272);
         }
 
+        &:focus {
+            color: var(--dark-gray-566272);
+            font-variant-numeric: lining-nums proportional-nums;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 20px;
+        }
+
         &-active {
             color: var(--black-1D2E43);
-            text-align: center;
             font-size: 14px;
             font-style: normal;
             font-weight: 700;
@@ -113,17 +165,36 @@
     }
 
     &-dropdown {
-        // position: fixed;
-        // z-index: 9999;
-        background-color: rebeccapurple;
-    }
-
-    &-children {
-        background-color: antiquewhite;
+        // background-color: var(--white-F6F6F6);
+        background-color: rgb(230, 222, 211);
         display: none;
         overflow: hidden;
         transform-origin: top;
         will-change: transform, opacity;
+    }
+}
+
+@keyframes shrinkAndHide {
+    0% {
+        transform: translateX(-24px) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(-24px) scale(0);
+        opacity: 0;
+    }
+}
+
+@keyframes spinOnce {
+    from {
+        opacity: 0;
+        transform: translateX(-42px) scale(0);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(-42px) scale(1);
     }
 }
 
