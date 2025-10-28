@@ -12,28 +12,51 @@ gsap.registerPlugin(useGSAP);
 const NavBar = () => {
   const navigate = useNavigate();
   const [linkChildren, setLinkChildren] = useState(false);
-  const [openId, setOpenId] = useState(null);
+  const [openDropDownId, setOpenDropDownId] = useState(null);
   const { primary, cta } = useNavLinks();
 
   const container = useRef();
-  const pendingOpenId = useRef(null); // когда переключаемся между дропами: сюда кладём id, который откроем после закрытия текущего
 
-  const activeChildren = primary.find((i) => i.id === openId)?.children ?? [];
-  const handlerLink = (path) => {
-    if (!path) return;
-    if (!container.current) return;
+  const closeDropdown = (afterClose) => {
+    const finish = () => {
+      setLinkChildren(false);
+      setOpenDropDownId(null);
+      if (typeof afterClose === 'function') {
+        afterClose();
+      }
+    };
+
+    if (!container.current) {
+      finish();
+      return;
+    }
 
     gsap.to(container.current, {
-      y: -100,
-      autoAlpha: 0,
-      duration: 0.4,
-      ease: 'power2.in',
-      onComplete: () => {
-        gsap.set(container.current, { display: 'none' });
-        setLinkChildren(false);
-        setOpenId(null);
-        navigate(path);
-      },
+      duration: 0.2,
+      ease: 'none',
+      height: 60,
+      onComplete: finish,
+    });
+  };
+
+  const openDropdown = (id) => {
+    setOpenDropDownId(id);
+    setLinkChildren(true);
+  };
+
+  const reopenDropdown = (id) => {
+    const reopen = () => openDropdown(id);
+    if (typeof window !== 'undefined' && typeof window.requestAnimationFrame === 'function') {
+      window.requestAnimationFrame(reopen);
+    } else {
+      setTimeout(reopen, 0);
+    }
+  };
+
+  const handlerLink = (path) => {
+    if (!path) return;
+    closeDropdown(() => {
+      navigate(path);
     });
   };
 
@@ -43,67 +66,50 @@ const NavBar = () => {
 
       if (linkChildren) {
         // Показать и опустить вниз
-        gsap.set(container.current, {
-          display: 'block',
-          height: `${openId === 3 ? '156px' : '200px'}`,
-        });
-        gsap.fromTo(container.current, { y: -100, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.5, ease: 'sine' });
-      } else {
-        // Спрятать с подъёмом вверх
         gsap.to(container.current, {
-          y: -100,
-          autoAlpha: 0,
-          duration: 0.5,
-          ease: 'expo.in',
-          onComplete: () => {
-            gsap.set(container.current, { display: 'none' });
-            const nextId = pendingOpenId.current;
-            pendingOpenId.current = null;
-            if (nextId != null) {
-              // сначала переключаем контент...
-              setOpenId(nextId);
-              // ...а затем запускаем открытие
-              setLinkChildren(true);
-            } else {
-              // Закрытие без последующего открытия
-              setOpenId(null);
-            }
-          },
+          duration: 0.2,
+          height: `${openDropDownId === 3 ? '216px' : '260px'}`,
+          ease: 'none',
         });
       }
     },
-    { dependencies: [linkChildren, openId] }
+    { dependencies: [linkChildren] }
   );
 
   return (
-    <nav className={styles['navbar']}>
+    <nav ref={container} className={styles['navbar']}>
       <div className={styles['navbar-top']}>
         <Logo />
         <ul className={styles['navbar-list']}>
           {primary.map((item) => {
             if (item.children) {
               return (
-                <button
-                  key={item.id}
-                  className={styles['navbar-item']}
-                  onClick={() => {
-                    if (openId === item.id) {
-                      // Клик по открытому пункту — просто закрываем
-                      pendingOpenId.current = null;
-                      setLinkChildren(false);
-                    } else if (linkChildren) {
-                      // Уже открыт другой пункт — сперва закрываем текущий и планируем открыть новый
-                      pendingOpenId.current = item.id;
-                      setLinkChildren(false);
-                    } else {
-                      // Сейчас всё закрыто — сразу открываем выбранный
-                      pendingOpenId.current = null;
-                      setOpenId(item.id);
-                      setLinkChildren(true);
-                    }
-                  }}>
-                  {item.label}
-                </button>
+                <li style={{ position: 'relative' }} key={item.id}>
+                  <button
+                    key={item.id}
+                    className={styles['navbar-item']}
+                    onClick={() => {
+                      if (openDropDownId === item.id) {
+                        closeDropdown();
+                      } else if (linkChildren) {
+                        closeDropdown(() => reopenDropdown(item.id));
+                      } else {
+                        openDropdown(item.id);
+                      }
+                    }}>
+                    {item.label}
+                  </button>
+                  {openDropDownId === item.id && (
+                    <ul className={styles['navbar-dropdown']}>
+                      {item.children.map((el) => (
+                        <li key={el.id} role="menuitem">
+                          {el.label}
+                          <div>{el.description}</div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
               );
             } else {
               return (
@@ -137,18 +143,6 @@ const NavBar = () => {
             );
           })}
         </div>
-      </div>
-      <div ref={container} className={styles['navbar-dropdown']}>
-        {activeChildren.length > 0 && (
-          <ul id="list" role="menu">
-            {activeChildren.map((el) => (
-              <li key={el.id} role="menuitem">
-                {el.label}
-                <div>{el.description}</div>
-              </li>
-            ))}
-          </ul>
-        )}
       </div>
     </nav>
   );
