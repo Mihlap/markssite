@@ -8,7 +8,6 @@
     font-weight: 600;
     line-height: 20px;
 
-
     &:hover {
         color: var($hover-color);
         background-color: var($hover-bg);
@@ -43,10 +42,8 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            position: relative; // на всякий: нормальный стек
+            position: relative;
 
-            /* когда внутри блока активен синий круг с классом -animate,
-               запускаем спин у hr через 1.0s */
             &:has(.navbar-logo-circle-blue-animate) .navbar-logo-hr {
                 animation: spinOnce 0.6s ease 1.0s both;
             }
@@ -75,8 +72,8 @@
             transform-origin: center;
             will-change: transform, opacity;
 
+
             &-animate {
-                // 0.6s подождать, затем 0.4s сжаться
                 animation: spinOnce 0.4s ease forwards;
                 animation-delay: 0.6s;
             }
@@ -165,12 +162,9 @@
     }
 
     &-dropdown {
-        // background-color: var(--white-F6F6F6);
-        background-color: rgb(230, 222, 211);
-        display: none;
-        overflow: hidden;
-        transform-origin: top;
-        will-change: transform, opacity;
+        position: absolute;
+        top: 40px;
+        background-color: rgb(174, 170, 165);
     }
 }
 
