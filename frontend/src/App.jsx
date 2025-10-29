@@ -133,7 +133,7 @@ export default function App() {
           <TransitionGroup>
             <CSSTransition key={location.key} classNames="fade" timeout={300} nodeRef={nodeRef}>
               <div ref={nodeRef}>
-                {/* <Routes location={location}>
+                <Routes location={location}>
                   <Route
                     path="/"
                     element={
@@ -284,7 +284,7 @@ export default function App() {
                   {isActive && <Route path="/signup" element={<SignUpPage />} />}
                   <Route path="/test" element={<LoadingModal />} />
                   {user && <Route path="/admin/*" element={<Add user={user} onPageChange={handlePageChange} />} />}
-                </Routes> */}
+                </Routes>
               </div>
             </CSSTransition>
           </TransitionGroup>
