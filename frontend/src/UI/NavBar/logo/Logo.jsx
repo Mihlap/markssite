@@ -1,10 +1,10 @@
 import { useLocation } from 'react-router-dom';
 import clsx from 'clsx';
-import logo from './icon/logo.svg';
-import iconhr from './icon/hr.svg';
-import iconmg from './icon/mj.svg';
+import logo from '../icon/logo.svg';
+import iconhr from '../icon/hr.svg';
+import iconmg from '../icon/mj.svg';
 
-import styles from './style.module.scss';
+import styles from '../logo/style.module.scss';
 
 export default function Logo() {
   const location = useLocation();
@@ -19,31 +19,31 @@ export default function Logo() {
     : '';
 
   return (
-    <div className={styles['navbar-logo-block']}>
+    <div className={styles['logo-block']}>
       {/* <div className={styles['navbar-logo-circle']} /> */}
       <div
-        className={clsx(styles['navbar-logo-circle'], {
-          [styles['navbar-logo-circle-animate']]: shouldCompactLogo,
+        className={clsx(styles['logo-circle'], {
+          [styles['logo-circle-animate']]: shouldCompactLogo,
         })}
       />
       <img
-        className={clsx(styles['navbar-logo-image'], {
-          [styles['navbar-logo-image--shifted']]: shouldCompactLogo,
+        className={clsx(styles['logo-image'], {
+          [styles['logo-image--shifted']]: shouldCompactLogo,
         })}
         src={logo}
         alt="логотип компании MarksGroup"
         loading="lazy"
       />
       <div
-        className={clsx(styles['navbar-logo-circle-blue'], {
-          [styles['navbar-logo-circle-blue-animate']]: shouldCompactLogo,
+        className={clsx(styles['logo-circle-blue'], {
+          [styles['logo-circle-blue-animate']]: shouldCompactLogo,
         })}
       />
       {animatedIcon && (
         <img
           key={animatedIcon}
-          className={clsx(styles['navbar-logo-hr'], {
-            [styles['navbar-logo-hr-animate']]: shouldCompactLogo,
+          className={clsx(styles['logo-hr'], {
+            [styles['logo-hr-animate']]: shouldCompactLogo,
           })}
           src={animatedIcon}
           alt={animatedAlt}

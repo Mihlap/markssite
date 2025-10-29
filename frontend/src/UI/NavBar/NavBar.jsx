@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { useNavLinks } from './hooks/useNavLinks';
 
 import styles from './style.module.scss';
-import Logo from './Logo';
+import Logo from './logo/Logo';
 gsap.registerPlugin(useGSAP);
 
 const NavBar = () => {
@@ -102,9 +102,19 @@ const NavBar = () => {
                   {openDropDownId === item.id && (
                     <ul className={styles['navbar-dropdown']}>
                       {item.children.map((el) => (
-                        <li key={el.id} role="menuitem">
-                          {el.label}
-                          <div>{el.description}</div>
+                        <li className={styles['navbar-dropdown-item']} key={el.id} role="menuitem">
+                          <div className={styles['navbar-dropdown-item_label']}>{el.label}</div>
+                          <div className={styles['navbar-dropdown-item_description']}>
+                            {el.description.includes('ведущих') ? (
+                              <>
+                                {el.description.split('ведущих')[0]}
+                                <span className={styles['break']}>ведущих</span>
+                                {el.description.split('ведущих')[1]}
+                              </>
+                            ) : (
+                              el.description
+                            )}
+                          </div>
                         </li>
                       ))}
                     </ul>
