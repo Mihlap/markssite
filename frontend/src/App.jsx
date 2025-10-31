@@ -130,166 +130,167 @@ export default function App() {
           {showNavbarFooter && currentPage !== 'add' && (
             <ButtonAdmin user={user} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} />
           )}
-          <TransitionGroup>
-            <CSSTransition key={location.key} classNames="fade" timeout={300} nodeRef={nodeRef}>
-              <div ref={nodeRef}>
-                <Routes location={location}>
-                  <Route
-                    path="/"
-                    element={
-                      <Header
-                        handleMouseEnter={handleMouseEnter}
-                        handleMouseLeave={handleMouseLeave}
-                        handleMouseHover={handleMouseHover}
-                        handleSpecialHover={handleSpecialHover}
-                        setVideoLoaded={setVideoLoaded}
-                      />
-                    }
+          {/* 🚨 МИША, это надо или нет? Если да, то надо как-то переделать эти плавные переходы, потому-что у меня почему-то
+          якоря и скролы ломаются из-за этого 🚨 */}
+          {/* <TransitionGroup> */}
+          {/* <CSSTransition key={location.key} classNames="fade" timeout={300} nodeRef={nodeRef}> */}
+          <div ref={nodeRef}>
+            <Routes location={location}>
+              <Route
+                path="/"
+                element={
+                  <Header
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleMouseHover={handleMouseHover}
+                    handleSpecialHover={handleSpecialHover}
+                    setVideoLoaded={setVideoLoaded}
                   />
-                  <Route
-                    path="/project"
-                    element={
-                      <Project
-                        handleMouseEnter={handleMouseEnter}
-                        handleMouseLeave={handleMouseLeave}
-                        handleMouseHover={handleMouseHover}
-                      />
-                    }
+                }
+              />
+              <Route
+                path="/project"
+                element={
+                  <Project
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleMouseHover={handleMouseHover}
                   />
-                  <Route path="/project/:viewConstruction?" element={<Project />} />
-                  <Route
-                    path="/projects/:id"
-                    element={
-                      <ProjectCard
-                        handleMouseEnter={handleMouseEnter}
-                        handleMouseLeave={handleMouseLeave}
-                        handleMouseHover={handleMouseHover}
-                      />
-                    }
+                }
+              />
+              <Route path="/project/:viewConstruction?" element={<Project />} />
+              <Route
+                path="/projects/:id"
+                element={
+                  <ProjectCard
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleMouseHover={handleMouseHover}
                   />
-                  <Route
-                    path="/company"
-                    element={
-                      <Company
-                        handleMouseEnter={handleMouseEnter}
-                        handleMouseLeave={handleMouseLeave}
-                        handleMouseHover={handleMouseHover}
-                      />
-                    }
+                }
+              />
+              <Route
+                path="/company"
+                element={
+                  <Company
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleMouseHover={handleMouseHover}
                   />
-                  <Route
-                    path="/publication"
-                    element={
-                      <Publics
-                        handleMouseEnter={handleMouseEnter}
-                        handleMouseLeave={handleMouseLeave}
-                        handleMouseHover={handleMouseHover}
-                      />
-                    }
+                }
+              />
+              <Route
+                path="/publication"
+                element={
+                  <Publics
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleMouseHover={handleMouseHover}
                   />
-                  <Route
-                    path="/publication/:id"
-                    element={
-                      <ArticleCard
-                        handleMouseEnter={handleMouseEnter}
-                        handleMouseLeave={handleMouseLeave}
-                        handleMouseHover={handleMouseHover}
-                      />
-                    }
+                }
+              />
+              <Route
+                path="/publication/:id"
+                element={
+                  <ArticleCard
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleMouseHover={handleMouseHover}
                   />
-                  <Route
-                    path="/journalPage"
-                    element={
-                      <JournalMain
-                        handleMouseEnter={handleMouseEnter}
-                        handleMouseLeave={handleMouseLeave}
-                        handleMouseHover={handleMouseHover}
-                      />
-                    }
+                }
+              />
+              <Route
+                path="/journalPage"
+                element={
+                  <JournalMain
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleMouseHover={handleMouseHover}
                   />
-                  <Route path="/journal/:id" element={<ArticleJournalPage />} />
-                  <Route
-                    path="/contacts"
-                    element={
-                      <Contacts
-                        handleMouseEnter={handleMouseEnter}
-                        handleMouseLeave={handleMouseLeave}
-                        handleMouseHover={handleMouseHover}
-                      />
-                    }
+                }
+              />
+              <Route path="/journal/:id" element={<ArticleJournalPage />} />
+              <Route
+                path="/contacts"
+                element={
+                  <Contacts
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleMouseHover={handleMouseHover}
                   />
-                  <Route
-                    path="/information"
-                    element={
-                      <Information
-                        handleMouseEnter={handleMouseEnter}
-                        handleMouseLeave={handleMouseLeave}
-                        handleMouseHover={handleMouseHover}
-                      />
-                    }
+                }
+              />
+              <Route
+                path="/information"
+                element={
+                  <Information
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleMouseHover={handleMouseHover}
                   />
-                  <Route
-                    path="/hr/vacanciesMain"
-                    element={
-                      <VacanciesMain3
-                        handleMouseEnter={handleMouseEnter}
-                        handleMouseLeave={handleMouseLeave}
-                        handleMouseHover={handleMouseHover}
-                      />
-                    }
+                }
+              />
+              <Route
+                path="/hr/vacanciesMain"
+                element={
+                  <VacanciesMain3
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleMouseHover={handleMouseHover}
                   />
-                  <Route
-                    path="/hr/vacancies"
-                    element={
-                      <VacanciesComponent
-                        handleMouseEnter={handleMouseEnter}
-                        handleMouseLeave={handleMouseLeave}
-                        handleMouseHover={handleMouseHover}
-                      />
-                    }
+                }
+              />
+              <Route
+                path="/hr/vacancies"
+                element={
+                  <VacanciesComponent
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleMouseHover={handleMouseHover}
                   />
-                  <Route
-                    path="/hr/internships"
-                    element={
-                      <Internships
-                        handleMouseEnter={handleMouseEnter}
-                        handleMouseLeave={handleMouseLeave}
-                        handleMouseHover={handleMouseHover}
-                      />
-                    }
+                }
+              />
+              <Route
+                path="/hr/internships"
+                element={
+                  <Internships
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleMouseHover={handleMouseHover}
                   />
-                  <Route
-                    path="/portal/vacancy/:id"
-                    element={
-                      <VacanciesMainCard
-                        handleMouseEnter={handleMouseEnter}
-                        handleMouseLeave={handleMouseLeave}
-                        handleMouseHover={handleMouseHover}
-                      />
-                    }
+                }
+              />
+              <Route
+                path="/portal/vacancy/:id"
+                element={
+                  <VacanciesMainCard
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleMouseHover={handleMouseHover}
                   />
-                  <Route
-                    path="/footerForm"
-                    element={
-                      <FooterForm
-                        handleMouseEnterFooter={handleMouseEnterFooterWhite}
-                        handleMouseEnterFooterMore={handleMouseEnterFooterWhiteMore}
-                        handleMouseLeaveFooter={handleMouseLeaveFooterWhite}
-                        handleMouseLeave={handleMouseLeave}
-                      />
-                    }
+                }
+              />
+              <Route
+                path="/footerForm"
+                element={
+                  <FooterForm
+                    handleMouseEnterFooter={handleMouseEnterFooterWhite}
+                    handleMouseEnterFooterMore={handleMouseEnterFooterWhiteMore}
+                    handleMouseLeaveFooter={handleMouseLeaveFooterWhite}
+                    handleMouseLeave={handleMouseLeave}
                   />
-                  <Route path="*" element={<NotFound />} />
-                  <Route path="/login" element={<Login />} />
-                  {isActive && <Route path="/signup" element={<SignUpPage />} />}
-                  <Route path="/test" element={<LoadingModal />} />
-                  {user && <Route path="/admin/*" element={<Add user={user} onPageChange={handlePageChange} />} />}
-                </Routes>
-              </div>
-            </CSSTransition>
-          </TransitionGroup>
+                }
+              />
+              <Route path="*" element={<NotFound />} />
+              <Route path="/login" element={<Login />} />
+              {isActive && <Route path="/signup" element={<SignUpPage />} />}
+              <Route path="/test" element={<LoadingModal />} />
+              {user && <Route path="/admin/*" element={<Add user={user} onPageChange={handlePageChange} />} />}
+            </Routes>
+          </div>
+          {/* </CSSTransition> */}
+          {/* </TransitionGroup> */}
           <CookieComponent />
-
           {/* {!isFooterFormPage && showNavbarFooter && currentPage !== 'add' && (
             <>
               {isPortalPage ? (
