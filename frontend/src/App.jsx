@@ -121,7 +121,7 @@ export default function App() {
       {!IS_DEV &&
       loading &&
       location.pathname !== '/information' &&
-      location.pathname !== '/hr/vacanciesMain' &&
+      location.pathname !== '/hr/home' &&
       location.pathname !== '/footerForm' ? (
         <LoadingNew />
       ) : (
@@ -231,7 +231,7 @@ export default function App() {
                 }
               />
               <Route
-                path="/hr/vacanciesMain"
+                path="/hr/home"
                 element={
                   <VacanciesMain3
                     handleMouseEnter={handleMouseEnter}
@@ -261,7 +261,7 @@ export default function App() {
                 }
               />
               <Route
-                path="/portal/vacancy/:id"
+                path="/hr/vacancies/:id"
                 element={
                   <VacanciesMainCard
                     handleMouseEnter={handleMouseEnter}
@@ -284,14 +284,13 @@ export default function App() {
               <Route path="*" element={<NotFound />} />
               <Route path="/login" element={<Login />} />
               {isActive && <Route path="/signup" element={<SignUpPage />} />}
-              <Route path="/test" element={<LoadingModal />} />
               {user && <Route path="/admin/*" element={<Add user={user} onPageChange={handlePageChange} />} />}
             </Routes>
           </div>
           {/* </CSSTransition> */}
           {/* </TransitionGroup> */}
           <CookieComponent />
-          {/* {!isFooterFormPage && showNavbarFooter && currentPage !== 'add' && (
+          {!isFooterFormPage && showNavbarFooter && currentPage !== 'add' && (
             <>
               {isPortalPage ? (
                 <Footer
@@ -309,7 +308,7 @@ export default function App() {
                 />
               )}
             </>
-          )} */}
+          )}
           {showNavbarFooter && currentPage !== 'add' && <CustomCursor />}
         </>
       )}

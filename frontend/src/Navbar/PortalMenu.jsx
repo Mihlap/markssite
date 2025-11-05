@@ -61,9 +61,9 @@ export default function PortalMenu({ user, handleMouseEnter, handleMouseLeave })
             <Link
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              className={` ${styles.Navbar__title} ${activeClass === '/hr/vacanciesMain'}`}
-              to="/hr/vacanciesMain"
-              onClick={() => handleItemClick('/hr/vacanciesMain')}>
+              className={` ${styles.Navbar__title} ${activeClass === '/hr/home'}`}
+              to="/hr/home"
+              onClick={() => handleItemClick('/hr/home')}>
               <h1>MARKS GROUP</h1>
 
               <p className={styles.Navbar__title__hr}>HR</p>
@@ -73,11 +73,9 @@ export default function PortalMenu({ user, handleMouseEnter, handleMouseLeave })
             <Link
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              className={`${styles.Navbar__item} ${
-                activeClass === '/hr/vacanciesMain' ? styles.Navbar__item_open : ''
-              }`}
-              to="/hr/vacanciesMain"
-              onClick={() => handleItemClick('/hr/vacanciesMain')}>
+              className={`${styles.Navbar__item} ${activeClass === '/hr/home' ? styles.Navbar__item_open : ''}`}
+              to="/hr/home"
+              onClick={() => handleItemClick('/hr/home')}>
               <div>Главная</div>
             </Link>
 
