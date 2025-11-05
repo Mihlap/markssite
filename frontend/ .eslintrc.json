@@ -1,0 +1,64 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:prettier/recommended",
+    "plugin:import/recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "plugins": ["react", "react-hooks", "import"],
+  "rules": {
+    //add customize rules here as per your project's needs
+    "react-hooks/exhaustive-deps": "warn",
+    "react-hooks/rules-of-hooks": "error",
+    "import/order": [
+      "warn",
+      {
+        "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
+        "newlines-between": "always"
+      }
+    ],
+    "import/no-duplicates": "error",
+    "import/newline-after-import": "warn",
+    "import/no-unresolved": "error",
+    // для JavaScript
+    "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+    "no-undef": "error",
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    "eqeqeq": ["error", "always"], // требует использовать === вместо ==
+    "curly": ["error", "all"], // требует фигурные скобки даже для однострочных if
+    "no-redeclare": "error",
+    "no-return-await": "error",
+    "no-empty-function": "warn",
+    "prefer-const": "error",
+    "no-var": "error",
+    "no-shadow": "warn", // предотвращает перекрытие переменных из внешней области
+    "object-shorthand": ["error", "always"], // {a: a} → {a}
+    "arrow-body-style": ["warn", "as-needed"], // убирает лишние {}
+    "no-useless-return": "warn",
+    "prefer-template": "warn", // вместо 'Hello ' + name → `Hello ${name}`
+
+    // для React
+    "react/jsx-boolean-value": ["warn", "never"], // <Button disabled /> вместо <Button disabled={true} />
+    "react/self-closing-comp": "warn", // <div /> вместо <div></div>
+    "react/jsx-no-duplicate-props": "error",
+    "react/jsx-key": "error",
+    "react/jsx-curly-spacing": ["warn", { "when": "never" }],
+    "react/no-array-index-key": "warn", // ключи массива не должны быть index
+    "react/no-danger": "warn", // предупреждает использование dangerouslySetInnerHTML
+    "react/jsx-no-useless-fragment": "warn", // убирает лишние <>
+    "react/jsx-sort-props": ["off"], // можно включить, если хочешь сортировку props
+    "react/function-component-definition": ["warn", { "namedComponents": "arrow-function" }]
+  }
+}

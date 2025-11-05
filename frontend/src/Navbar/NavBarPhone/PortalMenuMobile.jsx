@@ -26,7 +26,7 @@ export default function PortalMenuMobile() {
       <div className={styles.navbar_block}>
         <div className={styles.container}>
           <section className={styles.wrapper}>
-            <Link to="/hr/vacanciesMain" className={styles.brand}>
+            <Link to="/hr/home" className={styles.brand}>
               MARKS GROUP
               <p className={styles.Navbar__title__hr}>HR</p>
             </Link>
@@ -44,7 +44,7 @@ export default function PortalMenuMobile() {
               style={isMenuActive ? { maxHeight: '1200px' } : { maxHeight: '0', visibility: 'hidden', opacity: 0 }}>
               <ul className={styles['menu-inner']}>
                 <li className={styles['menu-item']}>
-                  <Link onClick={handleBurgerClick} to="/hr/vacanciesMain" className={styles['menu-link']}>
+                  <Link onClick={handleBurgerClick} to="/hr/home" className={styles['menu-link']}>
                     Главная
                   </Link>
                 </li>
