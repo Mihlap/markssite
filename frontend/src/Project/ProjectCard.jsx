@@ -15,21 +15,32 @@ import catPhoto from '../img/default-photo.jpeg';
 import next from '../icons/next.svg';
 import previous from '../icons/previous.svg';
 import ConstructorBlockRenderer from './ConstructorProject/ConstructorBlockRenderer';
+import NotFound from '../NotFound/NotFound';
 import { containsListTags, renderListWithDots } from '../Project/utils';
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
+const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
+
 const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMouseHover }) => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const sliderCardRef = useRef(null);
-  const projects = useSelector((state) => state.project.projects);
-  const project = useMemo(() => projects.find((item) => item.id === parseInt(id)), [projects, id]);
+  const sliderCardRef = useRef(null);  
+  const projectsRaw = useSelector((state) => state.project.projects); 
+  const projects = useMemo(() => (Array.isArray(projectsRaw) ? projectsRaw : []), [projectsRaw]);
+
+  useEffect(() => {
+    if (!projects.length) {
+      dispatch(getFetchForm());
+    }
+  }, [dispatch, projects.length]);
+
+  const project = useMemo(() => projects.find((item) => item.id === Number(id)), [projects, id]);
 
   const [enableVerticalScroll, setEnableVerticalScroll] = useState(true);
   const [isHorizontalScroll, setIsHorizontalScroll] = useState(false);
   const [, setIsAtRightEdge] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(() => (typeof window !== 'undefined' ? window.innerWidth : 1200));
 
   const refs = useRef({
     title: useRef(null),
@@ -56,33 +67,30 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
     [refs]
   );
 
-  useEffect(() => {
-    dispatch(getFetchForm());
-  }, [dispatch]);
+  useEffect(() => { 
+    requestAnimationFrame(() => {
+      gsap.set([refs.title.current, refs.address.current], { opacity: 0 });
+      gsap.to(refs.title.current, { duration: 1, opacity: 1, delay: 0.5 });
+      gsap.to(refs.selectCompetencies.current, { duration: 1, opacity: 1, delay: 1 });
+      gsap.to(refs.address.current, { duration: 1, opacity: 1, delay: 0.7 });
 
-  useEffect(() => {
-    window.scrollTo(20, 0);
-
-    gsap.set([refs.title.current, refs.address.current], { opacity: 0 });
-    gsap.to(refs.title.current, { duration: 1, opacity: 1, delay: 0.5 });
-    gsap.to(refs.selectCompetencies.current, { duration: 1, opacity: 1, delay: 1 });
-    gsap.to(refs.address.current, { duration: 1, opacity: 1, delay: 0.7 });
-
-    elementsRight.forEach((element) => {
-      if (element) {
-        gsap.from(element, {
-          x: '-100%',
-          opacity: 0,
-          duration: 1.5,
-          delay: 1,
-          ease: 'power4.out',
-          scrollTrigger: { trigger: element },
-        });
-        gsap.from(element, { duration: 1, clipPath: { start: '100%' } });
-      }
+      elementsRight.forEach((element) => {
+        if (element) {
+          gsap.from(element, {
+            x: '-100%',
+            opacity: 0,
+            duration: 1.5,
+            delay: 1,
+            ease: 'power4.out',
+            scrollTrigger: { trigger: element },
+          });
+          gsap.from(element, { duration: 1, clipPath: { start: '100%' } });
+        }
+      });
     });
-  }, [refs, elementsRight]);
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [elementsRight]);
+ 
   useEffect(() => {
     const el = sliderCardRef.current;
     if (!el) return;
@@ -127,11 +135,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
   const randomProjects = useMemo(() => [...projects].sort(() => 0.5 - Math.random()).slice(0, 20), [projects]);
 
   const renderCompetencies = useCallback((competenciesString, isSlider = false) => {
-    const style = {
-      border: '1px solid',
-      padding: '3px 6px',
-      borderRadius: '34px',
-    };
+    const style = { border: '1px solid', padding: '3px 6px', borderRadius: '34px' };
     const className = isSlider
       ? styles.div_el_selectCompetencies_projectCard
       : styles.el_project_selectCompetencies__block__card;
@@ -143,7 +147,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
           {competency.label}
         </div>
       ));
-    } catch (error) {
+    } catch {
       if (typeof competenciesString === 'string') {
         if (!competenciesString.includes(',')) {
           const label = competenciesString.trim();
@@ -178,12 +182,11 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
         { value: project?.long, text: 'Длинна', unit: 'км' },
       ].filter((item) => item.value),
     [project]
-  );
-
-  if (!project) return null;
-
-  const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
-
+  ); 
+ 
+  if (!projects.length) return null;
+  if (!project) return <NotFound />;
+  
   return (
     <>
       <Helmet>
@@ -203,7 +206,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
             <div className={styles.cart_project__container__block__card}>
               <div className={styles.project_content__wrapper__block__card}>
                 <div className={styles.cart_project__content__block__card}>
-                  <div className={styles.cart_project__widget__block__card}>
+                  <div className={styles.cart_project__widget__block__card} ref={refs.selectCompetencies}>
                     {renderCompetencies(project.selectCompetencies)}
                   </div>
                   <div className={styles.cart_project_title__block__card} ref={refs.title}>
@@ -496,4 +499,3 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
 });
 
 export default ProjectCard;
-
