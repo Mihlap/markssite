@@ -1,5 +1,4 @@
 import { memo, useRef, useState, useEffect } from 'react';
-import ErrorTooltip from '../../../UI/ErrorTooltip/ErrorTooltip';
 
 export default memo(function DescriptionBlock({ styles, inputData, setInputData, forceValidate = 0 }) {
   const descRef = useRef(null);
@@ -10,7 +9,6 @@ export default memo(function DescriptionBlock({ styles, inputData, setInputData,
   useEffect(() => {
     if (!forceValidate) return;
     setTouched(true);
-
     if (descriptionEmpty && descRef.current) {
       descRef.current.scrollIntoView({ block: 'center', behavior: 'smooth' });
       descRef.current.focus?.({ preventScroll: true });
@@ -20,6 +18,8 @@ export default memo(function DescriptionBlock({ styles, inputData, setInputData,
   return (
     <div className={styles.form_container__block_gray_one} style={{ paddingTop: 0, paddingBottom: 16 }}>
       <div className={styles.form_container__description_text} style={{ position: 'relative' }}>
+        {touched && descriptionEmpty && <div className={styles.required_hint}>Обязательно для заполнения</div>}
+
         <textarea
           ref={descRef}
           className={`${styles.form_container__textarea} ${touched && descriptionEmpty ? styles.input_error : ''}`}
@@ -42,15 +42,6 @@ export default memo(function DescriptionBlock({ styles, inputData, setInputData,
           style={{ marginBottom: 10 }}>
           Текст описания
         </label>
-
-        <ErrorTooltip
-          anchorRef={descRef}
-          text="Заполните описание"
-          isOpen={touched && descriptionEmpty}
-          onOpenChange={(open) => {
-            if (!open) setTouched(false);
-          }}
-        />
       </div>
     </div>
   );

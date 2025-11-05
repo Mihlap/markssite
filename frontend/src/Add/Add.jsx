@@ -5,7 +5,7 @@ import { Route, Routes } from 'react-router-dom';
 import HomeAdmin from './HomeAdmin/HomeAdmin';
 import AddProject from './add-project/AddProject';
 import AddArticles from './add-articles/AddArticles';
-import AddCompany from './add-about-the-company/AddCompany';
+// import AddCompany from './add-about-the-company/AddCompany';
 import Applications from './applications/Applications';
 import AddHRPortal from './add-hr-portal/AddHRPortal';
 // import Snowfall from './Snowfall/Snowfall';
