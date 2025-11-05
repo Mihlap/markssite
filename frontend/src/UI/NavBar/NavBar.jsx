@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { useGSAP } from '@gsap/react';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate, matchPath, Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { useNavLinks } from './hooks/useNavLinks';
 
@@ -13,13 +13,23 @@ gsap.registerPlugin(useGSAP, ScrollToPlugin);
 const NavBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const isCompany = location.pathname.startsWith('/company');
+  const { pathname, hash } = location;
+  const isCompany = pathname.startsWith('/company');
   const [linkChildren, setLinkChildren] = useState(false);
   const [openDropDownId, setOpenDropDownId] = useState(null);
   const [showDropdownContent, setShowDropdownContent] = useState(false);
   const { primary, cta } = useNavLinks();
-
   const container = useRef();
+  // Derive back link/text robustly from query and route
+  const search = new URLSearchParams(location.search);
+  const isInternship = search.get('type') === 'internship';
+  const isVacancyDetail = !!matchPath({ path: '/hr/vacancies/:id', end: true }, pathname);
+  const linkBack = isInternship ? '/hr/internships' : '/hr/vacancies';
+  const textBack = isInternship ? 'стажировки' : 'вакансии';
+
+  console.log(linkBack, 'link back');
+
+  console.log(location.search, 'location');
 
   // Smoothly navigate to a section on the Company page (hash-aware)
   const goToCompanySection = (hashOrId) => {
@@ -45,6 +55,7 @@ const NavBar = () => {
   };
 
   const closeDropdown = (afterClose) => {
+    console.log(123);
     const finish = () => {
       setShowDropdownContent(false);
       setLinkChildren(false);
@@ -53,7 +64,7 @@ const NavBar = () => {
         afterClose();
       }
     };
-    const FADE_MS = 200; // keep in sync with CSS opacity transition
+    const FADE_MS = 100; // keep in sync with CSS opacity transition
     setShowDropdownContent(false);
 
     if (!container.current) {
@@ -63,7 +74,7 @@ const NavBar = () => {
 
     gsap.to(container.current, {
       delay: FADE_MS / 1000,
-      duration: 0.3,
+      duration: 0.1,
       ease: 'none',
       height: 60,
       onComplete: finish,
@@ -113,15 +124,28 @@ const NavBar = () => {
   return (
     <nav ref={container} className={styles['navbar']}>
       <div className={styles['navbar-top']}>
-        <Logo />
+        {isVacancyDetail ? (
+          <Link className={styles['navbar-link_back']} to={linkBack}>
+            Все {textBack}
+          </Link>
+        ) : (
+          <Logo />
+        )}
         <ul className={styles['navbar-list']}>
           {primary.map((item) => {
             if (item.children) {
+              const isParentActive = item.children.some((el) => {
+                if (!el?.path) return false;
+                if (el.path.includes('#')) {
+                  return `${pathname}${hash}` === el.path;
+                }
+                return !!matchPath({ path: el.path, end: false }, pathname);
+              });
               return (
                 <li style={{ position: 'relative' }} key={item.id}>
                   <button
                     key={item.id}
-                    className={styles['navbar-item']}
+                    className={clsx(styles['navbar-item'], isParentActive && styles['navbar-item-active'])}
                     onClick={() => {
                       if (openDropDownId === item.id) {
                         closeDropdown();
@@ -144,12 +168,18 @@ const NavBar = () => {
                             onClick={(e) => {
                               if (isCompany) {
                                 e.preventDefault();
+                                console.log(el.path, 'el.path');
+                                if (el.path === '/journalPage') {
+                                  handlerLink(el.path);
+                                }
                                 const anchorFromPath = el.path && el.path.includes('#') ? el.path.split('#')[1] : null;
                                 goToCompanySection(anchorFromPath || `section${el.id}`);
                               } else {
+                                console.log('else');
                                 handlerLink(el.path);
                               }
-                            }}>
+                            }}
+                            className={({ isActive }) => (isActive ? `${styles['navbar-item-active']}` : undefined)}>
                             <div className={styles['navbar-dropdown-item_label']}>{el.label}</div>
                             <div className={styles['navbar-dropdown-item_description']}>
                               {el.description.includes('ведущих') ? (

@@ -6,11 +6,13 @@
 }
 
 .logo {
+
     &-block {
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 8px;
+        padding-left: 27px;
         position: relative;
 
         &:has(.navbar-logo-circle-blue-animate) .navbar-logo-hr {

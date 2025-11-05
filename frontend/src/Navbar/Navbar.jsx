@@ -104,7 +104,7 @@ const Navbar = memo(({ handleMouseEnter, handleMouseLeave }) => {
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               className={({ isActive }) => `${styles.Navbar__item} ${isActive ? styles.Navbar__item_open : ''}`}
-              to="/hr/vacanciesMain"
+              to="/hr/home"
               target="_blank">
               <div>HR портал</div>
             </NavLink>

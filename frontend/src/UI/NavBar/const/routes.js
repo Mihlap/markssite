@@ -1,18 +1,4 @@
 // frontend/src/UI/NavBar/const/routes.js
-// export const baseNavConfig = {
-//   primary: [
-//     { label: 'Главная', path: '/' },
-//     { label: 'Проекты', path: '/project' },
-//     { label: 'Публикации', path: '/publication' },
-//     { label: 'Контакты', path: '/contacts' },
-//     { label: 'О Компании', path: '/company' },
-//     { label: 'HR портал', path: '/hr/vacanciesMain' },
-//   ],
-//   cta: [
-//     { label: 'Обсудить проект', path: '/no-name', variant: 'cta-primary' },
-//     { label: 'EN', path: 'https://marksgroup.org/', external: true },
-//   ],
-// };
 
 export const baseNavConfig = {
   primary: [
@@ -28,7 +14,7 @@ export const baseNavConfig = {
           id: 1,
           label: 'Новости',
           description: 'Научные достижения, интервью и статьи ведущих профессиональных и публицистических изданий',
-          path: '/publication/research',
+          path: '/publication',
         },
         { id: 2, label: 'MARKS jornal', description: 'Научный журнал', path: '/journalPage' },
       ],
@@ -60,17 +46,17 @@ export const baseNavConfig = {
       ],
     },
     { id: 5, type: 'link', label: 'Контакты', path: '/contacts' },
-    { id: 6, type: 'link', label: 'HR портал', path: '/hr/vacanciesMain' },
+    { id: 6, type: 'link', label: 'HR портал', path: '/hr/home' },
   ],
   cta: [
-    { id: 7, type: 'link', label: 'Обсудить проект', path: '/no-name', variant: 'cta-primary' },
+    { id: 7, type: 'link', label: 'Обсудить проект', path: '/footerForm', variant: 'cta-primary' },
     { id: 8, type: 'external', external: true, label: 'EN', path: 'https://marksgroup.org/', variant: 'cta-secondary' },
   ],
 };
 
 export const hrNavConfig = {
   primary: [
-    { id: 1, label: 'Главная', path: '/hr/vacanciesMain' },
+    { id: 1, label: 'Главная', path: '/hr/home' },
     { id: 2, label: 'Работа у нас', path: '/hr/vacancies' },
     { id: 3, label: 'Стажировки', path: '/hr/internships' },
   ],

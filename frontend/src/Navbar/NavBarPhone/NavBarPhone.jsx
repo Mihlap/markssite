@@ -68,11 +68,7 @@ const NavBarPhone = memo(() => {
                   </Link>
                 </li>
                 <li className={styles['menu-item']}>
-                  <Link
-                    onClick={handleBurgerClick}
-                    target="_blank"
-                    to="/hr/vacanciesMain"
-                    className={styles['menu-link']}>
+                  <Link onClick={handleBurgerClick} target="_blank" to="/hr/home" className={styles['menu-link']}>
                     HR портал
                   </Link>
                 </li>
