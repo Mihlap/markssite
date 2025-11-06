@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, lazy, Suspense } from 'react';
 import gsap from 'gsap';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { useGSAP } from '@gsap/react';
@@ -8,6 +8,9 @@ import { useNavLinks } from './hooks/useNavLinks';
 
 import styles from './style.module.scss';
 import Logo from './logo/Logo';
+import { handleCompanyAwareNavigation, isRouteActive } from './utils/navigation';
+const SideBar = lazy(() => import('./sidebar/SideBar'));
+
 gsap.registerPlugin(useGSAP, ScrollToPlugin);
 
 const NavBar = () => {
@@ -18,6 +21,7 @@ const NavBar = () => {
   const [linkChildren, setLinkChildren] = useState(false);
   const [openDropDownId, setOpenDropDownId] = useState(null);
   const [showDropdownContent, setShowDropdownContent] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { primary, cta } = useNavLinks();
   const container = useRef();
   // Derive back link/text robustly from query and route
@@ -26,10 +30,6 @@ const NavBar = () => {
   const isVacancyDetail = !!matchPath({ path: '/hr/vacancies/:id', end: true }, pathname);
   const linkBack = isInternship ? '/hr/internships' : '/hr/vacancies';
   const textBack = isInternship ? 'стажировки' : 'вакансии';
-
-  console.log(linkBack, 'link back');
-
-  console.log(location.search, 'location');
 
   // Smoothly navigate to a section on the Company page (hash-aware)
   const goToCompanySection = (hashOrId) => {
@@ -55,7 +55,6 @@ const NavBar = () => {
   };
 
   const closeDropdown = (afterClose) => {
-    console.log(123);
     const finish = () => {
       setShowDropdownContent(false);
       setLinkChildren(false);
@@ -103,6 +102,20 @@ const NavBar = () => {
     });
   };
 
+  const closeMenu = () => setIsMenuOpen(false);
+
+  const handleSidebarNavigate = (path) => {
+    if (!path) return;
+    closeMenu();
+    handlerLink(path);
+  };
+
+  const handleSidebarCompanySection = (hashOrId) => {
+    if (!hashOrId) return;
+    closeMenu();
+    goToCompanySection(hashOrId);
+  };
+
   useGSAP(
     () => {
       if (!container.current) return;
@@ -120,7 +133,6 @@ const NavBar = () => {
     },
     { dependencies: [linkChildren] }
   );
-
   return (
     <nav ref={container} className={styles['navbar']}>
       <div className={styles['navbar-top']}>
@@ -134,13 +146,7 @@ const NavBar = () => {
         <ul className={styles['navbar-list']}>
           {primary.map((item) => {
             if (item.children) {
-              const isParentActive = item.children.some((el) => {
-                if (!el?.path) return false;
-                if (el.path.includes('#')) {
-                  return `${pathname}${hash}` === el.path;
-                }
-                return !!matchPath({ path: el.path, end: false }, pathname);
-              });
+              const isParentActive = item.children.some((el) => isRouteActive(pathname, hash, el.path));
               return (
                 <li style={{ position: 'relative' }} key={item.id}>
                   <button
@@ -165,20 +171,16 @@ const NavBar = () => {
                         <li className={styles['navbar-dropdown-item']} key={el.id} role="menuitem">
                           <NavLink
                             to={el.path}
-                            onClick={(e) => {
-                              if (isCompany) {
-                                e.preventDefault();
-                                console.log(el.path, 'el.path');
-                                if (el.path === '/journalPage') {
-                                  handlerLink(el.path);
-                                }
-                                const anchorFromPath = el.path && el.path.includes('#') ? el.path.split('#')[1] : null;
-                                goToCompanySection(anchorFromPath || `section${el.id}`);
-                              } else {
-                                console.log('else');
-                                handlerLink(el.path);
-                              }
-                            }}
+                            onClick={(event) =>
+                              handleCompanyAwareNavigation({
+                                event,
+                                path: el.path,
+                                fallbackId: el.id,
+                                isCompany,
+                                navigate: handlerLink,
+                                goToCompanySection,
+                              })
+                            }
                             className={({ isActive }) => (isActive ? `${styles['navbar-item-active']}` : undefined)}>
                             <div className={styles['navbar-dropdown-item_label']}>{el.label}</div>
                             <div className={styles['navbar-dropdown-item_description']}>
@@ -214,24 +216,47 @@ const NavBar = () => {
             }
           })}
         </ul>
-        <div className={styles['navbar-cta']}>
-          {cta.map(({ id, label, path, external, variant }) => {
-            const baseClasses = clsx(styles['navbar-link'], variant && styles[`navbar-link--${variant}`]);
-            return external ? (
-              <a key={id} href={path} className={styles['navbar-item-en']} target="_blank" rel="noreferrer">
-                {label}
-              </a>
-            ) : (
-              <NavLink
-                key={id}
-                to={path}
-                className={({ isActive }) => clsx(baseClasses, isActive && styles['navbar-link--active'])}>
-                {label}
-              </NavLink>
-            );
-          })}
-        </div>
+        <>
+          <div className={styles['navbar-cta']}>
+            {cta.map(({ id, label, path, external, variant }) => {
+              const baseClasses = clsx(styles['navbar-link'], variant && styles[`navbar-link--${variant}`]);
+              return external ? (
+                <a key={id} href={path} className={styles['navbar-item-en']} target="_blank" rel="noreferrer">
+                  {label}
+                </a>
+              ) : (
+                <NavLink
+                  key={id}
+                  to={path}
+                  className={({ isActive }) => clsx(baseClasses, isActive && styles['navbar-link--active'])}>
+                  {label}
+                </NavLink>
+              );
+            })}
+          </div>
+          <button
+            type="button"
+            aria-label={isMenuOpen ? 'Закрыть меню' : 'Открыть меню'}
+            aria-expanded={isMenuOpen}
+            className={clsx(styles['navbar-burger'], isMenuOpen && styles['navbar-burger--open'])}
+            onClick={() => setIsMenuOpen((prev) => !prev)}>
+            <span />
+            <span />
+            <span />
+          </button>
+        </>
       </div>
+      <Suspense fallback={<p>loading side-bar</p>}>
+        <SideBar
+          isMenuOpen={isMenuOpen}
+          primary={primary}
+          cta={cta}
+          isCompany={isCompany}
+          onNavigate={handleSidebarNavigate}
+          onGoToCompanySection={handleSidebarCompanySection}
+          onCloseMenu={closeMenu}
+        />
+      </Suspense>
     </nav>
   );
 };
