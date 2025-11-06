@@ -78,7 +78,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   const [isPhotoCloseVisible, setIsPhotoCloseVisible] = useState(true);
   const [isPhotoOpenVisible, setIsPhotoOpenVisible] = useState(true);
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
-  const [, setIsDropPhotoVisible] = useState(true);
+  const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
   const [, setIsMonthValid] = useState(true);
   const [, setIsYearValid] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
@@ -210,7 +210,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         return updatedInputData;
       });
 
-      if (Array.isArray(data) && data.length > 0) {
+       if (Array.isArray(data) && data.length > 0) {
         for (let index = 0; index < data.length; index++) {
           const block = data[index];
           if (Array.isArray(block)) {
@@ -620,6 +620,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
             setPreviewPhotos={setPreviewPhotos}
             isLoadingDropPhoto={isLoadingDropPhoto}
             setIsLoadingDropPhoto={setIsLoadingDropPhoto}
+            isDropPhotoVisible={isDropPhotoVisible}
             setIsDropPhotoVisible={setIsDropPhotoVisible}
             changeHandler={changeHandler}
             setIsLoading={setIsLoading}

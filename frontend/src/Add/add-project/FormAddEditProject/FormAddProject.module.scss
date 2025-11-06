@@ -1003,11 +1003,16 @@
   font-style: normal;
   font-weight: 400;
   line-height: 14px;
+  margin-top: 4px;
 }
 
 .input_error {
   border-color: var(--crimson-E00747)!important;
   outline: none;
+}
+
+.form_container__textarea.input_error {
+  border-color: var(--crimson-E00747) !important;
 }
 
 

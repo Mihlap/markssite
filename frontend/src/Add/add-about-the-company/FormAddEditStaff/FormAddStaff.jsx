@@ -24,6 +24,8 @@ import {
 } from '../utils/formShared';
 import { validateDynamicBlocks } from '../utils/dynamicValidation';
 
+const REQUIRED_BLOCK_IDS = ['imageWithCaption', 'quote', 'fact'];
+
 export default function FormAddStaff({ initial = null, onClose, registerCloseGuard, currentCategory = null }) {
   const dispatch = useDispatch();
 
@@ -86,7 +88,7 @@ export default function FormAddStaff({ initial = null, onClose, registerCloseGua
   });
 
   const changeBasic = useCallback((e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target || {};
     setInputData((p) => ({ ...p, [name]: value }));
   }, []);
 
@@ -111,29 +113,51 @@ export default function FormAddStaff({ initial = null, onClose, registerCloseGua
     setDynamicPreviews((prev) => prev.filter((_, i) => i !== blockIndex));
   }, []);
 
-  const validateAll = useCallback(() => {
-    const { ok, errors } = validateDynamicBlocks(dynamicData);
+  const validateForAdding = useCallback(() => {
+    const { ok, errors } = validateDynamicBlocks(dynamicData, dynamicPreviews, {
+      requiredBlockIds: REQUIRED_BLOCK_IDS,
+      checkMissingBlocks: false,
+    });
     setFieldErrors(errors);
     return ok;
-  }, [dynamicData]);
+  }, [dynamicData, dynamicPreviews]);
+
+  const validateForSubmit = useCallback(() => {
+    const { ok, errors } = validateDynamicBlocks(dynamicData, dynamicPreviews, {
+      requiredBlockIds: REQUIRED_BLOCK_IDS,
+      checkMissingBlocks: false,
+    });
+    setFieldErrors(errors);
+    return ok;
+  }, [dynamicData, dynamicPreviews]);
 
   const handlerOpenConstructor = useCallback(() => setOpenConstructor((v) => !v), []);
 
   const handleClick = useCallback(
-    (inputs) => {
-      if (!validateAll()) {
+    (inputs, meta = {}) => {
+      if (!validateForAdding()) {
         setShowNotification(true);
         setForceValidateTick((n) => n + 1);
         setTimeout(() => setShowNotification(false), 3500);
         return;
       }
+
       const key = Date.now().toString();
-      const newBlock = inputs.map((f) => ({ ...f, key: `${key}_${f.type}`, value: f.defaultValue ?? '' }));
+      const newBlock = (inputs || []).map((f, idx) => ({
+        ...f,
+        label: (f.label ?? '').trim() || (f.placeholder ?? '').trim() || undefined,
+        placeholder: f.placeholder,
+        key: `${key}_${f.type}_${idx}`,
+        value: f.defaultValue ?? '',
+        blockId: meta.blockId || null,
+        blockRequired: !!meta.requiredBlock,
+      }));
+
       setBlocks((prev) => [...prev, newBlock]);
       setDynamicData((prev) => [...prev, newBlock.map((x) => ({ ...x }))]);
       setDynamicPreviews((prev) => [...prev, new Array(newBlock.length).fill([])]);
     },
-    [validateAll]
+    [validateForAdding]
   );
 
   const getPreviewClassName = useCallback((label) => sharedGetPreviewClassName(label, styles), []);
@@ -142,8 +166,7 @@ export default function FormAddStaff({ initial = null, onClose, registerCloseGua
     async (e) => {
       e?.preventDefault?.();
 
-      const blocksOk = validateAll();
-
+      const blocksOk = validateForSubmit();
       const photoOk = Boolean(inputData?.img) || (Array.isArray(previewPhotoAva) && previewPhotoAva.length > 0);
 
       const topOk =
@@ -174,8 +197,8 @@ export default function FormAddStaff({ initial = null, onClose, registerCloseGua
           })
         ),
       };
-      form.append('meta', JSON.stringify(meta));
 
+      form.append('meta', JSON.stringify(meta));
       if (inputData.img instanceof File) {
         form.append('photoAva', inputData.img, inputData.img.name);
       }
@@ -204,12 +227,14 @@ export default function FormAddStaff({ initial = null, onClose, registerCloseGua
         console.error('createStaff failed', err);
       }
     },
-    [dispatch, inputData, dynamicData, onClose, validateAll, previewPhotoAva]
+    [dispatch, inputData, dynamicData, onClose, previewPhotoAva, validateForSubmit]
   );
 
   return (
     <div className={styles.form_container}>
-      {/* {showNotification && <div className={styles.form_container__notification}>Заполните необходимые поля!</div>} */}
+      {showNotification && (
+             <div className={styles.form_container__notification}>Заполните открытый блок либо закройте блок!</div>
+      )}
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div className={styles.form_container__title}>Новый сотрудник</div>
