@@ -31,10 +31,14 @@ const QuillField = memo(function QuillField(props) {
     placeholder = '',
     scopeKey,
     className = '',
+    classNameInput = '',
     labelClassName,
     labelStyle,
     showToolbar = true,
     defaultList,
+    error = false,
+    ariaInvalid,
+    ariaDescribedby,
   } = props;
 
   const uid = useMemo(() => makeUid(scopeKey), [scopeKey]);
@@ -62,14 +66,17 @@ const QuillField = memo(function QuillField(props) {
   }, [defaultList, value]);
 
   return (
-    <div className={`${styles.form_container__description_text || ''} ${scopeClass} ${className}`.trim()}>
+    <div
+      className={`${styles.form_container__description_text || ''} ${scopeClass} ${className}`.trim()}
+      data-scope={scopeKey}
+      aria-invalid={ariaInvalid}
+      aria-describedby={ariaDescribedby}>
       <style>{`
-        /* Порядок: лейбл -> тулбар -> редактор */
+        /* Лейаут */
         .${scopeClass} { display:grid; grid-auto-rows:auto; row-gap:8px; }
-
         .${scopeClass} .quillLabel { margin:0; }
 
-        /* Компактный кастом-тулбар */
+        /* Компактный тулбар — без рамок, не красим его при ошибке */
         .${scopeClass} .quillToolbar {
           display:flex; gap:8px; align-items:center;
           margin:0; padding:0; background:transparent; border:0;
@@ -100,6 +107,12 @@ const QuillField = memo(function QuillField(props) {
           color: var(--black-1D2E43); white-space: pre-wrap; min-height:10.8rem;
         }
 
+        /* Только поле при ошибке (без тулбара) */
+        .${scopeClass} .ql-container.ql-snow.${uid}-error .ql-editor {
+          box-shadow: inset 0 0 0 1px #E00747 !important;
+          border-radius: 6px;
+        }
+
         /* Плейсхолдер */
         ${
           isNoLimit
@@ -115,24 +128,19 @@ const QuillField = memo(function QuillField(props) {
             : ''
         }
 
-        /* focus-рамка для кнопок без синего outline */
+        /* Фокус для кнопок тулбара */
         .${scopeClass} .quillToolbar .ql-formats button:focus,
         .${scopeClass} .quillToolbar .ql-formats button:focus-visible{
           outline:none; box-shadow:0 0 0 2px rgba(43,58,85,.15);
         }
-
         .${scopeClass} .ql-toolbar button:hover .ql-stroke,
         .${scopeClass} .ql-toolbar button:focus .ql-stroke,
         .${scopeClass} .quillToolbar button:hover .ql-stroke,
-        .${scopeClass} .quillToolbar button:focus .ql-stroke {
-         stroke: #1D2E43;
-         }
+        .${scopeClass} .quillToolbar button:focus .ql-stroke { stroke: #1D2E43; }
         .${scopeClass} .ql-toolbar button:hover .ql-fill,
         .${scopeClass} .ql-toolbar button:focus .ql-fill,
         .${scopeClass} .quillToolbar button:hover .ql-fill,
-        .${scopeClass} .quillToolbar button:focus .ql-fill {
-         fill: #1D2E43;
-         }
+        .${scopeClass} .quillToolbar button:focus .ql-fill { fill: #1D2E43; }
       `}</style>
 
       {label ? (
@@ -162,8 +170,15 @@ const QuillField = memo(function QuillField(props) {
         formats={['bold', 'underline', 'list']}
         value={value}
         onChange={onChange}
-        placeholder={ph}
-        className={`${styles.form_container__textarea || ''} ${styles.orange_color || ''}`.trim()}
+        placeholder={ph}      
+        className={`
+          ${styles.form_container__textarea || ''}
+          ${styles.orange_color || ''}
+          ${classNameInput || ''}
+          ${error ? `${uid}-error` : ''}
+        `
+          .replace(/\s+/g, ' ')
+          .trim()}
         style={{
           padding: '0rem',
           fontFamily: 'var(--font-raleway)',
