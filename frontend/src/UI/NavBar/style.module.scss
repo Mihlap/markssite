@@ -11,6 +11,7 @@
     font-style: normal;
     font-weight: 600;
     line-height: 24px;
+    text-align: center;
 
     &:hover {
         color: var($hover-color);
@@ -18,7 +19,7 @@
     }
 }
 
-@mixin item($color, $size, $weight, $height, $hover: false) {
+@mixin item($color, $size, $weight, $height, $hover: false, $focus_height: 20px) {
     color: var($color);
     font-size: $size;
     font-weight: $weight;
@@ -40,7 +41,7 @@
     &:focus {
         color: var(--dark-gray-566272);
         font-weight: 700;
-        line-height: 20px;
+        line-height: $focus_height;
     }
 
     &-active {
@@ -52,7 +53,7 @@
 
 .navbar {
     position: fixed;
-    z-index: 9990;
+    z-index: 4;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -65,6 +66,8 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        background-color: var(--white-F6F6F6);
+        z-index: 5;
     }
 
     &-link_back {
@@ -99,11 +102,48 @@
 
     &-item {
         @include item(--dark-gray-566272, 14px, 400, 20px, true);
+        display: flex;
+        align-items: center;
+        gap: 8px;
 
         &-en {
             padding: 20px 27px;
         }
 
+    }
+
+    &-item-arrow {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        width: 5px;
+        height: 5px;
+        vertical-align: middle;
+        pointer-events: none;
+        flex-shrink: 0;
+    }
+
+    &-item-arrow-icon {
+        position: absolute;
+        width: 5px;
+        height: 5px;
+        border-right: 1.5px solid currentColor;
+        border-bottom: 1.5px solid currentColor;
+        transition: opacity 0.2s ease;
+        opacity: 1;
+    }
+
+    &-item-arrow-icon--down {
+        transform: rotate(45deg) translateY(0px) translateX(-1px);
+    }
+
+    &-item-arrow-icon--up {
+        transform: rotate(-135deg) translateY(-2px);
+    }
+
+    &-item-arrow-icon--hidden {
+        opacity: 0;
     }
 
     &-link {
@@ -186,11 +226,6 @@
             transition: transform 0.3s ease, opacity 0.3s ease;
         }
 
-        // &:focus-visible {
-        //     outline: 2px solid var(--blue-75BBFD);
-        //     outline-offset: 4px;
-        // }
-
         span:nth-child(2) {
             transform: translate(-50%, -50%); // средняя
         }
@@ -217,17 +252,18 @@
 
     &-sidebar {
         position: fixed;
-        top: 0;
+        top: 58px;
         left: 0;
         width: 318px;
-        height: 100vh;
+        height: calc(100vh - 58px);
         background-color: var(--white-F6F6F6);
-        box-shadow: 4px 0 16px rgba(0, 0, 0, 0.08);
+        box-shadow: 1px 0 32px 0 rgba(42, 87, 130, 0.16);
         transform: translateX(-100%);
         opacity: 0;
         pointer-events: none;
         display: none;
         z-index: 9980;
+        white-space: normal;
 
         &--visible {
             pointer-events: auto;
@@ -237,7 +273,7 @@
             display: flex;
             flex-direction: column;
             height: 100%;
-            padding: 32px 24px;
+            // padding: 32px 24px;
             gap: 32px;
         }
 
@@ -247,58 +283,40 @@
         }
 
         &-list {
-            list-style: none;
-            margin: 0;
-            padding: 0;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-        }
-
-        &-item {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+            gap: 32px;
+            padding: 40px 28px
         }
 
         &-button {
+            @include item(--dark-gray-566272, 18px, 400, 24px, true, 26px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
             padding: 0;
             border: none;
             background: transparent;
             text-align: left;
             cursor: pointer;
-            @include item(--dark-gray-566272, 18px, 600, 24px, true);
-            display: block;
 
             &--active {
                 color: var(--black-1D2E43);
+                font-weight: 700;
             }
         }
 
         &-sublist {
-            list-style: none;
-            margin: 0;
-            padding: 0;
             display: flex;
             flex-direction: column;
             gap: 16px;
-        }
-
-        &-subitem {
-            display: flex;
+            padding: 24px 32px;
+            padding-bottom: 0px
         }
 
         &-link {
-            text-decoration: none;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            color: var(--dark-gray-566272);
-            transition: color 0.3s ease;
-
-            &:hover {
-                color: var(--black-1D2E43);
-            }
+            @include item(--dark-gray-566272, 18px, 400, 24px, true);
 
             &--active {
                 color: var(--black-1D2E43);
@@ -314,7 +332,7 @@
         }
 
         &-linkLabel {
-            @include item(--black-1D2E43, 16px, 600, 22px);
+            @include item(--black-1D2E43, 16px, 400, 24px);
         }
 
         &-linkDescription {
@@ -325,16 +343,56 @@
 
         &-cta {
             display: flex;
-            flex-direction: column;
-            gap: 16px;
+            flex-direction: column-reverse;
+
+            &--contact-list {
+                display: flex;
+                flex-direction: column;
+                align-items: end;
+                gap: 8px;
+                padding-bottom: 1rem;
+                padding-right: 28.02px;
+            }
+
+            &--contact-item {
+                color: var(--black-1D2E43);
+                font-variant-numeric: lining-nums proportional-nums;
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 24px;
+            }
+
+            &--btn {
+                @include navbar-cta-button(--black-1D2E43, --white-F6F6F6, null, null, 24px 91.5px);
+                white-space: nowrap;
+            }
         }
     }
 }
 
+@media screen and (max-width: 768px) {
+    .navbar {
+        &-sidebar {
+            width: 100%;
+
+            &-list {
+                padding: 26px 16px
+            }
+
+            &-cta {
+                &--contact-list {
+                    padding-bottom: 1rem;
+                    padding-right: 1rem;
+                }
+            }
+        }
+    }
+}
 
 @media screen and (max-width: 1024px) {
     .navbar {
-        padding: 20px 0px;
+        // padding: 20px 0px;
 
         &-list {
             display: none;
@@ -354,13 +412,6 @@
     }
 }
 
-@media screen and (max-width: 768px) {
-    .navbar {
-        &-sidebar {
-            width: 100%;
-        }
-    }
-}
 
 @media screen and (min-width: 2560px) {
     .navbar {

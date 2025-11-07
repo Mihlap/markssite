@@ -19,8 +19,9 @@ export const baseNavConfig = {
         { id: 2, label: 'MARKS jornal', description: 'Научный журнал', path: '/journalPage' },
       ],
     },
+    { id: 4, type: 'link', label: 'Контакты', path: '/contacts' },
     {
-      id: 4,
+      id: 5,
       type: 'dropdown',
       label: 'О компании',
       path: '/company',
@@ -45,7 +46,6 @@ export const baseNavConfig = {
         },
       ],
     },
-    { id: 5, type: 'link', label: 'Контакты', path: '/contacts' },
     { id: 6, type: 'link', label: 'HR портал', path: '/hr/home' },
   ],
   cta: [

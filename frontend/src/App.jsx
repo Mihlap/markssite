@@ -74,6 +74,7 @@ export default function App() {
 
   const isFooterFormPage = location.pathname === '/footerForm';
   const isAdminPage = location.pathname.startsWith('/admin');
+  const isNavPreviewPage = location.pathname === '/navbar';
 
   useEffect(() => {
     dispatch(checkUserAuth());
@@ -141,7 +142,7 @@ export default function App() {
           {/* <TransitionGroup> */}
           {/* <CSSTransition key={location.key} classNames="fade" timeout={300} nodeRef={nodeRef}> */}
           {/* <div ref={nodeRef}> */}
-          {!isAdminPage && <NavBar />}
+          {!isAdminPage && !isNavPreviewPage && <NavBar />}
           <Routes location={location}>
             <Route
               path="/"
