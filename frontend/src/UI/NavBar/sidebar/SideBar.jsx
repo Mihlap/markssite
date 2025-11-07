@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, useMemo } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
-import { NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 
 import styles from '../style.module.scss';
 import { handleCompanyAwareNavigation, isRouteActive } from '../utils/navigation';
@@ -29,7 +29,7 @@ export default function SideBar({
 
   useEffect(() => {
     if (isMenuOpen) {
-      setOpenDropdownId((prev) => (prev ?? activeDropdownId));
+      setOpenDropdownId((prev) => prev ?? activeDropdownId);
     } else {
       setOpenDropdownId(null);
     }
@@ -47,6 +47,7 @@ export default function SideBar({
         );
       } else {
         gsap.to(sidebarRef.current, {
+          zIndex: 1,
           x: '-100%',
           autoAlpha: 0,
           duration: 0.3,
@@ -86,8 +87,7 @@ export default function SideBar({
     <div
       ref={sidebarRef}
       className={clsx(styles['navbar-sidebar'], isMenuOpen && styles['navbar-sidebar--visible'])}
-      aria-hidden={!isMenuOpen}
-    >
+      aria-hidden={!isMenuOpen}>
       <div className={styles['navbar-sidebar-content']}>
         <nav className={styles['navbar-sidebar-nav']}>
           <ul className={styles['navbar-sidebar-list']}>
@@ -107,31 +107,46 @@ export default function SideBar({
                         styles['navbar-sidebar-button'],
                         parentActive && styles['navbar-sidebar-button--active']
                       )}
-                      onClick={() => toggleDropdown(item.id)}
-                    >
-                      {item.label}
+                      onClick={() => toggleDropdown(item.id)}>
+                      <span>{item.label}</span>
+                      <span aria-hidden="true" className={styles['navbar-item-arrow']}>
+                        <span
+                          className={clsx(
+                            styles['navbar-item-arrow-icon'],
+                            styles['navbar-item-arrow-icon--down'],
+                            openDropdownId === item.id && styles['navbar-item-arrow-icon--hidden']
+                          )}
+                        />
+                        <span
+                          className={clsx(
+                            styles['navbar-item-arrow-icon'],
+                            styles['navbar-item-arrow-icon--up'],
+                            openDropdownId !== item.id && styles['navbar-item-arrow-icon--hidden']
+                          )}
+                        />
+                      </span>
                     </button>
                     {openDropdownId === item.id && (
                       <ul className={styles['navbar-sidebar-sublist']}>
-                        {item.children.map((child) => (
-                          <li key={child.id} className={styles['navbar-sidebar-subitem']}>
-                            <NavLink
-                              to={child.path}
-                              className={({ isActive }) =>
-                                clsx(
-                                  styles['navbar-sidebar-link'],
-                                  isActive && styles['navbar-sidebar-link--active']
-                                )
-                              }
-                              onClick={handleChildNavigate(child)}
-                            >
-                              <div className={styles['navbar-sidebar-linkLabel']}>{child.label}</div>
-                              {child.description ? (
-                                <div className={styles['navbar-sidebar-linkDescription']}>{child.description}</div>
-                              ) : null}
-                            </NavLink>
-                          </li>
-                        ))}
+                        {item.children.map((child) => {
+                          const cut = child.description.replace(/(статьи).*/i, '$1');
+                          return (
+                            <li key={child.id} className={styles['navbar-sidebar-subitem']}>
+                              <NavLink
+                                to={child.path}
+                                className={({ isActive }) =>
+                                  clsx(styles['navbar-sidebar-link'], isActive && styles['navbar-sidebar-link--active'])
+                                }
+                                onClick={handleChildNavigate(child)}>
+                                <div className={styles['navbar-sidebar-linkLabel']}>{child.label}</div>
+
+                                {child.description ? (
+                                  <div className={styles['navbar-sidebar-linkDescription']}>{cut}</div>
+                                ) : null}
+                              </NavLink>
+                            </li>
+                          );
+                        })}
                       </ul>
                     )}
                   </li>
@@ -146,8 +161,7 @@ export default function SideBar({
                       clsx(styles['navbar-sidebar-link'], isActive && styles['navbar-sidebar-link--active'])
                     }
                     end
-                    onClick={handleNavigate(item.path)}
-                  >
+                    onClick={handleNavigate(item.path)}>
                     {item.label}
                   </NavLink>
                 </li>
@@ -160,39 +174,26 @@ export default function SideBar({
             {cta.map(({ id, label, path, external, variant }) => {
               if (external) {
                 return (
-                  <a
-                    key={id}
-                    href={path}
-                    className={clsx(
-                      styles['navbar-sidebar-link'],
-                      styles['navbar-sidebar-link--cta'],
-                      variant && styles[`navbar-link--${variant}`]
-                    )}
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={handleExternalClick}
-                  >
-                    {label}
-                  </a>
+                  <ul className={styles['navbar-sidebar-cta--contact-list']}>
+                    <li className={styles['navbar-sidebar-cta--contact-item']}>
+                      <a key={id} href={path} target="_blank" rel="noreferrer" onClick={handleExternalClick}>
+                        {label}
+                      </a>
+                    </li>
+                    <li className={styles['navbar-sidebar-cta--contact-item']}>
+                      <a href="mailto:mail@marksgroup.ru">mail@marksgroup.ru</a>
+                    </li>
+                    <li className={styles['navbar-sidebar-cta--contact-item']}>
+                      <a href="tel:+74951201226">+7 (495) 120-12-26</a>
+                    </li>
+                  </ul>
                 );
               }
 
               return (
-                <NavLink
-                  key={id}
-                  to={path}
-                  className={({ isActive }) =>
-                    clsx(
-                      styles['navbar-sidebar-link'],
-                      styles['navbar-sidebar-link--cta'],
-                      variant && styles[`navbar-link--${variant}`],
-                      isActive && styles['navbar-sidebar-link--active']
-                    )
-                  }
-                  onClick={handleNavigate(path)}
-                >
+                <Link key={id} to={path} className={styles['navbar-sidebar-cta--btn']} onClick={handleNavigate(path)}>
                   {label}
-                </NavLink>
+                </Link>
               );
             })}
           </div>
