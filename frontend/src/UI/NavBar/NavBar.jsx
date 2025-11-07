@@ -161,7 +161,23 @@ const NavBar = () => {
                         openDropdown(item.id);
                       }
                     }}>
-                    {item.label}
+                    <p>{item.label}</p>
+                    <span aria-hidden="true" className={styles['navbar-item-arrow']}>
+                      <span
+                        className={clsx(
+                          styles['navbar-item-arrow-icon'],
+                          styles['navbar-item-arrow-icon--down'],
+                          openDropDownId === item.id && styles['navbar-item-arrow-icon--hidden']
+                        )}
+                      />
+                      <span
+                        className={clsx(
+                          styles['navbar-item-arrow-icon'],
+                          styles['navbar-item-arrow-icon--up'],
+                          openDropDownId !== item.id && styles['navbar-item-arrow-icon--hidden']
+                        )}
+                      />
+                    </span>
                   </button>
                   {openDropDownId === item.id && (
                     <ul

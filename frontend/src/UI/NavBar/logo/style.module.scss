@@ -89,4 +89,20 @@
     }
 }
 
-@media screen and (min-width: 1024px) {}
+@media screen and (max-width: 1024px) {
+    .logo {
+        &-block {
+            padding-top: 21px;
+            padding-bottom: 21px;
+            padding-left: 33px;
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .logo {
+        &-block {
+            padding-left: 16px;
+        }
+    }
+}
