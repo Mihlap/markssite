@@ -93,16 +93,16 @@ const VacancyFormContact = ({
     setFormData((prevData) => ({ ...prevData, choose: selectedValues?.value || '' }));
   }, []);
 
-    const handleFocus = useCallback(
-      (event) => {
-        const name = event?.target?.name;
-        setIsFocused((prev) => ({ ...prev, [name]: true }));
-        if (name === 'phone' && !formData.phone) {
-          setFormData((prev) => ({ ...prev, phone: maskOptions.mask }));
-        }
-      },
-      [formData.phone]
-    );
+  const handleFocus = useCallback(
+    (event) => {
+      const name = event?.target?.name;
+      setIsFocused((prev) => ({ ...prev, [name]: true }));
+      if (name === 'phone' && !formData.phone) {
+        setFormData((prev) => ({ ...prev, phone: maskOptions.mask }));
+      }
+    },
+    [formData.phone]
+  );
 
   const handlePaste = useCallback((event) => {
     event.preventDefault();
@@ -121,21 +121,21 @@ const VacancyFormContact = ({
     }
   }, []);
 
- const handleBlur = useCallback(
-   (event) => {
-     const name = event?.target?.name;
-     setIsFocused((prev) => ({ ...prev, [name]: false }));
-     if (name === 'phone') {
-       const phoneNumberRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
-   
-       if (formData.phone === maskOptions.mask) {
-         setFormData((prev) => ({ ...prev, phone: '' }));
-       }
-       setIsValid(phoneNumberRegex.test(formData.phone));
-     }
-   },
-   [formData.phone]
- );
+  const handleBlur = useCallback(
+    (event) => {
+      const name = event?.target?.name;
+      setIsFocused((prev) => ({ ...prev, [name]: false }));
+      if (name === 'phone') {
+        const phoneNumberRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
+
+        if (formData.phone === maskOptions.mask) {
+          setFormData((prev) => ({ ...prev, phone: '' }));
+        }
+        setIsValid(phoneNumberRegex.test(formData.phone));
+      }
+    },
+    [formData.phone]
+  );
 
   const handleChange = useCallback((event) => {
     const { name, value } = event.target;
@@ -412,7 +412,7 @@ const VacancyFormContact = ({
                       id="phone-input"
                       ref={inputRef}
                       mask={maskOptions.mask}
-                      replacement={maskOptions.replacement}                
+                      replacement={maskOptions.replacement}
                       showMask={true}
                       name="phone"
                       placeholder=""
