@@ -23,13 +23,13 @@ const AllVacancyButton = () => {
   }, []);
 
   const buttonText = previousPage === 'internships' ? 'Все стажировки' : 'Все вакансии';
-  const buttonLink = previousPage === 'internships' ? '/portal/internships' : '/portal/vacancies';
+  const buttonLink = previousPage === 'internships' ? '/hr/internships' : '/hr/vacancies';
 
   return (
     <Link
       to={buttonLink}
       ref={refs.link}
-      onClick={() => {    
+      onClick={() => {
         ScrollTrigger.getAll().forEach((t) => t.kill());
       }}>
       <button className={style.button_link_vacancy}>
