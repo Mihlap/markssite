@@ -1,9 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 import Modal from 'react-modal';
 import { useInView } from 'react-intersection-observer';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './Company.module.css';
 import gsap from 'gsap';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { Helmet } from 'react-helmet-async';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -34,10 +36,16 @@ import CompanySlider from './CompanySlider/CompanySlider';
 import ModalVacancyFormSend from '../UI/VacancyFormContact/ModalVacancyFormSend';
 import SkeletonLoader from './SkeletonLoader/SkeletonLoader';
 import SkeletonLoaderSlider from './SkeletonLoader/SkeletonLoaderSlider ';
+import { useHashScroll } from './CompanyGroupSlider/hooks/useHashScroll';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
+gsap.registerPlugin(ScrollTrigger);
+
 export default function Company({ handleMouseEnter, handleMouseLeave, handleMouseHover }) {
+  const aliasMap = useMemo(() => ({ section1: 'history', section2: 'awards', section3: 'staff' }), []);
+  useHashScroll({ aliasMap, offsetY: 120 });
+
   const videoSource = useMemo(
     () => ({
       large: `${bucket_url}/images/video/company_full.mp4`,
@@ -100,7 +108,6 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
     };
 
     window.addEventListener('resize', handleResize);
- 
     return () => {
       window.removeEventListener('resize', handleResize);
     };
@@ -367,7 +374,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
           {/* <SliderMobile /> */}
           <SliderHeader />
         </div>
-        <div className={styles.about_main}>
+        <div id="history" className={styles.about_main}>
           <div className={styles.left_about}>
             <div ref={nameCompanyRef} className={styles.name_company}>
               MARKS GROUP
@@ -455,7 +462,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
         </div> */}
         {/* <div className={styles.company_group_slider}>
         </div> */}
-        <div className={styles.awards_wrapper}>
+        <div id="awards" className={styles.awards_wrapper}>
           Награды и&nbsp;премии
           <div className={styles.years_div}>/2005-2024/</div>
         </div>
@@ -472,7 +479,9 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
           />
         )}
         <div className={styles.specialist_wrapper}>
-          <div className={styles.specialist}>Специалисты</div>
+          <div id="staff" className={styles.specialist}>
+            Специалисты
+          </div>
           {isMobile && (
             <Swiper
               onSwiper={setSwiper}
