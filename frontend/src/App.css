@@ -76,9 +76,9 @@ button {
   --mb-container-1: 1rem;
 }
 
-#root {
+/* #root {
   overflow-x: hidden;
-}
+} */
 
 * {
   padding: 0;
