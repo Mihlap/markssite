@@ -220,13 +220,19 @@ const NavBar = () => {
             } else {
               return (
                 <li className={styles['navbar-item']} key={item.id}>
-                  <NavLink
-                    to={item.path}
-                    onClick={() => handlerLink(item.path)}
-                    className={({ isActive }) => (isActive ? `${styles['navbar-item-active']}` : undefined)}
-                    end>
-                    {item.label}
-                  </NavLink>
+                  {item.external ? (
+                    <a href={item.path} target="_blank" rel="noreferrer">
+                      {item.label}
+                    </a>
+                  ) : (
+                    <NavLink
+                      to={item.path}
+                      onClick={() => handlerLink(item.path)}
+                      className={({ isActive }) => (isActive ? `${styles['navbar-item-active']}` : undefined)}
+                      end>
+                      {item.label}
+                    </NavLink>
+                  )}
                 </li>
               );
             }
@@ -242,6 +248,7 @@ const NavBar = () => {
                 </a>
               ) : (
                 <NavLink
+                  style={{ opacity: `${isVacancyDetail ? 0 : 1}` }}
                   key={id}
                   to={path}
                   className={({ isActive }) => clsx(baseClasses, isActive && styles['navbar-link--active'])}>
