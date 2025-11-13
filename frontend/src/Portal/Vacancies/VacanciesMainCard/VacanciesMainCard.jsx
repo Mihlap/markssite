@@ -14,6 +14,7 @@ import AllVacancyButton from '../../../UI/ButtonVacancy/AllVacancyButton';
 import VacancyFormContactSimple from '../../../UI/VacancyFormContact/VacancyFormContactSimple';
 import VacancyFormContact from '../../../UI/VacancyFormContact/VacancyFormContact';
 import ModalVacancyFormSend from '../../../UI/VacancyFormContact/ModalVacancyFormSend';
+import { advantages } from './const/advantages';
 
 import star3d_1 from '../icons/star3d_1.png';
 import star3d_2 from '../icons/star3d_2.png';
@@ -35,10 +36,6 @@ import vectorAround from '../icons/VectorAround.svg';
 import vectorAround1 from '../icons/VectorAround1.png';
 import vectorAround2 from '../icons/vectorAround2.svg';
 
-import frame1 from '../icons/frame/frame1.svg';
-import frame2 from '../icons/frame/frame2.svg';
-import frame3 from '../icons/frame/frame3.svg';
-import frame4 from '../icons/frame/frame4.svg';
 import BenefitsVacancy from '../BenefitsVacancy/BenefitsVacancy';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -46,7 +43,6 @@ function setViewportUnits() {
   document.documentElement.style.setProperty('--vh', `${window.innerHeight / 100}px`);
   document.documentElement.style.setProperty('--vw', `${window.innerWidth / 100}px`);
 }
-
 
 const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }) => {
   const dispatch = useDispatch();
@@ -58,7 +54,6 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
   const [selectedVacancy, setSelectedVacancy] = useState(null);
   const [isVisible, setIsVisible] = useState(window.innerWidth > 1024);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [blockReady, setBlockReady] = useState(false);
 
   const formRef = useRef(null);
   const formButtonRef = useRef(null);
@@ -66,14 +61,9 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
   const sputnikRef = useRef(null);
 
   useEffect(() => {
-    const raf = requestAnimationFrame(() => setBlockReady(true));
-    return () => cancelAnimationFrame(raf);
-  }, []);
-
-  useEffect(() => {  
     setViewportUnits();
     window.addEventListener('resize', setViewportUnits);
-    return () => {    
+    return () => {
       window.removeEventListener('resize', setViewportUnits);
     };
   }, []);
@@ -128,7 +118,7 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
         const trig = setupBlockAnimation(blockRight, wrapper);
         if (trig) triggers.push(trig);
       });
-    
+
       return () => triggers.forEach((t) => t.kill());
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -264,125 +254,79 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
           buttonText="Спасибо,&nbsp;жду!"
           variant="manualClose"
         />
-        <div className={styles.main_vacancy_block__background1} style={{ backgroundImage: `url(${star3d_1})` }} />
-        <div className={styles.main_vacancy_block__background2} style={{ backgroundImage: `url(${star3d_2})` }} />
-        <div className={styles.main_vacancy_block__background3} style={{ backgroundImage: `url(${star3d_3})` }} />
-        <div className={styles.main_vacancy_block}>
-          <div className={styles.main_vacancy_block__wrapper}>
-            {vacancies?.map((vacancy) => (
-              <div key={vacancy.id} className={styles.main_vacancy_block__item}>
-                <div className={styles.main_vacancy_block__blockLeft}>
-                  <div className={styles.main_vacancy_block__vacancyTitle}>{vacancy.title}</div>
-                  <div className={styles.main_vacancy_block__vacancyDetails}>
-                    <ul className={styles.main_vacancy_block__vacancyTitle1}>
-                      <li className={styles.main_vacancy_block__vacancyTitle1__titleKey}>Мы ищем:</li>
-                      <li
-                        className={styles.main_vacancy_block__vacancyTitle1__titleValue1}
-                        dangerouslySetInnerHTML={{
-                          __html: vacancy.searchStaff,
-                        }}></li>
-                    </ul>
-                  </div>
-                </div>
+        <section className={styles['section-top']}>
+          <div className={styles['section-top__title']}>
+            <div className={styles['section-top__wrap']}>
+              <h1 className={styles['section-top__heading']}>{vacancies[0]?.title || null}</h1>
+              <div className={styles['section-top__description']}>
+                <span className={styles['section-top__label']}>Мы ищем</span>
+
                 <div
-                  id={`blockRight-${vacancy?.id}`}
-                  className={`${styles.main_vacancy_block__blockRightWrapper} ${blockReady ? styles.ready : ''}`}>
-                  <div className={styles.main_vacancy_block__blockRight}>
-                    <div className={`${styles.main_vacancy_block__detailItem} ${styles.topLeftSquare}`}>
-                      <span className={styles.main_vacancy_block__detailKey}>Опыт&nbsp;работы:</span>
-                      <span className={styles.main_vacancy_block__detailValue}>{vacancy.experience}</span>
-                    </div>
-                    <div className={`${styles.main_vacancy_block__detailItem} ${styles.topRightSquare}`}>
-                      <span className={styles.main_vacancy_block__detailKey}>Локация:</span>
-                      <span className={styles.main_vacancy_block__detailValue}>{vacancy.locationStaff}</span>
-                    </div>
-                    <div className={`${styles.main_vacancy_block__detailItem} ${styles.bottomLeftSquare}`}>
-                      <span className={styles.main_vacancy_block__detailKey}>Занятость:</span>
-                      <span className={styles.main_vacancy_block__detailValue}>{vacancy.busyness}</span>
-                    </div>
-                    <div className={`${styles.main_vacancy_block__detailItem} ${styles.bottomRightSquare}`}>
-                      <span className={styles.main_vacancy_block__detailKey}>Режим&nbsp;работы:</span>
-                      <span className={styles.main_vacancy_block__detailValue}>{vacancy.modeOperating}</span>
-                    </div>
-                    <div className={styles.vacancyFormWrapperSimple}>
-                      {isVisible && (
-                        <VacancyFormContactSimple
-                          handleMouseEnter={handleMouseEnter}
-                          handleMouseLeave={handleMouseLeave}
-                          handleMouseHover={handleMouseHover}
-                          setIsLoading={setIsLoading}
-                          setIsModalOpen={setIsModalOpen}
-                          vacancyTitleSimple={selectedVacancy?.title}
-                          buttonText={
-                            activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'
-                          }
-                          inputPaddingTop={windowWidth >= 1024 && windowWidth <= 1600 ? '2rem' : undefined}
-                        />
-                      )}
-                    </div>
-                  </div>
-                </div>
+                  className={styles['section-top__html']}
+                  dangerouslySetInnerHTML={{ __html: vacancies[0]?.searchStaff }}
+                />
               </div>
-            ))}
-          </div>
-          <div
-            className={styles.main_vacancy_block__all_button}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}>
-            <AllVacancyButton />
-          </div>
-        </div>
-        <div className={styles.main_vacancyWrapper__offer}>
-          <span className={styles.main_vacancyWrapper__offerName}>
-            Marks Group предлагает тебе
-            <img className={styles.main_vacancyWrapper__offerHeart} src={heart} alt={heart} />
-          </span>
-        </div>
-        <div className={styles.main_vacancyWrapper__wrapperFrameBlock}>
-          <div className={styles.main_vacancyWrapper__frameBlock}>
-            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
-              <img className={styles.main_vacancyWrapper__frame} src={frame2} alt={frame2} />
-              <span className={styles.main_vacancyWrapper__frameSpan}>Опыт работы на&nbsp;уникальных объектах</span>
+              <div className={styles['section-top__offers-title']}>
+                <span>Marks Group предлагает тебе</span>
+                <img src={heart} alt="heart" />
+              </div>
             </div>
-            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
-              <img className={styles.main_vacancyWrapper__frame} src={frame1} alt={frame1} />
-              <span className={styles.main_vacancyWrapper__frameSpan}>
-                Развитие карьерного и&nbsp;личностного потенциала
-              </span>
+            <div className={styles['section-top__advantages']}>
+              <div className={styles['section-top__advantages-title']}>
+                <span>Marks Group предлагает тебе</span>
+                <img src={heart} alt="heart" />
+              </div>
+              <div className={styles['section-top__advantages-item']}>
+                {advantages.map((item, index) => (
+                  <div key={item.id} className={styles[`cell${index + 1}`]}>
+                    <img src={item.img} alt={item.title} />
+                    <p className={styles['section-top__advantages-item_title']}>{item.title}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-          <div className={styles.main_vacancyWrapper__frameBlock}>
-            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
-              <img className={styles.main_vacancyWrapper__frame} src={frame4} alt={frame4} />
-              <span className={styles.main_vacancyWrapper__frameSpan}>
-                Создаем атмосферу менторства и&nbsp;наставничества
-              </span>
-            </div>
-            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
-              <img className={styles.main_vacancyWrapper__frame} src={frame3} alt={frame3} />
-              <span className={styles.main_vacancyWrapper__frameSpan}>Даем почву для&nbsp;воплощения ваших идей</span>
-            </div>
-          </div>
-        </div>
-        <div className={styles.main_vacancyWrapper__button_vacancyWrapper}>
-          {!isVisible && (
-            <button
-              className={styles.main_vacancyWrapper__button_vacancy}
-              type="submit"
-              id="submit-button"
-              onClick={handleScrollToForm}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              ref={formButtonRef}>
-              <p className={styles.main_vacancyWrapper__button_name_vacancy}>Откликнуться на вакансию</p>
-            </button>
-          )}
-        </div>
-        <div className={styles.main_vacancyWrapper__wrapperTextBlock}>
-          <div id={`wrapperTextBlock-${selectedVacancy?.id}`}>
-            <RenderVacancySections />
-          </div>
-        </div>
+          <aside className={styles['section-top__aside']}>
+            {vacancies?.map((vacancy) => {
+              return (
+                <div>
+                  <div className={styles['section-top__aside-item']}>
+                    <span>Опыт&nbsp;работы:</span>
+                    <span>{vacancy.experience}</span>
+                  </div>
+                  <div>
+                    <span>Локация:</span>
+                    <span>{vacancy.locationStaff}</span>
+                  </div>
+                  <div>
+                    <span>Занятость:</span>
+                    <span>{vacancy.busyness}</span>
+                  </div>
+                  <div>
+                    <span>Режим&nbsp;работы:</span>
+                    <span>{vacancy.modeOperating}</span>
+                  </div>
+                  <>
+                    {isVisible && (
+                      <VacancyFormContactSimple
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                        handleMouseHover={handleMouseHover}
+                        setIsLoading={setIsLoading}
+                        setIsModalOpen={setIsModalOpen}
+                        vacancyTitleSimple={selectedVacancy?.title}
+                        buttonText={
+                          activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'
+                        }
+                        inputPaddingTop={windowWidth >= 1024 && windowWidth <= 1600 ? '2rem' : undefined}
+                      />
+                    )}
+                  </>
+                </div>
+              );
+            })}
+          </aside>
+        </section>
         <div className={styles.main_vacancyWrapper__3dGroup}>
           <div className={styles.background4} style={{ backgroundImage: `url(${star3d_4})` }} />
           <div className={styles.background5} style={{ backgroundImage: `url(${star3d_5})` }} />
