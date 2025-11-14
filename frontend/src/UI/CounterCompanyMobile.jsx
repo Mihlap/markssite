@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
-import styles from '../Company/Company.module.css';
+import styles from '../Company/Company.module.scss';
 
 import bracket from '../icons/bracket.svg';
 

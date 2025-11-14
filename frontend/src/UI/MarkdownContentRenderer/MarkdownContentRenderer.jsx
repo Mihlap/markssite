@@ -440,7 +440,7 @@ export default function MarkdownContentRenderer({ markdown = '' }) {
                               {children}
                             </a>
                           ),
-                          img: ({ src, alt }) => <img className={styles.image} src={src} alt={alt} />,
+                          img: ({ src, alt }) => <img className={styles.image} src={src} alt={alt} loading="lazy" />,
                           table: ({ children }) => (
                             <div className={styles.tableContainer}>
                               <table className={styles.table}>{children}</table>
