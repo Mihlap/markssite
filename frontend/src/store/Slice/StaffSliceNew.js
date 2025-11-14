@@ -18,6 +18,28 @@ const normalizeCategory = (val) =>
         .filter(Boolean)
     : [];
 
+const pickDynamicBlocks = (it) => {
+  if (Array.isArray(it?.dynamicBlocks) && it.dynamicBlocks.length) return it.dynamicBlocks;
+  if (Array.isArray(it?.ConstructorStaffNews) && it.ConstructorStaffNews.length) {
+    return it.ConstructorStaffNews.map((c) => (Array.isArray(c?.data) ? c.data : [])).filter((arr) => arr.length);
+  }
+  return [];
+};
+
+const normalizeStaffItem = (it) => ({
+  ...it,
+  category: Array.isArray(it?.category)
+    ? it.category
+    : it?.category
+    ? String(it.category)
+        .split(',')
+        .map((v) => v.trim())
+        .filter(Boolean)
+    : [],
+  visibilityByCategory: it?.visibilityByCategory || {},
+  dynamicBlocks: pickDynamicBlocks(it),
+});
+
 async function maybeUploadImage(imgFile) {
   if (!imgFile) return null;
   const fd = new FormData();
@@ -175,28 +197,30 @@ const staffSlice = createSlice({
     })
       .addCase(fetchStaffAsync.fulfilled, (s, a) => {
         s.loading = false;
-        s.items = (a.payload || []).map((it) => ({
-          ...it,
-          category: Array.isArray(it.category)
-            ? it.category
-            : it.category
-            ? String(it.category)
-                .split(',')
-                .map((v) => v.trim())
-                .filter(Boolean)
-            : [],
-          visibilityByCategory: it.visibilityByCategory || {},
-        }));
+        s.items = (a.payload || []).map(normalizeStaffItem);
       })
       .addCase(fetchStaffAsync.rejected, (s, a) => {
         s.loading = false;
         s.error = a.payload || 'Ошибка';
       })
+      .addCase(fetchStaffByCategoryPublic.pending, (s) => {
+        s.loading = true;
+        s.error = null;
+      })
+      .addCase(fetchStaffByCategoryPublic.fulfilled, (s, a) => {
+        s.loading = false;
+        s.items = (a.payload || []).map(normalizeStaffItem);
+      })
+      .addCase(fetchStaffByCategoryPublic.rejected, (s, a) => {
+        s.loading = false;
+        s.error = a.payload || a.error?.message || 'Ошибка';
+      })
       .addCase(createStaffAsync.fulfilled, (s, a) => {
-        s.items = [...s.items, a.payload];
+        s.items = [...s.items, normalizeStaffItem(a.payload)];
       })
       .addCase(updateStaffAsync.fulfilled, (s, a) => {
-        s.items = s.items.map((x) => (x.id === a.payload.id ? a.payload : x));
+        const updated = normalizeStaffItem(a.payload);
+        s.items = s.items.map((x) => (x.id === updated.id ? updated : x));
       })
       .addCase(deleteStaffAsync.pending, (s, a) => {
         const { id, category } = a.meta.arg || {};
