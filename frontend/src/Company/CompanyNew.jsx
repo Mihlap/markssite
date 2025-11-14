@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useDispatch, useSelector } from 'react-redux';
-import styles from './Company.module.css';
+import styles from './Company.module.scss';
 import gsap from 'gsap';
 import { Helmet } from 'react-helmet-async';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';

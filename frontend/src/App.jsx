@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router';
 import { HelmetProvider } from 'react-helmet-async';
 import './App.css';
-import Company from './Company/Company';
-// import CompanyNew from './Company/CompanyNew';
+// import Company from './Company/Company';
+import CompanyNew from './Company/CompanyNew';
 import Header from './Header/Header';
 import Contacts from './Contacts/Contacts';
 import Project from './Project/Project';
@@ -188,7 +188,7 @@ export default function App() {
                   <Route
                     path="/company"
                     element={
-                      <Company
+                      <CompanyNew
                         handleMouseEnter={handleMouseEnter}
                         handleMouseLeave={handleMouseLeave}
                         handleMouseHover={handleMouseHover}
