@@ -820,14 +820,16 @@ display: inline-block;
     display: none;
   }
   .menu_button_group_project_wrapper_main1 {
-    padding-left: 0rem;
+    padding-left: 0;
+    margin: 1.5rem 1rem 0 1rem;
+   
   }
 
   .my_swiper2_button_group_project {
     display: flex;
-    padding-top: 2.5rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-top: 0;
+    padding-left: 0;
+    padding-right: 0;
     bottom: 0rem;
     left: 0rem;
     right: 0rem;
