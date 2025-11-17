@@ -1,10 +1,12 @@
-import { useEffect, useRef, useState, useMemo } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './Company.module.scss';
 import gsap from 'gsap';
 import { Helmet } from 'react-helmet-async';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 
 import SliderHeader from '../UI/SliderHeader/SliderHeader';
 import TableCompany from '../UI/TableCompany/TableCompany';
@@ -26,6 +28,7 @@ import CounterCompanyMobile2 from '../UI/CounterCompanyMobile2';
 import CompanySlider from './CompanySlider/CompanySlider';
 import ModalVacancyFormSend from '../UI/VacancyFormContact/ModalVacancyFormSend';
 import CompanyStaffPublic from './CompanyStaffPublic';
+import { useHashScroll } from './CompanyGroupSlider/hooks/useHashScroll';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
@@ -40,6 +43,8 @@ const VIDEO_SOURCE2 = {
   medium: `${bucket_url}/images/video/main_company_ipad.mp4`,
   small: `${bucket_url}/images/video/main_company_mobile.mp4`,
 };
+
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleMouseHover }) {
   const [countPercent, setCountPercent] = useState(0);
@@ -64,6 +69,9 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
   const countGap = useSelector((state) => state.counter.countGap);
   const countScient = useSelector((state) => state.counter.countScient);
   const countScienceDegree = useSelector((state) => state.counter.countScienceDegree);
+
+  const aliasMap = useMemo(() => ({ section1: 'history', section2: 'awards', section3: 'staff' }), []);
+  useHashScroll({ aliasMap, offsetY: 120 });
 
   const [ref, inView] = useInView({
     threshold: 0.5,
@@ -122,8 +130,6 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
   }, [dispatch, inView]);
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
     const elementsRight = [blockSlider.current];
     const anim = gsap.from(elementsRight, {
       x: '-100%',
@@ -250,7 +256,7 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
           <SliderHeader />
         </div>
 
-        <div className={styles.about_main}>
+        <div id="history" className={styles.about_main}>
           <div className={styles.left_about}>
             <div ref={nameCompanyRef} className={styles.name_company}>
               MARKS GROUP
@@ -332,7 +338,7 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
 
         <CompanySlider />
 
-        <div className={styles.awards_wrapper}>
+        <div id="awards" className={styles.awards_wrapper}>
           Награды и&nbsp;премии
           <div className={styles.years_div}>/2005-2024/</div>
         </div>
@@ -351,12 +357,13 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
             handleMouseHover={handleMouseHover}
           />
         )}
-        <CompanyStaffPublic
-          handleMouseEnter={handleMouseEnter}
-          handleMouseLeave={handleMouseLeave}
-          handleMouseHover={handleMouseHover}
-        />
-
+        <section id="staff">
+          <CompanyStaffPublic
+            handleMouseEnter={handleMouseEnter}
+            handleMouseLeave={handleMouseLeave}
+            handleMouseHover={handleMouseHover}
+          />
+        </section>
         <div className={styles.fon}>
           <div className={styles.video_wrapper}>
             {videoSrc && (
