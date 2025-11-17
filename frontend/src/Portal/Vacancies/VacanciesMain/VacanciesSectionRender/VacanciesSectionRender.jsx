@@ -40,7 +40,7 @@ const VacanciesSectionRender = ({
             <Link
               key={vacancy.id}
               to={{
-                pathname: `/portal/vacancy/${vacancy.id}`,
+                pathname: `/hr/vacancies/${vacancy.id}`,
                 search: `?type=${isInternship ? 'internship' : 'vacancy'}`,
               }}
               className={styles.vacancyContainer}
@@ -100,8 +100,8 @@ const VacanciesSectionRender = ({
                     ? 'Скрыть стажировки'
                     : 'Скрыть вакансии'
                   : isInternship
-                  ? 'Показать все стажировки'
-                  : 'Показать все вакансии'}
+                    ? 'Показать все стажировки'
+                    : 'Показать все вакансии'}
               </button>
             </div>
           </div>

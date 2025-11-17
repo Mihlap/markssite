@@ -1,8 +1,9 @@
 {
-  "cSpell.words": [
-    "metalness",
-    "Podzemproekt"
-  ],
+  "window.autoDetectColorScheme": true,
+  "workbench.preferredDarkColorTheme": "Default Dark Modern",
+  "workbench.preferredHighContrastColorTheme": "Default Light Modern",
+
+  "cSpell.words": ["metalness", "Podzemproekt"],
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true
 }
