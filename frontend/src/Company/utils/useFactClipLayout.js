@@ -16,7 +16,7 @@ const getFactClipLayout = (vw) => {
   if (vw >= 1025) return { ...medium, right: 90, translateY: -39 };
   if (vw >= 768) return { ...medium, right: 60, translateY: -38 };
 
-  if (vw <= 375) return { ...small, right: 50, translateY: -33 };
+  if (vw <= 375) return { ...small, right: 76, translateY: -31 };
   if (vw <= 390) return { ...small, right: 76, translateY: -31 };
   if (vw <= 414) return { ...small, right: 76, translateY: -32 };
   if (vw <= 430) return { ...small, right: 76, translateY: -33 };

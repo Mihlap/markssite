@@ -1,9 +1,11 @@
 @import '../App.css';
 
 .staff_modal_stream {
+  --stream-gap: 40px;
+
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: var(--stream-gap);
   background-color: transparent;
   padding-bottom: 32px;
 }
@@ -70,28 +72,103 @@
   box-shadow: 0 6px 20px rgba(17, 24, 39, .08);
 }
 
-.modal_h1 {
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--black-1D2E43);
+/* ===== Заголовки внутри markdown в модалке ===== */
+.modal_md_container :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-unbounded);
+  font-weight: var(--fw-300);
   margin: 0 0 16px;
-  line-height: 1.25;
+  color: var(--black-1D2E43);
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: none;
 }
 
-.modal_h2 {
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--black-1D2E43);
-  margin: 0 0 16px;
-  line-height: 1.3;
+.modal_md_container :is(h1, h2, h3, h4, h5, h6) strong,
+.modal_md_container :is(h1, h2, h3, h4, h5, h6) b {
+  font-weight: inherit;
 }
 
-.modal_h3 {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--black-1D2E43);
-  margin: 0 0 16px;
-  line-height: 1.35;
+.modal_md_container h1 {
+  font-size: 2rem;
+  line-height: 2.5rem;
+}
+
+.modal_md_container h2 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.modal_md_container h3 {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: var(--fw-700);
+}
+
+.modal_md_container h4 {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.modal_md_container h5 {
+  font-size: 1.125rem;
+  line-height: 1.625rem;
+}
+
+.modal_md_container h6 {
+  font-size: 1rem;
+  line-height: 1.375rem;
+}
+
+@media (max-width: 1600px) {
+  .modal_md_container h1 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: var(--fw-300);
+  }
+
+  .modal_md_container h2 {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: var(--fw-300);
+  }
+
+  .modal_md_container h3 {
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+    font-weight: var(--fw-700);
+  }
+
+  .modal_md_container h4 {
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+    font-weight: var(--fw-300);
+  }
+}
+
+@media (max-width: 767px) {
+  .modal_md_container h1 {
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+    font-weight: var(--fw-700);
+  }
+
+  .modal_md_container h2 {
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+    font-weight: var(--fw-300);
+  }
+
+  .modal_md_container h3 {
+    font-size: 1rem;
+    line-height: 1.375rem;
+    font-weight: var(--fw-700);
+  }
+
+  .modal_md_container h4 {
+    font-size: 1rem;
+    line-height: 1.375rem;
+    font-weight: var(--fw-300);
+  }
 }
 
 /* ===== Блок изображение с описанием ===== */
@@ -214,7 +291,8 @@
   align-items: flex-start;
   justify-content: center;
   position: relative;
-  padding: 0 20px;
+  padding: 0 12px;
+  padding: var(--stream-gap) 20px
 }
 
 .staff_fact_stack {
@@ -326,19 +404,6 @@
   object-fit: cover;
 }
 
-// @media (min-width: 3001px) {
-//   .staff_fact_clip {
-//     right: 250px;
-//     transform: translateY(-39px);
-//   }
-
-//      .staff_fact_clip img,
-//      .staff_fact_clip svg {
-//        width: 70px;
-//        height: 82px;
-//      }
-// }
-
 @media (min-width: 1700px) and (max-width: 3000px) {
   .staff_fact_card {
     gap: 24px;
@@ -349,17 +414,6 @@
     font-size: 32px;
     line-height: 40px;
   }
-
-  // .staff_fact_clip {
-  //   right: 150px;
-  //   transform: translateY(-43px); 
-  // }
-
-  // .staff_fact_clip img,
-  // .staff_fact_clip svg {
-  //   width: 70px;
-  //   height: 82px;
-  // }
 
   .staff_fact_text,
   .staff_fact_text p,
@@ -374,45 +428,6 @@
   }
 }
 
-// @media (min-width: 1369px) and (max-width: 1699px) {
-//   .staff_fact_clip {
-//     right: 90px;
-//     transform: translateY(-41px);
-//   }
-
-//      .staff_fact_clip img,
-//      .staff_fact_clip svg {
-//        width: 61.619px;
-//        height: 72.135px;
-//      }
-// }
-
-// @media (min-width: 1025px) and (max-width: 1368px) {
-//   .staff_fact_clip {
-//     right: 90px;
-//     transform: translateY(-39px);
-//   }
-
-//   .staff_fact_clip img,
-//   .staff_fact_clip svg {
-//     width: 61.619px;
-//     height: 72.135px;
-//   }
-// }
-
-// @media (min-width: 768px) and (max-width: 1024px) {
-//   .staff_fact_clip {
-//     right: 60px;
-//     transform: translateY(-38px);
-//   }
-
-//         .staff_fact_clip img,
-//         .staff_fact_clip svg {
-//           width: 61.619px;
-//           height: 72.135px;
-//         }
-// }
-
 @media (max-width: 767px) {
   .staff_fact_card {
     padding: 24px;
@@ -423,17 +438,6 @@
     font-size: 24px;
     line-height: 32px;
   }
-
-  // .staff_fact_clip {
-  //   transform: translateY(-48px);
-  //   right: 76px;
-  // }
-
-  // .staff_fact_clip img,
-  // .staff_fact_clip svg {
-  //   width: 55px;
-  //   height: 64.387px;
-  // }
 
   .staff_fact_text,
   .staff_fact_text p,
@@ -464,72 +468,6 @@
   }
 }
 
-// @media (max-width: 730px) {
-//   .staff_fact_clip {
-//     transform: translateY(-46px);
-//   }
-// }
-
-// @media (max-width: 700px) {
-//   .staff_fact_clip {
-//     transform: translateY(-44px);
-//   }
-// }
-
-// @media (max-width: 679px) {
-//   .staff_fact_clip {
-//     transform: translateY(-42px);
-//   }
-// }
-
-// @media (max-width: 600px) {
-//   .staff_fact_clip {
-//     transform: translateY(-41px);
-//   }
-// }
-
-// @media (max-width: 579px) {
-//   .staff_fact_clip {
-//     transform: translateY(-37px);
-//   }
-// }
-
-// @media (max-width: 500px) {
-//   .staff_fact_clip {
-//     transform: translateY(-36px);
-//   }
-// }
-
-// @media (max-width: 479px) {
-//   .staff_fact_clip {
-//     transform: translateY(-34px);
-//   }
-// }
-
-// @media (max-width: 430px) {
-//   .staff_fact_clip {
-//     transform: translateY(-33px);
-//   }
-// }
-
-// @media (max-width: 414px) {
-//   .staff_fact_clip {
-//     transform: translateY(-32px);
-//   }
-// }
-
-// @media (max-width: 390px) {
-//   .staff_fact_clip {
-//     transform: translateY(-31px);
-//   }
-// }
-
-// @media (max-width: 375px) {
-//   .staff_fact_clip {
-//     transform: translateY(-33px);
-//     right: 50px;
-//   }
-// }
 
 /* ===== Текстовый блок в рамке ===== */
 .staff_frame_text {
@@ -655,10 +593,10 @@
 
 @media (max-width: 1200px) {
   .staff_modal_stream {
-    gap: 24px;
+    --stream-gap: 40px;
+    gap: var(--stream-gap);
   }
 
-  .staff_text_block,
   .staff_frame_text {
     padding: 16px 16px;
   }
@@ -674,6 +612,11 @@
 }
 
 @media (max-width: 768px) {
+  .staff_modal_stream {
+    --stream-gap: 32px;
+    gap: var(--stream-gap);
+  }
+
   .staff_three_images {
     grid-template-columns: 1fr;
   }
@@ -698,11 +641,16 @@
 
 @media (max-width: 480px) {
   .staff_modal_stream {
-    gap: 16px;
+    --stream-gap: 24px;
+    gap: var(--stream-gap);
   }
 
   .staff_fact_card {
     border-radius: 24px;
+  }
+
+  .staff_fact_title {
+    font-size: 22px;  
   }
 
   .staff_frame_text {
