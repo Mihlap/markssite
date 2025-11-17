@@ -68,6 +68,7 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
   const [selectOnCompetencies, setSelectOnCompetencies] = useState(category || 'Все');
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [, setSwiper] = useState(null);
+  const isMobile = screenWidth <= 1024;
 
   const projectsPerPage = 100;
 
@@ -364,7 +365,7 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
           </div>
         )}
         <div className={styles.menu_button_group_project_wrapper_main1}>
-          {screenWidth && (
+          {isMobile && (
             <Swiper
               onSwiper={setSwiper}
               slidesPerView="auto"
@@ -399,7 +400,7 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
           )}
         </div>
 
-        {!isActive && (
+        {!isMobile && !isActive && (
           <div className={styles.menu_button_group_project_wrapper_main}>
             <div className={styles.menu_button_group_project_wrapper}>
               <div className={styles.menu_button_group_project}>
