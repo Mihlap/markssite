@@ -61,6 +61,8 @@ import ArticleJournalPage from './Journal/JournalArticlePage/ArticleJournalPage'
 import { IS_DEV } from './const/is-dev';
 import NavBar from './UI/NavBar/NavBar';
 
+import PageFade from './UI/PageFade/PageFade';
+
 export default function App() {
   const user = useSelector((state) => state.auth.user);
   const currentPage = useSelector((state) => state.user.currentPage);
@@ -108,7 +110,7 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Если видео загрузилось раньше таймера — убираем прелоадер
+  // Если видео загрузилось раньше таймера — убираем прелоудер
   useEffect(() => {
     if (IS_DEV) return;
     if (videoLoaded) {
@@ -143,165 +145,241 @@ export default function App() {
             <Route
               path="/"
               element={
-                <Header
-                  handleMouseEnter={handleMouseEnter}
-                  handleMouseLeave={handleMouseLeave}
-                  handleMouseHover={handleMouseHover}
-                  handleSpecialHover={handleSpecialHover}
-                  setVideoLoaded={setVideoLoaded}
-                />
+                <PageFade>
+                  <Header
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleMouseHover={handleMouseHover}
+                    handleSpecialHover={handleSpecialHover}
+                    setVideoLoaded={setVideoLoaded}
+                  />
+                </PageFade>
               }
             />
 
             <Route
               path="/project"
               element={
-                <Project
-                  handleMouseEnter={handleMouseEnter}
-                  handleMouseLeave={handleMouseLeave}
-                  handleMouseHover={handleMouseHover}
-                />
+                <PageFade>
+                  <Project
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleMouseHover={handleMouseHover}
+                  />
+                </PageFade>
               }
             />
-            <Route path="/project/:viewConstruction?" element={<Project />} />
+
+            <Route
+              path="/project/:viewConstruction?"
+              element={
+                <PageFade>
+                  <Project />
+                </PageFade>
+              }
+            />
 
             <Route
               path="/projects/:id"
               element={
-                <ProjectCard
-                  handleMouseEnter={handleMouseEnter}
-                  handleMouseLeave={handleMouseLeave}
-                  handleMouseHover={handleMouseHover}
-                />
+                <PageFade>
+                  <ProjectCard
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleMouseHover={handleMouseHover}
+                  />
+                </PageFade>
               }
             />
 
             <Route
               path="/company"
               element={
-                <CompanyNew
-                  handleMouseEnter={handleMouseEnter}
-                  handleMouseLeave={handleMouseLeave}
-                  handleMouseHover={handleMouseHover}
-                />
+                <PageFade>
+                  <CompanyNew
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleMouseHover={handleMouseHover}
+                  />
+                </PageFade>
               }
             />
 
             <Route
               path="/publication"
               element={
-                <Publics
-                  handleMouseEnter={handleMouseEnter}
-                  handleMouseLeave={handleMouseLeave}
-                  handleMouseHover={handleMouseHover}
-                />
+                <PageFade>
+                  <Publics
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleMouseHover={handleMouseHover}
+                  />
+                </PageFade>
               }
             />
 
             <Route
               path="/publication/:id"
               element={
-                <ArticleCard
-                  handleMouseEnter={handleMouseEnter}
-                  handleMouseLeave={handleMouseLeave}
-                  handleMouseHover={handleMouseHover}
-                />
+                <PageFade>
+                  <ArticleCard
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleMouseHover={handleMouseHover}
+                  />
+                </PageFade>
               }
             />
 
             <Route
               path="/journalPage"
               element={
-                <JournalMain
-                  handleMouseEnter={handleMouseEnter}
-                  handleMouseLeave={handleMouseLeave}
-                  handleMouseHover={handleMouseHover}
-                />
+                <PageFade>
+                  <JournalMain
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleMouseHover={handleMouseHover}
+                  />
+                </PageFade>
               }
             />
-            <Route path="/journal/:id" element={<ArticleJournalPage />} />
+
+            <Route
+              path="/journal/:id"
+              element={
+                <PageFade>
+                  <ArticleJournalPage />
+                </PageFade>
+              }
+            />
 
             <Route
               path="/contacts"
               element={
-                <Contacts
-                  handleMouseEnter={handleMouseEnter}
-                  handleMouseLeave={handleMouseLeave}
-                  handleMouseHover={handleMouseHover}
-                />
+                <PageFade>
+                  <Contacts
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleMouseHover={handleMouseHover}
+                  />
+                </PageFade>
               }
             />
 
             <Route
               path="/information"
               element={
-                <Information
-                  handleMouseEnter={handleMouseEnter}
-                  handleMouseLeave={handleMouseLeave}
-                  handleMouseHover={handleMouseHover}
-                />
+                <PageFade>
+                  <Information
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleMouseHover={handleMouseHover}
+                  />
+                </PageFade>
               }
             />
 
+            {/* HR-портал */}
             <Route
               path="/hr/home"
               element={
-                <VacanciesMain3
-                  handleMouseEnter={handleMouseEnter}
-                  handleMouseLeave={handleMouseLeave}
-                  handleMouseHover={handleMouseHover}
-                />
+                <PageFade>
+                  <VacanciesMain3
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleMouseHover={handleMouseHover}
+                  />
+                </PageFade>
               }
             />
             <Route
               path="/hr/vacancies"
               element={
-                <VacanciesComponent
-                  handleMouseEnter={handleMouseEnter}
-                  handleMouseLeave={handleMouseLeave}
-                  handleMouseHover={handleMouseHover}
-                />
+                <PageFade>
+                  <VacanciesComponent
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleMouseHover={handleMouseHover}
+                  />
+                </PageFade>
               }
             />
             <Route
               path="/hr/internships"
               element={
-                <Internships
-                  handleMouseEnter={handleMouseEnter}
-                  handleMouseLeave={handleMouseLeave}
-                  handleMouseHover={handleMouseHover}
-                />
+                <PageFade>
+                  <Internships
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleMouseHover={handleMouseHover}
+                  />
+                </PageFade>
               }
             />
             <Route
               path="/hr/vacancies/:id"
               element={
-                <VacanciesMainCard
-                  handleMouseEnter={handleMouseEnter}
-                  handleMouseLeave={handleMouseLeave}
-                  handleMouseHover={handleMouseHover}
-                />
+                <PageFade>
+                  <VacanciesMainCard
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleMouseHover={handleMouseHover}
+                  />
+                </PageFade>
               }
             />
 
             <Route
               path="/footerForm"
               element={
-                <FooterForm
-                  handleMouseEnterFooter={handleMouseEnterFooterWhite}
-                  handleMouseEnterFooterMore={handleMouseEnterFooterWhiteMore}
-                  handleMouseLeaveFooter={handleMouseLeaveFooterWhite}
-                  handleMouseLeave={handleMouseLeave}
-                />
+                <PageFade>
+                  <FooterForm
+                    handleMouseEnterFooter={handleMouseEnterFooterWhite}
+                    handleMouseEnterFooterMore={handleMouseEnterFooterWhiteMore}
+                    handleMouseLeaveFooter={handleMouseLeaveFooterWhite}
+                    handleMouseLeave={handleMouseLeave}
+                  />
+                </PageFade>
               }
             />
 
-            {isActive && <Route path="/signup" element={<SignUpPage />} />}
-            <Route path="/login" element={<Login />} />
-            <Route path="/test" element={<LoadingModal />} />
+            {isActive && (
+              <Route
+                path="/signup"
+                element={
+                  <PageFade>
+                    <SignUpPage />
+                  </PageFade>
+                }
+              />
+            )}
+
+            <Route
+              path="/login"
+              element={
+                <PageFade>
+                  <Login />
+                </PageFade>
+              }
+            />
+
+            <Route
+              path="/test"
+              element={
+                <PageFade>
+                  <LoadingModal />
+                </PageFade>
+              }
+            />
 
             {user && (
-              <Route path="/admin/*" element={<Add user={user} onPageChange={handlePageChange} />}>
+              <Route
+                path="/admin/*"
+                element={
+                  <PageFade>
+                    <Add user={user} onPageChange={handlePageChange} />
+                  </PageFade>
+                }>
                 <Route index element={<HomeAdmin />} />
                 <Route path="home" element={<HomeAdmin />} />
                 <Route path="add-a-project" element={<AddProject user={user} />} />
@@ -312,7 +390,14 @@ export default function App() {
               </Route>
             )}
 
-            <Route path="*" element={<NotFound />} />
+            <Route
+              path="*"
+              element={
+                <PageFade>
+                  <NotFound />
+                </PageFade>
+              }
+            />
           </Routes>
 
           <CookieComponent />
