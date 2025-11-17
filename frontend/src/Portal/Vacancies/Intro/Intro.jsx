@@ -26,67 +26,65 @@ const Intro = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const videoBox = videoBoxRef.current;
+    const video = videoRef.current;
 
-useEffect(() => {
-  const videoBox = videoBoxRef.current;
-  const video = videoRef.current;
+    const handleVideoLoaded = () => {
+      if (!video) return;
 
-  const handleVideoLoaded = () => {
-    if (!video) return;
-
-    if (!isMobile) {
-      video.style.opacity = 0;
-      video.style.height = '0';
-      video.style.width = '0';
-      video.style.transition = 'opacity 1s ease, height 1s ease, width 1s ease';
-    }
-  };
-
-  const handleIntersection = (entries) => {
-    if (!video) return;
-
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        video.play().catch((error) => console.error('Ошибка воспроизведения видео:', error));
-
-        if (!isMobile) {
-          video.style.opacity = 1;
-          video.style.height = '100vh';
-          video.style.width = '100%';
-        }
-      } else {
-        video.pause();
+      if (!isMobile) {
+        video.style.opacity = 0;
+        video.style.height = '0';
+        video.style.width = '0';
+        video.style.transition = 'opacity 1s ease, height 1s ease, width 1s ease';
       }
+    };
+
+    const handleIntersection = (entries) => {
+      if (!video) return;
+
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          video.play().catch((error) => console.error('Ошибка воспроизведения видео:', error));
+
+          if (!isMobile) {
+            video.style.opacity = 1;
+            video.style.height = '100vh';
+            video.style.width = '100%';
+          }
+        } else {
+          video.pause();
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersection, {
+      root: null,
+      threshold: 0.5,
     });
-  };
 
-  const observer = new IntersectionObserver(handleIntersection, {
-    root: null,
-    threshold: 0.5,
-  });
-
-  if (videoBox && !isMobile) {
-    observer.observe(videoBox);
-  }
-
-  if (video) {
-    if (video.readyState >= 3) {
-      handleVideoLoaded();
-    } else {
-      video.addEventListener('loadeddata', handleVideoLoaded);
-    }
-  }
-
-  return () => {
     if (videoBox && !isMobile) {
-      observer.unobserve(videoBox);
+      observer.observe(videoBox);
     }
-    if (video) {
-      video.removeEventListener('loadeddata', handleVideoLoaded);
-    }
-  };
-}, [location, isMobile]);
 
+    if (video) {
+      if (video.readyState >= 3) {
+        handleVideoLoaded();
+      } else {
+        video.addEventListener('loadeddata', handleVideoLoaded);
+      }
+    }
+
+    return () => {
+      if (videoBox && !isMobile) {
+        observer.unobserve(videoBox);
+      }
+      if (video) {
+        video.removeEventListener('loadeddata', handleVideoLoaded);
+      }
+    };
+  }, [location, isMobile]);
 
   return (
     <>
@@ -95,7 +93,7 @@ useEffect(() => {
           <div className={styles.Intro__text}>
             <span className={styles.Intro__pretitle}>Присоединяйтесь к&nbsp;MARKS&nbsp;GROUP</span>
             <h1 className={styles.Intro__title}>Мы&nbsp;в&nbsp;поиске талантливых специалистов</h1>
-            <ButtonLink text="Смотреть вакансии" to="/portal/vacancies" section="Intro" currentStyles={styles} />
+            <ButtonLink text="Смотреть вакансии" to="/hr/vacancies" section="Intro" currentStyles={styles} />
           </div>
           {isMobile ? (
             <div className={styles.Intro__animation}>
@@ -116,11 +114,8 @@ useEffect(() => {
             loop
             style={{
               display: 'block',
-              ...(isMobile
-                ? { width: '100%', height: '50vh' } 
-                : { opacity: 0, height: '0', width: '0' })
-            }}
-          >
+              ...(isMobile ? { width: '100%', height: '50vh' } : { opacity: 0, height: '0', width: '0' }),
+            }}>
             <source src={`${bucket_url}/images/video/main_company_full.mp4`} type="video/mp4" />
           </video>
         </div>
