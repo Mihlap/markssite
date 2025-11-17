@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useDispatch, useSelector } from 'react-redux';
-import styles from './Company.module.css';
+import styles from './Company.module.scss';
 import gsap from 'gsap';
 import { Helmet } from 'react-helmet-async';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -29,25 +29,19 @@ import CompanyStaffPublic from './CompanyStaffPublic';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
+const VIDEO_SOURCE = {
+  large: `${bucket_url}/images/video/company_full.mp4`,
+  medium: `${bucket_url}/images/video/company_ipad.mp4`,
+  small: `${bucket_url}/images/video/company_mob.mp4`,
+};
+
+const VIDEO_SOURCE2 = {
+  large: `${bucket_url}/images/video/main_company_full.mp4`,
+  medium: `${bucket_url}/images/video/main_company_ipad.mp4`,
+  small: `${bucket_url}/images/video/main_company_mobile.mp4`,
+};
+
 export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleMouseHover }) {
-  const videoSource = useMemo(
-    () => ({
-      large: `${bucket_url}/images/video/company_full.mp4`,
-      medium: `${bucket_url}/images/video/company_ipad.mp4`,
-      small: `${bucket_url}/images/video/company_mob.mp4`,
-    }),
-    []
-  );
-
-  const videoSource2 = useMemo(
-    () => ({
-      large: `${bucket_url}/images/video/main_company_full.mp4`,
-      medium: `${bucket_url}/images/video/main_company_ipad.mp4`,
-      small: `${bucket_url}/images/video/main_company_mobile.mp4`,
-    }),
-    []
-  );
-
   const [countPercent, setCountPercent] = useState(0);
   const [countHuman, setCountHuman] = useState(0);
   const [countProject, setCountProject] = useState(0);
@@ -57,7 +51,7 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
 
   const [isLoadingFormContacts, setIsLoadingFormContacts] = useState(false);
   const [modalOpenFormContacts, setModalOpenFormContacts] = useState(false);
-  const [isLoadingSubscription, setIsLoadingSubscription] = useState(false);
+  const [isLoadingSubscription] = useState(false);
   const [modalOpenSubscription, setModalOpenSubscription] = useState(false);
 
   const dispatch = useDispatch();
@@ -89,21 +83,21 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
     const handleResize = () => {
       const screenWidth = window.innerWidth;
       if (screenWidth >= 1025) {
-        setVideoSrc2(videoSource2.large);
-        setVideoSrc(videoSource.large);
+        setVideoSrc2(VIDEO_SOURCE2.large);
+        setVideoSrc(VIDEO_SOURCE.large);
       } else if (screenWidth >= 768 && screenWidth <= 1024) {
-        setVideoSrc2(videoSource2.medium);
-        setVideoSrc(videoSource.medium);
+        setVideoSrc2(VIDEO_SOURCE2.medium);
+        setVideoSrc(VIDEO_SOURCE.medium);
       } else {
-        setVideoSrc2(videoSource2.small);
-        setVideoSrc(videoSource.medium);
+        setVideoSrc2(VIDEO_SOURCE2.small);
+        setVideoSrc(VIDEO_SOURCE.medium);
       }
     };
 
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [videoSource.large, videoSource.medium, videoSource2.large, videoSource2.medium, videoSource2.small]);
+  }, []);
 
   useEffect(() => {
     const timer1 = setTimeout(() => {
@@ -115,23 +109,23 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
   }, [countPercent, countHuman, countProject]);
 
   useEffect(() => {
-    if (inView) {
-      const t = setTimeout(() => {
-        dispatch(incrementDepartment());
-        dispatch(incrementGap());
-        dispatch(incrementScient());
-        dispatch(incrementScienceDegree());
-      }, 80);
-      return () => clearTimeout(t);
-    }
-  }, [dispatch, countDepartment, countGap, countScient, countScienceDegree, inView, ref]);
+    if (!inView) return;
+
+    const t = setTimeout(() => {
+      dispatch(incrementDepartment());
+      dispatch(incrementGap());
+      dispatch(incrementScient());
+      dispatch(incrementScienceDegree());
+    }, 80);
+
+    return () => clearTimeout(t);
+  }, [dispatch, inView]);
 
   useEffect(() => {
-    gsap?.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollTrigger);
 
-    const { elementsRight } = { elementsRight: [blockSlider.current] };
-
-    gsap?.from(elementsRight, {
+    const elementsRight = [blockSlider.current];
+    const anim = gsap.from(elementsRight, {
       x: '-100%',
       opacity: 0,
       duration: 1.5,
@@ -142,6 +136,11 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
         start: 'top 80%',
       },
     });
+
+    return () => {
+      anim?.kill();
+      ScrollTrigger.getAll().forEach((st) => st.kill());
+    };
   }, []);
 
   useEffect(() => {
@@ -351,7 +350,7 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
             handleMouseLeave={handleMouseLeave}
             handleMouseHover={handleMouseHover}
           />
-        )}  
+        )}
         <CompanyStaffPublic
           handleMouseEnter={handleMouseEnter}
           handleMouseLeave={handleMouseLeave}
@@ -373,7 +372,7 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
                 style={{
                   position: 'relative',
                   height: '30vh',
-                  width: window.innerWidth <= 768 ? '100vw' : '50vw',
+                  width: isMobile ? '100vw' : '50vw',
                 }}>
                 <div
                   style={{
@@ -393,7 +392,7 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
                 style={{
                   position: 'relative',
                   height: '30vh',
-                  width: window.innerWidth <= 768 ? '100vw' : '50vw',
+                  width: isMobile ? '100vw' : '50vw',
                 }}>
                 <div
                   style={{
@@ -432,7 +431,7 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
                 style={{
                   position: 'relative',
                   height: '30vh',
-                  width: window.innerWidth <= 768 ? '100vw' : '50vw',
+                  width: isMobile ? '100vw' : '50vw',
                 }}>
                 <div
                   style={{
@@ -452,7 +451,7 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
                 style={{
                   position: 'relative',
                   height: '30vh',
-                  width: window.innerWidth <= 768 ? '100vw' : '50vw',
+                  width: isMobile ? '100vw' : '50vw',
                 }}>
                 <div
                   style={{
