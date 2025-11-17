@@ -259,8 +259,8 @@
 .image {
   display: block;
   width: 100%;
-  aspect-ratio: 16 / 9;
-  max-height: 100%;
+  // aspect-ratio: 16 / 9;
+  // max-height: 100%;
   object-fit: cover;
   object-position: center;
   background-color: #f0f0f0;
@@ -270,7 +270,7 @@
 
 .figureCaption {
   color: var(--gray-959DA6);
-  font-family: Raleway;
+  font-family: var(--font-raleway);
   font-size: 0.875rem;
   font-style: normal;
   font-weight: 400;

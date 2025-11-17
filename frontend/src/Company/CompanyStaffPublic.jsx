@@ -7,9 +7,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchStaffByCategoryPublic } from '../store/Slice/StaffSliceNew';
 import { fetchStaffCategoryTogglesAsync } from '../store/Slice/toggleSlice';
 
-import styles from './Company.module.css';
+import styles from './Company.module.scss';
 import SkeletonLoader from './SkeletonLoader/SkeletonLoader';
-import SkeletonLoaderSlider from './SkeletonLoader/SkeletonLoaderSlider ';
+import SkeletonLoaderSlider from './SkeletonLoader/SkeletonLoaderSlider';
+import StaffModalBlocks from './StaffModalBlocks';
+
+import { isHttp, encodePathnameOnly, absolutizeToBucket } from './utils/media';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
@@ -36,10 +39,42 @@ const aliasSetFor = (displayName) => {
   return new Set([n]);
 };
 
+const normalizeUrl = (v) => absolutizeToBucket(v, bucket_url);
+
+const normalizeConstructorGroups = (groups) => {
+  if (!Array.isArray(groups)) return [];
+  const looksImageInput = (inp) => {
+    const t = String(inp?.type || '').toLowerCase();
+    const lbl = String(inp?.label || '').toLowerCase();
+    return t === 'file' || t === 'image' || /изображ|image|img/.test(lbl);
+  };
+  return groups.map((group) =>
+    (Array.isArray(group) ? group : []).map((inp) => {
+      if (!inp) return inp;
+      if (!looksImageInput(inp)) return inp;
+      const v = inp.value;
+      if (typeof v === 'string') return { ...inp, value: normalizeUrl(v) };
+      if (Array.isArray(v)) {
+        return {
+          ...inp,
+          value: v.map((vv) =>
+            typeof vv === 'string' ? normalizeUrl(vv) : vv && vv.src ? { ...vv, src: normalizeUrl(vv.src) } : vv
+          ),
+        };
+      }
+      if (v && typeof v === 'object' && typeof v.src === 'string') {
+        return { ...inp, value: { ...v, src: normalizeUrl(v.src) } };
+      }
+      return inp;
+    })
+  );
+};
+
 const photoSrc = (row) => {
   const name = row?.img;
   if (!name) return `${bucket_url}/images/imageStuff/no_photo.png`;
-  return /^https?:\/\//i.test(String(name)) ? name : `${bucket_url}/images/imageStuff/${name}`;
+  const raw = isHttp(String(name)) ? String(name) : `${bucket_url}/images/imageStuff/${name}`;
+  return encodePathnameOnly(raw);
 };
 
 export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave, handleMouseHover }) {
@@ -49,7 +84,6 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
 
   const [category, setCategory] = useState(null);
   const [activeButton, setActiveButton] = useState(null);
-  const [showCards, setShowCards] = useState(false);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
@@ -85,8 +119,7 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
 
   useEffect(() => {
     if (category) {
-      setShowCards(false);
-      dispatch(fetchStaffByCategoryPublic(undefined)).then(() => setShowCards(true));
+      dispatch(fetchStaffByCategoryPublic(undefined));
     }
   }, [category, dispatch]);
 
@@ -105,7 +138,6 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
 
       const vbc =
         it?.visibilityByCategory && typeof it.visibilityByCategory === 'object' ? it.visibilityByCategory : {};
-
       for (const [k, v] of Object.entries(vbc)) {
         if (v === false && hasAlias(k)) return false;
       }
@@ -126,7 +158,27 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
     (id) => {
       const row = ordered.find((x) => x.id === id);
       if (!row) return;
-      setSelectedCard({ ...row, img: photoSrc(row) });
+
+      let rawGroups = [];
+      if (Array.isArray(row?.dynamicBlocks) && row.dynamicBlocks.length) {
+        rawGroups = row.dynamicBlocks;
+      } else if (Array.isArray(row?.ConstructorStaffNews) && row.ConstructorStaffNews.length) {
+        rawGroups = row.ConstructorStaffNews.map((c) => (Array.isArray(c?.data) ? c.data : [])).filter((g) => g.length);
+      } else if (Array.isArray(row?.Constructors) && row.Constructors.length) {
+        rawGroups = row.Constructors.map((c) => c?.data).filter((g) => Array.isArray(g) && g.length);
+      }
+
+      if (Array.isArray(rawGroups) && rawGroups.length && !Array.isArray(rawGroups[0])) {
+        rawGroups = [rawGroups];
+      }
+
+      const normalizedBlocks = normalizeConstructorGroups(rawGroups);
+
+      setSelectedCard({
+        ...row,
+        img: photoSrc(row),
+        dynamicBlocks: normalizedBlocks,
+      });
       setIsModalOpen(true);
       document.body.style.overflow = 'hidden';
       document.body.classList.add('modal-open');
@@ -146,8 +198,12 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
     setCategory(cat);
   }, []);
 
-  const bulletSymbol = '•';
-  const aboutKeys = useMemo(() => Array.from({ length: 30 }, (_, i) => `about${i + 1}`), []);
+  // useEffect(() => {
+  //   if (isModalOpen && selectedCard) {
+  //     console.log('[STAFF MODAL] opened with selectedCard:', selectedCard);
+  //     console.log('[STAFF MODAL] selectedCard.dynamicBlocks:', selectedCard.dynamicBlocks);
+  //   }
+  // }, [isModalOpen, selectedCard]);
 
   return (
     <>
@@ -191,7 +247,7 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
         )}
       </div>
 
-      <div className={styles.card_container} style={{ opacity: showCards ? 1 : 0 }}>
+      <div className={styles.card_container} style={{ opacity: loading ? 0.4 : 1, transition: 'opacity 0.3s ease' }}>
         <ul className={styles.card_container_ul}>
           {error ? (
             <div className={styles.error}>Ошибка: {String(error)}</div>
@@ -208,13 +264,15 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
                 onMouseLeave={handleMouseLeave}>
                 <div className={styles.wrapper_container_item_stuff}>
                   <img
-                    className={`${styles.container__img_stuff} ${showCards ? 'loaded' : ''}`}
+                    className={`${styles.container__img_stuff} ${!loading ? 'loaded' : ''}`}
                     src={photoSrc(el)}
                     onError={(e) => {
                       e.currentTarget.src = `${bucket_url}/images/imageStuff/no_photo.png`;
                     }}
                     alt={el.name || 'staff'}
                     loading="lazy"
+                    decoding="async"
+                    draggable={false}
                   />
                 </div>
                 <div className={styles.container__item_name_stuff}>{el.name}</div>
@@ -246,13 +304,15 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
                   onClick={() => handleOpenCard(el.id)}>
                   <div className={styles.wrapper_container_item_stuff}>
                     <img
-                      className={`${styles.container__img_stuff} ${showCards ? 'loaded' : ''}`}
+                      className={`${styles.container__img_stuff} ${!loading ? 'loaded' : ''}`}
                       src={photoSrc(el)}
                       onError={(e) => {
                         e.currentTarget.src = `${bucket_url}/images/imageStuff/no_photo.png`;
                       }}
                       alt={el.name || 'staff'}
                       loading="lazy"
+                      decoding="async"
+                      draggable={false}
                     />
                   </div>
                   <div className={styles.container__item_name_stuff}>{el.name}</div>
@@ -283,13 +343,15 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
                   onClick={() => handleOpenCard(el.id)}>
                   <div className={styles.wrapper_container_item_stuff}>
                     <img
-                      className={`${styles.container__img_stuff} ${showCards ? 'loaded' : ''}`}
+                      className={`${styles.container__img_stuff} ${!loading ? 'loaded' : ''}`}
                       src={photoSrc(el)}
                       onError={(e) => {
                         e.currentTarget.src = `${bucket_url}/images/imageStuff/no_photo.png`;
                       }}
                       alt={el.name || 'staff'}
                       loading="lazy"
+                      decoding="async"
+                      draggable={false}
                     />
                   </div>
                   <div className={styles.container__item_name_stuff}>{el.name}</div>
@@ -340,39 +402,14 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
                 <img className={styles.modal_img_stuff} src={selectedCard.img} alt={selectedCard.name} />
               </div>
             </div>
+
             <div className={styles.modal_name_stuff}>{selectedCard.name}</div>
-            {selectedCard.description && (
-              <div className={styles.modal_description_stuff}>{selectedCard.description}</div>
+
+            {(selectedCard.description || selectedCard.position) && (
+              <div className={styles.modal_description_stuff}>{selectedCard.description || selectedCard.position}</div>
             )}
-            <div className={styles.modal_about_stuff}>Ключевые проекты:</div>
-            {aboutKeys.map((k) =>
-              selectedCard[k] ? (
-                <div key={k} className={styles.modal_about_stuff1}>
-                  <div className={styles.modal_about_stuff_symbol}>{bulletSymbol}</div>
-                  {selectedCard[k]}
-                </div>
-              ) : null
-            )}
-            <div className={styles.modal_about_stuff}>Стаж работы в отрасли:</div>
-            {selectedCard.workExperience && (
-              <div className={styles.modal_about_stuff} >
-                <div className={styles.modal_about_stuff1} >
-                  <div className={styles.modal_about_stuff_symbol}>{bulletSymbol}</div>
-                  {selectedCard.workExperience}
-                </div>
-              </div>
-            )}
-            <div className={styles.modal_about_stuff}>
-              Образование:
-            </div>
-            {selectedCard.education && (
-              <div className={styles.modal_about_stuff}>
-                <div className={styles.modal_about_stuff1}>
-                  <div className={styles.modal_about_stuff_symbol}>{bulletSymbol}</div>
-                  {selectedCard.education}
-                </div>
-              </div>
-            )}
+
+            <StaffModalBlocks selectedCard={selectedCard} bucketUrl={bucket_url} />
           </div>
         </Modal>
       )}
