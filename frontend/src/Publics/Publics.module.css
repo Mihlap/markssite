@@ -382,8 +382,8 @@
     display: none;
   }
   .menu_button_group_articles1 {
-    padding-left: 1rem;
     margin-top: 1.5rem;
+    padding-left: 0;
   }
   .my_swiper3_button_group_article {
     display: flex;
@@ -393,6 +393,10 @@
     left: 0rem;
     width: 100%;
   }
+
+    .firstSlide {
+      margin-left: 1rem;
+    }
 
   .menu__button__allArticles,
   .menu__button__allArticles_active {
