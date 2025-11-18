@@ -819,22 +819,22 @@ display: inline-block;
   .menu_button_group_project_wrapper_main {
     display: none;
   }
+
   .menu_button_group_project_wrapper_main1 {
-    padding-left: 0;
-    margin: 1.5rem 1rem 0 1rem;
-   
+    margin: 1.5rem 0 0 0;
+    overflow: hidden;
   }
 
-  .my_swiper2_button_group_project {
-    display: flex;
-    padding-top: 0;
-    padding-left: 0;
-    padding-right: 0;
-    bottom: 0rem;
-    left: 0rem;
-    right: 0rem;
-    width: 100%;
-  }
+     .my_swiper2_button_group_project {
+       display: flex;
+       padding: 0;
+       margin: 0;
+       width: 100%;
+     }  
+     
+     .firstSlide {
+       margin-left: 1rem;
+     }
 
   .active {
     background: var(--black-1D2E43);
@@ -845,8 +845,6 @@ display: inline-block;
     display: flex;
     flex-direction: column;
     padding-top: 2rem;
-    /* padding-left: -1rem;
-        padding-right: 1rem; */
     padding-bottom: 0rem;
     background-color: var(--white-F6F6F6);
   }
@@ -857,7 +855,7 @@ display: inline-block;
     flex-direction: column;
     gap: 1.88rem;
     padding-left: 1rem;
-    padding-right: 1rem; /* добавил это, убрал выше */
+    padding-right: 1rem;
     padding-bottom: 2rem;
   }
 
