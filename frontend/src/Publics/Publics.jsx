@@ -110,20 +110,32 @@ export default function Publics({ handleMouseEnter, handleMouseLeave, handleMous
         {isMobile && (
           <div className={styles.menu_button_group_articles1}>
             <Swiper slidesPerView="auto" spaceBetween={8} className={styles.my_swiper3_button_group_article}>
-              <div className={styles.button_group_article}>
-                {buttonChoices.map((el) => (
-                  <SwiperSlide
-                    key={el}
-                    onClick={() => handleButtonClick(el)}
-                    className={`${styles.menu__button__allArticles} ${el === selectArticle ? styles.active : ''}`}
-                    style={{ width: 'fit-content' }}>
-                    <p className={styles.menu_button_item__allArticles}>{el}</p>
-                  </SwiperSlide>
-                ))}
-              </div>
+              {(() => {
+                let firstRendered = true;
+
+                return buttonChoices.map((el) => {
+                  const isFirst = firstRendered;
+                  if (firstRendered) firstRendered = false;
+
+                  return (
+                    <SwiperSlide
+                      key={el}
+                      onClick={() => handleButtonClick(el)}
+                      className={`
+                ${styles.menu__button__allArticles} 
+                ${isFirst ? styles.firstSlide : ''} 
+                ${el === selectArticle ? styles.active : ''}
+              `}
+                      style={{ width: 'fit-content' }}>
+                      <p className={styles.menu_button_item__allArticles}>{el}</p>
+                    </SwiperSlide>
+                  );
+                });
+              })()}
             </Swiper>
           </div>
         )}
+
         <section className={styles.section_article}>
           <div className={styles.section_article__block}>
             {articles.map((article) => {
