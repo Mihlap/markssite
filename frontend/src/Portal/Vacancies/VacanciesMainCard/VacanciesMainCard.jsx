@@ -3,6 +3,7 @@ import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
 import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { debounce } from 'lodash';
 import styles from './VacanciesMainCard.module.scss';
@@ -37,12 +38,11 @@ import vectorAround1 from '../icons/VectorAround1.png';
 import vectorAround2 from '../icons/vectorAround2.svg';
 
 import BenefitsVacancy from '../BenefitsVacancy/BenefitsVacancy';
+import VacancyRequirements from './VacancyRequirements';
+import { useScreenSize } from './hooks/useScreenSize';
 
+gsap.registerPlugin(useGSAP);
 gsap.registerPlugin(ScrollTrigger);
-function setViewportUnits() {
-  document.documentElement.style.setProperty('--vh', `${window.innerHeight / 100}px`);
-  document.documentElement.style.setProperty('--vw', `${window.innerWidth / 100}px`);
-}
 
 const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }) => {
   const dispatch = useDispatch();
@@ -52,35 +52,114 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedVacancy, setSelectedVacancy] = useState(null);
-  const [isVisible, setIsVisible] = useState(window.innerWidth > 1024);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const { width, height } = useScreenSize();
 
   const formRef = useRef(null);
-  const formButtonRef = useRef(null);
   const rocketRef = useRef(null);
   const sputnikRef = useRef(null);
+  const firstStarRef = useRef(null);
+  const secondStarRef = useRef(null);
+  const threeStarRef = useRef(null);
+  const sectionTopRef = useRef(null);
 
-  useEffect(() => {
-    setViewportUnits();
-    window.addEventListener('resize', setViewportUnits);
-    return () => {
-      window.removeEventListener('resize', setViewportUnits);
-    };
+  const createStarScrollTimeline = useCallback((target, config = {}) => {
+    if (typeof window === 'undefined' || !target) {
+      return null;
+    }
+
+    const { from = {}, to = {}, trigger = document.body } = config;
+
+    return gsap.fromTo(
+      target,
+      {
+        x: from.x ?? 0,
+        y: from.y ?? 0,
+        rotate: from.rotate ?? 0,
+      },
+      {
+        x: to.x ?? 0,
+        y: to.y ?? 0,
+        rotate: to.rotate ?? 0,
+        ease: 'none',
+        scrollTrigger: {
+          trigger,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: true,
+        },
+      }
+    );
   }, []);
 
-  useEffect(() => {
-    const handleResizeDebounced = debounce(() => {
-      setIsVisible(window.innerWidth > 1024);
-      setWindowWidth(window.innerWidth);
-    }, 300);
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
 
-    window.addEventListener('resize', handleResizeDebounced);
+      const registerAnimations = ({ first = {}, second = {}, third = {} }) => {
+        const animations = [
+          createStarScrollTimeline(firstStarRef.current, first),
+          createStarScrollTimeline(secondStarRef.current, second),
+          createStarScrollTimeline(threeStarRef.current, third),
+        ];
 
-    return () => {
-      window.removeEventListener('resize', handleResizeDebounced);
-      handleResizeDebounced.cancel();
-    };
-  }, []);
+        return () => animations.forEach((animation) => animation?.kill());
+      };
+
+      mm.add('(min-width: 1025px)', () =>
+        registerAnimations({
+          first: {
+            from: { rotate: -3 },
+            to: { rotate: -80 },
+          },
+          second: {
+            from: { rotate: 16 },
+            to: { rotate: 60 },
+          },
+          third: {
+            from: { rotate: -15 },
+            to: { rotate: 50 },
+          },
+        })
+      );
+
+      mm.add('(min-width: 768px) and (max-width: 1024px)', () =>
+        registerAnimations({
+          first: {
+            from: { rotate: -16 },
+            to: { rotate: 18 },
+          },
+          second: {
+            from: { rotate: 13 },
+            to: { rotate: -20 },
+          },
+          third: {
+            from: { rotate: 0 },
+            to: { rotate: 20 },
+          },
+        })
+      );
+
+      mm.add('(max-width: 767px)', () =>
+        registerAnimations({
+          first: {
+            from: { rotate: -12 },
+            to: { rotate: 15 },
+          },
+          second: {
+            from: { rotate: 10 },
+            to: { rotate: -14 },
+          },
+          third: {
+            from: { rotate: 16 },
+            to: { rotate: -18 },
+          },
+        })
+      );
+
+      return () => mm.revert();
+    },
+    { dependencies: [createStarScrollTimeline], scope: sectionTopRef }
+  );
 
   useEffect(() => {
     dispatch(fetchEmployees(id));
@@ -92,69 +171,6 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
       setSelectedVacancy(selectedVac);
     }
   }, [vacancies, id]);
-
-  useEffect(() => {
-    if (windowWidth < 1025 || !vacancies || !selectedVacancy) return;
-
-    const frameId = requestAnimationFrame(setupScrollTriggers);
-
-    return () => {
-      cancelAnimationFrame(frameId);
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [windowWidth, vacancies, selectedVacancy]);
-
-  const setupScrollTriggers = useCallback(
-    () => {
-      if (!selectedVacancy) return;
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-
-      const triggers = [];
-      vacancies.forEach((vacancy) => {
-        const blockRight = document.getElementById(`blockRight-${vacancy.id}`);
-        const wrapper = document.getElementById(`wrapperTextBlock-${selectedVacancy.id}`);
-        if (!blockRight || !wrapper) return;
-        const trig = setupBlockAnimation(blockRight, wrapper);
-        if (trig) triggers.push(trig);
-      });
-
-      return () => triggers.forEach((t) => t.kill());
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [vacancies, selectedVacancy, windowWidth]
-  );
-
-  const setupBlockAnimation = (blockRight, wrapperTextBlock) => {
-    const blockRightRect = blockRight.getBoundingClientRect();
-    const wrapperTextBlockRect = wrapperTextBlock.getBoundingClientRect();
-    let wrapperTextBlockBottom = wrapperTextBlockRect.bottom + window.scrollY - blockRightRect.height - 300;
-
-    if (windowWidth > 1601) {
-      wrapperTextBlockBottom -= 200;
-    }
-
-    return ScrollTrigger.create({
-      trigger: wrapperTextBlock,
-      start: 'top bottom',
-      end: 'bottom top',
-      scrub: true,
-      onUpdate: (self) => updatePosition(self, blockRight, wrapperTextBlockBottom),
-      onRefresh: (self) => updatePosition(self, blockRight, wrapperTextBlockBottom),
-    });
-  };
-
-  const updatePosition = (self, blockRight, bottom) => {
-    const scrollerPoint = window.scrollY + blockRight.getBoundingClientRect().height;
-    if (scrollerPoint >= bottom) {
-      blockRight.style.position = 'absolute';
-      blockRight.style.top = `${bottom - blockRight.getBoundingClientRect().height}px`;
-    } else {
-      blockRight.style.position = 'fixed';
-      blockRight.style.top = '0';
-    }
-    blockRight.style.right = '0';
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -195,49 +211,9 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
     handleScroll();
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [windowWidth]);
-
-  useLayoutEffect(() => {
-    const button = formButtonRef.current;
-    const form = formRef.current;
-    if (!button || !form) return;
-
-    setTimeout(() => {
-      const initialButtonBottom = button.getBoundingClientRect().bottom + window.scrollY + 10;
-
-      const updateButtonPosition = () => {
-        const scrollY = window.scrollY;
-        const windowHeight = window.innerHeight;
-        const formRect = form.getBoundingClientRect();
-
-        const shouldFixButton = scrollY + windowHeight >= initialButtonBottom;
-        const shouldHideButton = formRect.top <= windowHeight;
-
-        button.classList.toggle(styles.fixed, shouldFixButton);
-        button.classList.toggle(styles.hidden, shouldHideButton);
-      };
-
-      updateButtonPosition();
-      window.addEventListener('scroll', updateButtonPosition);
-
-      return () => {
-        window.removeEventListener('scroll', updateButtonPosition);
-      };
-    }, 300);
   }, []);
 
-  const handleScrollToForm = () => {
-    if (formRef.current) {
-      formRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-    return () => clearTimeout(timer);
-  }, [id]);
+  console.log(vacancies);
 
   return (
     <>
@@ -254,13 +230,15 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
           buttonText="Спасибо,&nbsp;жду!"
           variant="manualClose"
         />
-        <section className={styles['section-top']}>
+        <section ref={sectionTopRef} className={styles['section-top']}>
           <div className={styles['section-top__title']}>
+            {/* <img ref={firstStarRef} className={styles['section-top__star']} src={star3d_1} alt="star3d_1" />
+            <img ref={secondStarRef} className={styles['section-top__star']} src={star3d_2} alt="star3d_2" />
+            <img ref={threeStarRef} className={styles['section-top__star']} src={star3d_3} alt="star3d_3" /> */}
             <div className={styles['section-top__wrap']}>
               <h1 className={styles['section-top__heading']}>{vacancies[0]?.title || null}</h1>
               <div className={styles['section-top__description']}>
                 <span className={styles['section-top__label']}>Мы ищем</span>
-
                 <div
                   className={styles['section-top__html']}
                   dangerouslySetInnerHTML={{ __html: vacancies[0]?.searchStaff }}
@@ -271,6 +249,7 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
                 <img src={heart} alt="heart" />
               </div>
             </div>
+            <VacancyRequirements vacancy={vacancies[0]} variant="compact" />
             <div className={styles['section-top__advantages']}>
               <div className={styles['section-top__advantages-title']}>
                 <span>Marks Group предлагает тебе</span>
@@ -279,52 +258,33 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
               <div className={styles['section-top__advantages-item']}>
                 {advantages.map((item, index) => (
                   <div key={item.id} className={styles[`cell${index + 1}`]}>
-                    <img src={item.img} alt={item.title} />
-                    <p className={styles['section-top__advantages-item_title']}>{item.title}</p>
+                    <img className={styles['section-top__advantages-item_icon']} src={item.img} alt={item.title} />
+                    <p className={styles.title}>
+                      {item?.rows.map((row, i) => (
+                        <span key={i}>
+                          {row}
+                          {i === 0 && <br />}
+                        </span>
+                      ))}
+                    </p>
                   </div>
                 ))}
               </div>
+              <RenderVacancySections />
             </div>
           </div>
           <aside className={styles['section-top__aside']}>
-            {vacancies?.map((vacancy) => {
-              return (
-                <div>
-                  <div className={styles['section-top__aside-item']}>
-                    <span>Опыт&nbsp;работы:</span>
-                    <span>{vacancy.experience}</span>
-                  </div>
-                  <div>
-                    <span>Локация:</span>
-                    <span>{vacancy.locationStaff}</span>
-                  </div>
-                  <div>
-                    <span>Занятость:</span>
-                    <span>{vacancy.busyness}</span>
-                  </div>
-                  <div>
-                    <span>Режим&nbsp;работы:</span>
-                    <span>{vacancy.modeOperating}</span>
-                  </div>
-                  <>
-                    {isVisible && (
-                      <VacancyFormContactSimple
-                        handleMouseEnter={handleMouseEnter}
-                        handleMouseLeave={handleMouseLeave}
-                        handleMouseHover={handleMouseHover}
-                        setIsLoading={setIsLoading}
-                        setIsModalOpen={setIsModalOpen}
-                        vacancyTitleSimple={selectedVacancy?.title}
-                        buttonText={
-                          activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'
-                        }
-                        inputPaddingTop={windowWidth >= 1024 && windowWidth <= 1600 ? '2rem' : undefined}
-                      />
-                    )}
-                  </>
-                </div>
-              );
-            })}
+            <VacancyRequirements vacancy={vacancies[0]} variant="default" />
+            <VacancyFormContactSimple
+              handleMouseEnter={handleMouseEnter}
+              handleMouseLeave={handleMouseLeave}
+              handleMouseHover={handleMouseHover}
+              setIsLoading={setIsLoading}
+              setIsModalOpen={setIsModalOpen}
+              vacancyTitleSimple={selectedVacancy?.title}
+              buttonText={activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'}
+              inputPaddingTop={width >= 1024 && width <= 1600 ? '2rem' : undefined}
+            />
           </aside>
         </section>
         <div className={styles.main_vacancyWrapper__3dGroup}>
@@ -351,8 +311,8 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
                 <img className={styles.offerHeart2} src={heart2} alt={heart2} />
                 <img
                   className={styles.vectorAround}
-                  src={window.innerWidth <= 767 ? vectorAround2 : vectorAround}
-                  alt={window.innerWidth <= 767 ? 'vectorAround2' : 'vectorAround'}
+                  src={width <= 767 ? vectorAround2 : vectorAround}
+                  alt={width <= 767 ? 'vectorAround2' : 'vectorAround'}
                 />
                 <div className={styles.countLabel}>Специалистов</div>
                 <div className={styles.countValue}>&gt;1300</div>
@@ -367,18 +327,13 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
           </div>
           <div className={styles.main_vacancyWrapper__locationWrapper}>
             <div className={styles.locationTitle}>Расположение</div>{' '}
-            {windowWidth && (
-              <span className={styles.locationText}>
-                Офис в&nbsp;центре Москвы, метро {windowWidth <= 1024 ? ' ' : <br />} Белорусская
-              </span>
-            )}
             <div className={styles.main_vacancyWrapper__locationBlockLocation}>
               <div className={styles.rocketVectorAround1Block}>
                 <img className={styles.rocket} src={rocket1} alt={rocket1} />
                 <img
                   className={styles.vectorAround1}
-                  src={window.innerWidth <= 767 ? vectorAround : vectorAround1}
-                  alt={window.innerWidth <= 767 ? 'vectorAround' : 'vectorAround1'}
+                  src={width <= 767 ? vectorAround : vectorAround1}
+                  alt={width <= 767 ? 'vectorAround' : 'vectorAround1'}
                 />
               </div>
               <div className={styles.main_vacancyWrapper__locationWrapperLocation}>
