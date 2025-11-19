@@ -379,20 +379,16 @@ const VacancyFormContactSimple = ({
               персональных данных
             </Link>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'center', zIndex: '1000' }}>
-            <button
-              className={`${styles.button_vacancySimple}
+          <button
+            className={`${styles.button_vacancySimple}
               ${!isFormValid ? styles.disabled : ''}`}
-              // disabled={!isFormValid}
-              type="submit"
-              id="submit-button"
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              // style={{ minWidth: '432px', height: '56px'}}
-            >
-              <p className={styles.button_name_vacancy}>{buttonText}</p>
-            </button>
-          </div>
+            disabled={!isFormValid}
+            type="submit"
+            id="submit-button"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}>
+            <p className={styles.button_name_vacancy}>{buttonText}</p>
+          </button>
         </div>
       </div>
     </form>

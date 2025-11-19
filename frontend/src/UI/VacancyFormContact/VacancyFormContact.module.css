@@ -1,6 +1,12 @@
 @import '../../App.css';
 @import '../../_variables.scss';
 
+.form_form_wrapper {
+  border-left: 1px solid var(--light-light-gray-EBECEE, #EBECEE);
+  background: rgba(255, 255, 255, 0.70);
+  backdrop-filter: blur(4.5px);
+}
+
 .form_vacancy_wrapper {
   display: flex;
   height: fit-content;
@@ -109,8 +115,8 @@
   white-space: nowrap;
 }
 
-.input_tel_form_contacts:not(:placeholder-shown) + .placeholder,
-.input_tel_form_contacts:empty + .placeholder,
+.input_tel_form_contacts:not(:placeholder-shown)+.placeholder,
+.input_tel_form_contacts:empty+.placeholder,
 .focused1 .placeholder {
   transform: translateY(-200%) scale(0.75);
   -webkit-transform: translateY(-200%) scale(0.75);
@@ -118,20 +124,20 @@
   color: var(--gray-959DA6);
 }
 
-.input_name_form_contacts:focus + .line,
-.input_city_form_contacts:focus + .line,
-.input_letter_form_contacts:focus + .line,
-.input_resume_form_contacts:focus + .line,
-.input_tel_form_contacts:focus + .line,
-#phone-input.input_tel_form_contacts.focus + .line {
+.input_name_form_contacts:focus+.line,
+.input_city_form_contacts:focus+.line,
+.input_letter_form_contacts:focus+.line,
+.input_resume_form_contacts:focus+.line,
+.input_tel_form_contacts:focus+.line,
+#phone-input.input_tel_form_contacts.focus+.line {
   background-color: var(--blue-75BBFD);
 }
 
-.input_name_form_contacts:focus + .lineSimple,
-.input_letter_form_contacts:focus + .lineSimple,
-.input_resume_form_contacts:focus + .lineSimple,
-.input_tel_form_contacts:focus + .lineSimple,
-#phone-input.input_tel_form_contacts.focus + .lineSimple {
+.input_name_form_contacts:focus+.lineSimple,
+.input_letter_form_contacts:focus+.lineSimple,
+.input_resume_form_contacts:focus+.lineSimple,
+.input_tel_form_contacts:focus+.lineSimple,
+#phone-input.input_tel_form_contacts.focus+.lineSimple {
   background-color: var(--blue-75BBFD);
 }
 
@@ -181,7 +187,6 @@
   padding: 1rem 2rem;
   justify-content: center;
   align-items: center;
-  border-radius: 4.125rem;
   border: 1px solid transparent;
   background-color: var(--blue-75BBFD);
   margin-top: 3rem;
@@ -350,7 +355,7 @@
     column-gap: 88px;
     width: 60rem;
   }
-  
+
 
   .form_vacancy_left,
   .form_vacancy_right {
@@ -436,8 +441,8 @@
     white-space: nowrap;
   }
 
-  .input_tel_form_contacts:not(:placeholder-shown) + .placeholder,
-  .input_tel_form_contacts:empty + .placeholder,
+  .input_tel_form_contacts:not(:placeholder-shown)+.placeholder,
+  .input_tel_form_contacts:empty+.placeholder,
   .focused1 .placeholder {
     transform: translateY(-160%) scale(0.75);
     -webkit-transform: translateY(-160%) scale(0.75);
@@ -445,12 +450,12 @@
     color: var(--gray-959DA6);
   }
 
-  .input_name_form_contacts:focus + .line,
-  .input_city_form_contacts:focus + .line,
-  .input_choose_form_contacts:focus + .line,
-  .input_letter_form_contacts:focus + .line,
-  .input_resume_form_contacts:focus + .line,
-  #phone-input:focus + .line {
+  .input_name_form_contacts:focus+.line,
+  .input_city_form_contacts:focus+.line,
+  .input_choose_form_contacts:focus+.line,
+  .input_letter_form_contacts:focus+.line,
+  .input_resume_form_contacts:focus+.line,
+  #phone-input:focus+.line {
     background-color: var(--blue-75BBFD);
   }
 
@@ -505,7 +510,6 @@
     padding: 1rem 2rem;
     justify-content: center;
     align-items: center;
-    border-radius: 4.125rem;
     border: 1px solid transparent;
     background-color: var(--blue-75BBFD);
     margin-top: 1rem;
@@ -741,8 +745,8 @@
     white-space: nowrap;
   }
 
-  .input_tel_form_contacts:not(:placeholder-shown) + .placeholder,
-  .input_tel_form_contacts:empty + .placeholder,
+  .input_tel_form_contacts:not(:placeholder-shown)+.placeholder,
+  .input_tel_form_contacts:empty+.placeholder,
   .focused1 .placeholder {
     transform: translateY(-180%) scale(0.75);
     -webkit-transform: translateY(-180%) scale(0.75);
@@ -750,12 +754,12 @@
     color: var(--gray-959DA6);
   }
 
-  .input_name_form_contacts:focus + .line,
-  .input_city_form_contacts:focus + .line,
-  .input_choose_form_contacts:focus + .line,
-  .input_letter_form_contacts:focus + .line,
-  .input_resume_form_contacts:focus + .line,
-  #phone-input:focus + .line {
+  .input_name_form_contacts:focus+.line,
+  .input_city_form_contacts:focus+.line,
+  .input_choose_form_contacts:focus+.line,
+  .input_letter_form_contacts:focus+.line,
+  .input_resume_form_contacts:focus+.line,
+  #phone-input:focus+.line {
     background-color: var(--blue-75BBFD);
   }
 
@@ -966,6 +970,7 @@
   .input_name_form_contacts {
     padding-top: 38px;
   }
+
   .input_letter_form_contacts {
     padding-top: 47px;
   }
@@ -984,8 +989,8 @@
     white-space: nowrap;
   }
 
-  .input_tel_form_contacts:not(:placeholder-shown) + .placeholder,
-  .input_tel_form_contacts:empty + .placeholder,
+  .input_tel_form_contacts:not(:placeholder-shown)+.placeholder,
+  .input_tel_form_contacts:empty+.placeholder,
   .focused1 .placeholder {
     transform: translateY(-150%) scale(0.75);
     -webkit-transform: translateY(-150%) scale(0.75);
@@ -993,12 +998,12 @@
     color: var(--gray-959DA6);
   }
 
-  .input_name_form_contacts:focus + .line,
-  .input_city_form_contacts:focus + .line,
-  .input_choose_form_contacts:focus + .line,
-  .input_letter_form_contacts:focus + .line,
-  .input_resume_form_contacts:focus + .line,
-  #phone-input:focus + .line {
+  .input_name_form_contacts:focus+.line,
+  .input_city_form_contacts:focus+.line,
+  .input_choose_form_contacts:focus+.line,
+  .input_letter_form_contacts:focus+.line,
+  .input_resume_form_contacts:focus+.line,
+  #phone-input:focus+.line {
     background-color: var(--blue-75BBFD);
   }
 
