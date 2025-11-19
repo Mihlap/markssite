@@ -21,7 +21,7 @@
     "framer-motion": "^10.15.1",
     "gsap": "^3.12.5",
     "katex": "^0.16.21",
-    "mapbox-gl": "^2.14.0",
+    "mapbox-gl": "^3.16.0",
     "normalize.css": "^8.0.1",
     "quill": "^2.0.2",
     "react": "^18.2.0",
@@ -81,7 +81,8 @@
     "resolve-url-loader": "5.0.0",
     "brace-expansion": "2.0.2",
     "form-data": "4.0.4",
-    "on-headers": "1.1.0"
+    "on-headers": "1.1.0",
+    "js-yaml": "^4.1.1"
   },
   "eslintConfig": {
     "extends": [
