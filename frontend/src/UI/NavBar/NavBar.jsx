@@ -262,7 +262,7 @@ const NavBar = () => {
           </button>
         </>
       </div>
-      <Suspense fallback={<p>loading side-bar</p>}>
+      <Suspense fallback={null}>
         <SideBar
           isMenuOpen={isMenuOpen}
           primary={primary}
