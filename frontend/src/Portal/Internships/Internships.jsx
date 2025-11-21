@@ -15,7 +15,7 @@ const Internships = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, hid
   const { vacancies, loading } = useSelector((state) => state.vacancies);
   const activePage = useSelector((state) => state.activePage.page);
   const [showManyVacancies, setShowManyVacancies] = useState(false);
-  const [totalDisplayedVacancies, setTotalDisplayedVacancies] = useState(6);
+  const [totalDisplayedVacancies] = useState(6);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const wrapperRef = useRef(null);
