@@ -66,6 +66,9 @@ function Contacts({ handleMouseEnter, handleMouseLeave }) {
   const mapRef = useRef(null);
   const ymapsRef = useRef(null);
 
+  const [viewportHeight, setViewportHeight] = useState(typeof window !== 'undefined' ? window.innerHeight : 0);
+  const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth <= 767 : false);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -80,6 +83,21 @@ function Contacts({ handleMouseEnter, handleMouseLeave }) {
     setMapKey((k) => k + 1);
   }, [selectedMap, swiper]);
 
+  useEffect(() => {
+    const updateViewport = () => {
+      setViewportHeight(window.innerHeight);
+      setIsMobile(window.innerWidth <= 767);
+    };
+
+    updateViewport();
+    window.addEventListener('resize', updateViewport);
+    window.addEventListener('orientationchange', updateViewport);
+    return () => {
+      window.removeEventListener('resize', updateViewport);
+      window.removeEventListener('orientationchange', updateViewport);
+    };
+  }, []);
+
   const handleCityClick = useCallback((city) => setSelectedMap(city.name), []);
 
   const mapOptions = useMemo(
@@ -87,64 +105,63 @@ function Contacts({ handleMouseEnter, handleMouseLeave }) {
     []
   );
 
- const centerWithSidebarSafe = useCallback(() => {
-   const map = mapRef.current;
-   const ymaps = ymapsRef.current;
-   if (!map || !ymaps || !mapCenter) return;
+  const centerWithSidebarSafe = useCallback(() => {
+    const map = mapRef.current;
+    const ymaps = ymapsRef.current;
+    if (!map || !ymaps || !mapCenter) return;
 
-   const w = window.innerWidth;
-   const isDesktop = w >= 1025;
+    const w = window.innerWidth;
+    const isDesktop = w >= 1025;
 
-   if (isDesktop) {
-     try {
-       const zoom = map.getZoom ? map.getZoom() : 11;
+    if (isDesktop) {
+      try {
+        const zoom = map.getZoom ? map.getZoom() : 11;
+        if (map.panTo) {
+          map.panTo(mapCenter, { flying: false, duration: 0 });
+        } else if (map.setCenter) {
+          map.setCenter(mapCenter, zoom);
+        }
+      } catch (e) {
+        console.warn('Desktop map centering error:', e);
+      }
+      return;
+    }
 
-       if (map.panTo) {
-         map.panTo(mapCenter, { flying: false, duration: 0 });
-       } else if (map.setCenter) {
-         map.setCenter(mapCenter, zoom);
-       }
-     } catch (e) {
-       console.warn('Desktop map centering error:', e);
-     }
-     return;
-   }   
-   const left = 0;
-   const top = menuRef.current ? menuRef.current.offsetHeight : 0;
+    const left = 0;
+    const top = menuRef.current ? menuRef.current.offsetHeight : 0;
 
-   try {
-     const margins = [top, 0, 0, left];
-     if (map.margin && map.margin.setDefaultMargin) {
-       map.margin.setDefaultMargin(margins);
-     } else if (map.options && map.options.set) {
-       map.options.set('margin', margins);
-     }
+    try {
+      const margins = [top, 0, 0, left];
+      if (map.margin && map.margin.setDefaultMargin) {
+        map.margin.setDefaultMargin(margins);
+      } else if (map.options && map.options.set) {
+        map.options.set('margin', margins);
+      }
 
-     const zoom = map.getZoom ? map.getZoom() : 11;
-     const projection = map.options.get && map.options.get('projection');
+      const zoom = map.getZoom ? map.getZoom() : 11;
+      const projection = map.options.get && map.options.get('projection');
 
-     if (projection && projection.toGlobalPixels && projection.fromGlobalPixels && top > 0) {
-       const global = projection.toGlobalPixels(mapCenter, zoom);
-       const shiftedGlobal = [global[0], global[1] - top / 2];
-       const shiftedCenter = projection.fromGlobalPixels(shiftedGlobal, zoom);
+      if (projection && projection.toGlobalPixels && projection.fromGlobalPixels && top > 0) {
+        const global = projection.toGlobalPixels(mapCenter, zoom);
+        const shiftedGlobal = [global[0], global[1] - top / 2];
+        const shiftedCenter = projection.fromGlobalPixels(shiftedGlobal, zoom);
 
-       if (map.panTo) {
-         map.panTo(shiftedCenter, { flying: false, duration: 0 });
-       } else if (map.setCenter) {
-         map.setCenter(shiftedCenter, zoom);
-       }
-     } else {      
-       if (map.panTo) {
-         map.panTo(mapCenter, { flying: false, duration: 0, useMapMargin: true });
-       } else if (map.setCenter) {
-         map.setCenter(mapCenter, zoom, { useMapMargin: true });
-       }
-     }
-   } catch (e) {
-     console.warn('Map fallback error:', e);
-   }
- }, [mapCenter]);
-
+        if (map.panTo) {
+          map.panTo(shiftedCenter, { flying: false, duration: 0 });
+        } else if (map.setCenter) {
+          map.setCenter(shiftedCenter, zoom);
+        }
+      } else {
+        if (map.panTo) {
+          map.panTo(mapCenter, { flying: false, duration: 0, useMapMargin: true });
+        } else if (map.setCenter) {
+          map.setCenter(mapCenter, zoom, { useMapMargin: true });
+        }
+      }
+    } catch (e) {
+      console.warn('Map fallback error:', e);
+    }
+  }, [mapCenter]);
 
   useEffect(() => {
     centerWithSidebarSafe();
@@ -205,7 +222,10 @@ function Contacts({ handleMouseEnter, handleMouseLeave }) {
           </div>
         </div>
 
-        <div id="contacts-map" className={styles.map_block}>
+        <div
+          id="contacts-map"
+          className={styles.map_block}
+          style={isMobile ? { height: `${viewportHeight}px` } : undefined}>
           <YMaps>
             <Map
               key={mapKey}
@@ -234,14 +254,12 @@ function Contacts({ handleMouseEnter, handleMouseLeave }) {
           <div className={styles.mapTintBase} />
           <div className={styles.mapTintWarm} />
           <Swiper onSwiper={setSwiper} slidesPerView="auto" spaceBetween={10} className={styles.mySwiper}>
-            {cities.map((city, index) => (
+            {cities.map((city) => (
               <SwiperSlide
                 key={city.name}
-                className={`
-        ${styles.slider_menu_button}
-        ${index === 0 ? styles.slider_menu_button_first : ''}
-        ${selectedMap === city.name ? styles.slider_menu_button_active : ''}
-      `}
+                className={`${styles.slider_menu_button} ${
+                  selectedMap === city.name ? styles.slider_menu_button_active : ''
+                }`}
                 onClick={() => handleCityClick(city)}>
                 <p className={styles.slider_button_city}>{city.name}</p>
               </SwiperSlide>
@@ -249,26 +267,12 @@ function Contacts({ handleMouseEnter, handleMouseLeave }) {
           </Swiper>
         </div>
       </div>
+
       <style>{`
         [class*="ymaps-2"][class*="-ground-pane"] {
           -webkit-filter: grayscale(80%) brightness(100%);
         }
       `}</style>
-
-      {/* <style>
-        {`
-          [class*="ymaps-2"][class*="-ground-pane"] {
-            filter: grayscale(98%) brightness(100%);
-          }      
-        `}
-      </style> */}
-      {/* <style>
-        {`
-          [class*="ymaps-2"][class*="-ground-pane"] {
-            filter: brightness(95%) hue-rotate(500deg) saturate(100%) !important;
-          }
-        `}
-      </style> */}
     </>
   );
 }

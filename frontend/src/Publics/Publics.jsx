@@ -29,23 +29,22 @@ export default function Publics({ handleMouseEnter, handleMouseLeave, handleMous
     []
   );
 
-  const buttonChoices = useMemo(
-    () => ['Все', 'Выступления', 'Интервью', 'Новости', 'Научные публикации'],
-    []
-  );
+  const buttonChoices = useMemo(() => ['Все', 'Выступления', 'Интервью', 'Новости', 'Научные публикации'], []);
 
- useEffect(() => {
-   window.scrollTo(0, 0);
-   const handleResize = () => {
-     const width = window.innerWidth;
-     setScreenWidth(width);
-     setVideoSrc(width >= 1025 ? videoSource.large : videoSource.medium);
-   };
-   handleResize();
-   window.addEventListener('resize', handleResize);
+  useEffect(() => {
+    window.scrollTo(0, 0);
 
-   return () => window.removeEventListener('resize', handleResize);
- }, [videoSource]);
+    const handleResize = () => {
+      const width = window.innerWidth;
+      setScreenWidth(width);
+      setVideoSrc(width >= 1025 ? videoSource.large : videoSource.medium);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, [videoSource]);
 
   useEffect(() => {
     dispatch(getFetchFormArticle());
@@ -89,6 +88,7 @@ export default function Publics({ handleMouseEnter, handleMouseLeave, handleMous
             <span className={styles.text2_publics}>Публикации</span>
           </div>
         </div>
+
         {!isActive && !isMobile && (
           <div className={styles.menu_button_group_articles_wrapper_main}>
             <div className={styles.menu_button_group_articles}>
@@ -107,9 +107,15 @@ export default function Publics({ handleMouseEnter, handleMouseLeave, handleMous
             </div>
           </div>
         )}
+       
         {isMobile && (
           <div className={styles.menu_button_group_articles1}>
-            <Swiper slidesPerView="auto" spaceBetween={8} className={styles.my_swiper3_button_group_article}>
+            <Swiper
+              slidesPerView="auto"
+              spaceBetween={8}
+              className={styles.my_swiper3_button_group_article}
+              threshold={3}
+              touchStartPreventDefault={false}>
               {(() => {
                 let firstRendered = true;
 
@@ -122,10 +128,10 @@ export default function Publics({ handleMouseEnter, handleMouseLeave, handleMous
                       key={el}
                       onClick={() => handleButtonClick(el)}
                       className={`
-                ${styles.menu__button__allArticles} 
-                ${isFirst ? styles.firstSlide : ''} 
-                ${el === selectArticle ? styles.active : ''}
-              `}
+                        ${styles.menu__button__allArticles} 
+                        ${isFirst ? styles.firstSlide : ''} 
+                        ${el === selectArticle ? styles.active : ''}
+                      `}
                       style={{ width: 'fit-content' }}>
                       <p className={styles.menu_button_item__allArticles}>{el}</p>
                     </SwiperSlide>
