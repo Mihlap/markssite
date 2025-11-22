@@ -1,6 +1,7 @@
 import { memo, useMemo } from 'react';
 import MarkdownContentRenderer from '../UI/MarkdownContentRenderer/MarkdownContentRenderer';
 import defaultStyles from './StaffModalBlocks.module.scss';
+import 'katex/dist/katex.min.css';
 
 import { toBestImageSrc, rewriteMdLinksToBucket } from './utils/media';
 import useFactClipLayout from './utils/useFactClipLayout';
@@ -112,7 +113,7 @@ const ImageWithCaption = ({ styles, src, caption, bucketUrl }) => {
         alt=""
         loading="lazy"
         onError={(e) => {
-          e.currentTarget.src = `${bucketUrl}/images/imageAdd/no_photo.png`;
+          e.currentTarget.src = `${bucketUrl}/images/imageStaff/no_photo.png`;
           e.currentTarget.classList.add('img-error');
         }}
       />

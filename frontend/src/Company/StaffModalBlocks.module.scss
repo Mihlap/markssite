@@ -31,20 +31,6 @@
   padding-left: 1.2rem;
 }
 
-.modal_md_container pre {
-  color: #e6edf3;
-  border-radius: 10px;
-  padding: 16px;
-  overflow: auto;
-}
-
-.modal_md_container code {
-  border-radius: 6px;
-  padding: 1px 6px;
-  font-size: 13px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-}
-
 .modal_md_container a {
   color: #2f80ed;
   text-decoration: none;
@@ -169,6 +155,53 @@
     line-height: 1.375rem;
     font-weight: var(--fw-300);
   }
+}
+
+.modal_md_container .katex-display {
+  margin: 16px 0;
+  overflow-x: auto;
+}
+
+.modal_md_container .katex {
+  font-size: 1rem;
+}
+
+.modal_md_container pre {
+  color: var(--black-1D2E43);
+  background-color: transparent;
+  margin: 0 0 16px;
+  overflow: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: var(--fw-300);
+  font-size: 16px;
+}
+
+.modal_md_container pre>code {
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+}
+
+.modal_md_container code {
+  color: var(--black-1D2E43);
+  background-color: transparent;
+  font-size: 16px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: var(--fw-300);
+  margin: 0 0 16px;
+}
+
+.modal_md_container :not(pre)>code {
+ color: var(--black-1D2E43);
+  background-color: transparent;
+  font-size: 16px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: var(--fw-300);
+  margin: 0 0 16px;
 }
 
 /* ===== Блок изображение с описанием ===== */
