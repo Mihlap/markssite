@@ -72,8 +72,8 @@ const normalizeConstructorGroups = (groups) => {
 
 const photoSrc = (row) => {
   const name = row?.img;
-  if (!name) return `${bucket_url}/images/imageStuff/no_photo.png`;
-  const raw = isHttp(String(name)) ? String(name) : `${bucket_url}/images/imageStuff/${name}`;
+  if (!name) return `${bucket_url}/images/imageStaff/no_photo.png`;
+  const raw = isHttp(String(name)) ? String(name) : `${bucket_url}/images/imageStaff/${name}`;
   return encodePathnameOnly(raw);
 };
 
@@ -198,13 +198,6 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
     setCategory(cat);
   }, []);
 
-  // useEffect(() => {
-  //   if (isModalOpen && selectedCard) {
-  //     console.log('[STAFF MODAL] opened with selectedCard:', selectedCard);
-  //     console.log('[STAFF MODAL] selectedCard.dynamicBlocks:', selectedCard.dynamicBlocks);
-  //   }
-  // }, [isModalOpen, selectedCard]);
-
   return (
     <>
       <div className={styles.specialist_wrapper}>
@@ -267,7 +260,7 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
                     className={`${styles.container__img_stuff} ${!loading ? 'loaded' : ''}`}
                     src={photoSrc(el)}
                     onError={(e) => {
-                      e.currentTarget.src = `${bucket_url}/images/imageStuff/no_photo.png`;
+                      e.currentTarget.src = `${bucket_url}/images/imageStaff/no_photo.png`;
                     }}
                     alt={el.name || 'staff'}
                     loading="lazy"
@@ -307,7 +300,7 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
                       className={`${styles.container__img_stuff} ${!loading ? 'loaded' : ''}`}
                       src={photoSrc(el)}
                       onError={(e) => {
-                        e.currentTarget.src = `${bucket_url}/images/imageStuff/no_photo.png`;
+                        e.currentTarget.src = `${bucket_url}/images/imageStaff/no_photo.png`;
                       }}
                       alt={el.name || 'staff'}
                       loading="lazy"
@@ -346,7 +339,7 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
                       className={`${styles.container__img_stuff} ${!loading ? 'loaded' : ''}`}
                       src={photoSrc(el)}
                       onError={(e) => {
-                        e.currentTarget.src = `${bucket_url}/images/imageStuff/no_photo.png`;
+                        e.currentTarget.src = `${bucket_url}/images/imageStaff/no_photo.png`;
                       }}
                       alt={el.name || 'staff'}
                       loading="lazy"
