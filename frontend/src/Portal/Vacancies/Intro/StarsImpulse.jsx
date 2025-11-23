@@ -5,8 +5,18 @@ import { useGLTF } from '@react-three/drei';
 import { EffectComposer, N8AO, ToneMapping } from '@react-three/postprocessing';
 import { BallCollider, Physics, RigidBody } from '@react-three/rapier';
 
-// Отключаем устаревший режим управления цветами
 THREE.ColorManagement.legacyMode = false;
+
+function isWebGLAvailable() {
+  if (typeof window === 'undefined') return false;
+  try {
+    const canvas = document.createElement('canvas');
+    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    return !!(window.WebGLRenderingContext && gl);
+  } catch {
+    return false;
+  }
+}
 
 function generateBaubles(scaleRange) {
   return [...Array(16)].map(() => ({
@@ -14,7 +24,6 @@ function generateBaubles(scaleRange) {
   }));
 }
 
-// Компонент для отдельной звездочки
 function Bauble({ vec = new THREE.Vector3(), scale, r = THREE.MathUtils.randFloatSpread }) {
   const { nodes } = useGLTF('/assets/stars.glb');
   const api = useRef();
@@ -46,7 +55,6 @@ function Bauble({ vec = new THREE.Vector3(), scale, r = THREE.MathUtils.randFloa
   );
 }
 
-// Компонент для управления указателем мыши
 function Pointer({ vec = new THREE.Vector3() }) {
   const ref = useRef();
   useFrame(({ mouse, viewport }) => {
@@ -61,11 +69,14 @@ function Pointer({ vec = new THREE.Vector3() }) {
   );
 }
 
-// Основной компонент, который возвращает Canvas
 function StarsImpulse() {
-  // Массив для звезд
   const [baubles, setBaubles] = useState(generateBaubles([0.55, 0.75, 1, 1, 1.15]));
   const [isVisible, setIsVisible] = useState(true);
+  const [webglSupported, setWebglSupported] = useState(true);
+
+  useEffect(() => {
+    setWebglSupported(isWebGLAvailable());
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -93,7 +104,7 @@ function StarsImpulse() {
 
   return (
     <div id="stars-canvas" style={{ position: 'relative', top: 0, left: 0, height: '100vh', width: '100vw' }}>
-      {isVisible && (
+       {isVisible && webglSupported && (
         <Canvas
           style={{ width: '100vw', height: '100vh' }}
           shadows

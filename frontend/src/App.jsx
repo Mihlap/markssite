@@ -2,6 +2,7 @@ import { useEffect, useState, Suspense, lazy } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import './App.css';
+import 'swiper/css';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { checkUserAuth } from './store/Slice/authSlice';
@@ -78,6 +79,7 @@ export default function App() {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(!IS_DEV);
+  const [isReady, setIsReady] = useState(IS_DEV);
   const [videoLoaded, setVideoLoaded] = useState(false);
 
   const isPortalPage = location.pathname.startsWith('/hr/');
@@ -109,38 +111,37 @@ export default function App() {
   const handleMouseEnterFooterWhiteMore = () => dispatch(textFooterWhiteEnter());
   const handleMouseLeaveFooterWhite = () => dispatch(textLeaveWhiteFooter());
 
-  // Таймаут для прелоудера
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 4000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Если видео загрузилось раньше таймера — убираем прелоудер
-  useEffect(() => {
-    if (IS_DEV) return;
     if (videoLoaded) {
-      setLoading(false);
+      setIsReady(true);
     }
   }, [videoLoaded]);
 
-  // Сброс currentPage, если ушли из админки
+  useEffect(() => {
+    if (IS_DEV) return;
+    if (isReady) return;
+
+    const timer = setTimeout(() => {
+      setIsReady(true);
+    }, 12000);
+
+    return () => clearTimeout(timer);
+  }, [isReady]);
+
   useEffect(() => {
     if (!location.pathname.startsWith('/admin')) {
       dispatch(resetCurrentPage());
     }
   }, [location.pathname, dispatch]);
 
+  const shouldShowGlobalLoader =
+    !IS_DEV && loading && !isPortalPage && location.pathname !== '/information' && location.pathname !== '/footerForm';
+
   return (
     <HelmetProvider>
-      {!IS_DEV &&
-      loading &&
-      location.pathname !== '/information' &&
-      location.pathname !== '/hr/home' &&
-      location.pathname !== '/footerForm' ? (
-        <LoadingNew />
-      ) : (
-        <Suspense fallback={<LoadingNew />}>
-          <>
+      <div className="app-shell">
+        <Suspense fallback={null}>
+          <div className={'app-shell__content ' + (!shouldShowGlobalLoader ? 'app-shell__content--visible' : '')}>
             {showNavbarFooter && currentPage !== 'add' && (
               <ButtonAdmin user={user} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} />
             )}
@@ -429,9 +430,15 @@ export default function App() {
             )}
 
             {showNavbarFooter && currentPage !== 'add' && <CustomCursor />}
-          </>
+          </div>
         </Suspense>
-      )}
+
+        {shouldShowGlobalLoader && (
+          <div className="app-shell__loaderOverlay">
+            <LoadingNew isReady={isReady} onFinish={() => setLoading(false)} />
+          </div>
+        )}
+      </div>
     </HelmetProvider>
   );
 }
