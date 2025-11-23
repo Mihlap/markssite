@@ -1,24 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './LoadingNew.module.css';
 import logo from '../icons/logowhite.svg';
 
-export default function Loading() {
+export default function LoadingNew({ isReady = false, onFinish }) {
   const [percent, setPercent] = useState(0);
-  const [progressWidth, setProgressWidth] = useState(0);
+  const finishCalledRef = useRef(false);
 
   useEffect(() => {
-    const loading = setInterval(() => {
-      if (percent === 100 && progressWidth === 200) {
-        clearInterval(loading);
-      } else {
-        setPercent((prevPercent) => prevPercent + 2);
-        setProgressWidth((prevWidth) => prevWidth + 4);
-      }
-    }, 40);
-    // testfdfd
-    // sdfsdf
-    return () => clearInterval(loading);
-  }, [percent, progressWidth]);
+    if (finishCalledRef.current) return;
+
+    const step = isReady ? 4 : 1;
+    const delay = isReady ? 20 : 80;
+
+    const timer = setTimeout(() => {
+      setPercent((prev) => {
+        let next = prev + step;
+        if (next > 100) next = 100;
+
+        if (isReady && next === 100 && !finishCalledRef.current) {
+          finishCalledRef.current = true;
+          setTimeout(() => {
+            onFinish?.();
+          }, 300);
+        }
+
+        return next;
+      });
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, [percent, isReady, onFinish]);
 
   return (
     <div className={styles.contentLoaderContainer}>
@@ -58,14 +69,6 @@ export default function Loading() {
               <div className={styles.dot}></div>
             </div>
           </div>
-          {/* <div className={styles.loadingProgresBar}>
-            <div className={styles.loadingProgresBar}>
-              <div
-                className={styles.progress}
-                style={{ width: `${progressWidth}px` }}
-              ></div>
-            </div>
-          </div> */}
         </div>
       </div>
     </div>
