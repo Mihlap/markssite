@@ -497,7 +497,9 @@ const Header = React.memo(
                   <SwiperSlide
                     key={`${project.IdProject}-${index}`}
                     id="slider_container_item_card"
-                    className={styles.slider_container_item_card}
+                    className={`${styles.slider_container_item_card} ${
+                      index === 0 ? styles.slider_container_item_card_first : ''
+                    }`}
                     style={index % 2 === 1 ? { paddingTop: '10rem' } : {}}>
                     <Link to={`/projects/${project.id}`} key={`${project.IdProject}-${index}`}>
                       <div className={styles.wrapper_container_item_card}>

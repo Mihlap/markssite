@@ -18,7 +18,7 @@ export const absolutizeToBucket = (raw, bucketUrl) => {
   if (!raw) return '';
   if (isHttp(raw)) return encodePathnameOnly(raw);
   const trimmed = String(raw).replace(/^\/+/, '');
-  const path = trimmed.includes('/') ? trimmed : `images/imageAdd/${trimmed}`;
+  const path = trimmed.includes('/') ? trimmed : `images/imageStaff/${trimmed}`;
   return `${bucketUrl}/${path}`;
 };
 

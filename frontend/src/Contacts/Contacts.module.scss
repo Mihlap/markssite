@@ -298,6 +298,7 @@
     min-width: 0;
     display: block;
     position: relative;
+    max-height: none;
   }
 
   .menu_block {
@@ -319,7 +320,7 @@
   .map_block {
     position: relative;
     width: 100%;
-    height: 100vh;
+    height: 100svh;
   }
 
   .menu_span {
@@ -373,29 +374,28 @@
     display: none;
   }
 
-  .mySwiper {
-    position: absolute;
-    bottom: 3rem;
-    left: 0;
-    right: 0;
-    padding-left: 0;
-    padding-right: 0;
-    max-width: 100%;
-    height: auto;
-
-    :global(.swiper-wrapper) {
-      display: flex;
-      align-items: center;
-    }
-
-    :global(.swiper-slide) {
-      width: auto;
+    .mySwiper {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      max-width: 100%;
       height: auto;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+  
+      :global(.swiper-wrapper) {
+        display: flex;
+        align-items: center;
+        padding-left: 1rem;
+      }
+  
+      :global(.swiper-slide) {
+        width: auto;
+        height: auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
     }
-  }
 
   .slider_menu_button {
     border-radius: 34px;
@@ -410,10 +410,6 @@
     width: fit-content;
     cursor: pointer;
     transition: background-color 0.4s ease, color 0.4s ease;
-  }
-
-  .slider_menu_button_first {
-    margin-left: 1rem;
   }
 
   .slider_menu_button_active {
