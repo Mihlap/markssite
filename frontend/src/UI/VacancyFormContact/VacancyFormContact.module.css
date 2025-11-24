@@ -1,10 +1,19 @@
 @import '../../App.css';
 @import '../../_variables.scss';
 
-.form_form_wrapper {
+.form_form_wrapper[data-background="true"] {
   border-left: 1px solid var(--light-light-gray-EBECEE, #EBECEE);
   background: rgba(255, 255, 255, 0.70);
   backdrop-filter: blur(4.5px);
+}
+
+.wrap {
+  padding: 0px 100px;
+
+
+  @media (max-width: 1710px) {
+    padding: 0px 40px;
+  }
 }
 
 .form_vacancy_wrapper {
