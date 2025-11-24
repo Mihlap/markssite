@@ -46,18 +46,79 @@
   display: flex;
   align-items: stretch;
 
-  &__title {
+  @media (min-width: 1024px) {
     position: relative;
+  }
+
+  &__title {
+    @media (max-width: 1024px) {
+      position: relative;
+    }
+
     flex: 1;
+  }
+
+  // МИКСИН ДЛЯ ЗВЁЗД
+  @mixin star($w, $h, $pos: ()) {
+    width: $w;
+    height: $h;
+
+    // если передали позиционные свойства – добавить их
+    @if length($pos)>0 {
+      @each $key, $value in $pos {
+        #{$key}: $value;
+      }
+    }
   }
 
   &__star {
     position: absolute;
 
-    // &:nth-of-type(1) {
-    //   right: 10%;
-    //   top: 32%;
-    // }
+    &:nth-of-type(1) {
+      @include star(222px, 222px, (right: 20%, top: 1%));
+    }
+
+    &:nth-of-type(2) {
+      @include star(391px, 391px, (top: 17%, left: 55%));
+    }
+
+    &:nth-of-type(3) {
+      @include star(728px, 728px, (right: 0, top: 15%));
+    }
+
+
+
+    /* ========== 1024px ========== */
+    @media (max-width: 1024px) {
+      &:nth-of-type(1) {
+        @include star(128px, 128px, (right: 10%, top: 3%));
+      }
+
+      &:nth-of-type(2) {
+        @include star(225px, 225px, (top: 20%, left: 38%));
+      }
+
+      &:nth-of-type(3) {
+        @include star(419px, 419px, (right: 0, top: 15%));
+      }
+    }
+
+
+    /* ========== 768px ========== */
+    @media (max-width: 768px) {
+      &:nth-of-type(1) {
+        @include star(76px, 76px, (right: 10%, top: 10%));
+      }
+
+      &:nth-of-type(2) {
+        @include star(133px, 133px, (top: 16%, left: 0));
+      }
+
+      &:nth-of-type(3) {
+        @include star(249px, 249px, (right: 0, top: 17%));
+      }
+    }
+
 
     // &:nth-of-type(2) {
     //   right: -15%;
@@ -132,7 +193,7 @@
 
 
   &__wrap {
-    margin-right: -100%;
+    // margin-right: -100%;
     backdrop-filter: blur(7px);
     background: linear-gradient(221.46deg,
         rgba(255, 203, 193, 0.09) -4.631%,
@@ -150,6 +211,17 @@
       @include flex(32px, column);
       padding: 89px 0 24px 62px;
     }
+
+    @media (max-width: 1024px) {
+      margin-right: auto;
+    }
+
+    @media (max-width: 425px) {
+      padding: 88px 60px 24px 16px;
+      gap: 24px;
+    }
+
+
   }
 
   &__heading {
@@ -277,6 +349,7 @@
         display: flex;
         flex-direction: column;
         gap: 32px;
+        padding-bottom: 178px;
 
         .cell1,
         .cell2,
@@ -332,6 +405,10 @@
 
 .main_vacancyWrapper {
   position: relative;
+
+  @media (max-width: 1024px) {
+    overflow-x: hidden;
+  }
 
   .main_vacancy_block {
 
@@ -890,7 +967,7 @@
       font-size: 1.125rem;
       font-weight: var(--fw-400);
       line-height: 1.625rem;
-      padding-right: 41rem;
+      // padding-right: 41rem;
     }
 
     .locationValue {
@@ -898,7 +975,7 @@
       font-size: 2.5rem;
       font-weight: var(--fw-300);
       line-height: 3rem;
-      padding-right: 36rem;
+      // padding-right: 36rem;
     }
   }
 
@@ -2368,6 +2445,7 @@
       border: 1px solid transparent;
       background-color: var(--blue-75BBFD);
       transition: background-color 0.4s ease;
+      width: fit-content;
 
       &.fixed {
         position: fixed;
@@ -2557,13 +2635,13 @@
       padding-left: 1rem;
 
       .locationTitle {
-        align-self: flex-start;
+        // align-self: flex-start;
         font-size: 1rem;
         line-height: 1.5rem;
       }
 
       .locationText {
-        align-self: flex-start;
+        // align-self: flex-start;
         font-size: 1.25rem;
         line-height: 1.75rem;
         padding-top: 1rem;
