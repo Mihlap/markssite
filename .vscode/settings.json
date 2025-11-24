@@ -3,7 +3,11 @@
   "workbench.preferredDarkColorTheme": "Default Dark Modern",
   "workbench.preferredHighContrastColorTheme": "Default Light Modern",
 
-  "cSpell.words": ["metalness", "Podzemproekt"],
+  "cSpell.words": [
+    "metalness",
+    "Placemark",
+    "Podzemproekt"
+  ],
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "postman.settings.dotenv-detection-notification-visibility": false
