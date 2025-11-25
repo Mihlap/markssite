@@ -1,0 +1,134 @@
+.vacancy-req {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    @mixin row($padding: clamp(40px, 6vw, 120px),
+        $special-children: (1, 4)) {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: $padding;
+
+        // 👉 стиль по умолчанию
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid var(--light-light-gray-EBECEE, #EBECEE);
+        backdrop-filter: blur(4.5px);
+
+        // 👉 перезаписываем стиль для спец-блоков
+        @each $child in $special-children {
+            &:nth-child(#{$child}) {
+                backdrop-filter: blur(7px);
+                background: linear-gradient(221.46deg,
+                        rgba(255, 203, 193, 0.09) -4.631%,
+                        rgba(117, 187, 253, 0.09) 44.805%,
+                        rgba(188, 188, 188, 0.09) 103.423%);
+                border-bottom: 1px solid rgb(235, 236, 238);
+            }
+        }
+    }
+
+    @mixin label($size, $fw, $lh ) {
+        color: var(--black-1D2E43);
+        font-family: var(--font-raleway);
+        font-style: normal;
+        font-size: $size;
+        font-weight: $fw;
+        line-height: $lh;
+    }
+
+    @mixin value($size, $fw, $lh ) {
+        color: var(--black-1D2E43);
+        font-family: var(--font-unbounded);
+        font-style: normal;
+        font-size: $size;
+        font-weight: $fw;
+        line-height: $lh;
+    }
+
+
+    /* ===== DEFAULT ===== */
+    &__default {
+        // display: grid;
+        // grid-template-columns: 1fr 1fr;
+
+        &__row {
+            @include row(119px 190px 119px 100px, $special-children: (1, 4));
+        }
+
+        &__label {
+            @include label(18px, 400, 26px);
+        }
+
+        &__value {
+            @include value(32px, 300, 40px);
+        }
+
+        @media (max-width: 1710px) {
+            &__row {
+                @include row(33px 126px 44px 40px);
+            }
+
+            &__label {
+                @include label(16px, 400, 24px);
+            }
+
+            &__value {
+                @include value(20px, 300, 28px);
+            }
+        }
+    }
+
+    /* ===== COMPACT ===== */
+    &__compact {
+        display: none;
+
+        &__row {
+            @include row($special-children: (1, 3));
+        }
+
+        &__label {
+            @include label(16px, 400, 24px);
+        }
+
+        &__value {
+            @include value(20px, 300, 28px);
+        }
+
+        @media (max-width: 1024px) {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            &__row {
+                @include row(33px 0px 44px 0px, $special-children: (1, 3));
+                width: 100%;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            &__row {
+                @include row(33px 0px 44px 0px, $special-children: (1, 3));
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 430px) {
+            display: grid;
+
+            &__row {
+                &:nth-child(3) {
+                    grid-column: 2;
+                    grid-row: 2;
+                }
+
+                &:nth-child(4) {
+                    grid-column: 1;
+                    grid-row: 2;
+                }
+            }
+
+        }
+    }
+}
