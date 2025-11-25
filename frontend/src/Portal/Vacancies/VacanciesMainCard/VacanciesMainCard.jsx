@@ -2,22 +2,29 @@ import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
+import clsx from 'clsx';
 import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { debounce } from 'lodash';
 import styles from './VacanciesMainCard.module.scss';
 import VacancySlider from '../VacancySlider/VacancySlider';
 import LoadingVacancy from '../../../Loading/LoadingVacancy';
 import RenderVacancySections from '../RenderVacancySections/RenderVacancySections';
 import { fetchEmployees } from '../../../store/Slice/vacanciesSlice';
-import AllVacancyButton from '../../../UI/ButtonVacancy/AllVacancyButton';
 import VacancyFormContactSimple from '../../../UI/VacancyFormContact/VacancyFormContactSimple';
 import VacancyFormContact from '../../../UI/VacancyFormContact/VacancyFormContact';
 import ModalVacancyFormSend from '../../../UI/VacancyFormContact/ModalVacancyFormSend';
+import { advantages } from './const/advantages';
+import BenefitsVacancy from '../BenefitsVacancy/BenefitsVacancy';
+import VacancyRequirements from '../../ui/mesh/VacancyRequirements';
+// hooks
+import { useScreenSize } from './hooks/useScreenSize';
+import { useStickyVisibility } from './hooks/useStickyVisibility';
 
-import star3d_1 from '../icons/star3d_1.png';
-import star3d_2 from '../icons/star3d_2.png';
-import star3d_3 from '../icons/star3d_3.png';
+import star1 from '../icons/star-header-1.png';
+import star2 from '../icons/star-header-2.png';
+import star3 from '../icons/star-header-3.png';
+
 import star3d_4 from '../icons/star3d_4.png';
 import star3d_5 from '../icons/star3d_5.png';
 import star3d_6 from '../icons/star3d_6.png';
@@ -34,19 +41,9 @@ import sputnik from '../icons/sputnik.png';
 import vectorAround from '../icons/VectorAround.svg';
 import vectorAround1 from '../icons/VectorAround1.png';
 import vectorAround2 from '../icons/vectorAround2.svg';
-
-import frame1 from '../icons/frame/frame1.svg';
-import frame2 from '../icons/frame/frame2.svg';
-import frame3 from '../icons/frame/frame3.svg';
-import frame4 from '../icons/frame/frame4.svg';
-import BenefitsVacancy from '../BenefitsVacancy/BenefitsVacancy';
-
+import Button from '../../ui/button/Button';
+gsap.registerPlugin(useGSAP);
 gsap.registerPlugin(ScrollTrigger);
-function setViewportUnits() {
-  document.documentElement.style.setProperty('--vh', `${window.innerHeight / 100}px`);
-  document.documentElement.style.setProperty('--vw', `${window.innerWidth / 100}px`);
-}
-
 
 const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }) => {
   const dispatch = useDispatch();
@@ -56,41 +53,49 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedVacancy, setSelectedVacancy] = useState(null);
-  const [isVisible, setIsVisible] = useState(window.innerWidth > 1024);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [blockReady, setBlockReady] = useState(false);
+  const { width } = useScreenSize();
 
-  const formRef = useRef(null);
+  const formRef = useRef(null); // якорь чтоб спуститься к форме
+  const showOnRef = useRef(null); // первый якорь
+  const hideOnRef = useRef(null); // второй якорь
+
   const formButtonRef = useRef(null);
   const rocketRef = useRef(null);
   const sputnikRef = useRef(null);
+  const container = useRef();
+  const firstStarRef = useRef(null);
+  const secondStarRef = useRef(null);
+  const threeStarRef = useRef(null);
 
-  useEffect(() => {
-    const raf = requestAnimationFrame(() => setBlockReady(true));
-    return () => cancelAnimationFrame(raf);
-  }, []);
+  const { isShown, isHidden } = useStickyVisibility(showOnRef, hideOnRef);
 
-  useEffect(() => {  
-    setViewportUnits();
-    window.addEventListener('resize', setViewportUnits);
-    return () => {    
-      window.removeEventListener('resize', setViewportUnits);
-    };
-  }, []);
+  useGSAP(
+    () => {
+      const stars = [
+        { ref: firstStarRef, rotate: 100, initialPosition: -50 },
+        { ref: secondStarRef, rotate: -100, initialPosition: 50 },
+        { ref: threeStarRef, rotate: 100, initialPosition: -50 },
+      ];
 
-  useEffect(() => {
-    const handleResizeDebounced = debounce(() => {
-      setIsVisible(window.innerWidth > 1024);
-      setWindowWidth(window.innerWidth);
-    }, 300);
-
-    window.addEventListener('resize', handleResizeDebounced);
-
-    return () => {
-      window.removeEventListener('resize', handleResizeDebounced);
-      handleResizeDebounced.cancel();
-    };
-  }, []);
+      stars.forEach(({ ref, rotate, initialPosition }) => {
+        gsap.fromTo(
+          ref.current,
+          { rotateZ: initialPosition }, // ← начальный угол
+          {
+            rotateZ: rotate, // ← конечный угол
+            ease: 'none',
+            scrollTrigger: {
+              trigger: container.current,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: true,
+            },
+          }
+        );
+      });
+    },
+    { scope: container }
+  );
 
   useEffect(() => {
     dispatch(fetchEmployees(id));
@@ -103,151 +108,11 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
     }
   }, [vacancies, id]);
 
-  useEffect(() => {
-    if (windowWidth < 1025 || !vacancies || !selectedVacancy) return;
-
-    const frameId = requestAnimationFrame(setupScrollTriggers);
-
-    return () => {
-      cancelAnimationFrame(frameId);
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [windowWidth, vacancies, selectedVacancy]);
-
-  const setupScrollTriggers = useCallback(
-    () => {
-      if (!selectedVacancy) return;
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-
-      const triggers = [];
-      vacancies.forEach((vacancy) => {
-        const blockRight = document.getElementById(`blockRight-${vacancy.id}`);
-        const wrapper = document.getElementById(`wrapperTextBlock-${selectedVacancy.id}`);
-        if (!blockRight || !wrapper) return;
-        const trig = setupBlockAnimation(blockRight, wrapper);
-        if (trig) triggers.push(trig);
-      });
-    
-      return () => triggers.forEach((t) => t.kill());
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [vacancies, selectedVacancy, windowWidth]
-  );
-
-  const setupBlockAnimation = (blockRight, wrapperTextBlock) => {
-    const blockRightRect = blockRight.getBoundingClientRect();
-    const wrapperTextBlockRect = wrapperTextBlock.getBoundingClientRect();
-    let wrapperTextBlockBottom = wrapperTextBlockRect.bottom + window.scrollY - blockRightRect.height - 300;
-
-    if (windowWidth > 1601) {
-      wrapperTextBlockBottom -= 200;
-    }
-
-    return ScrollTrigger.create({
-      trigger: wrapperTextBlock,
-      start: 'top bottom',
-      end: 'bottom top',
-      scrub: true,
-      onUpdate: (self) => updatePosition(self, blockRight, wrapperTextBlockBottom),
-      onRefresh: (self) => updatePosition(self, blockRight, wrapperTextBlockBottom),
-    });
-  };
-
-  const updatePosition = (self, blockRight, bottom) => {
-    const scrollerPoint = window.scrollY + blockRight.getBoundingClientRect().height;
-    if (scrollerPoint >= bottom) {
-      blockRight.style.position = 'absolute';
-      blockRight.style.top = `${bottom - blockRight.getBoundingClientRect().height}px`;
-    } else {
-      blockRight.style.position = 'fixed';
-      blockRight.style.top = '0';
-    }
-    blockRight.style.right = '0';
-  };
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const rocketEl = rocketRef.current;
-      const sputnikEl = sputnikRef.current;
-
-      if (!rocketEl || !sputnikEl) return;
-
-      const scrollPosition = window.scrollY;
-
-      let xValueRocket, xValueSputnik, rocketStart, sputnikStart;
-
-      if (window.innerWidth > 1024) {
-        xValueRocket = 80;
-        xValueSputnik = -80;
-        rocketStart = -150;
-        sputnikStart = 0;
-      } else if (window.innerWidth > 767) {
-        xValueRocket = 50;
-        xValueSputnik = -50;
-        rocketStart = -80;
-        sputnikStart = 20;
-      } else {
-        xValueRocket = 40;
-        xValueSputnik = -40;
-        rocketStart = -200;
-        sputnikStart = -40;
-      }
-
-      rocketEl.style.transform = `translateX(${rocketStart + scrollPosition * (xValueRocket / window.innerHeight)}px)`;
-      sputnikEl.style.transform = `translateX(${
-        sputnikStart + scrollPosition * (xValueSputnik / window.innerHeight)
-      }px)`;
-    };
-
-    window.addEventListener('scroll', handleScroll);
-
-    handleScroll();
-
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [windowWidth]);
-
-  useLayoutEffect(() => {
-    const button = formButtonRef.current;
-    const form = formRef.current;
-    if (!button || !form) return;
-
-    setTimeout(() => {
-      const initialButtonBottom = button.getBoundingClientRect().bottom + window.scrollY + 10;
-
-      const updateButtonPosition = () => {
-        const scrollY = window.scrollY;
-        const windowHeight = window.innerHeight;
-        const formRect = form.getBoundingClientRect();
-
-        const shouldFixButton = scrollY + windowHeight >= initialButtonBottom;
-        const shouldHideButton = formRect.top <= windowHeight;
-
-        button.classList.toggle(styles.fixed, shouldFixButton);
-        button.classList.toggle(styles.hidden, shouldHideButton);
-      };
-
-      updateButtonPosition();
-      window.addEventListener('scroll', updateButtonPosition);
-
-      return () => {
-        window.removeEventListener('scroll', updateButtonPosition);
-      };
-    }, 300);
-  }, []);
-
   const handleScrollToForm = () => {
     if (formRef.current) {
       formRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-    return () => clearTimeout(timer);
-  }, [id]);
 
   return (
     <>
@@ -264,125 +129,75 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
           buttonText="Спасибо,&nbsp;жду!"
           variant="manualClose"
         />
-        <div className={styles.main_vacancy_block__background1} style={{ backgroundImage: `url(${star3d_1})` }} />
-        <div className={styles.main_vacancy_block__background2} style={{ backgroundImage: `url(${star3d_2})` }} />
-        <div className={styles.main_vacancy_block__background3} style={{ backgroundImage: `url(${star3d_3})` }} />
-        <div className={styles.main_vacancy_block}>
-          <div className={styles.main_vacancy_block__wrapper}>
-            {vacancies?.map((vacancy) => (
-              <div key={vacancy.id} className={styles.main_vacancy_block__item}>
-                <div className={styles.main_vacancy_block__blockLeft}>
-                  <div className={styles.main_vacancy_block__vacancyTitle}>{vacancy.title}</div>
-                  <div className={styles.main_vacancy_block__vacancyDetails}>
-                    <ul className={styles.main_vacancy_block__vacancyTitle1}>
-                      <li className={styles.main_vacancy_block__vacancyTitle1__titleKey}>Мы ищем:</li>
-                      <li
-                        className={styles.main_vacancy_block__vacancyTitle1__titleValue1}
-                        dangerouslySetInnerHTML={{
-                          __html: vacancy.searchStaff,
-                        }}></li>
-                    </ul>
-                  </div>
-                </div>
+        <section className={styles['section-top']}>
+          <div ref={container} className={styles['section-top__title']}>
+            <img ref={firstStarRef} className={styles['section-top__star']} src={star1} alt="иконка звезды" />
+            <img ref={secondStarRef} className={styles['section-top__star']} src={star2} alt="иконка звезды" />
+            <img ref={threeStarRef} className={styles['section-top__star']} src={star3} alt="иконка звезды" />
+            <div className={styles['section-top__wrap']}>
+              <h1 className={styles['section-top__heading']}>{vacancies[0]?.title || null}</h1>
+              <div className={styles['section-top__description']}>
+                <span className={styles['section-top__label']}>Мы ищем</span>
                 <div
-                  id={`blockRight-${vacancy?.id}`}
-                  className={`${styles.main_vacancy_block__blockRightWrapper} ${blockReady ? styles.ready : ''}`}>
-                  <div className={styles.main_vacancy_block__blockRight}>
-                    <div className={`${styles.main_vacancy_block__detailItem} ${styles.topLeftSquare}`}>
-                      <span className={styles.main_vacancy_block__detailKey}>Опыт&nbsp;работы:</span>
-                      <span className={styles.main_vacancy_block__detailValue}>{vacancy.experience}</span>
-                    </div>
-                    <div className={`${styles.main_vacancy_block__detailItem} ${styles.topRightSquare}`}>
-                      <span className={styles.main_vacancy_block__detailKey}>Локация:</span>
-                      <span className={styles.main_vacancy_block__detailValue}>{vacancy.locationStaff}</span>
-                    </div>
-                    <div className={`${styles.main_vacancy_block__detailItem} ${styles.bottomLeftSquare}`}>
-                      <span className={styles.main_vacancy_block__detailKey}>Занятость:</span>
-                      <span className={styles.main_vacancy_block__detailValue}>{vacancy.busyness}</span>
-                    </div>
-                    <div className={`${styles.main_vacancy_block__detailItem} ${styles.bottomRightSquare}`}>
-                      <span className={styles.main_vacancy_block__detailKey}>Режим&nbsp;работы:</span>
-                      <span className={styles.main_vacancy_block__detailValue}>{vacancy.modeOperating}</span>
-                    </div>
-                    <div className={styles.vacancyFormWrapperSimple}>
-                      {isVisible && (
-                        <VacancyFormContactSimple
-                          handleMouseEnter={handleMouseEnter}
-                          handleMouseLeave={handleMouseLeave}
-                          handleMouseHover={handleMouseHover}
-                          setIsLoading={setIsLoading}
-                          setIsModalOpen={setIsModalOpen}
-                          vacancyTitleSimple={selectedVacancy?.title}
-                          buttonText={
-                            activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'
-                          }
-                          inputPaddingTop={windowWidth >= 1024 && windowWidth <= 1600 ? '2rem' : undefined}
-                        />
-                      )}
-                    </div>
-                  </div>
-                </div>
+                  className={styles['section-top__html']}
+                  dangerouslySetInnerHTML={{ __html: vacancies[0]?.searchStaff }}
+                />
               </div>
-            ))}
-          </div>
-          <div
-            className={styles.main_vacancy_block__all_button}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}>
-            <AllVacancyButton />
-          </div>
-        </div>
-        <div className={styles.main_vacancyWrapper__offer}>
-          <span className={styles.main_vacancyWrapper__offerName}>
-            Marks Group предлагает тебе
-            <img className={styles.main_vacancyWrapper__offerHeart} src={heart} alt={heart} />
-          </span>
-        </div>
-        <div className={styles.main_vacancyWrapper__wrapperFrameBlock}>
-          <div className={styles.main_vacancyWrapper__frameBlock}>
-            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
-              <img className={styles.main_vacancyWrapper__frame} src={frame2} alt={frame2} />
-              <span className={styles.main_vacancyWrapper__frameSpan}>Опыт работы на&nbsp;уникальных объектах</span>
+              <div className={styles['section-top__offers-title']}>
+                <span>Marks Group предлагает тебе</span>
+                <img src={heart} alt="heart" />
+              </div>
             </div>
-            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
-              <img className={styles.main_vacancyWrapper__frame} src={frame1} alt={frame1} />
-              <span className={styles.main_vacancyWrapper__frameSpan}>
-                Развитие карьерного и&nbsp;личностного потенциала
-              </span>
+            <VacancyRequirements vacancy={vacancies[0]} variant="compact" />
+            <div className={styles['section-top__advantages']}>
+              <div className={styles['section-top__advantages-title']}>
+                <span>Marks Group предлагает тебе</span>
+                <img src={heart} alt="heart" />
+              </div>
+              <div className={styles['section-top__advantages-item']}>
+                {advantages.map((item, index) => (
+                  <div key={item.id} className={styles[`cell${index + 1}`]}>
+                    <img className={styles['section-top__advantages-item_icon']} src={item.img} alt={item.title} />
+                    <p className={styles.title}>
+                      {item?.rows.map((row, i) => (
+                        <span key={i}>
+                          {row}
+                          {i === 0 && <br />}
+                        </span>
+                      ))}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              {width < 1024 && (
+                <Button
+                  withBackground
+                  className={clsx(
+                    styles['sticky-floating-btn'],
+                    isShown && styles['sticky-floating-btn_visible'],
+                    isHidden && styles['sticky-floating-btn_hidden']
+                  )}
+                  click={handleScrollToForm}>
+                  {activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'}
+                </Button>
+              )}
+              <RenderVacancySections showOnRef={showOnRef} vacancy={vacancies[0]} />
             </div>
           </div>
-          <div className={styles.main_vacancyWrapper__frameBlock}>
-            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
-              <img className={styles.main_vacancyWrapper__frame} src={frame4} alt={frame4} />
-              <span className={styles.main_vacancyWrapper__frameSpan}>
-                Создаем атмосферу менторства и&nbsp;наставничества
-              </span>
-            </div>
-            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
-              <img className={styles.main_vacancyWrapper__frame} src={frame3} alt={frame3} />
-              <span className={styles.main_vacancyWrapper__frameSpan}>Даем почву для&nbsp;воплощения ваших идей</span>
-            </div>
-          </div>
-        </div>
-        <div className={styles.main_vacancyWrapper__button_vacancyWrapper}>
-          {!isVisible && (
-            <button
-              className={styles.main_vacancyWrapper__button_vacancy}
-              type="submit"
-              id="submit-button"
-              onClick={handleScrollToForm}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              ref={formButtonRef}>
-              <p className={styles.main_vacancyWrapper__button_name_vacancy}>Откликнуться на вакансию</p>
-            </button>
-          )}
-        </div>
-        <div className={styles.main_vacancyWrapper__wrapperTextBlock}>
-          <div id={`wrapperTextBlock-${selectedVacancy?.id}`}>
-            <RenderVacancySections />
-          </div>
-        </div>
+          <aside className={styles['section-top__aside']}>
+            <VacancyRequirements vacancy={vacancies[0]} variant="default" />
+            <VacancyFormContactSimple
+              handleMouseEnter={handleMouseEnter}
+              handleMouseLeave={handleMouseLeave}
+              handleMouseHover={handleMouseHover}
+              setIsLoading={setIsLoading}
+              setIsModalOpen={setIsModalOpen}
+              vacancyTitleSimple={selectedVacancy?.title}
+              buttonText={activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'}
+              inputPaddingTop={width >= 1024 && width <= 1600 ? '2rem' : undefined}
+            />
+          </aside>
+        </section>
         <div className={styles.main_vacancyWrapper__3dGroup}>
           <div className={styles.background4} style={{ backgroundImage: `url(${star3d_4})` }} />
           <div className={styles.background5} style={{ backgroundImage: `url(${star3d_5})` }} />
@@ -407,8 +222,8 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
                 <img className={styles.offerHeart2} src={heart2} alt={heart2} />
                 <img
                   className={styles.vectorAround}
-                  src={window.innerWidth <= 767 ? vectorAround2 : vectorAround}
-                  alt={window.innerWidth <= 767 ? 'vectorAround2' : 'vectorAround'}
+                  src={width <= 767 ? vectorAround2 : vectorAround}
+                  alt={width <= 767 ? 'vectorAround2' : 'vectorAround'}
                 />
                 <div className={styles.countLabel}>Специалистов</div>
                 <div className={styles.countValue}>&gt;1300</div>
@@ -423,18 +238,13 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
           </div>
           <div className={styles.main_vacancyWrapper__locationWrapper}>
             <div className={styles.locationTitle}>Расположение</div>{' '}
-            {windowWidth && (
-              <span className={styles.locationText}>
-                Офис в&nbsp;центре Москвы, метро {windowWidth <= 1024 ? ' ' : <br />} Белорусская
-              </span>
-            )}
             <div className={styles.main_vacancyWrapper__locationBlockLocation}>
               <div className={styles.rocketVectorAround1Block}>
                 <img className={styles.rocket} src={rocket1} alt={rocket1} />
                 <img
                   className={styles.vectorAround1}
-                  src={window.innerWidth <= 767 ? vectorAround : vectorAround1}
-                  alt={window.innerWidth <= 767 ? 'vectorAround' : 'vectorAround1'}
+                  src={width <= 767 ? vectorAround : vectorAround1}
+                  alt={width <= 767 ? 'vectorAround' : 'vectorAround1'}
                 />
               </div>
               <div className={styles.main_vacancyWrapper__locationWrapperLocation}>
@@ -452,6 +262,7 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
             </div>
           </div>
         </div>
+
         <div className={styles.main_vacancyWrapper__sliderBlock}>
           <div className={styles.sliderBlockText}>Как мы проводим время</div>
           <VacancySlider />
@@ -491,6 +302,7 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
             vacancyTitle={selectedVacancy?.title}
             centerButton={true}
             buttonText={activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'}
+            hideOnRef={hideOnRef}
           />
         </div>
       </div>
