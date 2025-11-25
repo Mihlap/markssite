@@ -5,18 +5,21 @@ import { Helmet } from 'react-helmet-async';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
-import SwiperContainer from './Swiper-Phone/SwiperContainer';
-import SwiperContainerProject from './Swiper-project/SwiperContainerProject';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Navigation } from 'swiper';
+
+import SwiperContainer from './Swiper-Phone/SwiperContainer';
+import SwiperContainerProject from './Swiper-project/SwiperContainerProject';
 import SliderHeader from '../UI/SliderHeader/SliderHeader';
 import Mapbox3D from '../UI/Map3D/Mapbox3D';
 import Error from '../Loading/Error/Error';
 import BlockHeaderMain from '../UI/BlockHeader/BlockHeaderMain';
+
 import { getFetchFormArticle } from '../store/Slice/articleSlice';
 import { getZaprosData } from '../store/Slice/searchProjectMainSlice';
 import { searchArticleLeftGet } from '../store/Slice/searchArticlePublicLeftSlice';
 import { searchArticleRightGet } from '../store/Slice/searchArticlePublicRightSlice';
+
 import styles from './Header.module.css';
 
 import notDataPhoto from './img/notData.png';
@@ -26,7 +29,6 @@ import nameCompany1 from '../icons/nameCompany1.svg';
 // import nameCompany1 from '../icons/newYear1.svg';
 import img123 from './img/Главная.png';
 import mainIcon from '../icons/main.svg';
-
 
 SwiperCore.use([Navigation]);
 
@@ -42,10 +44,7 @@ const Header = React.memo(
       small: `${bucket_url}/images/video/main_company_mobile.mp4`,
     };
 
-    // const cursorVariant = useSelector((state) => state.cursor);
-
     const [, setCurrentSlideIndex] = useState(0);
-
     const [videoSrc, setVideoSrc] = useState(null);
     const sliderCardRef = useRef(null);
 
@@ -60,7 +59,6 @@ const Header = React.memo(
     const MapArticleRight = ArticleRight?.map((el) => el.publication.publication);
 
     const isMobile = window.innerWidth <= 767;
-
     const imageSrc = isMobile ? nameCompany1 : nameCompany;
 
     useEffect(() => {
@@ -85,7 +83,7 @@ const Header = React.memo(
       return () => {
         window.removeEventListener('resize', handleResize);
       };
-    }, []);
+    }, [videoSource.large, videoSource.medium, videoSource.small]);
 
     useEffect(() => {
       dispatch(getFetchFormArticle());
@@ -109,7 +107,6 @@ const Header = React.memo(
     );
 
     useEffect(() => {
-      // Состояние для отслеживания, находится ли пользователь в процессе скроллинга к верху слайдера
       let scrollingToTopOfSlider = false;
 
       const handleScroll = (e) => {
@@ -124,26 +121,24 @@ const Header = React.memo(
         const isAtEndOfSlider = el.scrollWidth - el.scrollLeft <= el.clientWidth;
         const isAtStartOfSlider = el.scrollLeft === 0;
 
-        // Проверяем, находимся ли мы в нижней части слайдера
         const isAtSliderBottom = documentScrollTop + windowHeight >= sliderBottom;
+
         if (isAtSliderBottom && e.deltaY > 0 && !isAtEndOfSlider) {
           e.preventDefault();
           el.scrollLeft += 80;
-          scrollingToTopOfSlider = false; // Сбросить, так как мы двигаемся вправо
+          scrollingToTopOfSlider = false;
         }
 
-        // Проверяем, находимся ли мы уже в процессе скроллинга к верху слайдера
         if (e.deltaY < 0 && !isAtStartOfSlider) {
           if (scrollingToTopOfSlider || documentScrollTop < sliderTop) {
             e.preventDefault();
             el.scrollLeft -= 80;
-            scrollingToTopOfSlider = true; // Обновляем, так как мы начали скроллить к верху слайдера
+            scrollingToTopOfSlider = true;
           }
         }
 
-        // Если мы достигли начала слайдера и продолжаем скроллить вверх
         if (isAtStartOfSlider && e.deltaY < 0 && scrollingToTopOfSlider) {
-          scrollingToTopOfSlider = false; // Позволяем обычный скролл страницы
+          scrollingToTopOfSlider = false;
         }
       };
 
@@ -157,7 +152,6 @@ const Header = React.memo(
     if (error) {
       return (
         <div>
-          {' '}
           <Error error={error.message} />
         </div>
       );
@@ -165,12 +159,13 @@ const Header = React.memo(
 
     const NewProject = projects.map((el) => (el && el.project !== undefined ? el.project : null));
     const MapProject = NewProject.map((el) => (el && el.project !== undefined ? el.project : null));
-
     const MapProjectToEdit = projects.map((el) => el.project);
 
     const combinedProjects = [...MapProject, ...MapProjectToEdit].filter(
       (project, index, self) => project && index === self.findIndex((p) => p && p.id === project.id)
     );
+
+    const defaultImagePath = img123;
 
     return (
       <>
@@ -211,6 +206,7 @@ const Header = React.memo(
               <span className={styles.span_nameCompany11}>ОТ КОНЦЕПЦИИ ДО ВВОДА ОБЪЕКТА В ЭКСПЛУАТАЦИЮ</span>
             </div>
           </div>
+
           <div className={styles.header_desctop_block}>
             <h1 className={styles.desctop_title}>Награды и&nbsp;публикации</h1>
             <div className={styles.desctop_test}>
@@ -218,14 +214,7 @@ const Header = React.memo(
               <br /> и&nbsp;конкурсах. Предлагаем ознакомиться с&nbsp;некоторыми докладами
             </div>
           </div>
-          {/* <div className={styles.header_block}>
-        <h1 className={styles.heading}>Награды проектов</h1>
-        <p className={styles.heading_text}>
-          Наша компания участвует в<br /> многочисленных выставках, конференциях
-          <br /> и конкурсах. Предлагаем ознакомиться с<br /> некоторыми
-          докладами.
-        </p>
-      </div> */}
+
           <div className={styles.container_main}>
             <div
               onMouseEnter={handleSpecialHover}
@@ -235,12 +224,15 @@ const Header = React.memo(
                 <SliderHeader isAwards={true} />
               </NavLink>
             </div>
+
             <div className={styles.swiper_container}>
               <SwiperContainer
                 article1={articles.filter((article) => MapArticle.some((el) => el.id === article.id))}
                 article2={articles.filter((article) => MapArticleRight.some((el) => el.id === article.id))}
               />
             </div>
+
+            {/* Левый блок статей */}
             <div className={styles.card_container}>
               {articles && articles.length > 0 ? (
                 <>
@@ -249,78 +241,77 @@ const Header = React.memo(
                     .reverse()
                     .map((article) => {
                       const isArticleLeft = MapArticle.some((el) => el.id === article.id);
-                      // Если статья соответствует ArticleLeft, то отображаем ее
-                      if (isArticleLeft) {
-                        const imagePathsForArticle = article.imageTitle
-                          ? article.imageTitle.split(',').map((el) => el.trim())
-                          : [];
-                        const firstPhoto = imagePathsForArticle[0] || null;
-                        const defaultImagePath = img123;
+                      if (!isArticleLeft) return null;
 
-                        const firstImagePath = firstPhoto?.includes('https')
+                      const imagePathsForArticle = article.imageTitle
+                        ? article.imageTitle.split(',').map((el) => el.trim())
+                        : [];
+                      const firstPhoto = imagePathsForArticle[0] || null;
+
+                      const firstImagePath =
+                        firstPhoto && firstPhoto.includes('https')
                           ? firstPhoto
-                          : `${bucket_url}/images/imageArticle/${encodeURIComponent(firstPhoto) || defaultImagePath}`;
+                          : firstPhoto
+                            ? `${bucket_url}/images/imageArticle/${encodeURIComponent(firstPhoto)}`
+                            : defaultImagePath;
 
-                        return (
-                          <Link to={`/publication/${article.id}`} key={article.id}>
-                            <div key={article.id} className={styles.card_item_1}>
-                              <div className={styles.card_img}>
-                                <img
-                                  onMouseEnter={handleMouseHover}
-                                  onMouseLeave={handleMouseLeave}
-                                  className={styles.img_1}
-                                  src={firstImagePath}
-                                  alt="photo1"
-                                  loading="lazy"
-                                />
-                              </div>
-                              <div className={styles.card_text}>
-                                <span className={styles.card_text_title}>{article.title}</span>
-                              </div>
-                              <div className={styles.wrapper_card_text_svg}>
-                                <span className={styles.card_text_city}>{article.city}</span>
-                                <span className={styles.card_text_svg}>
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="4"
-                                    height="4"
-                                    viewBox="0 0 4 4"
-                                    fill="none">
-                                    <circle cx="2" cy="2" r="2" fill="#566272" />
-                                  </svg>
-                                </span>
-                                <span className={styles.card_text_dataMonthYear}>{article.dataMonthYear}</span>
-                              </div>
-                              <button
-                                onMouseEnter={handleMouseEnter}
+                      return (
+                        <Link to={`/publication/${article.id}`} key={article.id}>
+                          <div className={styles.card_item_1}>
+                            <div className={styles.card_img}>
+                              <img
+                                onMouseEnter={handleMouseHover}
                                 onMouseLeave={handleMouseLeave}
-                                className={styles.card_button}>
-                                <svg
-                                  width="32"
-                                  height="32"
-                                  viewBox="0 0 32 32"
-                                  fill="currentColor"
-                                  xmlns="http://www.w3.org/2000/svg">
-                                  <circle cx="16" cy="16" r="16" fill="#566272" />
-                                  <path
-                                    d="M6 16H16M26 16H16M16 16V6M16 16V26"
-                                    stroke="#F6F6F6"
-                                    strokeWidth="2"
-                                    strokeLinecap="square"
-                                  />
-                                </svg>
-                              </button>
+                                className={styles.img_1}
+                                src={firstImagePath}
+                                alt="photo1"
+                                loading="lazy"
+                              />
                             </div>
-                          </Link>
-                        );
-                      } else {
-                        return null;
-                      }
+                            <div className={styles.card_text}>
+                              <span className={styles.card_text_title}>{article.title}</span>
+                            </div>
+                            <div className={styles.wrapper_card_text_svg}>
+                              <span className={styles.card_text_city}>{article.city}</span>
+                              <span className={styles.card_text_svg}>
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="4"
+                                  height="4"
+                                  viewBox="0 0 4 4"
+                                  fill="none">
+                                  <circle cx="2" cy="2" r="2" fill="#566272" />
+                                </svg>
+                              </span>
+                              <span className={styles.card_text_dataMonthYear}>{article.dataMonthYear}</span>
+                            </div>
+                            <button
+                              onMouseEnter={handleMouseEnter}
+                              onMouseLeave={handleMouseLeave}
+                              className={styles.card_button}>
+                              <svg
+                                width="32"
+                                height="32"
+                                viewBox="0 0 32 32"
+                                fill="currentColor"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="16" cy="16" r="16" fill="#566272" />
+                                <path
+                                  d="M6 16H16M26 16H16M16 16V6M16 16V26"
+                                  stroke="#F6F6F6"
+                                  strokeWidth="2"
+                                  strokeLinecap="square"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+                        </Link>
+                      );
                     })}
                   {MapArticle.length === 0 && (
                     <div className={styles.card_item_1}>
                       <div className={styles.card_img}>
-                        <img className={styles.img_1} src={img123} alt="photo2" />
+                        <img className={styles.img_1} src={defaultImagePath} alt="photo2" />
                       </div>
                     </div>
                   )}
@@ -328,10 +319,12 @@ const Header = React.memo(
               ) : (
                 <div className={styles.card_item_1}>
                   <div className={styles.card_img}>
-                    <img className={styles.img_1} src={img123} alt="photo2" />
+                    <img className={styles.img_1} src={defaultImagePath} alt="photo2" />
                   </div>
                 </div>
               )}
+
+              {/* Правый блок статей */}
               {articles && articles.length > 0 ? (
                 <>
                   {articles
@@ -339,80 +332,77 @@ const Header = React.memo(
                     .reverse()
                     .map((article) => {
                       const isArticRight = MapArticleRight.some((el) => el.id === article.id);
-                      // Если статья соответствует ArticleRight, то отображаем ее
-                      if (isArticRight) {
-                        const imagePathsForArticleRight = article.imageTitle
-                          ? article.imageTitle.split(',').map((el) => el.trim())
-                          : [];
-                        const firstPhotoRight = imagePathsForArticleRight[0] || null;
-                        const defaultImagePath = img123;
+                      if (!isArticRight) return null;
 
-                        const firstImagePathRight = firstPhotoRight?.includes('https')
+                      const imagePathsForArticleRight = article.imageTitle
+                        ? article.imageTitle.split(',').map((el) => el.trim())
+                        : [];
+                      const firstPhotoRight = imagePathsForArticleRight[0] || null;
+
+                      const firstImagePathRight =
+                        firstPhotoRight && firstPhotoRight.includes('https')
                           ? firstPhotoRight
-                          : `${bucket_url}/images/imageArticle/${
-                              encodeURIComponent(firstPhotoRight) || defaultImagePath
-                            }`;
+                          : firstPhotoRight
+                            ? `${bucket_url}/images/imageArticle/${encodeURIComponent(firstPhotoRight)}`
+                            : defaultImagePath;
 
-                        return (
-                          <Link to={`/publication/${article.id}`} key={article.id}>
-                            <div key={article.id} className={styles.card_item_2}>
-                              <div className={styles.card_img}>
-                                <img
-                                  onMouseEnter={handleMouseHover}
-                                  onMouseLeave={handleMouseLeave}
-                                  className={styles.img_2}
-                                  src={firstImagePathRight}
-                                  alt="photo2"
-                                  loading="lazy"
-                                />
-                              </div>
-                              <div className={styles.card_text}>
-                                <span className={styles.card_text_title}>{article.title}</span>
-                              </div>
-                              <div className={styles.wrapper_card_text_svg}>
-                                <span className={styles.card_text_city}>{article.city}</span>
-                                <span className={styles.card_text_svg}>
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="4"
-                                    height="4"
-                                    viewBox="0 0 4 4"
-                                    fill="none">
-                                    <circle cx="2" cy="2" r="2" fill="#566272" />
-                                  </svg>
-                                </span>
-                                <span className={styles.card_text_dataMonthYear}>{article.dataMonthYear}</span>
-                              </div>
-                              <button
-                                onMouseEnter={handleMouseEnter}
+                      return (
+                        <Link to={`/publication/${article.id}`} key={article.id}>
+                          <div className={styles.card_item_2}>
+                            <div className={styles.card_img}>
+                              <img
+                                onMouseEnter={handleMouseHover}
                                 onMouseLeave={handleMouseLeave}
-                                className={`${styles.card_button} ${styles.extra_button_class}`}>
-                                <svg
-                                  width="32"
-                                  height="32"
-                                  viewBox="0 0 32 32"
-                                  fill="currentColor"
-                                  xmlns="http://www.w3.org/2000/svg">
-                                  <circle cx="16" cy="16" r="16" fill="#566272" />
-                                  <path
-                                    d="M6 16H16M26 16H16M16 16V6M16 16V26"
-                                    stroke="#F6F6F6"
-                                    strokeWidth="2"
-                                    strokeLinecap="square"
-                                  />
-                                </svg>
-                              </button>
+                                className={styles.img_2}
+                                src={firstImagePathRight}
+                                alt="photo2"
+                                loading="lazy"
+                              />
                             </div>
-                          </Link>
-                        );
-                      } else {
-                        return null;
-                      }
+                            <div className={styles.card_text}>
+                              <span className={styles.card_text_title}>{article.title}</span>
+                            </div>
+                            <div className={styles.wrapper_card_text_svg}>
+                              <span className={styles.card_text_city}>{article.city}</span>
+                              <span className={styles.card_text_svg}>
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="4"
+                                  height="4"
+                                  viewBox="0 0 4 4"
+                                  fill="none">
+                                  <circle cx="2" cy="2" r="2" fill="#566272" />
+                                </svg>
+                              </span>
+                              <span className={styles.card_text_dataMonthYear}>{article.dataMonthYear}</span>
+                            </div>
+                            <button
+                              onMouseEnter={handleMouseEnter}
+                              onMouseLeave={handleMouseLeave}
+                              className={`${styles.card_button} ${styles.extra_button_class}`}>
+                              <svg
+                                width="32"
+                                height="32"
+                                viewBox="0 0 32 32"
+                                fill="currentColor"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="16" cy="16" r="16" fill="#566272" />
+                                <path
+                                  d="M6 16H16M26 16H16M16 16V6M16 16V26"
+                                  stroke="#F6F6F6"
+                                  strokeWidth="2"
+                                  strokeLinecap="square"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+                        </Link>
+                      );
                     })}
                   {MapArticleRight.length === 0 && (
                     <div className={styles.card_item_2}>
                       <div className={styles.card_img}>
-                        <img className={styles.img_2} src={img123} alt="photo2" />
+                        <img className={styles.img_2} src={defaultImagePath} alt="photo2" />
                       </div>
                     </div>
                   )}
@@ -420,34 +410,42 @@ const Header = React.memo(
               ) : (
                 <div className={styles.card_item_2}>
                   <div className={styles.card_img}>
-                    <img className={styles.img_2} src={img123} alt="photo2" />
+                    <img className={styles.img_2} src={defaultImagePath} alt="photo2" />
                   </div>
                 </div>
               )}
             </div>
+
             <div className={styles.names_contents}>
               <div className={styles.name_11}>+8</div>
               <div id="competencies" className={styles.name_competencies}>
                 Компетенции
               </div>
             </div>
+
             <div className={styles.most}>
-              <img className={styles.image_most} loading="lazy" src="./assets/most2.png" alt=""></img>
+              <img className={styles.image_most} loading="lazy" src="./assets/most2.png" alt="" />
             </div>
+
             <div className={styles.block_header_maim_wrapper} id="blockHeaderMain">
               <BlockHeaderMain handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} />
             </div>
+
             <Mapbox3D />
           </div>
+
           <div className={styles.sliderMobile_container}>
             <SliderHeader />
           </div>
+
           <div id="projects" className={styles.project_name}>
             Проекты
           </div>
+
           <div className={styles.swiper_progect_container}>
             <SwiperContainerProject projects={projects} />
           </div>
+
           <div className={styles.main_project}>
             <Swiper
               onSlideChange={(swiper) => setCurrentSlideIndex(swiper.activeIndex)}
@@ -493,15 +491,15 @@ const Header = React.memo(
                 },
               }}>
               {combinedProjects?.map((project, index) => {
-                if (!project || !project.id) {
-                  return null;
-                }
+                if (!project || !project.id) return null;
 
                 return (
                   <SwiperSlide
                     key={`${project.IdProject}-${index}`}
                     id="slider_container_item_card"
-                    className={styles.slider_container_item_card}
+                    className={`${styles.slider_container_item_card} ${
+                      index === 0 ? styles.slider_container_item_card_first : ''
+                    }`}
                     style={index % 2 === 1 ? { paddingTop: '10rem' } : {}}>
                     <Link to={`/projects/${project.id}`} key={`${project.IdProject}-${index}`}>
                       <div className={styles.wrapper_container_item_card}>
@@ -563,7 +561,7 @@ const Header = React.memo(
                                 ));
                               } catch (error) {
                                 if (typeof project.selectCompetencies === 'string') {
-                                  // Если строка с одним значением и без запятых
+                                  // одно значение без запятых
                                   if (!project.selectCompetencies.includes(',')) {
                                     const label = project.selectCompetencies.trim();
                                     return (
@@ -581,8 +579,8 @@ const Header = React.memo(
                                       </div>
                                     );
                                   }
-                                  // Строка с несколькими значениями, разделенными запятыми
-                                  else if (project.selectCompetencies.includes(',')) {
+                                  // несколько значений через запятую
+                                  if (project.selectCompetencies.includes(',')) {
                                     return project.selectCompetencies.split(',').map((value) => {
                                       const label = value.trim();
                                       return (
