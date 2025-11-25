@@ -76,9 +76,9 @@ button {
   --mb-container-1: 1rem;
 }
 
-#root {
+/* #root {
   overflow-x: hidden;
-}
+} */
 
 * {
   padding: 0;
@@ -175,10 +175,6 @@ li {
 
 .ql-editor ul {
   list-style-type: disc;
-}
-
-img {
-  vertical-align: top;
 }
 
 a {
