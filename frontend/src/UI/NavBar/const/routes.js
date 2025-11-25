@@ -46,7 +46,7 @@ export const baseNavConfig = {
         },
       ],
     },
-    { id: 6, type: 'link', label: 'HR портал', path: '/hr/home' },
+    { id: 6, type: 'link', external: true, label: 'HR портал', path: '/hr/home' },
   ],
   cta: [
     { id: 7, type: 'link', label: 'Обсудить проект', path: '/footerForm', variant: 'cta-primary' },
