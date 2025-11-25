@@ -1,0 +1,41 @@
+'use strict';
+module.exports = {
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable('ConstructorLegends', {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER,
+      },
+      data: {
+        type: Sequelize.JSON,
+      },
+      image: {
+        type: Sequelize.TEXT,
+      },
+      legendId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Legends',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+    });
+  },
+
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable('ConstructorLegends');
+  },
+};
