@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
+import clsx from 'clsx';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -14,22 +15,24 @@ import VacancyFormContactSimple from '../../../UI/VacancyFormContact/VacancyForm
 import VacancyFormContact from '../../../UI/VacancyFormContact/VacancyFormContact';
 import ModalVacancyFormSend from '../../../UI/VacancyFormContact/ModalVacancyFormSend';
 import { advantages } from './const/advantages';
+import BenefitsVacancy from '../BenefitsVacancy/BenefitsVacancy';
+import VacancyRequirements from '../../ui/mesh/VacancyRequirements';
+// hooks
+import { useScreenSize } from './hooks/useScreenSize';
+import { useStickyVisibility } from './hooks/useStickyVisibility';
 
 import star1 from '../icons/star-header-1.png';
 import star2 from '../icons/star-header-2.png';
 import star3 from '../icons/star-header-3.png';
 
-// import star3d_1 from '../icons/star3d_1.png';
-// import star3d_2 from '../icons/star3d_2.png';
-// import star3d_3 from '../icons/star3d_3.png';
-// import star3d_4 from '../icons/star3d_4.png';
-// import star3d_5 from '../icons/star3d_5.png';
-// import star3d_6 from '../icons/star3d_6.png';
-// import star3d_7 from '../icons/star3d_7.png';
-// import star3d_8 from '../icons/star3d_8.png';
-// import star3d_9 from '../icons/star3d_9.png';
-// import star3d_10 from '../icons/star3d_10.png';
-// import star3d_11 from '../icons/star3d_11.png';
+import star3d_4 from '../icons/star3d_4.png';
+import star3d_5 from '../icons/star3d_5.png';
+import star3d_6 from '../icons/star3d_6.png';
+import star3d_7 from '../icons/star3d_7.png';
+import star3d_8 from '../icons/star3d_8.png';
+import star3d_9 from '../icons/star3d_9.png';
+import star3d_10 from '../icons/star3d_10.png';
+import star3d_11 from '../icons/star3d_11.png';
 import heart from '../icons/heart.svg';
 import heart2 from '../icons/heart2.svg';
 import rocket1 from '../icons/rocket1.svg';
@@ -38,11 +41,7 @@ import sputnik from '../icons/sputnik.png';
 import vectorAround from '../icons/VectorAround.svg';
 import vectorAround1 from '../icons/VectorAround1.png';
 import vectorAround2 from '../icons/vectorAround2.svg';
-
-import BenefitsVacancy from '../BenefitsVacancy/BenefitsVacancy';
-import VacancyRequirements from './VacancyRequirements';
-import { useScreenSize } from './hooks/useScreenSize';
-
+import Button from '../../ui/button/Button';
 gsap.registerPlugin(useGSAP);
 gsap.registerPlugin(ScrollTrigger);
 
@@ -54,9 +53,12 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedVacancy, setSelectedVacancy] = useState(null);
-  const { width, height } = useScreenSize();
+  const { width } = useScreenSize();
 
-  const formRef = useRef(null);
+  const formRef = useRef(null); // якорь чтоб спуститься к форме
+  const showOnRef = useRef(null); // первый якорь
+  const hideOnRef = useRef(null); // второй якорь
+
   const formButtonRef = useRef(null);
   const rocketRef = useRef(null);
   const sputnikRef = useRef(null);
@@ -64,7 +66,8 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
   const firstStarRef = useRef(null);
   const secondStarRef = useRef(null);
   const threeStarRef = useRef(null);
-  const sectionTopRef = useRef(null);
+
+  const { isShown, isHidden } = useStickyVisibility(showOnRef, hideOnRef);
 
   useGSAP(
     () => {
@@ -105,76 +108,6 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
     }
   }, [vacancies, id]);
 
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     const rocketEl = rocketRef.current;
-  //     const sputnikEl = sputnikRef.current;
-
-  //     if (!rocketEl || !sputnikEl) return;
-
-  //     const scrollPosition = window.scrollY;
-
-  //     let xValueRocket, xValueSputnik, rocketStart, sputnikStart;
-
-  //     if (window.innerWidth > 1024) {
-  //       xValueRocket = 80;
-  //       xValueSputnik = -80;
-  //       rocketStart = -150;
-  //       sputnikStart = 0;
-  //     } else if (window.innerWidth > 767) {
-  //       xValueRocket = 50;
-  //       xValueSputnik = -50;
-  //       rocketStart = -80;
-  //       sputnikStart = 20;
-  //     } else {
-  //       xValueRocket = 40;
-  //       xValueSputnik = -40;
-  //       rocketStart = -200;
-  //       sputnikStart = -40;
-  //     }
-
-  //     rocketEl.style.transform = `translateX(${rocketStart + scrollPosition * (xValueRocket / window.innerHeight)}px)`;
-  //     sputnikEl.style.transform = `translateX(${
-  //       sputnikStart + scrollPosition * (xValueSputnik / window.innerHeight)
-  //     }px)`;
-  //   };
-
-  //   window.addEventListener('scroll', handleScroll);
-
-  //   handleScroll();
-
-  //   return () => window.removeEventListener('scroll', handleScroll);
-  // }, []);
-
-  // useLayoutEffect(() => {
-  //   const button = formButtonRef.current;
-  //   const form = formRef.current;
-  //   if (!button || !form) return;
-
-  //   setTimeout(() => {
-  //     const initialButtonBottom = button.getBoundingClientRect().bottom + window.scrollY + 10;
-
-  //     const updateButtonPosition = () => {
-  //       const scrollY = window.scrollY;
-  //       const windowHeight = window.innerHeight;
-  //       const formRect = form.getBoundingClientRect();
-
-  //       const shouldFixButton = scrollY + windowHeight >= initialButtonBottom;
-  //       const shouldHideButton = formRect.top <= windowHeight;
-
-  //       button.classList.toggle(styles.fixed, shouldFixButton);
-  //       button.classList.toggle(styles.hidden, shouldHideButton);
-  //     };
-
-  //     updateButtonPosition();
-  //     window.addEventListener('scroll', updateButtonPosition);
-
-  //     return () => {
-  //       window.removeEventListener('scroll', updateButtonPosition);
-  //     };
-  //   }, 300);
-  // }, []);
-
   const handleScrollToForm = () => {
     if (formRef.current) {
       formRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -196,7 +129,7 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
           buttonText="Спасибо,&nbsp;жду!"
           variant="manualClose"
         />
-        <section ref={sectionTopRef} className={styles['section-top']}>
+        <section className={styles['section-top']}>
           <div ref={container} className={styles['section-top__title']}>
             <img ref={firstStarRef} className={styles['section-top__star']} src={star1} alt="иконка звезды" />
             <img ref={secondStarRef} className={styles['section-top__star']} src={star2} alt="иконка звезды" />
@@ -236,17 +169,19 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
                   </div>
                 ))}
               </div>
-              <button
-                className={styles.main_vacancyWrapper__button_vacancy}
-                type="submit"
-                id="submit-button"
-                onClick={handleScrollToForm}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                ref={formButtonRef}>
-                <p className={styles.main_vacancyWrapper__button_name_vacancy}>Откликнуться на вакансию</p>
-              </button>
-              <RenderVacancySections />
+              {width < 1024 && (
+                <Button
+                  withBackground
+                  className={clsx(
+                    styles['sticky-floating-btn'],
+                    isShown && styles['sticky-floating-btn_visible'],
+                    isHidden && styles['sticky-floating-btn_hidden']
+                  )}
+                  click={handleScrollToForm}>
+                  {activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'}
+                </Button>
+              )}
+              <RenderVacancySections showOnRef={showOnRef} vacancy={vacancies[0]} />
             </div>
           </div>
           <aside className={styles['section-top__aside']}>
@@ -264,13 +199,13 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
           </aside>
         </section>
         <div className={styles.main_vacancyWrapper__3dGroup}>
-          {/* <div className={styles.background4} style={{ backgroundImage: `url(${star3d_4})` }} /> */}
-          {/* <div className={styles.background5} style={{ backgroundImage: `url(${star3d_5})` }} /> */}
-          {/* <div className={styles.background6} style={{ backgroundImage: `url(${star3d_6})` }} /> */}
-          {/* <div className={styles.background7} style={{ backgroundImage: `url(${star3d_7})` }} /> */}
-          {/* <div className={styles.background10} style={{ backgroundImage: `url(${star3d_8})` }} /> */}
-          {/* <div className={styles.background8} ref={rocketRef} style={{ backgroundImage: `url(${rocketBig})` }} /> */}
-          {/* <div className={styles.background9} ref={sputnikRef} style={{ backgroundImage: `url(${sputnik})` }} /> */}
+          <div className={styles.background4} style={{ backgroundImage: `url(${star3d_4})` }} />
+          <div className={styles.background5} style={{ backgroundImage: `url(${star3d_5})` }} />
+          <div className={styles.background6} style={{ backgroundImage: `url(${star3d_6})` }} />
+          <div className={styles.background7} style={{ backgroundImage: `url(${star3d_7})` }} />
+          <div className={styles.background10} style={{ backgroundImage: `url(${star3d_8})` }} />
+          <div className={styles.background8} ref={rocketRef} style={{ backgroundImage: `url(${rocketBig})` }} />
+          <div className={styles.background9} ref={sputnikRef} style={{ backgroundImage: `url(${sputnik})` }} />
           <div className={styles.main_vacancyWrapper__aboutBlockWrapper}>
             <div className={styles.main_vacancyWrapper__aboutBlockTitle}>Немного о&nbsp;нас</div>
             <span className={styles.main_vacancyWrapper__aboutBlockText}>
@@ -334,9 +269,9 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
         </div>
         <div className={styles.main_vacancyWrapper__frameBlockNext}>
           <div className={styles.main_vacancyWrapper__3dNext}>
-            {/* <div className={styles.background9next} style={{ backgroundImage: `url(${star3d_9})` }} /> */}
-            {/* <div className={styles.background10next} style={{ backgroundImage: `url(${star3d_10})` }} /> */}
-            {/* <div className={styles.background11next} style={{ backgroundImage: `url(${star3d_11})` }} /> */}
+            <div className={styles.background9next} style={{ backgroundImage: `url(${star3d_9})` }} />
+            <div className={styles.background10next} style={{ backgroundImage: `url(${star3d_10})` }} />
+            <div className={styles.background11next} style={{ backgroundImage: `url(${star3d_11})` }} />
           </div>
           <div className={styles.frameBlockLeft}>
             <div className={styles.blockTitle}>Плюсы работы с&nbsp;нами</div>
@@ -367,6 +302,7 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
             vacancyTitle={selectedVacancy?.title}
             centerButton={true}
             buttonText={activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'}
+            hideOnRef={hideOnRef}
           />
         </div>
       </div>
