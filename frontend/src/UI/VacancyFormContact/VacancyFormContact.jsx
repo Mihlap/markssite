@@ -7,6 +7,7 @@ import 'react-phone-number-input/style.css';
 import icon_tg from '../../Portal/Vacancies/icons/icon_tg.svg';
 import ModalVacancyFormSend from './ModalVacancyFormSend';
 import LoadingVacancy from '../../Loading/LoadingVacancy';
+import Button from '../../Portal/ui/button/Button';
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
@@ -23,6 +24,7 @@ const VacancyFormContact = ({
   vacancyTitle,
   centerButton,
   buttonText,
+  hideOnRef,
 }) => {
   const options = useMemo(
     () => [
@@ -556,7 +558,7 @@ const VacancyFormContact = ({
                   )}
                 </div>
               </div>
-              <div className={styles.agreement_vacancy}>
+              <div ref={hideOnRef} className={styles.agreement_vacancy}>
                 Нажав на кнопку, соглашаюсь на обработку{' '}
                 <Link
                   to="../Information"
@@ -566,7 +568,7 @@ const VacancyFormContact = ({
                   onMouseOut={handleMouseLeave}>
                   персональных данных
                 </Link>
-                <button
+                {/* <button
                   className={`${buttonClassName} ${!isFormValid ? styles.disabled : ''}`}
                   // disabled={!isFormValid}
                   type="submit"
@@ -574,7 +576,10 @@ const VacancyFormContact = ({
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}>
                   <p className={styles.button_name_vacancy}>{buttonText}</p>
-                </button>
+                </button> */}
+                <Button className={`${buttonClassName} ${!isFormValid ? styles.disabled : ''}`}>
+                  <p className={styles.button_name_vacancy}>{buttonText}</p>
+                </Button>
               </div>
             </div>
             <div className={styles.for_applicants_wrapper}>
