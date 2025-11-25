@@ -1,0 +1,692 @@
+@import '../App.css';
+
+.staff_modal_stream {
+  --stream-gap: 40px;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--stream-gap);
+  background-color: transparent;
+  padding-bottom: 32px;
+}
+
+.staff_section {
+  scroll-margin-top: 80px;
+}
+
+.modal_md_container p {
+  margin: 0 0 16px;
+  color: var(--black-1D2E43);
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+.modal_md_container ul {
+  margin: 0 0 16px;
+  padding-left: 1.2rem;
+}
+
+.modal_md_container ol {
+  margin: 0 0 16px;
+  padding-left: 1.2rem;
+}
+
+.modal_md_container a {
+  color: #2f80ed;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(47, 128, 237, .35);
+}
+
+.modal_md_container a:hover {
+  border-bottom-color: transparent;
+}
+
+.modal_md_container blockquote {
+  border-left: 4px solid #2f80ed;
+  padding: 4px 0 4px 16px;
+  color: #566272;
+  background: linear-gradient(90deg, rgba(47, 128, 237, .08), transparent 60%);
+  border-radius: 0 10px 10px 0;
+  margin: 0 0 16px;
+}
+
+.modal_md_container .pdfEmbed,
+.modal_md_container iframe {
+  width: 100%;
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(17, 24, 39, .08);
+}
+
+/* ===== Заголовки внутри markdown в модалке ===== */
+.modal_md_container :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-unbounded);
+  font-weight: var(--fw-300);
+  margin: 0 0 16px;
+  color: var(--black-1D2E43);
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: none;
+}
+
+.modal_md_container :is(h1, h2, h3, h4, h5, h6) strong,
+.modal_md_container :is(h1, h2, h3, h4, h5, h6) b {
+  font-weight: inherit;
+}
+
+.modal_md_container h1 {
+  font-size: 2rem;
+  line-height: 2.5rem;
+}
+
+.modal_md_container h2 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.modal_md_container h3 {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: var(--fw-700);
+}
+
+.modal_md_container h4 {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.modal_md_container h5 {
+  font-size: 1.125rem;
+  line-height: 1.625rem;
+}
+
+.modal_md_container h6 {
+  font-size: 1rem;
+  line-height: 1.375rem;
+}
+
+@media (max-width: 1600px) {
+  .modal_md_container h1 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: var(--fw-300);
+  }
+
+  .modal_md_container h2 {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: var(--fw-300);
+  }
+
+  .modal_md_container h3 {
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+    font-weight: var(--fw-700);
+  }
+
+  .modal_md_container h4 {
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+    font-weight: var(--fw-300);
+  }
+}
+
+@media (max-width: 767px) {
+  .modal_md_container h1 {
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+    font-weight: var(--fw-700);
+  }
+
+  .modal_md_container h2 {
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+    font-weight: var(--fw-300);
+  }
+
+  .modal_md_container h3 {
+    font-size: 1rem;
+    line-height: 1.375rem;
+    font-weight: var(--fw-700);
+  }
+
+  .modal_md_container h4 {
+    font-size: 1rem;
+    line-height: 1.375rem;
+    font-weight: var(--fw-300);
+  }
+}
+
+.modal_md_container .katex-display {
+  margin: 16px 0;
+  overflow-x: auto;
+}
+
+.modal_md_container .katex {
+  font-size: 1rem;
+}
+
+.modal_md_container pre {
+  color: var(--black-1D2E43);
+  background-color: transparent;
+  margin: 0 0 16px;
+  overflow: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: var(--fw-300);
+  font-size: 16px;
+}
+
+.modal_md_container pre>code {
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+}
+
+.modal_md_container code {
+  color: var(--black-1D2E43);
+  background-color: transparent;
+  font-size: 16px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: var(--fw-300);
+  margin: 0 0 16px;
+}
+
+.modal_md_container :not(pre)>code {
+ color: var(--black-1D2E43);
+  background-color: transparent;
+  font-size: 16px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: var(--fw-300);
+  margin: 0 0 16px;
+}
+
+/* ===== Блок изображение с описанием ===== */
+.staff_figure {
+  display: grid;
+  gap: 16px;
+}
+
+.staff_figure_img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  object-fit: cover;
+}
+
+.staff_figure_caption {
+  color: var(--gray-959DA6);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-weight: var(--fw-400);
+  font-size: 16px;
+  font-style: normal;
+  line-height: 24px
+}
+
+.staff_figure_caption .modal_md_container :is(p, li) {
+  color: var(--gray-959DA6);
+}
+
+/* ===== Заметка ===== */
+.staff_quote {
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+
+.staff_quote_body {
+  position: relative;
+  display: grid;
+  gap: 32px;
+}
+
+.staff_quote_text {
+  --q-size: clamp(22px, 2.4vw, 34px);
+  --q-gap: 16px;
+  position: relative;
+  min-width: 0;
+  color: var(--black-1D2E43);
+  font-size: 16px;
+  line-height: 24px;
+  padding-left: calc(var(--q-size) + var(--q-gap));
+  padding-right: calc(var(--q-size) + var(--q-gap));
+}
+
+.staff_quote_decor_top,
+.staff_quote_decor_bottom {
+  position: absolute;
+  pointer-events: none;
+  opacity: .9;
+  z-index: 0;
+}
+
+.staff_quote_decor_top {
+  top: 0;
+  left: 0;
+}
+
+.staff_quote_decor_bottom {
+  right: 0;
+  bottom: 0;
+}
+
+.staff_quote_decor_svg {
+  width: var(--q-size);
+  height: auto;
+}
+
+.staff_quote_meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.staff_quote_meta_avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  flex: 0 0 72px;
+}
+
+.staff_quote_meta_avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.staff_quote_meta_text {
+  display: flex;
+  flex-direction: column;
+}
+
+.staff_quote_author {
+  color: var(--gray-959DA6);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-weight: var(--fw-400);
+  font-size: 16px;
+  font-style: normal;
+  line-height: 24px;
+}
+
+/* ===== Факт ===== */
+.staff_fact_box {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+  padding: 0 12px;
+  padding: var(--stream-gap) 20px
+}
+
+.staff_fact_stack {
+  position: relative;
+  width: min(100%, 720px);
+}
+
+.staff_fact_underlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 32px;
+  background: var(--blue-75BBFD);
+  transform: rotate(-5deg);
+  transform-origin: center;
+  z-index: 0;
+}
+
+.staff_fact_card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  border-radius: 32px;
+  background: var(--originWhite-FFFFFF);
+  box-shadow: -16px 15px 32.3px rgba(43, 70, 86, 0.19);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px;
+  overflow: visible;
+  flex: 1 0 0;
+}
+
+.staff_fact_clip {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  right: 150px;
+  transform: translateY(-40px);
+  display: inline-flex;
+  pointer-events: none;
+}
+
+.staff_fact_title {
+  color: var(--black-1D2E43);
+  font-family: var(--font-unbounded);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 32px;
+  margin: 0;
+}
+
+.staff_fact_text,
+.staff_fact_text p,
+.staff_fact_text li {
+  color: var(--black-1D2E43);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.staff_fact_author_row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  border-radius: 9999px;
+}
+
+.staff_fact_author_avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex: 0 0 72px;
+}
+
+.staff_fact_author_avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.staff_fact_author_name {
+  font-family: var(--font-raleway);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  color: var(--gray-959DA6);
+}
+
+.staff_fact_image_wrap {
+  overflow: hidden;
+  border-radius: 16px;
+  width: 100%;
+}
+
+.staff_fact_image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  object-fit: cover;
+}
+
+@media (min-width: 1700px) and (max-width: 3000px) {
+  .staff_fact_card {
+    gap: 24px;
+    padding: 40px;
+  }
+
+  .staff_fact_title {
+    font-size: 32px;
+    line-height: 40px;
+  }
+
+  .staff_fact_text,
+  .staff_fact_text p,
+  .staff_fact_text li {
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .staff_fact_author_name {
+    font-size: 20px;
+    line-height: 28px;
+  }
+}
+
+@media (max-width: 767px) {
+  .staff_fact_card {
+    padding: 24px;
+    gap: 16px;
+  }
+
+  .staff_fact_title {
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .staff_fact_text,
+  .staff_fact_text p,
+  .staff_fact_text li {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .staff_fact_author_name {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .staff_fact_title {
+    order: 1;
+  }
+
+  .staff_fact_text {
+    order: 2;
+  }
+
+  .staff_fact_image_wrap {
+    order: 3;
+  }
+
+  .staff_fact_author_row {
+    order: 4;
+  }
+}
+
+
+/* ===== Текстовый блок в рамке ===== */
+.staff_frame_text {
+  position: relative;
+  padding: 24px;
+  border: 1px solid var(--blue-A8DBF6, #75BBFD);
+  border-radius: 16px;
+  color: var(--black-1D2E43, #1D2E43);
+  line-height: 24px;
+  font-size: 16px;
+}
+
+
+/* ===== Текстовый блок с фоном ===== */
+.staff_bg_text {
+  position: relative;
+  padding: 24px;
+  border-radius: 16px;
+  background: var(--white-F6F6F6, #F6F6F6);
+  color: var(--black-1D2E43, #1D2E43);
+  line-height: 24px;
+  font-size: 16px;
+}
+
+/* ===== Текстовый блок выделенный ===== */
+.staff_stripe_text {
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  column-gap: 16px;
+  align-items: stretch;
+}
+
+.staff_stripe_text_bar {
+  width: 9px;
+  background: var(--blue-A8DBF6, #75BBFD);
+  align-self: stretch;
+}
+
+.staff_stripe_text_body {
+  color: var(--black-1D2E43);
+  line-height: 24px;
+  font-size: 16px;
+}
+
+.staff_stripe_text_body .modal_md_container>*:last-child {
+  margin-bottom: 0;
+}
+
+.staff_bullet_block {
+  display: grid;
+  row-gap: 12px;
+}
+
+.modal_about_stuff1 {
+  display: grid;
+  grid-template-columns: 12px 1fr;
+  align-items: start;
+}
+
+.modal_about_stuff_symbol {
+  margin-top: 2px;
+}
+
+.modal_about_md {
+  color: var(--black-1D2E43);
+  line-height: 24px;
+}
+
+/* ===== утилиты ===== */
+.modal_paragraph {
+  margin: 0 0 16px;
+  color: #1f2a37;
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+.modal_link {
+  color: #2f80ed;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(47, 128, 237, .35);
+}
+
+.modal_link:hover {
+  border-bottom-color: transparent;
+}
+
+.modal_list {
+  margin: 0 0 16px;
+  padding-left: 1.2rem;
+}
+
+.modal_list_ordered {
+  margin: 0 0 16px;
+  padding-left: 1.2rem;
+}
+
+.modal_list_item {
+  margin: 0 0 6px;
+}
+
+.modal_inline_code {
+  border-radius: 6px;
+  padding: 1px 6px;
+  font-size: 13px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.modal_pre {
+  background: #0b1220;
+  color: #e6edf3;
+  border-radius: 10px;
+  padding: 16px;
+  overflow: auto;
+}
+
+.img-error {
+  filter: grayscale(.35) brightness(.96);
+}
+
+.modal_md_container :is(p, ul, ol, blockquote, pre):last-child {
+  margin-bottom: 0 !important;
+}
+
+@media (max-width: 1200px) {
+  .staff_modal_stream {
+    --stream-gap: 40px;
+    gap: var(--stream-gap);
+  }
+
+  .staff_frame_text {
+    padding: 16px 16px;
+  }
+
+  .staff_fact_card {
+    padding: 32px;
+  }
+
+  .staff_fact_title {
+    font-size: 28px;
+    line-height: 36px;
+  }
+}
+
+@media (max-width: 768px) {
+  .staff_modal_stream {
+    --stream-gap: 32px;
+    gap: var(--stream-gap);
+  }
+
+  .staff_three_images {
+    grid-template-columns: 1fr;
+  }
+
+  .staff_three_images .staff_three_images_v {
+    grid-column: auto;
+  }
+
+  .staff_two_vertical {
+    grid-template-columns: 1fr;
+  }
+
+  .staff_fact_card {
+    padding: 24px;
+  }
+
+  .staff_fact_title {
+    font-size: 24px;
+    line-height: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .staff_modal_stream {
+    --stream-gap: 24px;
+    gap: var(--stream-gap);
+  }
+
+  .staff_fact_card {
+    border-radius: 24px;
+  }
+
+  .staff_fact_title {
+    font-size: 22px;  
+  }
+
+  .staff_frame_text {
+    border-radius: 18px;
+  }
+}

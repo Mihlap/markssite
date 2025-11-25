@@ -40,9 +40,7 @@ const projectSlice = createSlice({
       headingTextBlock: '',
       textBlock: '',
       imageClose: '',
-      dynamicData: [],
-      // imageTitle: "",
-      // projectId: "",
+      dynamicData: [],  
     },
   },
   reducers: {
@@ -135,13 +133,11 @@ export const {
   clearFormData,
 } = projectSlice.actions;
 
-export const fetchProject = createAsyncThunk('project/fetchProject', async (formattedData, { dispatch, getState }) => {
-  // console.log("Formatted data:", formattedData);
+export const fetchProject = createAsyncThunk('project/fetchProject', async (formattedData, { dispatch, getState }) => {  
   dispatch(fetchProjectStart());
   const formData = new FormData();
   const projectId = getState().project.projectId;
 
-  // Используйте PUT запрос, если у вас есть projectId
   const requestMethod = projectId ? 'PUT' : 'POST';
   const requestUrl = projectId
     ? `${serverHost}/api-project/updatezapros/${projectId}`
@@ -160,44 +156,34 @@ export const fetchProject = createAsyncThunk('project/fetchProject', async (form
           let photosArray = [];
 
           value.forEach((outerObj) => {
-            outerObj.forEach((innerObj) => {
-              // console.log("Inner object:", innerObj);
-              if (innerObj.type === 'file' && Array.isArray(innerObj.value) && innerObj.value.length > 0) {
-                // console.log("Files to add:", innerObj.value);
+            outerObj.forEach((innerObj) => {           
+              if (innerObj.type === 'file' && Array.isArray(innerObj.value) && innerObj.value.length > 0) {               
                 photosArray = photosArray.concat(innerObj.value);
               }
             });
           });
 
           const cloneDynamicBlocks = value.map((outerArray) => {
-            return outerArray.map((obj) => {
-              // Проверяем, что значение value не равно undefined и не пустой массив
-              if (obj.type === 'file' && Array.isArray(obj.value) && obj.value.length > 0) {
-                // Обработка значений типа file
-                const processedFiles = obj.value.map((file) => {
-                  // Проверяем, что файл не равен undefined и не null
-                  if (file && typeof file === 'object') {
-                    // Если это объект, возвращаем его имя
+            return outerArray.map((obj) => {            
+              if (obj.type === 'file' && Array.isArray(obj.value) && obj.value.length > 0) {           
+                const processedFiles = obj.value.map((file) => {          
+                  if (file && typeof file === 'object') {                
                     return file.name;
-                  } else {
-                    // Если это уже имя файла, возвращаем его без изменений
+                  } else {                  
                     return file;
                   }
                 });
-
-                // Возвращаем обновленный объект с обработанными значениями value
+            
                 return {
                   ...obj,
                   value: processedFiles,
                 };
-              }
-              // Возвращаем объект без изменений, если тип не file или значение value пустой массив или undefined
+              }         
               return obj;
             });
           });
 
-          formData.append('dynamicBlocksJSON', JSON.stringify(cloneDynamicBlocks));
-          // console.log(cloneDynamicBlocks, '<----cloneDynamicBlocks');
+          formData.append('dynamicBlocksJSON', JSON.stringify(cloneDynamicBlocks));      
 
           photosArray.forEach((photo) => {
             formData.append('dynamicImages', photo);

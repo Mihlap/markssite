@@ -17,6 +17,8 @@ export default function Publics({ handleMouseEnter, handleMouseLeave, handleMous
 
   const [selectArticle, setSelectArticle] = useState('Все');
   const [videoSrc, setVideoSrc] = useState(null);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const isMobile = screenWidth <= 1024;
 
   const videoSource = useMemo(
     () => ({
@@ -27,17 +29,17 @@ export default function Publics({ handleMouseEnter, handleMouseLeave, handleMous
     []
   );
 
-  const buttonChoices = useMemo(
-    () => ['Все', 'Выступления', 'Интервью', 'Новости', 'Научные публикации'],
-    []
-  );
+  const buttonChoices = useMemo(() => ['Все', 'Выступления', 'Интервью', 'Новости', 'Научные публикации'], []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+
     const handleResize = () => {
       const width = window.innerWidth;
+      setScreenWidth(width);
       setVideoSrc(width >= 1025 ? videoSource.large : videoSource.medium);
     };
+
     handleResize();
     window.addEventListener('resize', handleResize);
 
@@ -86,7 +88,8 @@ export default function Publics({ handleMouseEnter, handleMouseLeave, handleMous
             <span className={styles.text2_publics}>Публикации</span>
           </div>
         </div>
-        {!isActive && (
+
+        {!isActive && !isMobile && (
           <div className={styles.menu_button_group_articles_wrapper_main}>
             <div className={styles.menu_button_group_articles}>
               {buttonChoices.map((el) => (
@@ -104,21 +107,41 @@ export default function Publics({ handleMouseEnter, handleMouseLeave, handleMous
             </div>
           </div>
         )}
-        <div className={styles.menu_button_group_articles1}>
-          <Swiper slidesPerView="auto" spaceBetween={8} className={styles.my_swiper3_button_group_article}>
-            <div className={styles.button_group_article}>
-              {buttonChoices.map((el) => (
-                <SwiperSlide
-                  key={el}
-                  onClick={() => handleButtonClick(el)}
-                  className={`${styles.menu__button__allArticles} ${el === selectArticle ? styles.active : ''}`}
-                  style={{ width: 'fit-content' }}>
-                  <p className={styles.menu_button_item__allArticles}>{el}</p>
-                </SwiperSlide>
-              ))}
-            </div>
-          </Swiper>
-        </div>
+       
+        {isMobile && (
+          <div className={styles.menu_button_group_articles1}>
+            <Swiper
+              slidesPerView="auto"
+              spaceBetween={8}
+              className={styles.my_swiper3_button_group_article}
+              threshold={3}
+              touchStartPreventDefault={false}>
+              {(() => {
+                let firstRendered = true;
+
+                return buttonChoices.map((el) => {
+                  const isFirst = firstRendered;
+                  if (firstRendered) firstRendered = false;
+
+                  return (
+                    <SwiperSlide
+                      key={el}
+                      onClick={() => handleButtonClick(el)}
+                      className={`
+                        ${styles.menu__button__allArticles} 
+                        ${isFirst ? styles.firstSlide : ''} 
+                        ${el === selectArticle ? styles.active : ''}
+                      `}
+                      style={{ width: 'fit-content' }}>
+                      <p className={styles.menu_button_item__allArticles}>{el}</p>
+                    </SwiperSlide>
+                  );
+                });
+              })()}
+            </Swiper>
+          </div>
+        )}
+
         <section className={styles.section_article}>
           <div className={styles.section_article__block}>
             {articles.map((article) => {

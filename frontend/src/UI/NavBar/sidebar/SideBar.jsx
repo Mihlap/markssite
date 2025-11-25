@@ -174,9 +174,9 @@ export default function SideBar({
             {cta.map(({ id, label, path, external, variant }) => {
               if (external) {
                 return (
-                  <ul className={styles['navbar-sidebar-cta--contact-list']}>
+                  <ul key={id} className={styles['navbar-sidebar-cta--contact-list']}>
                     <li className={styles['navbar-sidebar-cta--contact-item']}>
-                      <a key={id} href={path} target="_blank" rel="noreferrer" onClick={handleExternalClick}>
+                      <a href={path} target="_blank" rel="noreferrer" onClick={handleExternalClick}>
                         {label}
                       </a>
                     </li>

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useDispatch, useSelector } from 'react-redux';
 import gsap from 'gsap';
-import styles from '../Company/Company.module.css';
+import styles from '../Company/Company.module.scss';
 
 import {
   incrementDepartment,
