@@ -7,10 +7,9 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import styles from './Project.module.css';
 import {
   setSelectedViewConstruction,
-  setSelectedCity,
-  getFetchFormFilter,
-  getFetchFormCityFilter,
-  getFetchFormLocationFilter,
+  setSelectedCity,  
+  getFetchFormCityFilter, 
+  getFetchForm,
 } from '../store/Slice/projectSlice';
 import CompanySlider from '../UI/Company_Slider/CompanySlider';
 import '../UI/Company_Slider/CompanySlider.css';
@@ -21,20 +20,20 @@ import catPhoto from '../img/default-photo.jpeg';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
-export default function Project({ handleMouseEnter, handleMouseLeave, handleMouseHover }) {
-  const buttonChoose = [
-    'Все',
-    'Архитектура и концепция',
-    'Градостроительство и генплан',
-    'Конструктив',
-    'Инженерия',
-    'Геотехника',
-    'Наука',
-    'Технологии',
-    'Цифровые технологии',
-  ];
+const BUTTON_CHOOSE = [
+  'Все',
+  'Архитектура и концепция',
+  'Градостроительство и генплан',
+  'Конструктив',
+  'Инженерия',
+  'Геотехника',
+  'Наука',
+  'Технологии',
+  'Цифровые технологии',
+];
 
-  const buttonCity = ['Москва', 'Санкт-Петербург', 'Грозный', 'Тюмень', 'Омск', 'Екатеринбург', 'Уфа'];
+const BUTTON_CITY = ['Москва', 'Санкт-Петербург', 'Грозный', 'Тюмень', 'Омск', 'Екатеринбург', 'Уфа'];
+export default function Project({ handleMouseEnter, handleMouseLeave, handleMouseHover }) {
 
   const colors = {
     Архитектура: '#FF7F6A',
@@ -47,12 +46,10 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const category = queryParams.get('viewConstruction');
-
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.project.projects);
   const selectedViewConstruction = useSelector((state) => state.project.selectedViewConstruction);
-  const selectedCity = useSelector((state) => state.project.selectedCity);
-  const selectedLocation = useSelector((state) => state.project.selectedLocation);
+  const selectedCity = useSelector((state) => state.project.selectedCity);  
   const isActive = useSelector((state) => state.toggle.isActiveForButton1);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -68,6 +65,7 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
   const [selectOnCompetencies, setSelectOnCompetencies] = useState(category || 'Все');
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [, setSwiper] = useState(null);
+  const isMobile = screenWidth <= 1024;
 
   const projectsPerPage = 100;
 
@@ -106,16 +104,16 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [handleResize]);
 
-  useEffect(() => {
-    dispatch(setSelectedViewConstruction(category || 'Все'));
-    dispatch(getFetchFormFilter(projectsPerPage, selectedViewConstruction));
-    dispatch(getFetchFormCityFilter(projectsPerPage, selectedCity));
-    dispatch(getFetchFormLocationFilter(projectsPerPage, selectedLocation));
-    dispatch(fetchToggleStateAsync());
-    setLoading(false);
-  }, [dispatch, projectsPerPage, location.search, category]);
+useEffect(() => { 
+  dispatch(setSelectedViewConstruction(category || 'Все'));  
+  dispatch(getFetchForm());
+  dispatch(fetchToggleStateAsync());
+  setCurrentPage(1);
+  setLoading(false);
+}, [dispatch, category]);
+
 
   useEffect(() => {
     getUserGeolocation()
@@ -124,8 +122,7 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
         const city = geolocation.city || 'Москва';
         setCurLocation(city);
       })
-      .catch((error) => console.error('Ошибка при получении геопозиции:', error));
-    // setCurLocation("Москва");
+      .catch((error) => console.error('Ошибка при получении геопозиции:', error));   
   }, []);
 
   const currentLocation = userGeolocation ? userGeolocation.city : 'Москва';
@@ -171,28 +168,18 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
     [dispatch, isValid, value]
   );
 
-  const handleButtonClick = useCallback(
-    (viewConstruction) => {
-      if (
-        selectedCity !== '' ||
-        selectedViewConstruction !== viewConstruction ||
-        selectedViewConstruction === viewConstruction
-      ) {
-        dispatch(setSelectedCity(''));
-        dispatch(setSelectedViewConstruction(viewConstruction));
-        dispatch(getFetchFormFilter(currentPage, projectsPerPage, viewConstruction));
-      } else {
-        dispatch(setSelectedCity(''));
-        dispatch(setSelectedViewConstruction(''));
-        dispatch(getFetchFormFilter(currentPage, projectsPerPage, ''));
-      }
-      setCurrentPage(1);
-      setValue('');
-      setIsTyping(false);
-      setSelectOnCompetencies('');
-    },
-    [dispatch, currentPage, projectsPerPage, selectedCity, selectedViewConstruction]
-  );
+const handleButtonClick = useCallback(
+  (viewConstruction) => {
+    dispatch(setSelectedCity(''));
+    dispatch(setSelectedViewConstruction(viewConstruction));
+    setSelectOnCompetencies(viewConstruction);
+    setCurrentPage(1);
+    setValue('');
+    setIsTyping(false);
+  },
+  [dispatch]
+);
+
 
   const handleButtonCityClick = useCallback(
     (countryCity) => {
@@ -237,25 +224,25 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
     [dispatch, selectOnCompetencies, value]
   );
 
-  const handleScroll = () => {
+   const loadMoreProjects = useCallback(async () => {
+    setLoading(true);
+    setCurrentPage((prev) => prev + 1);
+   }, []);
+  
+  const handleScroll = useCallback(() => {
     const isAtBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight;
 
     if (isAtBottom && !loading) {
       loadMoreProjects();
     }
-  };
-
-  const loadMoreProjects = async () => {
-    setLoading(true);
-    setCurrentPage((prev) => prev + 1);
-  };
+  }, [loading, loadMoreProjects]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [handleScroll]);
 
   const categoriesSet = useMemo(() => {
     const set = new Set();
@@ -274,7 +261,7 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
       if (Array.isArray(vc)) {
         vc.forEach((cat) => set.add(cat));
       } else if (typeof vc === 'string') {
-        for (const cat of buttonChoose) {
+        for (const cat of BUTTON_CHOOSE) {
           if (cat === 'Все') continue;
           if (vc.includes(cat)) set.add(cat);
         }
@@ -302,6 +289,16 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
         );
       });
   }, [projects, selectOnCompetencies, selectedCity, value]);
+
+  useEffect(() => { 
+
+    if (!projects || projects.length === 0) return;  
+    if (selectOnCompetencies === 'Все') return;    
+    if (filteredProjects.length > 0) return;
+
+    setSelectOnCompetencies('Все');
+    dispatch(setSelectedViewConstruction('Все'));
+  }, [projects, filteredProjects, selectOnCompetencies, dispatch]);
 
   return (
     <>
@@ -364,46 +361,54 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
           </div>
         )}
         <div className={styles.menu_button_group_project_wrapper_main1}>
-          {screenWidth && (
+          {isMobile && (
             <Swiper
               onSwiper={setSwiper}
               slidesPerView="auto"
               spaceBetween={8}
               className={styles.my_swiper2_button_group_project}
               touch="true">
-              <div className={styles.button_group_project}>
-                {buttonChoose &&
-                  buttonChoose?.map((el, index) => {
-                    const shouldShow = el === 'Все' || categoriesSet.has(el);
-                    if (!shouldShow) return null;
+              {(() => {
+                let firstRendered = true;
 
-                    return (
-                      <SwiperSlide
-                        key={el}
-                        onClick={() => handleButtonClick(el)}
-                        className={`${styles.menu__button__allProject} ${
-                          !isModalProjectOpen &&
-                          (el === selectedViewConstruction || (index === 0 && !selectedViewConstruction))
-                            ? styles.active
-                            : ''
-                        }`}
-                        style={{ width: 'fit-content' }}>
-                        <p type="button" className={styles.menu_button_items}>
-                          {el}
-                        </p>
-                      </SwiperSlide>
-                    );
-                  })}
-              </div>
+                return BUTTON_CHOOSE?.map((el) => {
+                  const shouldShow = el === 'Все' || categoriesSet.has(el);
+                  if (!shouldShow) return null;
+
+                  const isFirst = firstRendered;
+                  if (firstRendered) firstRendered = false;
+
+                  return (
+                    <SwiperSlide
+                      key={el}
+                      onClick={() => handleButtonClick(el)}
+                      className={`
+                ${styles.menu__button__allProject} 
+                ${isFirst ? styles.firstSlide : ''} 
+                ${
+                  !isModalProjectOpen &&
+                  (el === selectedViewConstruction || (!selectedViewConstruction && el === 'Все'))
+                    ? styles.active
+                    : ''
+                }
+              `}
+                      style={{ width: 'fit-content' }}>
+                      <p type="button" className={styles.menu_button_items}>
+                        {el}
+                      </p>
+                    </SwiperSlide>
+                  );
+                });
+              })()}
             </Swiper>
           )}
         </div>
 
-        {!isActive && (
+        {!isMobile && !isActive && (
           <div className={styles.menu_button_group_project_wrapper_main}>
             <div className={styles.menu_button_group_project_wrapper}>
               <div className={styles.menu_button_group_project}>
-                {buttonChoose.map((el, index) => {
+                {BUTTON_CHOOSE?.map((el, index) => {
                   const shouldShow = el === 'Все' || categoriesSet.has(el);
                   if (!shouldShow) return null;
 
@@ -553,7 +558,7 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
           </form>
           <div className={styles.text_object_modal_project}>Наши объекты есть</div>
           <div className={styles.modal_project_button_group}>
-            {buttonCity.map((el) => (
+            {BUTTON_CITY?.map((el) => (
               <div key={el} className={styles.button_modal_project_wrapper}>
                 <button
                   className={`${styles.menu__button__modal__project} ${el === selectedCity ? styles.active : ''}`}

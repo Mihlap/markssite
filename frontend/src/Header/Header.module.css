@@ -492,18 +492,19 @@ svg path {
   position: relative;
   width: 100%;
   height: 100%;
-  /* padding-left: 1.875vw; */
-  /* padding-right: 1.875vw; */
   padding-bottom: 3.97rem;
   overflow: hidden;
 }
 
 .slider_card_container_project {
   display: flex;
-  /* width: 100%; */
   height: 100%;
   min-height: 24rem;
-  padding-left: 1.875vw;
+  padding-left: 0;
+}
+
+.slider_container_item_card_first {
+  padding-left: 1.875vw; 
 }
 
 .slider_container_item_card {
