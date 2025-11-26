@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState, Suspense, lazy } from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
@@ -6,7 +6,6 @@ import clsx from 'clsx';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import styles from './VacanciesMainCard.module.scss';
 import VacancySlider from '../VacancySlider/VacancySlider';
 import LoadingVacancy from '../../../Loading/LoadingVacancy';
 import RenderVacancySections from '../RenderVacancySections/RenderVacancySections';
@@ -17,6 +16,7 @@ import ModalVacancyFormSend from '../../../UI/VacancyFormContact/ModalVacancyFor
 import { advantages } from './const/advantages';
 import BenefitsVacancy from '../BenefitsVacancy/BenefitsVacancy';
 import VacancyRequirements from '../../ui/mesh/VacancyRequirements';
+import styles from './VacanciesMainCard.module.scss';
 // hooks
 import { useScreenSize } from './hooks/useScreenSize';
 import { useStickyVisibility } from './hooks/useStickyVisibility';
@@ -41,7 +41,9 @@ import sputnik from '../icons/sputnik.png';
 import vectorAround from '../icons/VectorAround.svg';
 import vectorAround1 from '../icons/VectorAround1.png';
 import vectorAround2 from '../icons/vectorAround2.svg';
-import Button from '../../ui/button/Button';
+
+const Button = lazy(() => import('../../ui/button/Button'));
+
 gsap.registerPlugin(useGSAP);
 gsap.registerPlugin(ScrollTrigger);
 
@@ -156,7 +158,7 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
               </div>
               <div className={styles['section-top__advantages-item']}>
                 {advantages.map((item, index) => (
-                  <div key={item.id} className={styles[`cell${index + 1}`]}>
+                  <div key={item.id}>
                     <img className={styles['section-top__advantages-item_icon']} src={item.img} alt={item.title} />
                     <p className={styles.title}>
                       {item?.rows.map((row, i) => (
@@ -169,7 +171,7 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
                   </div>
                 ))}
               </div>
-              {width < 1024 && (
+              <Suspense fallback={<p>loading...</p>}>
                 <Button
                   withBackground
                   className={clsx(
@@ -180,7 +182,7 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
                   click={handleScrollToForm}>
                   {activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'}
                 </Button>
-              )}
+              </Suspense>
               <RenderVacancySections showOnRef={showOnRef} vacancy={vacancies[0]} />
             </div>
           </div>
