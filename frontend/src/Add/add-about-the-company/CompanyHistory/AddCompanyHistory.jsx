@@ -1,32 +1,30 @@
-import { useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styles from '../../style/style-card.module.scss';
 
 import HistoryModalManager from './HistoryModalManager';
 import HistoryList from './HistoryList';
 
-import {
-  fetchCompanyHistory,
-} from '../../../store/Slice/companyHistorySlice';
+import { fetchCompanyHistory } from '../../../store/Slice/companyHistorySlice';
 
-export default function AddCompanyHistory({ user }) {
+function AddCompanyHistory({ user }) {
   const dispatch = useDispatch();
 
   const [isModalOpenHistory, setIsModalOpenHistory] = useState(false);
   const [editHistoryData, setEditHistoryData] = useState(null);
   const [modalBlockHeight, setModalBlockHeight] = useState('auto');
 
-  useEffect(() => {
-    const updateHeight = () => {
-      const windowHeight = window.innerHeight;
-      const maxHeight = Math.min(windowHeight - 100, 1900);
-      setModalBlockHeight(`${maxHeight}px`);
-    };
+  const updateHeight = useCallback(() => {
+    const windowHeight = window.innerHeight;
+    const maxHeight = Math.min(windowHeight - 100, 1900);
+    setModalBlockHeight(`${maxHeight}px`);
+  }, []);
 
+  useEffect(() => {
     updateHeight();
     window.addEventListener('resize', updateHeight);
     return () => window.removeEventListener('resize', updateHeight);
-  }, []);
+  }, [updateHeight]);
 
   useEffect(() => {
     dispatch(fetchCompanyHistory());
@@ -38,10 +36,10 @@ export default function AddCompanyHistory({ user }) {
   }, []);
 
   return (
-    <div className={styles.card_components_admin__blockAddSlide} style={{paddingTop: 22, paddingBottom: 64}}>
+    <div className={styles.card_components_admin__blockAddSlide} style={{ paddingTop: 22, paddingBottom: 64 }}>
       <span className={styles.card_components_admin__title}>История MARKS GROUP</span>
 
-      <div className={styles.card_components_admin__button_block}      
+      <div className={styles.card_components_admin__button_block}
         // onClick={handleOpenModal}
       >
         <button className={styles.card_components_admin__button}>
@@ -80,3 +78,5 @@ export default function AddCompanyHistory({ user }) {
     </div>
   );
 }
+
+export default memo(AddCompanyHistory);

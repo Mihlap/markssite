@@ -53,10 +53,8 @@ router.post('/', async (req, res, next) => {
       { transaction: t },
     );
 
-    let constructorRow = null;
-
     if (constructor && (constructor.data || constructor.image)) {
-      constructorRow = await ConstructorLegend.create(
+      await ConstructorLegend.create(
         {
           legendId: legend.id,
           data: constructor.data || null,
@@ -68,16 +66,33 @@ router.post('/', async (req, res, next) => {
 
     await t.commit();
 
-    const fullLegend = await Legend.findByPk(legend.id, {
-      include: [
-        { model: ConstructorLegend },
-        { model: User, as: 'author', attributes: ['id', 'name', 'userName'] },
-      ],
-    });
+    let fullLegend = legend;
+    try {
+      const withIncludes = await Legend.findByPk(legend.id, {
+        include: [
+          { model: ConstructorLegend },
+          { model: User, as: 'author', attributes: ['id', 'name', 'userName'] },
+        ],
+      });
+      if (withIncludes) fullLegend = withIncludes;
+    } catch (fetchErr) {
+      console.error(
+        'POST /api/legend: error in Legend.findByPk after commit:',
+        fetchErr,
+        fetchErr.original || '',
+      );   
+    }
 
-    res.status(201).json(fullLegend);
+    return res.status(201).json(fullLegend);
   } catch (err) {
-    await t.rollback();
+    if (!t.finished) {
+      try {
+        await t.rollback();
+      } catch (rollbackErr) {
+        console.error('Rollback failed after POST /api/legend:', rollbackErr);
+      }
+    }
+    console.error('POST /api/legend error:', err, err.original || '');
     next(err);
   }
 });
@@ -137,16 +152,33 @@ router.put('/:id', async (req, res, next) => {
 
     await t.commit();
 
-    const fullLegend = await Legend.findByPk(id, {
-      include: [
-        { model: ConstructorLegend },
-        { model: User, as: 'author', attributes: ['id', 'name', 'userName'] },
-      ],
-    });
+    let fullLegend = legend;
+    try {
+      const withIncludes = await Legend.findByPk(id, {
+        include: [
+          { model: ConstructorLegend },
+          { model: User, as: 'author', attributes: ['id', 'name', 'userName'] },
+        ],
+      });
+      if (withIncludes) fullLegend = withIncludes;
+    } catch (fetchErr) {
+      console.error(
+        'PUT /api/legend/:id: error in Legend.findByPk after commit:',
+        fetchErr,
+        fetchErr.original || '',
+      );
+    }
 
-    res.json(fullLegend);
+    return res.json(fullLegend);
   } catch (err) {
-    await t.rollback();
+    if (!t.finished) {
+      try {
+        await t.rollback();
+      } catch (rollbackErr) {
+        console.error('Rollback failed after PUT /api/legend/:id:', rollbackErr);
+      }
+    }
+    console.error('PUT /api/legend/:id error:', err, err.original || '');
     next(err);
   }
 });
@@ -160,6 +192,7 @@ router.patch('/:id/hidden', async (req, res, next) => {
     await legend.update({ hidden: !!hidden });
     res.json(legend);
   } catch (err) {
+     console.error('PATCH /api/legend/:id/hidden error:', err, err.original || '');
     next(err);
   }
 });
@@ -179,6 +212,7 @@ router.patch('/order/bulk', async (req, res, next) => {
     }
 
     await t.commit();
+
     const legends = await Legend.findAll({
       order: [
         ['order', 'ASC'],
@@ -187,7 +221,14 @@ router.patch('/order/bulk', async (req, res, next) => {
     });
     res.json(legends);
   } catch (err) {
-    await t.rollback();
+    if (!t.finished) {
+      try {
+        await t.rollback();
+      } catch (rollbackErr) {
+        console.error('Rollback failed after PATCH /legend/order/bulk:', rollbackErr);
+      }
+    }
+    console.error('PATCH /api/legend/order/bulk error:', err, err.original || '');
     next(err);
   }
 });
@@ -205,7 +246,14 @@ router.delete('/:id', async (req, res, next) => {
     if (!deleted) return res.status(404).json({ message: 'Legend not found' });
     res.json({ message: 'Deleted', id });
   } catch (err) {
-    await t.rollback();
+    if (!t.finished) {
+      try {
+        await t.rollback();
+      } catch (rollbackErr) {
+        console.error('Rollback failed after DELETE /legend/:id:', rollbackErr);
+      }
+    }
+     console.error('DELETE /api/legend/:id error:', err, err.original || '');
     next(err);
   }
 });
