@@ -7,7 +7,7 @@ import adminStyles from '../../../Add/style/style-card.module.scss';
 import SubmitButtons from '../../../UI/SubmitButtons/SubmitButtons';
 import ExitConfirmModal from '../../../UI/ExitConfirmModal/ExitConfirmModal';
 
-import { updateHistoryItem } from '../../../store/Slice/companyHistorySlice';
+import { updateHistoryItem, fetchCompanyHistory } from '../../../store/Slice/companyHistorySlice';
 
 export default function FormEditHistory({ initial, onClose }) {
   const dispatch = useDispatch();
@@ -22,7 +22,6 @@ export default function FormEditHistory({ initial, onClose }) {
   const [showExitConfirm, setShowExitConfirm] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({});
-  const [forceValidateTick, setForceValidateTick] = useState(0);
 
   useEffect(() => {
     if (!initial) return;
@@ -65,7 +64,6 @@ export default function FormEditHistory({ initial, onClose }) {
       const ok = validate();
       if (!ok) {
         setShowNotification(true);
-        setForceValidateTick((n) => n + 1);
         setTimeout(() => setShowNotification(false), 3500);
         return;
       }
@@ -74,11 +72,12 @@ export default function FormEditHistory({ initial, onClose }) {
         year: Number(inputData.year),
         title: String(inputData.title).trim(),
         description: String(inputData.description).trim(),
-        img: inputData.img ? String(inputData.img).trim() : null,      
+        img: inputData.img ? String(inputData.img).trim() : null,
       };
 
       try {
         await dispatch(updateHistoryItem({ id: initial.id, data: payload })).unwrap();
+        await dispatch(fetchCompanyHistory()).unwrap();
         onClose?.();
       } catch (err) {
         console.error('Ошибка при обновлении записи истории:', err);
@@ -137,6 +136,7 @@ export default function FormEditHistory({ initial, onClose }) {
             </label>
             {fieldErrors.title && <div className={styles.form_container__error}>{fieldErrors.title}</div>}
           </div>
+
           <div className={styles.form_container__field}>
             <label className={styles.form_container__label}>
               Описание
@@ -166,8 +166,6 @@ export default function FormEditHistory({ initial, onClose }) {
               />
             </label>
           </div>
-
-          {/* ConstructorSection / ConstructorPage, */}
 
           <SubmitButtons
             classNames={{

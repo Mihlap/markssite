@@ -1,6 +1,6 @@
-import { useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styles from '../../style/style-card.module.scss';
+import historyStyles from './CompanyHistory.module.scss';
 
 import HistoryItem from './HistoryItem';
 
@@ -9,11 +9,12 @@ import {
   updateHistoryOrder,
   toggleHistoryVisibility,
   deleteHistoryItem,
+  fetchCompanyHistory,
 } from '../../../store/Slice/companyHistorySlice';
 
-export default function HistoryList({ user, setIsModalOpenHistory, setEditHistoryData }) {
+function HistoryList({ user, setIsModalOpenHistory, setEditHistoryData }) {
   const dispatch = useDispatch();
-  const yearsFromStore = useSelector((state) => state.companyHistory?.items || []);
+  const yearsFromStore = useSelector((state) => state.companyHistory.items || []);
 
   const years = useMemo(
     () =>
@@ -102,19 +103,25 @@ export default function HistoryList({ user, setIsModalOpenHistory, setEditHistor
   }, []);
 
   const handleFormDelete = useCallback(
-    (id) => {
-      dispatch(deleteHistoryItem(id));
-      handleDeleteModalClose(id);
+    async (id) => {
+      try {
+        await dispatch(deleteHistoryItem(id)).unwrap();
+        await dispatch(fetchCompanyHistory()).unwrap();
+        handleDeleteModalClose(id);
+      } catch (e) {
+        console.error('Ошибка удаления записи истории:', e);
+      }
     },
     [dispatch, handleDeleteModalClose]
   );
 
   if (!years.length) {
-    return <div className={styles.card_components_admin__null_history}>История компании пока не добавлена</div>;
+    // return <div className={historyStyles.nullHistory}>История компании пока не добавлена</div>;
+     return <div className={historyStyles.nullHistory} style={{  fontSize: '2rem'}}>История компании в работе</div>; // временно
   }
 
   return (
-    <div className={styles.card_components_admin__block__history} role="list">
+    <div className={historyStyles.blockHistory} role="list">
       {years.map((el, index) => (
         <HistoryItem
           key={el.id}
@@ -126,7 +133,7 @@ export default function HistoryList({ user, setIsModalOpenHistory, setEditHistor
           handleDrop={handleDrop}
           handleLookClick={handleLookClick}
           handleEditClick={handleEditClick}
-          deleteModalState={deleteModalState}
+          isDeleteOpen={!!deleteModalState[el.id]}
           handleDeleteModalOpen={handleDeleteModalOpen}
           handleDeleteModalClose={handleDeleteModalClose}
           handleFormDelete={handleFormDelete}
@@ -135,3 +142,5 @@ export default function HistoryList({ user, setIsModalOpenHistory, setEditHistor
     </div>
   );
 }
+
+export default memo(HistoryList);
