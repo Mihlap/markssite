@@ -1146,7 +1146,6 @@
   }
 }
 
-
 .card_components_admin__buttonFilter {
   display: flex;
   flex-wrap: nowrap;
@@ -1189,6 +1188,95 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+// История компании 
+
+.card_components_admin__block__history {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cart_history_container {
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+  width: 100%;
+}
+
+.cart_history_container__year {
+  min-width: 64px;
+  max-width: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-family: var(--font-unbounded);
+  font-weight: var(--fw-500);
+  font-size: 16px;
+  color: var(--black-1D2E43);
+}
+
+.cart_history_container__body {
+  flex: 1 1 auto;
+  border-radius: 12px;
+  background: #f8f9fb;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cart_history_container__content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cart_history_container__title {
+  font-family: var(--font-unbounded);
+  font-weight: var(--fw-500);
+  font-size: 14px;
+  color: var(--black-1D2E43);
+}
+
+.cart_history_container__text {
+  font-family: var(--font-raleway);
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--gray-515c66);
+}
+
+.cart_history_container__buttons {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.look_block_history {
+  position: relative;
+}
+
+.edit_block_history {
+  position: relative;
+}
+
+.del_block_history {
+  position: relative;
+}
+
+.card_components_admin__null_history {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 25vh;
+  text-align: center;
+  font-family: var(--font-unbounded);
+  font-size: 1rem;
+  line-height: 2.5rem;
+  font-weight: 300;
+  color: var(--light-gray-C0C5CB);
+}     
 
 // стили адаптив
 @media screen and (min-width: 1024px) and (max-width: 1600px) {

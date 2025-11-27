@@ -20,6 +20,8 @@ import defaultPhoto from '../../img/default-photo.jpeg';
 import cursorPng from '../img/cursor.png';
 import dragDrop from '../icon/drag&drop.svg';
 
+import AddCompanyHistory from './CompanyHistory/AddCompanyHistory';
+
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 const CATEGORY_OPTIONS = ['Руководство', 'Научное сопровождение', 'HR'];
@@ -296,6 +298,7 @@ export default function AddCompany({ user }) {
   return (
     <section className={styles.card_components_admin}>
       <div className={styles.card_components_admin__block}>
+      <AddCompanyHistory user={user} />
         <div className={styles.card_components_admin__block_title_btn}>
           <div className={styles.card_components_admin__title}>Сотрудники</div>
         </div>

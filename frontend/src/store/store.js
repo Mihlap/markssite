@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import projectSlice from './Slice/projectSlice';
+import companyHistoryReducer from './Slice/companyHistorySlice';
 import StaffSliceNew from './Slice/StaffSliceNew';
 import counterSlice from './Slice/counterSlice';
 import articleSlice from './Slice/articleSlice';
@@ -24,7 +25,7 @@ export default configureStore({
   reducer: {
     user: userReducer,
     auth: authReducer,
-    project: projectSlice,   
+    project: projectSlice,
     staff: StaffSliceNew,
     counter: counterSlice,
     article: articleSlice,
@@ -42,5 +43,6 @@ export default configureStore({
     formAddEvent: formAddEventSlice,
     modal: modalSlice,
     categoryFilters: journal_categoryFiltersSlice,
+    companyHistory: companyHistoryReducer,
   },
 });
