@@ -1,12 +1,10 @@
 const express = require('express');
-
 const router = express.Router();
 
-router.get('*', (req, res, next) => {
-  console.log('Route hit');
+router.use((req, res, next) => {
+  console.log('Route hit', req.method, req.url);
   console.log(req.session.user);
-  // const initState = { user: req.session.user };
-  // res.render('Layout', initState);
+  next();
 });
 
 module.exports = router;
