@@ -7,7 +7,7 @@ import adminStyles from '../../../Add/style/style-card.module.scss';
 import SubmitButtons from '../../../UI/SubmitButtons/SubmitButtons';
 import ExitConfirmModal from '../../../UI/ExitConfirmModal/ExitConfirmModal';
 
-import { createHistoryItem } from '../../../store/Slice/companyHistorySlice';
+import { createHistoryItem, fetchCompanyHistory } from '../../../store/Slice/companyHistorySlice';
 
 export default function FormAddHistory({ onClose }) {
   const dispatch = useDispatch();
@@ -22,7 +22,6 @@ export default function FormAddHistory({ onClose }) {
   const [showExitConfirm, setShowExitConfirm] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({});
-  const [forceValidateTick, setForceValidateTick] = useState(0);
 
   const changeBasic = useCallback((e) => {
     const { name, value } = e.target || {};
@@ -54,7 +53,6 @@ export default function FormAddHistory({ onClose }) {
       const ok = validate();
       if (!ok) {
         setShowNotification(true);
-        setForceValidateTick((n) => n + 1);
         setTimeout(() => setShowNotification(false), 3500);
         return;
       }
@@ -65,7 +63,7 @@ export default function FormAddHistory({ onClose }) {
         description: String(inputData.description).trim(),
         img: inputData.img ? String(inputData.img).trim() : null,
         hidden: false,
-        order: 0,   
+        order: 0,
         constructor: {
           data: [],
           image: null,
@@ -74,6 +72,7 @@ export default function FormAddHistory({ onClose }) {
 
       try {
         await dispatch(createHistoryItem(payload)).unwrap();
+        await dispatch(fetchCompanyHistory()).unwrap();
         onClose?.();
       } catch (err) {
         console.error('Ошибка при создании записи истории:', err);
@@ -116,6 +115,7 @@ export default function FormAddHistory({ onClose }) {
             </label>
             {fieldErrors.year && <div className={styles.form_container__error}>{fieldErrors.year}</div>}
           </div>
+
           <div className={styles.form_container__field}>
             <label className={styles.form_container__label}>
               Заголовок
@@ -131,6 +131,7 @@ export default function FormAddHistory({ onClose }) {
             </label>
             {fieldErrors.title && <div className={styles.form_container__error}>{fieldErrors.title}</div>}
           </div>
+
           <div className={styles.form_container__field}>
             <label className={styles.form_container__label}>
               Описание
@@ -146,6 +147,7 @@ export default function FormAddHistory({ onClose }) {
             </label>
             {fieldErrors.description && <div className={styles.form_container__error}>{fieldErrors.description}</div>}
           </div>
+
           <div className={styles.form_container__field}>
             <label className={styles.form_container__label}>
               Ссылка на изображение (необязательно)
@@ -159,8 +161,6 @@ export default function FormAddHistory({ onClose }) {
               />
             </label>
           </div>
-          
-          {/* ConstructorSection / ConstructorPage, */}
 
           <SubmitButtons
             classNames={{
