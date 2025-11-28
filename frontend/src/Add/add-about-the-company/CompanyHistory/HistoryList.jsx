@@ -117,7 +117,11 @@ function HistoryList({ user, setIsModalOpenHistory, setEditHistoryData }) {
 
   if (!years.length) {
     // return <div className={historyStyles.nullHistory}>История компании пока не добавлена</div>;
-     return <div className={historyStyles.nullHistory} style={{  fontSize: '2rem'}}>История компании в работе</div>; // временно
+     return (
+       <div className={historyStyles.nullHistory} style={{ fontSize: '1.5rem' }}>
+         Прямо сейчас мы создаём историю
+       </div>
+     ); // временно
   }
 
   return (
