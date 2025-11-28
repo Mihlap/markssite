@@ -785,6 +785,10 @@
     white-space: normal;
   }
 
+  .all_button_div { 
+      top: 10vh;
+  }
+
   /* <<=============== левый блок контента с информацией===============>> */
 
   .header_content_left {
