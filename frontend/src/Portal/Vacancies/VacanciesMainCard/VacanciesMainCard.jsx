@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState, Suspense, lazy } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
@@ -50,11 +50,8 @@ import { useWindowWidth } from '../../hooks/useWindowWidth';
 
 // const
 import { advantages } from './const/advantages';
-import { about, extra } from './const/about';
-import { useGSAP } from '@gsap/react';
 import VacancyRequirements from '../../ui/mesh/VacancyRequirements';
 
-gsap.registerPlugin(useGSAP);
 gsap.registerPlugin(ScrollTrigger);
 
 function setViewportUnits() {
@@ -65,6 +62,7 @@ function setViewportUnits() {
 const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }) => {
   const dispatch = useDispatch();
   const { id } = useParams();
+  const { width, isMobile, isTablet, isDesktop } = useWindowWidth();
   const activePage = useSelector((state) => state.activePage.page);
   const vacancies = useSelector((state) => state.vacancies.vacancies);
   const [isLoading, setIsLoading] = useState(false);
@@ -78,41 +76,6 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
   const formButtonRef = useRef(null);
   const rocketRef = useRef(null);
   const sputnikRef = useRef(null);
-
-  const container = useRef();
-  const firstStarRef = useRef(null);
-  const secondStarRef = useRef(null);
-  const threeStarRef = useRef(null);
-
-  const { width, isMobile, isTablet, isDesktop } = useWindowWidth();
-
-  useGSAP(
-    () => {
-      const stars = [
-        { ref: firstStarRef, rotate: 100, initialPosition: -50 },
-        { ref: secondStarRef, rotate: -100, initialPosition: 50 },
-        { ref: threeStarRef, rotate: 100, initialPosition: -50 },
-      ];
-
-      stars.forEach(({ ref, rotate, initialPosition }) => {
-        gsap.fromTo(
-          ref.current,
-          { rotateZ: initialPosition },
-          {
-            rotateZ: rotate,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: container.current,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: true,
-            },
-          }
-        );
-      });
-    },
-    { scope: container }
-  );
 
   useEffect(() => {
     const raf = requestAnimationFrame(() => setBlockReady(true));
@@ -314,10 +277,10 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
           variant="manualClose"
         />
         <section className={styles['section-top']}>
-          <div ref={container} className={styles['section-top__title']}>
-            <img ref={firstStarRef} className={styles['section-top__star']} src={star1} alt="иконка звезды" />
-            <img ref={secondStarRef} className={styles['section-top__star']} src={star2} alt="иконка звезды" />
-            <img ref={threeStarRef} className={styles['section-top__star']} src={star3} alt="иконка звезды" />
+          <div className={styles['section-top__title']}>
+            <img className={styles['section-top__star']} src={star1} alt="иконка звезды" />
+            <img className={styles['section-top__star']} src={star2} alt="иконка звезды" />
+            <img className={styles['section-top__star']} src={star3} alt="иконка звезды" />
             <div className={styles['section-top__wrap']}>
               <h1 className={styles['section-top__heading']}>{vacancies[0]?.title || null}</h1>
               <div className={styles['section-top__description']}>
@@ -352,6 +315,20 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
                     </p>
                   </div>
                 ))}
+              </div>
+              <div className={styles.main_vacancyWrapper__button_vacancyWrapper}>
+                {!isVisible && (
+                  <button
+                    className={styles.main_vacancyWrapper__button_vacancy}
+                    type="submit"
+                    id="submit-button"
+                    onClick={handleScrollToForm}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                    ref={formButtonRef}>
+                    <p className={styles.main_vacancyWrapper__button_name_vacancy}>Откликнуться на вакансию</p>
+                  </button>
+                )}
               </div>
               <RenderVacancySections vacancy={vacancies[0]} />
             </div>
