@@ -2,29 +2,26 @@ import React, { useCallback, useEffect, useLayoutEffect, useRef, useState, Suspe
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
-import clsx from 'clsx';
 import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { debounce } from 'lodash';
+import styles from './VacanciesMainCard.module.scss';
 import VacancySlider from '../VacancySlider/VacancySlider';
 import LoadingVacancy from '../../../Loading/LoadingVacancy';
 import RenderVacancySections from '../RenderVacancySections/RenderVacancySections';
 import { fetchEmployees } from '../../../store/Slice/vacanciesSlice';
+import AllVacancyButton from '../../../UI/ButtonVacancy/AllVacancyButton';
 import VacancyFormContactSimple from '../../../UI/VacancyFormContact/VacancyFormContactSimple';
 import VacancyFormContact from '../../../UI/VacancyFormContact/VacancyFormContact';
 import ModalVacancyFormSend from '../../../UI/VacancyFormContact/ModalVacancyFormSend';
-import { advantages } from './const/advantages';
-import BenefitsVacancy from '../BenefitsVacancy/BenefitsVacancy';
-import VacancyRequirements from '../../ui/mesh/VacancyRequirements';
-import styles from './VacanciesMainCard.module.scss';
-// hooks
-import { useScreenSize } from './hooks/useScreenSize';
-import { useStickyVisibility } from './hooks/useStickyVisibility';
 
 import star1 from '../icons/star-header-1.png';
 import star2 from '../icons/star-header-2.png';
 import star3 from '../icons/star-header-3.png';
 
+import star3d_1 from '../icons/star3d_1.png';
+import star3d_2 from '../icons/star3d_2.png';
+import star3d_3 from '../icons/star3d_3.png';
 import star3d_4 from '../icons/star3d_4.png';
 import star3d_5 from '../icons/star3d_5.png';
 import star3d_6 from '../icons/star3d_6.png';
@@ -42,10 +39,28 @@ import vectorAround from '../icons/VectorAround.svg';
 import vectorAround1 from '../icons/VectorAround1.png';
 import vectorAround2 from '../icons/vectorAround2.svg';
 
-const Button = lazy(() => import('../../ui/button/Button'));
+import frame1 from '../icons/frame/frame1.svg';
+import frame2 from '../icons/frame/frame2.svg';
+import frame3 from '../icons/frame/frame3.svg';
+import frame4 from '../icons/frame/frame4.svg';
+import BenefitsVacancy from '../BenefitsVacancy/BenefitsVacancy';
+
+// hooks
+import { useWindowWidth } from '../../hooks/useWindowWidth';
+
+// const
+import { advantages } from './const/advantages';
+import { about, extra } from './const/about';
+import { useGSAP } from '@gsap/react';
+import VacancyRequirements from '../../ui/mesh/VacancyRequirements';
 
 gsap.registerPlugin(useGSAP);
 gsap.registerPlugin(ScrollTrigger);
+
+function setViewportUnits() {
+  document.documentElement.style.setProperty('--vh', `${window.innerHeight / 100}px`);
+  document.documentElement.style.setProperty('--vw', `${window.innerWidth / 100}px`);
+}
 
 const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }) => {
   const dispatch = useDispatch();
@@ -55,21 +70,21 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedVacancy, setSelectedVacancy] = useState(null);
-  const { width } = useScreenSize();
+  const [isVisible, setIsVisible] = useState(window.innerWidth > 1024);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [blockReady, setBlockReady] = useState(false);
 
-  const formRef = useRef(null); // якорь чтоб спуститься к форме
-  const showOnRef = useRef(null); // первый якорь
-  const hideOnRef = useRef(null); // второй якорь
-
+  const formRef = useRef(null);
   const formButtonRef = useRef(null);
   const rocketRef = useRef(null);
   const sputnikRef = useRef(null);
+
   const container = useRef();
   const firstStarRef = useRef(null);
   const secondStarRef = useRef(null);
   const threeStarRef = useRef(null);
 
-  const { isShown, isHidden } = useStickyVisibility(showOnRef, hideOnRef);
+  const { width, isMobile, isTablet, isDesktop } = useWindowWidth();
 
   useGSAP(
     () => {
@@ -82,9 +97,9 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
       stars.forEach(({ ref, rotate, initialPosition }) => {
         gsap.fromTo(
           ref.current,
-          { rotateZ: initialPosition }, // ← начальный угол
+          { rotateZ: initialPosition },
           {
-            rotateZ: rotate, // ← конечный угол
+            rotateZ: rotate,
             ease: 'none',
             scrollTrigger: {
               trigger: container.current,
@@ -100,6 +115,33 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
   );
 
   useEffect(() => {
+    const raf = requestAnimationFrame(() => setBlockReady(true));
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  useEffect(() => {
+    setViewportUnits();
+    window.addEventListener('resize', setViewportUnits);
+    return () => {
+      window.removeEventListener('resize', setViewportUnits);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleResizeDebounced = debounce(() => {
+      setIsVisible(window.innerWidth > 1024);
+      setWindowWidth(window.innerWidth);
+    }, 300);
+
+    window.addEventListener('resize', handleResizeDebounced);
+
+    return () => {
+      window.removeEventListener('resize', handleResizeDebounced);
+      handleResizeDebounced.cancel();
+    };
+  }, []);
+
+  useEffect(() => {
     dispatch(fetchEmployees(id));
   }, [dispatch, id]);
 
@@ -110,11 +152,151 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
     }
   }, [vacancies, id]);
 
+  useEffect(() => {
+    if (windowWidth < 1025 || !vacancies || !selectedVacancy) return;
+
+    const frameId = requestAnimationFrame(setupScrollTriggers);
+
+    return () => {
+      cancelAnimationFrame(frameId);
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [windowWidth, vacancies, selectedVacancy]);
+
+  const setupScrollTriggers = useCallback(
+    () => {
+      if (!selectedVacancy) return;
+      ScrollTrigger.getAll().forEach((t) => t.kill());
+
+      const triggers = [];
+      vacancies.forEach((vacancy) => {
+        const blockRight = document.getElementById(`blockRight-${vacancy.id}`);
+        const wrapper = document.getElementById(`wrapperTextBlock-${selectedVacancy.id}`);
+        if (!blockRight || !wrapper) return;
+        const trig = setupBlockAnimation(blockRight, wrapper);
+        if (trig) triggers.push(trig);
+      });
+
+      return () => triggers.forEach((t) => t.kill());
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [vacancies, selectedVacancy, windowWidth]
+  );
+
+  const setupBlockAnimation = (blockRight, wrapperTextBlock) => {
+    const blockRightRect = blockRight.getBoundingClientRect();
+    const wrapperTextBlockRect = wrapperTextBlock.getBoundingClientRect();
+    let wrapperTextBlockBottom = wrapperTextBlockRect.bottom + window.scrollY - blockRightRect.height - 300;
+
+    if (windowWidth > 1601) {
+      wrapperTextBlockBottom -= 200;
+    }
+
+    return ScrollTrigger.create({
+      trigger: wrapperTextBlock,
+      start: 'top bottom',
+      end: 'bottom top',
+      scrub: true,
+      onUpdate: (self) => updatePosition(self, blockRight, wrapperTextBlockBottom),
+      onRefresh: (self) => updatePosition(self, blockRight, wrapperTextBlockBottom),
+    });
+  };
+
+  const updatePosition = (self, blockRight, bottom) => {
+    const scrollerPoint = window.scrollY + blockRight.getBoundingClientRect().height;
+    if (scrollerPoint >= bottom) {
+      blockRight.style.position = 'absolute';
+      blockRight.style.top = `${bottom - blockRight.getBoundingClientRect().height}px`;
+    } else {
+      blockRight.style.position = 'fixed';
+      blockRight.style.top = '0';
+    }
+    blockRight.style.right = '0';
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const rocketEl = rocketRef.current;
+      const sputnikEl = sputnikRef.current;
+
+      if (!rocketEl || !sputnikEl) return;
+
+      const scrollPosition = window.scrollY;
+
+      let xValueRocket, xValueSputnik, rocketStart, sputnikStart;
+
+      if (window.innerWidth > 1024) {
+        xValueRocket = 80;
+        xValueSputnik = -80;
+        rocketStart = -150;
+        sputnikStart = 0;
+      } else if (window.innerWidth > 767) {
+        xValueRocket = 50;
+        xValueSputnik = -50;
+        rocketStart = -80;
+        sputnikStart = 20;
+      } else {
+        xValueRocket = 40;
+        xValueSputnik = -40;
+        rocketStart = -200;
+        sputnikStart = -40;
+      }
+
+      rocketEl.style.transform = `translateX(${rocketStart + scrollPosition * (xValueRocket / window.innerHeight)}px)`;
+      sputnikEl.style.transform = `translateX(${
+        sputnikStart + scrollPosition * (xValueSputnik / window.innerHeight)
+      }px)`;
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [windowWidth]);
+
+  useLayoutEffect(() => {
+    const button = formButtonRef.current;
+    const form = formRef.current;
+    if (!button || !form) return;
+
+    setTimeout(() => {
+      const initialButtonBottom = button.getBoundingClientRect().bottom + window.scrollY + 10;
+
+      const updateButtonPosition = () => {
+        const scrollY = window.scrollY;
+        const windowHeight = window.innerHeight;
+        const formRect = form.getBoundingClientRect();
+
+        const shouldFixButton = scrollY + windowHeight >= initialButtonBottom;
+        const shouldHideButton = formRect.top <= windowHeight;
+
+        button.classList.toggle(styles.fixed, shouldFixButton);
+        button.classList.toggle(styles.hidden, shouldHideButton);
+      };
+
+      updateButtonPosition();
+      window.addEventListener('scroll', updateButtonPosition);
+
+      return () => {
+        window.removeEventListener('scroll', updateButtonPosition);
+      };
+    }, 300);
+  }, []);
+
   const handleScrollToForm = () => {
     if (formRef.current) {
       formRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [id]);
 
   return (
     <>
@@ -171,19 +353,7 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
                   </div>
                 ))}
               </div>
-              <Suspense fallback={<p>loading...</p>}>
-                <Button
-                  withBackground
-                  className={clsx(
-                    styles['sticky-floating-btn'],
-                    isShown && styles['sticky-floating-btn_visible'],
-                    isHidden && styles['sticky-floating-btn_hidden']
-                  )}
-                  click={handleScrollToForm}>
-                  {activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'}
-                </Button>
-              </Suspense>
-              <RenderVacancySections showOnRef={showOnRef} vacancy={vacancies[0]} />
+              <RenderVacancySections vacancy={vacancies[0]} />
             </div>
           </div>
           <aside className={styles['section-top__aside']}>
@@ -224,8 +394,8 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
                 <img className={styles.offerHeart2} src={heart2} alt={heart2} />
                 <img
                   className={styles.vectorAround}
-                  src={width <= 767 ? vectorAround2 : vectorAround}
-                  alt={width <= 767 ? 'vectorAround2' : 'vectorAround'}
+                  src={window.innerWidth <= 767 ? vectorAround2 : vectorAround}
+                  alt={window.innerWidth <= 767 ? 'vectorAround2' : 'vectorAround'}
                 />
                 <div className={styles.countLabel}>Специалистов</div>
                 <div className={styles.countValue}>&gt;1300</div>
@@ -240,13 +410,18 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
           </div>
           <div className={styles.main_vacancyWrapper__locationWrapper}>
             <div className={styles.locationTitle}>Расположение</div>{' '}
+            {windowWidth && (
+              <span className={styles.locationText}>
+                Офис в&nbsp;центре Москвы, метро {windowWidth <= 1024 ? ' ' : <br />} Белорусская
+              </span>
+            )}
             <div className={styles.main_vacancyWrapper__locationBlockLocation}>
               <div className={styles.rocketVectorAround1Block}>
                 <img className={styles.rocket} src={rocket1} alt={rocket1} />
                 <img
                   className={styles.vectorAround1}
-                  src={width <= 767 ? vectorAround : vectorAround1}
-                  alt={width <= 767 ? 'vectorAround' : 'vectorAround1'}
+                  src={window.innerWidth <= 767 ? vectorAround : vectorAround1}
+                  alt={window.innerWidth <= 767 ? 'vectorAround' : 'vectorAround1'}
                 />
               </div>
               <div className={styles.main_vacancyWrapper__locationWrapperLocation}>
@@ -264,7 +439,6 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
             </div>
           </div>
         </div>
-
         <div className={styles.main_vacancyWrapper__sliderBlock}>
           <div className={styles.sliderBlockText}>Как мы проводим время</div>
           <VacancySlider />
@@ -304,7 +478,6 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
             vacancyTitle={selectedVacancy?.title}
             centerButton={true}
             buttonText={activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'}
-            hideOnRef={hideOnRef}
           />
         </div>
       </div>

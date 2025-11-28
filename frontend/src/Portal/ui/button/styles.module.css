@@ -1,4 +1,3 @@
-@media (max-width: 1024px) {
     .button {
         padding: 1rem 2rem;
         border-radius: 4.125rem;
@@ -20,4 +19,3 @@
         bottom: 0 !important;
         padding: 16px 56px 32px 56px;
     }
-}
