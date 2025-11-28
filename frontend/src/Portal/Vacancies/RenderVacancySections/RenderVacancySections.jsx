@@ -20,7 +20,7 @@ const RenderVacancySections = ({ showOnRef, vacancy }) => {
   const formatSkills = (skills) => {
     return skills
       .split(',')
-      .map((skill) => `<span class="${styles.skillButton}">${skill.trim()}</span>`)
+      .map((skill) => `<span class="${styles['main_vacancyWrapper__skills-item']}">${skill.trim()}</span>`)
       .join('');
   };
 
@@ -55,7 +55,8 @@ const RenderVacancySections = ({ showOnRef, vacancy }) => {
       </div>
 
       <div
-        className={styles.main_vacancyWrapper__textBlock}
+        // className={styles.main_vacancyWrapper__textBlock}
+        className={styles['main_vacancyWrapper__skills-list']}
         dangerouslySetInnerHTML={{
           __html: formatSkills(vacancy.skills),
         }}

@@ -19,7 +19,7 @@ export default function Logo() {
       : '';
 
   return (
-    <div className={styles['logo-block']}>
+    <Link to="/" className={styles['logo-block']}>
       {/* <div className={styles['navbar-logo-circle']} /> */}
       <div
         className={clsx(styles['logo-circle'], {
@@ -51,6 +51,6 @@ export default function Logo() {
           alt={animatedAlt}
         />
       )}
-    </div>
+    </Link>
   );
 }
