@@ -19,6 +19,7 @@ function isWebGLAvailable() {
 
 const Rocket = () => {
   const light = useRef();
+  const resizeRaf = useRef();
 
   const [containerStyle, setContainerStyle] = useState({
     position: 'fixed',
@@ -53,10 +54,16 @@ const Rocket = () => {
   useEffect(() => {
     setWebglSupported(isWebGLAvailable());
 
-    window.addEventListener('resize', handleResize);
+    const onResize = () => {
+      if (resizeRaf.current) cancelAnimationFrame(resizeRaf.current);
+      resizeRaf.current = requestAnimationFrame(handleResize);
+    };
+
+    window.addEventListener('resize', onResize);
     handleResize();
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('resize', onResize);
+      if (resizeRaf.current) cancelAnimationFrame(resizeRaf.current);
     };
   }, [handleResize]);
 
@@ -79,10 +86,11 @@ const Rocket = () => {
       <Canvas
         flat
         shadows
-        gl={{ preserveDrawingBuffer: true, alpha: true }}
+        dpr={[1, 1.5]}
+        gl={{ preserveDrawingBuffer: false, alpha: true }}
         camera={{ position: [0, 0, 80], fov: 30, near: 1, far: 3000 }}>
         <ambientLight intensity={2} color="#91c8fc" />
-        <directionalLight castShadow position={[-10, -20, 50]} intensity={2.4} shadow-mapSize={1024} />
+        <directionalLight castShadow position={[-10, -20, 50]} intensity={2.4} shadow-mapSize={512} />
         <pointLight ref={light} intensity={1400} color="#389FFF" decay={2} distance={600} position={[-10, 4, 45]} />
         <pointLight ref={light} intensity={14000} color="#8d3e10" distance={600} position={[20, -15, 36]} />
         <pointLight ref={light} intensity={0} color="white" decay={2} distance={600} position={[12, 3, 38]} />
@@ -93,7 +101,7 @@ const Rocket = () => {
         </Suspense>
 
         <EffectComposer>
-          {typeof N8AO === 'function' && <N8AO aoRadius={1.5} intensity={5} color="grey" quality="ultra" />}
+          {typeof N8AO === 'function' && <N8AO aoRadius={1.2} intensity={3} color="grey" quality="performance" />}
           <ToneMapping />
         </EffectComposer>
       </Canvas>

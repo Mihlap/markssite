@@ -17,9 +17,10 @@ export default function Logo() {
     : isMjRoute
       ? 'дополнительный логотип для MarksGroup Media & Journalism'
       : '';
+  const homePath = isHrRoute ? '/hr/home' : isMjRoute ? '/journalPage' : '/';
 
   return (
-    <div className={styles['logo-block']}>
+    <Link to={homePath} className={styles['logo-block']}>
       {/* <div className={styles['navbar-logo-circle']} /> */}
       <div
         className={clsx(styles['logo-circle'], {
@@ -51,6 +52,6 @@ export default function Logo() {
           alt={animatedAlt}
         />
       )}
-    </div>
+    </Link>
   );
 }

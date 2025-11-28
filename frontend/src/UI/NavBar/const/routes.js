@@ -60,5 +60,5 @@ export const hrNavConfig = {
     { id: 2, label: 'Работа у нас', path: '/hr/vacancies' },
     { id: 3, label: 'Стажировки', path: '/hr/internships' },
   ],
-  cta: [{ id: 1, label: 'Хочу работать у вас!', path: '/no-name', variant: 'cta-secondary' }],
+  cta: [{ id: 1, label: 'Хочу работать у вас!', path: '/hr/vacancies', variant: 'cta-secondary' }],
 };
