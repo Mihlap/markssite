@@ -14,6 +14,13 @@
         padding-left: 27px;
         position: relative;
 
+        &::before {
+            content: "";
+            position: absolute;
+            inset: -20px; // увеличивает кликабельную область
+            z-index: -1;
+        }
+
         &:has(.navbar-logo-circle-blue-animate) .navbar-logo-hr {
             animation: spinOnce 0.6s ease 1.0s both;
         }
@@ -95,6 +102,7 @@
             padding-top: 21px;
             padding-bottom: 21px;
             padding-left: 33px;
+
         }
     }
 }

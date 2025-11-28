@@ -32,10 +32,10 @@ const getModelScale = (width) => {
 const Show = React.memo(() => {
   const { nodes } = useGLTF('/assets/rocket_01.gltf');
   const { size, camera } = useThree();
-   const windowWidth = useWindowWidth();
+  const windowWidth = useWindowWidth();
   const RotationRef = useRef();
   const [hovered, hover] = useState(false);
-  const [rotationSpeed, setRotationSpeed] = useState(0.01);
+  const rotationSpeedRef = useRef(0.01);
   const [scale, setScale] = useState(0.2);
   const [posX, setPosX] = useState(21);
 
@@ -56,9 +56,9 @@ const Show = React.memo(() => {
 
   useFrame((state, delta) => {
     const targetSpeed = hovered ? 0.12 : 0.01;
-    setRotationSpeed((prev) => lerp(prev, targetSpeed, 0.01));
+    rotationSpeedRef.current = lerp(rotationSpeedRef.current, targetSpeed, 0.05);
     if (RotationRef.current) {
-      RotationRef.current.rotation.z += rotationSpeed * delta * 60;
+      RotationRef.current.rotation.z += rotationSpeedRef.current * delta * 60;
     }
   });  
 
