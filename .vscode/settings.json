@@ -2,7 +2,6 @@
   "window.autoDetectColorScheme": true,
   "workbench.preferredDarkColorTheme": "Default Dark Modern",
   "workbench.preferredHighContrastColorTheme": "Default Light Modern",
-
   "cSpell.words": [
     "metalness",
     "Placemark",
@@ -10,5 +9,6 @@
   ],
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
-  "postman.settings.dotenv-detection-notification-visibility": false
+  "postman.settings.dotenv-detection-notification-visibility": false,
+  "files.autoSave": "afterDelay"
 }
