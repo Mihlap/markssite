@@ -528,7 +528,6 @@
   }
 }
 
-// тест
 
 .main_vacancyWrapper {
   position: relative;
@@ -903,20 +902,20 @@
     border-radius: 2.125rem;
   }
 
-  &__skills {
-    &-list {
-
-      @include flex(8px, null, null, null, wrap);
-    }
-
-    &-item {
-      border-radius: 34px;
-      border: 1px solid var(--gray-959DA6);
-      background: #FFF;
-      padding: 9px 24px;
-      @include text(14, 20px, 400, --black-1D2E43);
-    }
-  }
+        &__skills {
+          &-list {
+    
+            @include flex(8px, null, null, null, wrap);
+          }
+    
+          &-item {
+            border-radius: 34px;
+            border: 1px solid var(--gray-959DA6);
+            background: #FFF;
+            padding: 9px 24px;
+            @include text(14, 20px, 400, --black-1D2E43);
+          }
+        }
 
   &__aboutBlockWrapper {
     display: flex;
@@ -992,8 +991,6 @@
   .main_vacancyWrapper__3dGroup {
     position: relative;
     z-index: -1;
-    overflow: hidden;
-    padding-bottom: 18rem;
 
     .background4 {
       position: absolute;
