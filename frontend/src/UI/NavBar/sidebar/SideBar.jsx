@@ -97,6 +97,8 @@ export default function SideBar({
                 hasChildren && item.children.some((child) => isRouteActive(pathname, hash, child.path))
                   ? true
                   : isRouteActive(pathname, hash, item.path);
+              const openInNewTab = item?.external || item?.path === '/hr/home';
+              const isActive = isRouteActive(pathname, hash, item.path);
 
               if (hasChildren) {
                 return (
@@ -149,6 +151,21 @@ export default function SideBar({
                         })}
                       </ul>
                     )}
+                  </li>
+                );
+              }
+
+              if (openInNewTab) {
+                return (
+                  <li key={item.id} className={styles['navbar-sidebar-item']}>
+                    <a
+                      href={item.path}
+                      className={clsx(styles['navbar-sidebar-link'], isActive && styles['navbar-sidebar-link--active'])}
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={handleExternalClick}>
+                      {item.label}
+                    </a>
                   </li>
                 );
               }

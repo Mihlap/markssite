@@ -56,7 +56,7 @@ export const baseNavConfig = {
 
 export const hrNavConfig = {
   primary: [
-    { id: 1, label: 'Главная', path: '/hr/home' },
+    { id: 1, label: 'Главная', path: '/hr/home', external: true },
     { id: 2, label: 'Работа у нас', path: '/hr/vacancies' },
     { id: 3, label: 'Стажировки', path: '/hr/internships' },
   ],
