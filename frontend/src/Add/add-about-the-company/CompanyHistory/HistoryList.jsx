@@ -36,7 +36,7 @@ function HistoryList({ user, setIsModalOpenHistory, setEditHistoryData }) {
       setDraggedItem(item);
       try {
         e.dataTransfer.setData('text/plain', String(item.id));
-      } catch (_) {}
+      } catch (_) { }
       e.dataTransfer.effectAllowed = 'move';
     },
     [years]
@@ -46,7 +46,7 @@ function HistoryList({ user, setIsModalOpenHistory, setEditHistoryData }) {
     e.preventDefault();
     try {
       e.dataTransfer.dropEffect = 'move';
-    } catch (_) {}
+    } catch (_) { }
   }, []);
 
   const handleDrop = useCallback(
