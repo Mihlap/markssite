@@ -7,7 +7,8 @@ router.get('/', async (req, res, next) => {
   try {
     const legends = await Legend.findAll({
       order: [
-        ['order', 'DESC'],       
+        ['order', 'ASC'],
+        ['year', 'DESC'],      
       ],
     });
 
@@ -40,6 +41,12 @@ router.post('/', async (req, res, next) => {
   try {
     const { year, title, img, description, hidden, order, userId, constructor } = req.body;
 
+    let minOrder = await Legend.min('order', { transaction: t });
+    if (typeof minOrder !== 'number' || Number.isNaN(minOrder)) {
+      minOrder = 0;
+    }
+    const nextOrder = (typeof order === 'number' ? order : minOrder - 1);
+
     const legend = await Legend.create(
       {
         year,
@@ -47,7 +54,7 @@ router.post('/', async (req, res, next) => {
         img: img || null,
         description: description || null,
         hidden: !!hidden,
-        order: order ?? 0,
+        order: nextOrder,
         userId: userId || null,
       },
       { transaction: t },
