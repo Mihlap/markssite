@@ -36,7 +36,7 @@ const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave }) => {
   }, []);
 
   return (
-    <>
+    <main style={{overflowX:'clip'}}>
       <Intro />
       <TextCenter />
       <RatingSwiper />
@@ -59,7 +59,7 @@ const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave }) => {
           buttonText={activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'}
         />
       </div>
-    </>
+    </main>
   );
 };
 
