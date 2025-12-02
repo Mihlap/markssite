@@ -55,7 +55,7 @@
     // position: fixed;
     position: sticky;
     top: 0;
-    z-index: 4;
+    z-index: 10;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -213,13 +213,16 @@
         justify-content: center;
         width: 48px;
         height: 48px;
-        margin-left: 16px;
+        margin-right: 16px;
         padding: 0;
         border: none;
         background: transparent;
-        cursor: pointer;
+        position: relative;
 
         span {
+            position: absolute;
+            right: -50%;
+            left: 50%;
             display: block;
             width: 40px;
             height: 2px;
@@ -238,12 +241,13 @@
 
         &--open {
             span:nth-child(1) {
-                transform: translate(-50%, calc(-50% + 3px)) scale(0.7);
+                transform: translate(-50%, calc(-50% + 4px)) scale(0.7);
                 opacity: 0;
             }
 
             span:nth-child(2) {
                 transform: translate(-50%) rotate(45deg);
+                top: 21px;
             }
 
             span:nth-child(3) {
@@ -387,6 +391,37 @@
                     padding-bottom: 1rem;
                     padding-right: 1rem;
                 }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1185px) and (min-width: 1025px) {
+    .navbar {
+        &-list {
+            gap: 20px;
+        }
+
+        &-item {
+            font-size: 13px;
+            gap: 6px;
+        }
+
+        &-item-en {
+            padding: 14px 20px;
+        }
+
+        &-link_back {
+            padding: 14px 24px;
+        }
+
+        &-link {
+            &--cta-primary {
+                padding: 14px 18px;
+            }
+
+            &--cta-secondary {
+                padding: 14px 28px;
             }
         }
     }
