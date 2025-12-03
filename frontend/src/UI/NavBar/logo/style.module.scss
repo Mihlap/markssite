@@ -17,13 +17,37 @@
         &::before {
             content: "";
             position: absolute;
-            inset: -20px; // увеличивает кликабельную область
+            inset: -20px; // desktop
             z-index: -1;
+        }
+
+        @media (max-width: 600px) {
+            &::before {
+                inset: 10px; // mobile
+            }
         }
 
         &:has(.navbar-logo-circle-blue-animate) .navbar-logo-hr {
             animation: spinOnce 0.6s ease 1.0s both;
         }
+
+        // &[data-is-sidebar="true"] {
+        //     gap: 10px;
+        //     justify-content: flex-start;
+
+        //     .logo-circle,
+        //     .logo-circle-blue,
+        //     .logo-hr,
+        //     .logo-image {
+        //         transition: none;
+        //         animation: none;
+        //         transform: none;
+        //     }
+
+        //     .logo-hr {
+        //         opacity: 1;
+        //     }
+        // }
     }
 
     &-circle {
@@ -49,6 +73,9 @@
         transform-origin: center;
         will-change: transform, opacity;
 
+        &-sidebar {
+            transform: translateX(-25px) !important;
+        }
 
         &-animate {
             animation: spinOnce 0.4s ease forwards;
