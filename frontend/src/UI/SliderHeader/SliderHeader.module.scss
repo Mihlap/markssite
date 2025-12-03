@@ -11,6 +11,7 @@
 
 .SliderHeader {
   position: relative;
+  overflow-x: clip;
 
   /* Градиенты  */
   &::after,
