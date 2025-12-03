@@ -1,4 +1,3 @@
-// src/Add/add-about-the-company/CompanyHistory/HistoryHeaderBlock.jsx
 import { memo, useMemo } from 'react';
 import Select from 'react-select';
 
@@ -17,7 +16,6 @@ function HistoryHeaderBlock({
     fieldErrors,
     customStyles,
 }) {
-    // список годов для select
     const yearOptions = useMemo(() => {
         const current = new Date().getFullYear();
         const from = current - 50;
@@ -60,8 +58,7 @@ function HistoryHeaderBlock({
             {/* Верхний серый блок: Год + Заголовок года (как в HeaderFields) */}
             <div
                 className={`${styles.form_container__block_gray_one} ${historyStyles.historyHeaderBlock}`}
-            >
-                {/* Год */}
+            >        
                 <div className={`${styles.form__group} ${styles.field}`}>
                     <Select
                         inputId="historyYear"
@@ -76,15 +73,12 @@ function HistoryHeaderBlock({
                             ValueContainer: YearValueContainer,
                         }}
                     />
-                    <label htmlFor="historyYear" className={styles.form__label}>
-                        Год
-                    </label>
+                    {/* <label htmlFor="historyYear" className={styles.form__label}></label> */}
                 </div>
                 {fieldErrors.year && (
                     <div className={styles.required_hint}>{fieldErrors.year}</div>
                 )}
-
-                {/* Заголовок года (как Название проекта) */}
+            
                 <div className={`${styles.form__group} ${styles.field}`}>
                     <input
                         type="input"
@@ -113,7 +107,7 @@ function HistoryHeaderBlock({
                     <div className={historyStyles.historyPreviewTitleRow}>
                         <span className={styles.form_container__heading_block_label}>Превью</span>
                         <span className={historyStyles.historyPreviewSub}>
-                            для отображения в хронике
+                            *для отображения в хронике
                         </span>
                     </div>
 
