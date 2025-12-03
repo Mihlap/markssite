@@ -4,6 +4,7 @@
 .CompanySlider {
   $s: &;
   margin: rem(180) 0;
+  overflow-x: clip !important;
 
   &__title {
     padding: 0 rem(30);
