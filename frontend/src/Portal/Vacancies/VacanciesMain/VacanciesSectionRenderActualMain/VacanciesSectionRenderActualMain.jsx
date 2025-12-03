@@ -74,7 +74,8 @@ const VacanciesSectionRenderActualMain = ({ handleMouseEnter, handleMouseLeave }
             {displayedVacancies.map((vacancy) => (
               <Link
                 key={vacancy.id}
-                to={`/portal/vacancy/${vacancy?.IdVacancy}`}
+                // переделать
+                to={`/hr/vacancies/${vacancy?.IdVacancy}`}
                 className={styles.vacancyContainer}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}>

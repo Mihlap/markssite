@@ -46,7 +46,7 @@ export const baseNavConfig = {
         },
       ],
     },
-    { id: 6, type: 'link', label: 'HR портал', path: '/hr/home' },
+    { id: 6, type: 'link', external: true, label: 'HR портал', path: '/hr/home' },
   ],
   cta: [
     { id: 7, type: 'link', label: 'Обсудить проект', path: '/footerForm', variant: 'cta-primary' },
@@ -56,9 +56,9 @@ export const baseNavConfig = {
 
 export const hrNavConfig = {
   primary: [
-    { id: 1, label: 'Главная', path: '/hr/home' },
+    { id: 1, label: 'Главная', path: '/hr/home', external: true },
     { id: 2, label: 'Работа у нас', path: '/hr/vacancies' },
     { id: 3, label: 'Стажировки', path: '/hr/internships' },
   ],
-  cta: [{ id: 1, label: 'Хочу работать у вас!', path: '/no-name', variant: 'cta-secondary' }],
+  cta: [{ id: 1, label: 'Хочу работать у вас!', path: '/hr/vacancies', variant: 'cta-secondary' }],
 };

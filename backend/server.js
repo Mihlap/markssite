@@ -10,9 +10,9 @@ const FileStore = require('session-file-store')(session);
 /* eslint-disable import/no-extraneous-dependencies */
 const rateLimit = require('express-rate-limit');
 
-const indexRouter = require('./Routes/indexRouter');
 const authRouter = require('./Routes/authRouter');
 const newStaffsRouter = require('./Routes/newStaffsRouter');
+const legendRouter = require('./Routes/legendRouter');
 const projectRouter = require('./Routes/Project/projectRouter');
 const articleRouter = require('./Routes/Articles/articleRouter');
 const searchRouter = require('./Routes/Project/searchRouter');
@@ -89,17 +89,8 @@ app.use('/public/assets', express.static(path.join(__dirname, 'assets'), { maxAg
 app.use(session(sessionConfig));
 app.use(express.static(path.join(__dirname, 'build')));
 
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Something went wrong!');
-});
-
-app.get('/test', (req, res) => {
-  res.send('Hello World!');
-});
-
-app.get('/', indexRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/legend', legendRouter);
 app.use('/api-stuffs', newStaffsRouter);
 app.use('/api-project', projectRouter);
 app.use('/api-article', articleRouter);
@@ -115,6 +106,16 @@ app.use('/api-vacancyDetails', vacancyDetailsRouter);
 app.use('/api-events', vacancyEventRouter);
 app.use('/api-journal', journalRouter);
 app.use('/api-upload', journalRouter);
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  if (res.headersSent) return next(err);
+  res.status(500).send('Something went wrong!');
+});
 
 // const sslKeyPath = '/SSL Marksgroup/certificate.key';
 // const sslCertPath = '/SSL Marksgroup/certificate.crt';
