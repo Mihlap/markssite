@@ -1,14 +1,13 @@
-import React, { useRef, useState, useEffect, useMemo } from 'react';
+import React, { useRef, useState, useEffect, useMemo, lazy, Suspense } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import clsx from 'clsx';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { handleCompanyAwareNavigation, isRouteActive } from '../utils/navigation';
 import { useHrNavMeta } from '../hooks/useHrNavMeta';
-
-import iconLogo from '../icon/logo.svg';
-import iconHr from '../icon/hr.svg';
 import styles from '../style.module.scss';
+
+const Logo = lazy(() => import('../logo/Logo'));
 
 export default function SideBar({
   isMenuOpen,
@@ -93,12 +92,9 @@ export default function SideBar({
       className={clsx(styles['navbar-sidebar'], isMenuOpen && styles['navbar-sidebar--visible'])}
       aria-hidden={!isMenuOpen}>
       <div className={styles['navbar-sidebar-content']}>
-        {isHrPortal && (
-          <div className={styles['navbar-sidebar-logo']}>
-            <img src={iconLogo} alt="iconLogo" />
-            <img src={iconHr} alt="iconHr" />
-          </div>
-        )}
+        <Suspense fallback={<>loading...</>}>
+          <Logo isSideBar={true} />
+        </Suspense>
         <nav className={styles['navbar-sidebar-nav']}>
           <ul className={clsx(styles['navbar-sidebar-list'], isHrPortal && styles['navbar-sidebar-list--with-logo'])}>
             {primary.map((item) => {
