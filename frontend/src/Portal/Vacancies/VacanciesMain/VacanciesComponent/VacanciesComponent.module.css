@@ -10,12 +10,10 @@
 .wrapper_vacancies {
   border-top: 1px solid var(--light-light-gray-EBECEE);
   border-bottom: 1px solid var(--light-light-gray-EBECEE);
-  background: linear-gradient(
-    261deg,
-    rgba(255, 203, 193, 0.09) -4.67%,
-    rgba(117, 187, 253, 0.09) 44.63%,
-    rgba(188, 188, 188, 0.09) 103.07%
-  );
+  background: linear-gradient(261deg,
+      rgba(255, 203, 193, 0.09) -4.67%,
+      rgba(117, 187, 253, 0.09) 44.63%,
+      rgba(188, 188, 188, 0.09) 103.07%);
   backdrop-filter: blur(7px);
   position: relative;
   display: flex;
@@ -25,7 +23,7 @@
   min-width: 100%;
   min-height: 100%;
   height: 615px;
-  margin-top: 49px;
+  /* margin-top: 49px; */
 }
 
 .rocket_model {
@@ -211,6 +209,7 @@ font-family: var(--font-raleway);
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -616,7 +615,7 @@ font-family: var(--font-raleway);
   }
 
   .menu_button_group_vacancy_swiper_mobile {
-    padding-left: 17vw;  
+    padding-left: 17vw;
   }
 
   .menu__button__choose__vacancyFilter_mobile {
@@ -725,6 +724,7 @@ font-family: var(--font-raleway);
     display: flex;
     padding-top: 16px;
   }
+
   .filterModalButton {
     cursor: none;
   }
@@ -981,9 +981,11 @@ font-family: var(--font-raleway);
   .filterName_title {
     padding-top: 24px;
   }
+
   .filterModalButton {
     cursor: none;
   }
+
   .applyButtonWrapper {
     display: flex;
     padding-top: 6px;

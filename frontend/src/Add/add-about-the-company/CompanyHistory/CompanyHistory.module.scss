@@ -1,0 +1,102 @@
+@import '../../../App.css';
+
+.blockHistory {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item {
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+  width: 100%;
+  height: 4.625rem;
+}
+
+.draggable {
+  cursor: grab;
+}
+
+.year {
+  min-width: 64px;
+  max-width: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-family: var(--font-unbounded);
+  font-weight: var(--fw-500);
+  font-size: 16px;
+  color: var(--black-1D2E43);
+}
+
+.body {
+  flex: 1 1 auto;
+  border-radius: 12px;
+  background: var(--light-light-gray-EBECEE);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.title {
+  font-family: var(--font-unbounded);
+  font-weight: var(--fw-500);
+  font-size: 14px;
+  color: var(--black-1D2E43);
+}
+
+.text {
+  font-family: var(--font-raleway);
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--gray-515c66);
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.lookBlock,
+.editBlock,
+.deleteBlock {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: var(--blue-75BBFD);
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.lookBlock:hover,
+.editBlock:hover,
+.deleteBlock:hover {
+  background-color: var(--dark-blue-389FFF);
+}
+
+.nullHistory {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 25vh;
+  text-align: center;
+  font-family: var(--font-unbounded);
+  font-size: 1rem;
+  line-height: 2.5rem;
+  font-weight: 300;
+  color: var(--light-gray-C0C5CB);
+}
