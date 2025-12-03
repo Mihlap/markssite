@@ -6,7 +6,8 @@ import iconmg from '../icon/mj.svg';
 
 import styles from '../logo/style.module.scss';
 
-export default function Logo() {
+export default function Logo({ isSideBar = false }) {
+  
   const location = useLocation();
   const isHrRoute = location.pathname.startsWith('/hr/');
   const isMjRoute = location.pathname.startsWith('/journalPage');
@@ -22,6 +23,7 @@ export default function Logo() {
   return (
     <Link
       to={homePath}
+      data-is-sidebar={isSideBar}
       className={clsx(styles['logo-block'], shouldCompactLogo && styles['logo-block--compact'])}>
       {/* <div className={styles['navbar-logo-circle']} /> */}
       <div
@@ -47,6 +49,7 @@ export default function Logo() {
           key={animatedIcon}
           className={clsx(styles['logo-hr'], {
             [styles['logo-hr-animate']]: shouldCompactLogo,
+            [styles['logo-hr-sidebar']]: isSideBar,
           })}
           src={animatedIcon}
           alt={animatedAlt}
