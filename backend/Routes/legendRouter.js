@@ -378,7 +378,6 @@ router.delete('/:id', async (req, res, next) => {
     const id = req.params.id;
 
     const legend = await Legend.findByPk(id, {
-      include: [{ model: ConstructorLegend }],
       transaction: t,
       lock: t.LOCK.UPDATE,
     });
@@ -388,8 +387,13 @@ router.delete('/:id', async (req, res, next) => {
       return res.status(404).json({ message: 'Legend not found' });
     }
  
+    const constructorRows = await ConstructorLegend.findAll({
+      where: { legendId: id },
+      transaction: t,
+    });
+ 
     const files = [];
-    for (const c of legend.ConstructorLegends || []) {
+    for (const c of constructorRows || []) {
       if (c.image) files.push(c.image);
       const inputs = flattenInputs(c.data);
       const fileInputs = inputs
@@ -399,15 +403,15 @@ router.delete('/:id', async (req, res, next) => {
       files.push(...fileInputs);
     }
 
-    const mdLinks = collectMarkdownLinksFromConstructor(legend.ConstructorLegends);
-
+    const mdLinks = collectMarkdownLinksFromConstructor(constructorRows);
+  
     await ConstructorLegend.destroy({ where: { legendId: id }, transaction: t });
     const deleted = await Legend.destroy({ where: { id }, transaction: t });
 
     await t.commit();
 
     if (!deleted) return res.status(404).json({ message: 'Legend not found' });
-
+   
     const uniqueFiles = [
       ...new Set(files.map((x) => (typeof x === 'string' ? x.trim() : x)).filter(Boolean)),
     ];
@@ -420,8 +424,7 @@ router.delete('/:id', async (req, res, next) => {
         if (!parsed) return;
         try {
           await deleteFileFromS3(parsed.fileName, parsed.folder);
-        } catch {
-    
+        } catch {        
         }
       })
     );
@@ -439,7 +442,6 @@ router.delete('/:id', async (req, res, next) => {
     next(err);
   }
 });
-
 
 router.post('/upload-markdown-file', fileMiddleware.single('markdownFile'), async (req, res) => {
   try {
