@@ -1,14 +1,14 @@
 import React, { useRef, useState, useEffect, useMemo } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import clsx from 'clsx';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import clsx from 'clsx';
-import { Link, NavLink, useLocation, matchPath } from 'react-router-dom';
-
-import styles from '../style.module.scss';
 import { handleCompanyAwareNavigation, isRouteActive } from '../utils/navigation';
+import { useHrNavMeta } from '../hooks/useHrNavMeta';
 
 import iconLogo from '../icon/logo.svg';
 import iconHr from '../icon/hr.svg';
+import styles from '../style.module.scss';
 
 export default function SideBar({
   isMenuOpen,
@@ -20,15 +20,10 @@ export default function SideBar({
   onCloseMenu,
 }) {
   const sidebarRef = useRef(null);
-  const location = useLocation();
-  const { pathname, hash } = location;
-  const search = new URLSearchParams(location.search);
-  const isInternship = search.get('type') === 'internship' || search.get('type') === 'vacancy';
-  const isVacancyDetail = !!matchPath({ path: '/hr/vacancies/:id', end: true }, pathname);
-  const showSidebarLogo = pathname === '/hr/home' || pathname === '/hr/internships' || pathname === '/hr/vacancies' || search.get('type') === 'internship' || search.get('type') === 'vacancy';
-  const linkBack = isInternship ? '/hr/internships' : '/hr/vacancies';
-  const textBack = isInternship ? 'стажировки' : 'вакансии';
   const [openDropdownId, setOpenDropdownId] = useState(null);
+
+  // сustom hooks
+  const { pathname, hash, isVacancyDetail, linkBack, textBack, showSidebarLogo, isHrPortal } = useHrNavMeta();
 
   const activeDropdownId = useMemo(() => {
     const dropdown = primary.find(
@@ -98,25 +93,22 @@ export default function SideBar({
       className={clsx(styles['navbar-sidebar'], isMenuOpen && styles['navbar-sidebar--visible'])}
       aria-hidden={!isMenuOpen}>
       <div className={styles['navbar-sidebar-content']}>
-        {showSidebarLogo && (
-            <div className={styles['navbar-sidebar-logo']}>
-              <img src={iconLogo} alt="iconLogo" />
-              <img src={iconHr} alt="iconHr" />
-            </div>
-          )}
+        {isHrPortal && (
+          <div className={styles['navbar-sidebar-logo']}>
+            <img src={iconLogo} alt="iconLogo" />
+            <img src={iconHr} alt="iconHr" />
+          </div>
+        )}
         <nav className={styles['navbar-sidebar-nav']}>
-          <ul
-            className={clsx(
-              styles['navbar-sidebar-list'],
-              showSidebarLogo && styles['navbar-sidebar-list--with-logo']
-            )}>
+          <ul className={clsx(styles['navbar-sidebar-list'], isHrPortal && styles['navbar-sidebar-list--with-logo'])}>
             {primary.map((item) => {
               const hasChildren = Array.isArray(item.children) && item.children.length > 0;
               const parentActive =
                 hasChildren && item.children.some((child) => isRouteActive(pathname, hash, child.path))
                   ? true
                   : isRouteActive(pathname, hash, item.path);
-              const openInNewTab = item?.external || item?.path === '/hr/home';
+              const openInNewTab =
+                item?.external && !(isHrPortal && typeof item.path === 'string' && item.path.startsWith('/hr/'));
               const isActive = isRouteActive(pathname, hash, item.path);
 
               if (hasChildren) {
@@ -244,22 +236,32 @@ export default function SideBar({
                     </ul>
                   </React.Fragment>
                 );
+              } else if (showSidebarLogo) {
+                return (
+                  <React.Fragment key={id}>
+                    <Link
+                      key={id}
+                      to={path}
+                      className={styles['navbar-sidebar-cta--btn']}
+                      onClick={handleNavigate(path)}>
+                      {label}
+                    </Link>
+                    <ul className={styles['navbar-sidebar-cta--contact-list']}>
+                      <li className={styles['navbar-sidebar-cta--contact-item']}>
+                        <a href="mailto:mail@marksgroup.ru">mail@marksgroup.ru</a>
+                      </li>
+                      <li className={styles['navbar-sidebar-cta--contact-item']}>
+                        <a href="tel:+74951201226">+7 (495) 120-12-26</a>
+                      </li>
+                    </ul>
+                  </React.Fragment>
+                );
               }
 
               return (
-                <React.Fragment key={id}>
-                  <Link key={id} to={path} className={styles['navbar-sidebar-cta--btn']} onClick={handleNavigate(path)}>
-                    {label}
-                  </Link>
-                  <ul className={styles['navbar-sidebar-cta--contact-list']}>
-                    <li className={styles['navbar-sidebar-cta--contact-item']}>
-                      <a href="mailto:mail@marksgroup.ru">mail@marksgroup.ru</a>
-                    </li>
-                    <li className={styles['navbar-sidebar-cta--contact-item']}>
-                      <a href="tel:+74951201226">+7 (495) 120-12-26</a>
-                    </li>
-                  </ul>
-                </React.Fragment>
+                <Link key={id} to={path} className={styles['navbar-sidebar-cta--btn']} onClick={handleNavigate(path)}>
+                  {label}
+                </Link>
               );
             })}
           </div>

@@ -2,9 +2,10 @@ import { useState, useRef, lazy, Suspense } from 'react';
 import gsap from 'gsap';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { useGSAP } from '@gsap/react';
-import { NavLink, useLocation, useNavigate, matchPath, Link } from 'react-router-dom';
+import { NavLink, useNavigate, Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { useNavLinks } from './hooks/useNavLinks';
+import { useHrNavMeta } from './hooks/useHrNavMeta';
 
 import styles from './style.module.scss';
 import Logo from './logo/Logo';
@@ -15,29 +16,25 @@ gsap.registerPlugin(useGSAP, ScrollToPlugin);
 
 const NavBar = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { pathname, hash } = location;
-  const isCompany = pathname.startsWith('/company');
+
   const [linkChildren, setLinkChildren] = useState(false);
   const [openDropDownId, setOpenDropDownId] = useState(null);
   const [showDropdownContent, setShowDropdownContent] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { primary, cta } = useNavLinks();
   const container = useRef();
-  // Derive back link/text robustly from query and route
-  const search = new URLSearchParams(location.search);
-  const isInternship = search.get('type') === 'internship';
-  const isVacancyDetail = !!matchPath({ path: '/hr/vacancies/:id', end: true }, pathname);
-  const linkBack = isInternship ? '/hr/internships' : '/hr/vacancies';
-  const textBack = isInternship ? 'стажировки' : 'вакансии';
 
-  // Smoothly navigate to a section on the Company page (hash-aware)
+  // сustom hooks 
+  const { pathname, hash, isCompany, isVacancyDetail, isInternship, linkBack, textBack, isHrPortal } = useHrNavMeta();
+  const { primary, cta } = useNavLinks();
+
+  console.log(linkBack, textBack);
+  console.log(isInternship);
+
   const goToCompanySection = (hashOrId) => {
     if (!hashOrId) return;
     const hash = hashOrId.startsWith('#') ? hashOrId : `#${hashOrId}`;
 
     const doScroll = () => {
-      // close dropdown first, then scroll
       gsap.to(window, {
         duration: 0.6,
         ease: 'power2.out',
@@ -45,12 +42,10 @@ const NavBar = () => {
       });
     };
 
-    if (location.pathname !== '/company') {
-      // navigate to Company with hash; Company component will also honor the hash
+    if (pathname !== '/company') {
       closeDropdown(() => navigate(`/company${hash}`));
       return;
     }
-    // Already on /company: close dropdown and scroll
     closeDropdown(doScroll);
   };
 
@@ -63,7 +58,7 @@ const NavBar = () => {
         afterClose();
       }
     };
-    const FADE_MS = 100; // keep in sync with CSS opacity transition
+    const FADE_MS = 100;
     setShowDropdownContent(false);
 
     if (!container.current) {
@@ -221,9 +216,18 @@ const NavBar = () => {
               return (
                 <li className={styles['navbar-item']} key={item.id}>
                   {item.external ? (
-                    <a href={item.path} target="_blank" rel="noreferrer">
-                      {item.label}
-                    </a>
+                    item.path.startsWith('/hr/') && isHrPortal ? (
+                      <NavLink
+                        className={({ isActive }) => (isActive ? `${styles['navbar-item-active']}` : undefined)}
+                        to={item.path}
+                        end>
+                        {item.label}
+                      </NavLink>
+                    ) : (
+                      <a href={item.path} target="_blank" rel="noreferrer">
+                        {item.label}
+                      </a>
+                    )
                   ) : (
                     <NavLink
                       to={item.path}
