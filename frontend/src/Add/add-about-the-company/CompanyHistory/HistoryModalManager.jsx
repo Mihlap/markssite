@@ -1,8 +1,8 @@
 import { memo, useCallback } from 'react';
 import styles from '../../style/style-card.module.scss';
 
-import FormAddHistory from './FormAddHistory';
-import FormEditHistory from './FormEditHistory';
+import FormAddHistory from './FormAddEditHistory/FormAddHistory';
+import FormEditHistory from './FormAddEditHistory/FormEditHistory';
 
 function HistoryModalManager({
   isModalOpenHistory,
