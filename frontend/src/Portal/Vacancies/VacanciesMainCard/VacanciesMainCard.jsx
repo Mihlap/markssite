@@ -331,7 +331,7 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
               </div>
               <div className={styles['section-top__advantages-item']}>
                 {advantages.map((item, index) => (
-                  <div key={item.id}>
+                  <div className={styles['section-top__advantages-item_block']} key={item.id}>
                     <img className={styles['section-top__advantages-item_icon']} src={item.img} alt={item.title} />
                     <p className={styles.title}>
                       {item?.rows.map((row, i) => (
