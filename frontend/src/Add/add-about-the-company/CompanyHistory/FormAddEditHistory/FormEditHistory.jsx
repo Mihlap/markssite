@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import styles from '../../../Add/add-project/FormAddEditProject/FormAddProject.module.scss';
-import adminStyles from '../../../Add/style/style-card.module.scss';
+import styles from '../../../add-project/FormAddEditProject/FormAddProject.module.scss';
+import adminStyles from '../../../style/style-card.module.scss';
 
-import SubmitButtons from '../../../UI/SubmitButtons/SubmitButtons';
-import ExitConfirmModal from '../../../UI/ExitConfirmModal/ExitConfirmModal';
+import SubmitButtons from '../../../../UI/SubmitButtons/SubmitButtons';
+import ExitConfirmModal from '../../../../UI/ExitConfirmModal/ExitConfirmModal';
 
-import { updateHistoryItem, fetchCompanyHistory } from '../../../store/Slice/companyHistorySlice';
+import { updateHistoryItem, fetchCompanyHistory } from '../../../../store/Slice/companyHistorySlice';
 
 export default function FormEditHistory({ initial, onClose }) {
   const dispatch = useDispatch();

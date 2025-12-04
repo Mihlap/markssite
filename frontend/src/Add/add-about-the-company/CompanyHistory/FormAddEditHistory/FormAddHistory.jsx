@@ -1,32 +1,32 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import styles from '../../../Add/add-project/FormAddEditProject/FormAddProject.module.scss';
-import adminStyles from '../../../Add/style/style-card.module.scss';
-import customStyles from '../../add-project/FormAddEditProject/utils/customStyles';
+import styles from '../../../add-project/FormAddEditProject/FormAddProject.module.scss';
+import adminStyles from '../../../style/style-card.module.scss';
+import customStyles from '../../../add-project/FormAddEditProject/utils/customStyles';
 
-import SubmitButtons from '../../../UI/SubmitButtons/SubmitButtons';
-import ExitConfirmModal from '../../../UI/ExitConfirmModal/ExitConfirmModal';
+import SubmitButtons from '../../../../UI/SubmitButtons/SubmitButtons';
+import ExitConfirmModal from '../../../../UI/ExitConfirmModal/ExitConfirmModal';
 
 import {
   createHistoryItem,
   fetchCompanyHistory,
   uploadHistoryMarkdownFile,
   deleteHistoryMarkdownFile,
-} from '../../../store/Slice/companyHistorySlice';
+} from '../../../../store/Slice/companyHistorySlice';
 
-import ConstructorSection from '../FormAddEditStaff/ConstructorSection';
-import ConstructorPage from '../constructor/ConstructorPage';
+import ConstructorSection from '../../FormAddEditStaff/ConstructorSection';
+import ConstructorPage from '../../constructor/ConstructorPage';
+import HistoryHeaderBlock from './HistoryHeaderBlock';
 
-import useInterceptExternalClose from '../../hooks/useInterceptExternalClose';
+import useInterceptExternalClose from '../../../hooks/useInterceptExternalClose';
 
 import {
   sharedHandleDynamicInputChange,
   sharedHandleDeletePreview,
   getPreviewClassName as sharedGetPreviewClassName,
-} from '../utils/formShared';
-import { validateDynamicBlocks } from '../utils/dynamicValidation';
-import HistoryHeaderBlock from './HistoryHeaderBlock';
+} from '../../utils/formShared';
+import { validateDynamicBlocks } from '../../utils/dynamicValidation';
 
 const REQUIRED_BLOCK_IDS = ['imageWithCaption', 'quote', 'fact'];
 
