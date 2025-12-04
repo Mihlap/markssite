@@ -1,11 +1,11 @@
-import { memo, useMemo } from 'react';
+import { memo, useMemo, useState } from 'react';
 import Select from 'react-select';
 
-import {
-    YearDropdownIndicator,
-    YearValueContainer,
-} from '../../add-project/FormAddEditProject/utils/CustomSelectComponents';
-import historyStyles from './CompanyHistory.module.scss';
+import YearDropdownIndicator from '../../utils/YearDropdownIndicator';
+import YearMenuList from '../../utils/YearMenuList';
+import { buildYearSelectStyles } from '../../utils/yearSelectStyles';
+
+import historyStyles from '../CompanyHistory.module.scss';
 
 const MAX_PREVIEW_LENGTH = 160;
 
@@ -14,24 +14,25 @@ function HistoryHeaderBlock({
     inputData,
     setInputData,
     fieldErrors,
-    customStyles,
 }) {
+    const currentYear = new Date().getFullYear();
+
+    const [isTitleFocused, setIsTitleFocused] = useState(false);
+
     const yearOptions = useMemo(() => {
-        const current = new Date().getFullYear();
-        const from = current - 50;
-        const to = current + 5;
+        const from = currentYear - 25;
+        const to = currentYear + 25;
         const result = [];
         for (let y = to; y >= from; y -= 1) {
             result.push({ value: y, label: String(y) });
         }
         return result;
-    }, []);
+    }, [currentYear]);
 
-    const selectedYear = useMemo(
-        () =>
-            yearOptions.find((opt) => String(opt.value) === String(inputData.year)) || null,
-        [yearOptions, inputData.year]
-    );
+    const selectedYear =
+        yearOptions.find(
+            (opt) => String(opt.value) === String(inputData.year)
+        ) || null;
 
     const onYearChange = (option) => {
         setInputData((prev) => ({
@@ -53,32 +54,38 @@ function HistoryHeaderBlock({
 
     const previewLength = (inputData.description || '').length;
 
+    const pivotYear = selectedYear?.value || currentYear;
+    const yearSelectStyles = useMemo(() => buildYearSelectStyles(), []);
+
     return (
         <>
-            {/* Верхний серый блок: Год + Заголовок года (как в HeaderFields) */}
             <div
                 className={`${styles.form_container__block_gray_one} ${historyStyles.historyHeaderBlock}`}
-            >        
+            >              
                 <div className={`${styles.form__group} ${styles.field}`}>
                     <Select
                         inputId="historyYear"
-                        styles={customStyles}
-                        className={styles.form__field}
+                        name="historyYear"
+                        styles={yearSelectStyles}
+                        className={historyStyles.yearSelect}
                         value={selectedYear}
                         onChange={onYearChange}
                         options={yearOptions}
                         placeholder="Год"
                         components={{
                             DropdownIndicator: YearDropdownIndicator,
-                            ValueContainer: YearValueContainer,
+                            MenuList: YearMenuList,
+                            IndicatorSeparator: null,
                         }}
+                        pivotYear={pivotYear}
+                        menuPlacement="auto"
+                        isSearchable={false}
                     />
-                    {/* <label htmlFor="historyYear" className={styles.form__label}></label> */}
                 </div>
                 {fieldErrors.year && (
                     <div className={styles.required_hint}>{fieldErrors.year}</div>
                 )}
-            
+              
                 <div className={`${styles.form__group} ${styles.field}`}>
                     <input
                         type="input"
@@ -91,21 +98,43 @@ function HistoryHeaderBlock({
                         onChange={onTitleChange}
                         autoComplete="off"
                         required
+                        onFocus={() => setIsTitleFocused(true)}
+                        onBlur={() => setIsTitleFocused(false)}
+                        style={{
+                            border: 'none',
+                            borderBottom: `1px solid ${isTitleFocused ? '#75BBFD' : '#959DA6'
+                                }`,
+                            outline: 'none',
+                            caretColor: isTitleFocused ? '#75BBFD' : '#959DA6',
+                            color: 'var(--gray-959DA6, #959DA6)',
+                            fontVariantNumeric: 'lining-nums proportional-nums',
+                            fontFamily: 'Raleway',
+                            fontSize: 16,
+                            fontStyle: 'normal',
+                            fontWeight: 400,
+                            lineHeight: '16px',
+                        }}
                     />
-                    <label htmlFor="historyTitle" className={styles.form__label}>
+                    <label
+                        htmlFor="historyTitle"
+                        className={`${styles.form__label} ${historyStyles.historyHeaderLabel}`}
+                    >
                         Заголовок года
                     </label>
                 </div>
+
                 {fieldErrors.title && (
                     <div className={styles.required_hint}>{fieldErrors.title}</div>
                 )}
             </div>
 
-            {/* Карточка превью, как на макете */}
+            {/* Превью-карточка */}
             <div className={historyStyles.historyPreviewCard}>
                 <div className={historyStyles.historyPreviewHeader}>
                     <div className={historyStyles.historyPreviewTitleRow}>
-                        <span className={styles.form_container__heading_block_label}>Превью</span>
+                        <span className={styles.form_container__heading_block_label}>
+                            Превью
+                        </span>
                         <span className={historyStyles.historyPreviewSub}>
                             *для отображения в хронике
                         </span>
@@ -122,7 +151,6 @@ function HistoryHeaderBlock({
                             </span>
                         </button>
 
-                        {/* маленькая иконка-инфо справа от кнопки, как на макете */}
                         <button
                             type="button"
                             className={historyStyles.historyPreviewInfo}
@@ -134,27 +162,33 @@ function HistoryHeaderBlock({
                 </div>
 
                 <div className={historyStyles.historyPreviewBody}>
-                    {/* подпись "Текст превью" над тулбаром */}
                     <div className={historyStyles.historyPreviewLabelRow}>
                         <span className={styles.form_container__textarea_label_constructor}>
                             Текст превью
                         </span>
                     </div>
 
-                    {/* панель форматирования-заглушка */}
                     <div className={historyStyles.historyPreviewToolbar}>
-                        <button type="button" className={historyStyles.historyToolbarButton}>
+                        <button
+                            type="button"
+                            className={historyStyles.historyToolbarButton}
+                        >
                             B
                         </button>
-                        <button type="button" className={historyStyles.historyToolbarButton}>
+                        <button
+                            type="button"
+                            className={historyStyles.historyToolbarButton}
+                        >
                             U
                         </button>
-                        <button type="button" className={historyStyles.historyToolbarButton}>
+                        <button
+                            type="button"
+                            className={historyStyles.historyToolbarButton}
+                        >
                             •
                         </button>
                     </div>
 
-                    {/* textarea в стиле TitleTextBlock */}
                     <div className={styles.form_container__description_text}>
                         <div className={styles.form_container__textarea_length}>
                             {previewLength}/{MAX_PREVIEW_LENGTH}
@@ -173,14 +207,18 @@ function HistoryHeaderBlock({
                         />
                         <label
                             htmlFor="historyPreviewText"
-                            className={styles.form_container__textarea_label_constructor}
+                            className={
+                                styles.form_container__textarea_label_constructor
+                            }
                         >
                             Текст превью
                         </label>
                     </div>
 
                     {fieldErrors.description && (
-                        <div className={styles.required_hint}>{fieldErrors.description}</div>
+                        <div className={styles.required_hint}>
+                            {fieldErrors.description}
+                        </div>
                     )}
                 </div>
             </div>

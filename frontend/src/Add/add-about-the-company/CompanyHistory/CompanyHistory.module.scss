@@ -207,6 +207,16 @@
   gap: 8px;
 }
 
+.historyHeaderLabel {
+  color: var(--gray-959DA6);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: Raleway;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+}
+
 /* Карточка превью под серым блоком */
 .historyPreviewCard {
   margin-top: 16px;
@@ -273,10 +283,6 @@
   gap: 8px;
 }
 
-.historyPreviewLabelRow {
-  /* просто отступ над тулбаром, чтобы "Текст превью" было как на макете */
-}
-
 /* тулбар B/U/список */
 .historyPreviewToolbar {
   display: inline-flex;
@@ -308,3 +314,19 @@
   border-color: var(--blue-75BBFD);
   color: var(--blue-75BBFD);
 }
+
+.yearMenuList {
+  position: relative;
+}
+
+.yearMenuHighlight {
+  position: sticky;
+  top: 50%;
+  transform: translateY(-50%);  
+  height: 32px;
+  background-color: var(--light-blue-D4EDFB);
+  pointer-events: none;
+  z-index: 0;
+}
+
+
