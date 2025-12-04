@@ -308,7 +308,11 @@
             display: flex;
             flex-direction: column;
             gap: 32px;
-            padding: 0px 28px
+            padding: 0px 28px;
+            
+            @media (max-width: 431px) {
+                padding: 0px 1rem;
+            }
         }
 
         &-list--with-logo {

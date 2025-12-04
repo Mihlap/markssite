@@ -310,6 +310,13 @@
         padding-bottom: 40px;
       }
 
+      @media (max-width: 390px) {
+        &_block {
+          display: flex;
+          align-items: center
+        }
+      }
+
       &_title {
         @include text(18px, 24px, 500, --black-1D2E43);
       }
