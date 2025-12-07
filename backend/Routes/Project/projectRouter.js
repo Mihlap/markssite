@@ -121,31 +121,30 @@ const updateDynamicBlocksContent = (blocks, newImages) => {
 router.post(
   '/postzapros',
   fileMiddleware.fields([{
-      name: 'dropPhoto',
-      maxCount: 4
-    },
-    {
-      name: 'photoAva',
-      maxCount: 1
-    },
-    {
-      name: 'imageOpen',
-      maxCount: 1
-    },
-    {
-      name: 'imageClose',
-      maxCount: 1
-    },
-    {
-      name: 'dynamicImages',
-      maxCount: 100
-    },
+    name: 'dropPhoto',
+    maxCount: 4
+  },
+  {
+    name: 'photoAva',
+    maxCount: 1
+  },
+  {
+    name: 'imageOpen',
+    maxCount: 1
+  },
+  {
+    name: 'imageClose',
+    maxCount: 1
+  },
+  {
+    name: 'dynamicImages',
+    maxCount: 100
+  },
   ]),
   async (req, res) => {
     try {
       let dynamicBlocksContent = null;
 
-      // Загрузка динамических изображений на S3 и получение URL
       const dynamicImageTitles = req.files.dynamicImages ?
         await Promise.all(
           req.files.dynamicImages.map(async (file) => {
@@ -237,25 +236,25 @@ router.post(
 router.put(
   '/updatezapros/:projectId',
   fileMiddleware.fields([{
-      name: 'dropPhoto',
-      maxCount: 4
-    },
-    {
-      name: 'photoAva',
-      maxCount: 1
-    },
-    {
-      name: 'imageOpen',
-      maxCount: 1
-    },
-    {
-      name: 'imageClose',
-      maxCount: 1
-    },
-    {
-      name: 'dynamicImages',
-      maxCount: 100
-    },
+    name: 'dropPhoto',
+    maxCount: 4
+  },
+  {
+    name: 'photoAva',
+    maxCount: 1
+  },
+  {
+    name: 'imageOpen',
+    maxCount: 1
+  },
+  {
+    name: 'imageClose',
+    maxCount: 1
+  },
+  {
+    name: 'dynamicImages',
+    maxCount: 100
+  },
   ]),
   async (req, res) => {
     try {
@@ -384,10 +383,10 @@ router.put(
       // Извлечение всех динамических изображений
       const extractImages = (blocks) =>
         blocks
-        .flatMap((blockGroup) => blockGroup)
-        .filter((block) => block.type === 'file' && Array.isArray(block.value))
-        .flatMap((block) => block.value)
-        .filter(Boolean);
+          .flatMap((blockGroup) => blockGroup)
+          .filter((block) => block.type === 'file' && Array.isArray(block.value))
+          .flatMap((block) => block.value)
+          .filter(Boolean);
 
       const newDynamicImages = extractImages(updatedDynamicBlocksContent).map((img) => img.trim());
 
@@ -431,14 +430,40 @@ router.put(
 
 router.get('/getzapros', async (req, res) => {
   try {
-    const data = await Project.findAll({
-      include: [Constructor],
-      order: [
-        ['id', 'DESC']
-      ]
-    });
+    const page = parseInt(req.query.page, 10);
+    const limit = parseInt(req.query.limit, 10);
 
-    res.json(data);
+    if (page && limit && page > 0 && limit > 0) {
+      const offset = (page - 1) * limit;
+
+      const { count, rows } = await Project.findAndCountAll({
+        include: [Constructor],
+        order: [
+          ['id', 'DESC']
+        ],
+        limit,
+        offset,
+      });
+
+      res.json({
+        data: rows,
+        pagination: {
+          total: count,
+          page,
+          limit,
+          totalPages: Math.ceil(count / limit),
+        },
+      });
+    } else {
+      const data = await Project.findAll({
+        include: [Constructor],
+        order: [
+          ['id', 'DESC']
+        ]
+      });
+
+      res.json(data);
+    }
   } catch (error) {
     console.log(error);
     res.status(500).json({
