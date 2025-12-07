@@ -300,8 +300,33 @@ router.put(
 // Получение всех записей
 router.get('/getzapros', async (req, res) => {
   try {
-    const data = await Journal.findAll({ order: [['id', 'DESC']] });
-    res.json(data);
+    const page = parseInt(req.query.page, 10);
+    const limit = parseInt(req.query.limit, 10);
+
+    // Если указаны page и limit, используем пагинацию
+    if (page && limit && page > 0 && limit > 0) {
+      const offset = (page - 1) * limit;
+
+      const { count, rows } = await Journal.findAndCountAll({
+        order: [['id', 'DESC']],
+        limit,
+        offset,
+      });
+
+      res.json({
+        data: rows,
+        pagination: {
+          total: count,
+          page,
+          limit,
+          totalPages: Math.ceil(count / limit),
+        },
+      });
+    } else {
+      // Обратная совместимость: если параметры не указаны, возвращаем все данные
+      const data = await Journal.findAll({ order: [['id', 'DESC']] });
+      res.json(data);
+    }
   } catch (error) {
     console.error('Ошибка при получении записей:', error);
     res.status(500).json({ message: 'Ошибка сервера' });
@@ -394,7 +419,8 @@ router.delete('/deletezapros/:id', async (req, res) => {
 
     if (post.attachments) {
       const attachmentUrls = post.attachments;
-      await extractAndDeleteFiles(attachmentUrls, false, false);    }
+      await extractAndDeleteFiles(attachmentUrls, false, false);
+    }
 
     const markdownLinks = extractMarkdownLinks(post.markdown_content || '');
     const decodedMarkdownLinks = markdownLinks.map((url) => decodeURIComponent(url).split('?')[0]);
