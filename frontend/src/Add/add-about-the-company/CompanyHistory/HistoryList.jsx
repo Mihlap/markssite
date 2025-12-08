@@ -1,8 +1,9 @@
-import { memo, useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import historyStyles from './CompanyHistory.module.scss';
 
 import HistoryItem from './HistoryItem';
+import ChevronDown from '../../icon/chevron-down.svg';
 
 import {
   updateHistoryOrderLocally,
@@ -29,6 +30,46 @@ function HistoryList({ user, setIsModalOpenHistory, setEditHistoryData }) {
 
   const [draggedItem, setDraggedItem] = useState(null);
   const [deleteModalState, setDeleteModalState] = useState({});
+  const [showAll, setShowAll] = useState(false);
+  const listRef = useRef(null);
+  const [listHeights, setListHeights] = useState({ full: 0, collapsed: 0 });
+
+  const measureHeights = useCallback(() => {
+    if (!listRef.current) return;
+    const container = listRef.current;
+    const children = Array.from(container.children);
+    const computed = window.getComputedStyle(container);
+    const gapValue = parseFloat(computed.rowGap || computed.gap || '0') || 0;
+    const paddingTop = parseFloat(computed.paddingTop || '0') || 0;
+    const paddingBottom = parseFloat(computed.paddingBottom || '0') || 0;
+    const full = container.scrollHeight;
+
+    if (!children.length) {
+      setListHeights({ full: 0, collapsed: 0 });
+      return;
+    }
+
+    const visibleCount = Math.min(4, children.length);
+    const visibleItems = children.slice(children.length - visibleCount);
+    const baseHeight = visibleItems.reduce((acc, el) => acc + el.offsetHeight, 0);
+    const totalGap = Math.max(visibleCount - 1, 0) * gapValue;
+    const paddingTotal = paddingTop + paddingBottom;
+    const safetyOffset = 0;
+
+    setListHeights({
+      full,
+      collapsed: Math.min(full, baseHeight + totalGap + paddingTotal + safetyOffset),
+    });
+  }, [years]);
+
+  useLayoutEffect(() => {
+    measureHeights();
+  }, [measureHeights]);
+
+  useEffect(() => {
+    window.addEventListener('resize', measureHeights);
+    return () => window.removeEventListener('resize', measureHeights);
+  }, [measureHeights]);
 
   const handleDragStart = useCallback(
     (e, index) => {
@@ -124,25 +165,58 @@ function HistoryList({ user, setIsModalOpenHistory, setEditHistoryData }) {
      ); // временно
   }
 
+  const shouldClamp = years.length > 4 && listHeights.full > 0;
+  const targetHeight = showAll ? listHeights.full : listHeights.collapsed || listHeights.full;
+
   return (
-    <div className={historyStyles.blockHistory} role="list">
-      {years.map((el, index) => (
-        <HistoryItem
-          key={el.id}
-          el={el}
-          index={index}
-          user={user}
-          handleDragStart={handleDragStart}
-          handleDragOver={handleDragOver}
-          handleDrop={handleDrop}
-          handleLookClick={handleLookClick}
-          handleEditClick={handleEditClick}
-          isDeleteOpen={!!deleteModalState[el.id]}
-          handleDeleteModalOpen={handleDeleteModalOpen}
-          handleDeleteModalClose={handleDeleteModalClose}
-          handleFormDelete={handleFormDelete}
-        />
-      ))}
+    <div className={historyStyles.blockHistory}>
+      <div
+        ref={listRef}
+        className={historyStyles.itemsWrapper}
+        role="list"
+        style={
+          shouldClamp && targetHeight
+            ? {
+              maxHeight: `${targetHeight}px`,
+              overflow: 'hidden',
+              transition: 'max-height 0.45s ease-in-out',
+            }
+            : undefined
+        }>
+        {years.map((el, index) => (
+          <HistoryItem
+            key={el.id}
+            el={el}
+            index={index}
+            user={user}
+            handleDragStart={handleDragStart}
+            handleDragOver={handleDragOver}
+            handleDrop={handleDrop}
+            handleLookClick={handleLookClick}
+            handleEditClick={handleEditClick}
+            isDeleteOpen={!!deleteModalState[el.id]}
+            handleDeleteModalOpen={handleDeleteModalOpen}
+            handleDeleteModalClose={handleDeleteModalClose}
+            handleFormDelete={handleFormDelete}
+          />
+        ))}
+      </div>
+      {years.length > 4 && (
+        <div className={historyStyles.toggleWrapper}>
+          <button
+            type="button"
+            className={historyStyles.toggleButton}
+            onClick={() => setShowAll((prev) => !prev)}>
+            <span>{showAll ? 'Скрыть все' : 'Смотреть все'}</span>
+            <img
+              src={ChevronDown}
+              alt=""
+              aria-hidden="true"
+              className={`${historyStyles.toggleIcon} ${showAll ? historyStyles.toggleIconRotated : ''}`}
+            />
+          </button>
+        </div>
+      )}
     </div>
   );
 }

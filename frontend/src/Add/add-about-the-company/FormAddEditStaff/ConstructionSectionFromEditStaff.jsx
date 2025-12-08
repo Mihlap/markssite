@@ -11,7 +11,6 @@ import { PORTRAIT_CONTAINER_STYLE, PORTRAIT_IMG_STYLE, isPortraitLabel } from '.
 const REQUIRED_TEXT_MSG = 'Обязательно для заполнения';
 const REQUIRED_FILE_MSG = 'Обязательно для загрузки';
 
-
 const normalize = (s = '') =>
   String(s)
     .replace(/\u00A0/g, ' ')
@@ -73,7 +72,7 @@ function ConstructionSectionFromEditStaff({
       if (typeof removed === 'string' && removed.startsWith('blob:')) {
         try {
           URL.revokeObjectURL(removed);
-        } catch {}
+        } catch { }
       }
 
       const newArr = arr.slice(0, previewIndex).concat(arr.slice(previewIndex + 1));
@@ -150,7 +149,7 @@ function ConstructionSectionFromEditStaff({
     const blockRequired = !!dynamicData?.[blockIndex]?.[inputIndex]?.blockRequired;
 
     const errorText = inputType === 'file' ? REQUIRED_FILE_MSG : REQUIRED_TEXT_MSG;
- 
+
     const rawVal = dynamicData?.[blockIndex]?.[inputIndex]?.value ?? '';
     const effectiveType = inputType && String(inputType).trim() ? inputType : hasListHtml(rawVal) ? 'textarea' : 'text';
 
@@ -164,9 +163,8 @@ function ConstructionSectionFromEditStaff({
             style={{ position: 'relative', paddingBottom: hasError ? 22 : 0 }}>
             <input
               type="text"
-              className={`${styles.form_container__heading_block_input} ${styles.orange_color} ${
-                hasError ? styles.input_error : ''
-              }`}
+              className={`${styles.form_container__heading_block_input} ${styles.orange_color} ${hasError ? styles.input_error : ''
+                }`}
               placeholder={(placeholderText || labelSafe || '').trim()}
               value={typeof value === 'string' ? value : Array.isArray(value) ? value.join(', ') : String(value ?? '')}
               aria-invalid={hasError ? 'true' : 'false'}
@@ -211,9 +209,8 @@ function ConstructionSectionFromEditStaff({
             </div>
 
             <label
-              className={`${styles.slider_container__customFileUploadOrangeColor} ${
-                hasError ? styles.input_error : ''
-              }`}
+              className={`${styles.slider_container__customFileUploadOrangeColor} ${hasError ? styles.input_error : ''
+                }`}
               aria-invalid={hasError ? 'true' : 'false'}
               aria-describedby={hasError ? `err-${errKey}` : undefined}>
               <input
@@ -329,19 +326,20 @@ function ConstructionSectionFromEditStaff({
                     ? arrToUl(value)
                     : value || ''
                   : typeof value === 'string'
-                  ? value
-                  : Array.isArray(value)
-                  ? value.join('\n')
-                  : String(value ?? '')
+                    ? value
+                    : Array.isArray(value)
+                      ? value.join('\n')
+                      : String(value ?? '')
               }
               onChange={(v) => {
-                handleDynamicInputChange(blockIndex, inputIndex, v);
+                const cleanValue = String(v || '').trim();
+                const isEmpty = !cleanValue || cleanValue === '<p><br></p>' || cleanValue === '<p></p>';
+                handleDynamicInputChange(blockIndex, inputIndex, isEmpty ? '' : v);
               }}
               placeholder={(placeholderText || labelSafe || 'Нет ограничения по символам').trim()}
               scopeKey={`${blockIndex}-${inputIndex}`}
               labelStyle={normalize(labelSafe) === 'цитата' ? { paddingTop: 16 } : undefined}
               showToolbar={isDot ? true : normalize(labelSafe) !== 'текстовый блок выделенный'}
-              defaultList={isDot ? 'bullet' : undefined}
               classNameInput={`${hasError ? styles.input_error : ''}`}
               error={hasError}
               ariaInvalid={hasError ? 'true' : 'false'}

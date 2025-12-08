@@ -88,7 +88,7 @@ function ConstructorSection({
       try {
         ref.current.scrollIntoView({ block: 'center', behavior: 'smooth' });
         ref.current.focus?.({ preventScroll: true });
-      } catch {}
+      } catch { }
     }
   }, [forceValidate, fieldErrors, dynamicData]);
 
@@ -174,9 +174,8 @@ function ConstructorSection({
               ref={anchorRef}
               type="text"
               value={String(dynamicData[blockIndex][inputIndex].value || '')}
-              className={`${styles.form_container__heading_block_input} ${styles.orange_color} ${
-                hasError && touched[errKey] ? styles.input_error : ''
-              }`}
+              className={`${styles.form_container__heading_block_input} ${styles.orange_color} ${hasError && touched[errKey] ? styles.input_error : ''
+                }`}
               placeholder={(placeholderText || labelSafe || '').trim()}
               style={{ width: '100%', minWidth: 0 }}
               aria-invalid={hasError && touched[errKey] ? 'true' : 'false'}
@@ -219,9 +218,8 @@ function ConstructorSection({
 
             <label
               ref={anchorRef}
-              className={`${styles.slider_container__customFileUploadOrangeColor} ${
-                hasError && touched[errKey] ? styles.input_error : ''
-              }`}
+              className={`${styles.slider_container__customFileUploadOrangeColor} ${hasError && touched[errKey] ? styles.input_error : ''
+                }`}
               onBlur={markTouched}
               tabIndex={0}
               aria-invalid={hasError && touched[errKey] ? 'true' : 'false'}
@@ -279,8 +277,8 @@ function ConstructorSection({
                         isPortraitLabelNorm(labelSafeRaw)
                           ? DYN_PORTRAIT_IMG_STYLE
                           : isPortraitLabel(labelSafe)
-                          ? PORTRAIT_IMG_STYLE
-                          : undefined
+                            ? PORTRAIT_IMG_STYLE
+                            : undefined
                       }
                     />
                     <div
@@ -332,7 +330,9 @@ function ConstructorSection({
               value={dynamicData[blockIndex][inputIndex].value || ''}
               onChange={(v) => {
                 if (!touched[errKey]) setTouched((t) => ({ ...t, [errKey]: true }));
-                handleDynamicInputChange(blockIndex, inputIndex, v);
+                const cleanValue = String(v || '').trim();
+                const isEmpty = !cleanValue || cleanValue === '<p><br></p>' || cleanValue === '<p></p>';
+                handleDynamicInputChange(blockIndex, inputIndex, isEmpty ? '' : v);
               }}
               placeholder={(isDotList
                 ? placeholderText || 'Нет ограничения по символам'
@@ -341,7 +341,6 @@ function ConstructorSection({
               scopeKey={`${blockIndex}-${inputIndex}`}
               labelStyle={normalize(labelSafeRaw) === 'цитата' ? { paddingTop: 16 } : undefined}
               showToolbar={isDotList ? true : normalize(labelSafeRaw) !== 'текстовый блок выделенный'}
-              defaultList={isDotList ? 'bullet' : undefined}
               classNameInput={`${hasError ? styles.input_error : ''}`}
               error={hasError}
               ariaInvalid={hasError ? 'true' : 'false'}
