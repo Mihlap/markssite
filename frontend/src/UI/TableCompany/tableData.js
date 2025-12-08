@@ -1,4 +1,16 @@
-const tableData = [
+const tableData = [ 
+  {
+    title: 'Лидеры проектирования',
+    nomination: 'BIM-компания года',
+    prize: 'Победитель',
+    year: '/_2025/',
+  },
+  {
+    title: 'Лидеры проектирования',
+    nomination: 'BIM-проект года',
+    prize: 'Победитель',
+    year: '/_2025/',
+  },
   {
     title: '100+ Awards',
     nomination: 'Лучшая BIM-модель здания',
