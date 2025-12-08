@@ -39,7 +39,6 @@ const extractFileNameAndFolderFromUrl = (url) => {
   }
 };
 
-// Создание markdownFile POST /uploadMarkdownFile
 router.post('/uploadMarkdownFile', fileMiddleware.single('markdownFile'), async (req, res) => {
   try {
     if (!req.file) {
@@ -70,7 +69,6 @@ router.post('/uploadMarkdownFile', fileMiddleware.single('markdownFile'), async 
   }
 });
 
-// POST /postzapros
 router.post(
   '/postzapros',
   fileMiddleware.fields([
@@ -116,7 +114,6 @@ router.post(
           req.files.authorImages.map(async (file) => uploadFileToS3(file, 'images/imageJournal')),
         );
 
-        // Присваиваем изображения авторам
         const updatedParsedAuthors = parsedAuthors.map((author, i) => {
           const updatedAuthor = { ...author };
           if (uploadedFiles[i]) {
@@ -160,7 +157,6 @@ function extractMarkdownLinks(markdownText) {
   return [...new Set(links)];
 }
 
-// Обновление записи
 router.put(
   '/editzapros/:journalId',
   fileMiddleware.fields([
@@ -204,14 +200,12 @@ router.put(
         }
       });
 
-      // Парсим данные из тела запроса
       const parsedAuthors = authors ? JSON.parse(authors) : [];
       const parsedOrganizations = JSON.parse(organizations || '[]');
       const parsedLocations = JSON.parse(locations || '[]');
       const parsedCategory = JSON.parse(category || '[]');
       const currentAttachments = journal.attachments || [];
 
-      // Загружаем новые файлы, если есть конечно
       let uploadedFiles = [];
       if (req.files && req.files.authorImages) {
         uploadedFiles = await Promise.all(
@@ -219,27 +213,22 @@ router.put(
         );
       }
 
-      // Обновление изображения при изменении
       const updatedAuthors = parsedAuthors.map((author) => {
         const file = uploadedFiles.find((uploadedFile) => uploadedFile.includes(author.id));
         const updatedImage = file || author.image;
 
         if (!updatedImage) return { ...author, image: null };
 
-        // Удаляем все старые временные метки
         const cleanImagePath = updatedImage.split('?timestamp=')[0];
 
-        // Добавляем новую временную метку
         return {
           ...author,
           image: `${cleanImagePath}?timestamp=${Date.now()}`,
         };
       });
 
-      // Обновляем список вложений
       const updatedAttachments = updatedAuthors.map((author) => author.image).filter(Boolean);
 
-      // Удаляем старые файлы из S3, которые больше не используются
       const attachmentsToRemove = currentAttachments.filter(
         (attachment) =>
           !updatedAttachments.some((updatedAttachment) => {
@@ -260,12 +249,10 @@ router.put(
         }),
       );
 
-      // Обработка PDF-файлов
       const oldPdfLinks = oldLinks.filter((link) => link.endsWith('.pdf'));
       const newPdfLinks = newLinks.filter((link) => link.endsWith('.pdf'));
       const removedPdfLinks = oldPdfLinks.filter((link) => !newPdfLinks.includes(link));
 
-      // Удаляем старые PDF-файлы из S3
       removedPdfLinks.forEach(async (link) => {
         const result = extractFileNameAndFolderFromUrl(link);
         if (result) {
@@ -297,18 +284,39 @@ router.put(
   },
 );
 
-// Получение всех записей
 router.get('/getzapros', async (req, res) => {
   try {
-    const data = await Journal.findAll({ order: [['id', 'DESC']] });
-    res.json(data);
+    const page = parseInt(req.query.page, 10);
+    const limit = parseInt(req.query.limit, 10);
+
+    if (page && limit && page > 0 && limit > 0) {
+      const offset = (page - 1) * limit;
+
+      const { count, rows } = await Journal.findAndCountAll({
+        order: [['id', 'DESC']],
+        limit,
+        offset,
+      });
+
+      res.json({
+        data: rows,
+        pagination: {
+          total: count,
+          page,
+          limit,
+          totalPages: Math.ceil(count / limit),
+        },
+      });
+    } else {
+      const data = await Journal.findAll({ order: [['id', 'DESC']] });
+      res.json(data);
+    }
   } catch (error) {
     console.error('Ошибка при получении записей:', error);
     res.status(500).json({ message: 'Ошибка сервера' });
   }
 });
 
-// Получение одной записи
 router.get('/getzapros/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -347,7 +355,6 @@ router.delete('/delete-file', async (req, res) => {
   }
 });
 
-// Удаление записи
 router.delete('/deletezapros/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -394,7 +401,8 @@ router.delete('/deletezapros/:id', async (req, res) => {
 
     if (post.attachments) {
       const attachmentUrls = post.attachments;
-      await extractAndDeleteFiles(attachmentUrls, false, false);    }
+      await extractAndDeleteFiles(attachmentUrls, false, false);
+    }
 
     const markdownLinks = extractMarkdownLinks(post.markdown_content || '');
     const decodedMarkdownLinks = markdownLinks.map((url) => decodeURIComponent(url).split('?')[0]);

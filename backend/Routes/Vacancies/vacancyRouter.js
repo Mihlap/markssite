@@ -26,7 +26,6 @@ const syncVacancyMain = async (vacancyId) => {
   }
 };
 
-// Маршрут для добавления новой вакансии
 router.post('/addVacancy', async (req, res) => {
   try {
     const formData = req.body;
@@ -96,7 +95,6 @@ router.post('/copyVacancy/:id', async (req, res) => {
   }
 });
 
-// изменяем  данные вакансии
 router.put('/editVacancy/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -133,16 +131,15 @@ router.put('/editVacancy/:id', async (req, res) => {
     await syncVacancyMain(id);
     res.json({
       message: 'Вакансия успешно обновлена'
-  });
+    });
   } catch (error) {
-      console.error('Ошибка при обновлении вакансии:', error);
-      res.status(500).json({
-          message: 'Ошибка сервера при обновлении вакансии'
-      });
+    console.error('Ошибка при обновлении вакансии:', error);
+    res.status(500).json({
+      message: 'Ошибка сервера при обновлении вакансии'
+    });
   }
 });
 
-// изменяем  данные вакансии, свойство hidden
 router.put('/updateVacancyLookStatus/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -163,7 +160,6 @@ router.put('/updateVacancyLookStatus/:id', async (req, res) => {
   }
 });
 
-// получаем  данные вакансии, свойство hidden
 router.get('/getHiddenVacancies', async (req, res) => {
   try {
     const {
@@ -183,12 +179,11 @@ router.get('/getHiddenVacancies', async (req, res) => {
   } catch (error) {
     console.error('Ошибка при получении скрытых вакансий:', error);
     res.status(500).json({
-        error: 'Внутренняя ошибка сервера'
+      error: 'Внутренняя ошибка сервера'
     });
-}
+  }
 });
 
-// получение данных формы
 router.get('/getzapros', async (req, res) => {
   try {
     const data = await Employee.findAll({ order: [['id', 'ASC']] });
@@ -274,31 +269,25 @@ router.get('/getzapros-modalFilter', async (req, res) => {
   }
 });
 
-// удаление вакансии
 router.delete('/deletezapros/:id', async (req, res) => {
   const { id } = req.params;
 
-  // Начало транзакции
   const transaction = await sequelize.transaction();
 
   try {
-    // Попытка удалить связанную запись из другой таблицы
     const vacancyMainEntry = await VacanciesMain.findOne({ where: { IdVacancy: id }, transaction });
     if (vacancyMainEntry) {
       await vacancyMainEntry.destroy({ transaction });
     }
 
-    // Удаление вакансии из модели Employee
     await Employee.destroy({ where: { id }, transaction });
 
-    // Подтверждение транзакции
     await transaction.commit();
     res.json({
       message: 'Вакансия и связанная запись успешно удалены',
       id
     });
   } catch (error) {
-    // Откат транзакции в случае ошибки
     await transaction.rollback();
     console.error('Ошибка при удалении вакансии:', error);
     res.status(500).json({
