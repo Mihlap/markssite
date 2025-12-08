@@ -6,7 +6,8 @@ import iconmg from '../icon/mj.svg';
 
 import styles from '../logo/style.module.scss';
 
-export default function Logo() {
+export default function Logo({ isSideBar = false }) {
+  
   const location = useLocation();
   const isHrRoute = location.pathname.startsWith('/hr/');
   const isMjRoute = location.pathname.startsWith('/journalPage');
@@ -20,14 +21,16 @@ export default function Logo() {
   const homePath = isHrRoute ? '/hr/home' : isMjRoute ? '/journalPage' : '/';
 
   return (
-    <Link to={homePath} className={styles['logo-block']}>
+    <Link
+      to={homePath}
+      data-is-sidebar={isSideBar}
+      className={clsx(styles['logo-block'], shouldCompactLogo && styles['logo-block--compact'])}>
       {/* <div className={styles['navbar-logo-circle']} /> */}
       <div
         className={clsx(styles['logo-circle'], {
           [styles['logo-circle-animate']]: shouldCompactLogo,
         })}
       />
-      {/* <Link to="/"> */}
       <img
         className={clsx(styles['logo-image'], {
           [styles['logo-image--shifted']]: shouldCompactLogo,
@@ -36,7 +39,6 @@ export default function Logo() {
         alt="логотип компании MarksGroup"
         loading="lazy"
       />
-      {/* </Link> */}
       <div
         className={clsx(styles['logo-circle-blue'], {
           [styles['logo-circle-blue-animate']]: shouldCompactLogo,
@@ -47,6 +49,7 @@ export default function Logo() {
           key={animatedIcon}
           className={clsx(styles['logo-hr'], {
             [styles['logo-hr-animate']]: shouldCompactLogo,
+            [styles['logo-hr-sidebar']]: isSideBar,
           })}
           src={animatedIcon}
           alt={animatedAlt}
