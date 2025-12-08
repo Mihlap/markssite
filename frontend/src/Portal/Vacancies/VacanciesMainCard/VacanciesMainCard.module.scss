@@ -42,6 +42,7 @@
 
 
 .section-top {
+  overflow-x: clip;
   display: flex;
   align-items: stretch;
 
@@ -123,7 +124,7 @@
       }
 
       &:nth-of-type(3) {
-        @include star(519px, 519px, (right: 0, top: 15%));
+        @include star(519px, 519px, (right: 5%, top: 15%));
       }
     }
 
@@ -238,6 +239,7 @@
 
     @media (max-width: 1440px) {
       padding-left: 62px;
+      padding-right: 62px;
       padding-top: 49px;
     }
 
@@ -306,6 +308,13 @@
         flex-direction: column;
         gap: 32px;
         padding-bottom: 40px;
+      }
+
+      @media (max-width: 390px) {
+        &_block {
+          display: flex;
+          align-items: center
+        }
       }
 
       &_title {
@@ -902,20 +911,20 @@
     border-radius: 2.125rem;
   }
 
-  &__skills {
-    &-list {
-
-      @include flex(8px, null, null, null, wrap);
-    }
-
-    &-item {
-      border-radius: 34px;
-      border: 1px solid var(--gray-959DA6);
-      background: #FFF;
-      padding: 9px 24px;
-      @include text(14, 20px, 400, --black-1D2E43);
-    }
-  }
+        &__skills {
+          &-list {
+    
+            @include flex(8px, null, null, null, wrap);
+          }
+    
+          &-item {
+            border-radius: 34px;
+            border: 1px solid var(--gray-959DA6);
+            background: #FFF;
+            padding: 9px 24px;
+            @include text(14, 20px, 400, --black-1D2E43);
+          }
+        }
 
   &__aboutBlockWrapper {
     display: flex;
@@ -990,9 +999,8 @@
 
   .main_vacancyWrapper__3dGroup {
     position: relative;
+    overflow-x: clip;
     z-index: -1;
-    overflow: hidden;
-    padding-bottom: 18rem;
 
     .background4 {
       position: absolute;
@@ -2057,6 +2065,7 @@
       align-items: center;
       padding-top: 4rem;
       padding-bottom: 1.5rem;
+        width: 100%;
     }
 
     &__button_vacancy {
@@ -2598,6 +2607,7 @@
       justify-content: center;
       align-items: center;
       padding-top: 4rem;
+      width: 100%;
     }
 
     &__button_vacancy {

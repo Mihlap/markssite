@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
 import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { debounce } from 'lodash';
 import styles from './VacanciesMainCard.module.scss';
@@ -10,7 +11,6 @@ import VacancySlider from '../VacancySlider/VacancySlider';
 import LoadingVacancy from '../../../Loading/LoadingVacancy';
 import RenderVacancySections from '../RenderVacancySections/RenderVacancySections';
 import { fetchEmployees } from '../../../store/Slice/vacanciesSlice';
-import AllVacancyButton from '../../../UI/ButtonVacancy/AllVacancyButton';
 import VacancyFormContactSimple from '../../../UI/VacancyFormContact/VacancyFormContactSimple';
 import VacancyFormContact from '../../../UI/VacancyFormContact/VacancyFormContact';
 import ModalVacancyFormSend from '../../../UI/VacancyFormContact/ModalVacancyFormSend';
@@ -52,7 +52,7 @@ import { useWindowWidth } from '../../hooks/useWindowWidth';
 import { advantages } from './const/advantages';
 import VacancyRequirements from '../../ui/mesh/VacancyRequirements';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 function setViewportUnits() {
   document.documentElement.style.setProperty('--vh', `${window.innerHeight / 100}px`);
@@ -62,7 +62,7 @@ function setViewportUnits() {
 const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }) => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { width, isMobile, isTablet, isDesktop } = useWindowWidth();
+  const { width } = useWindowWidth();
   const activePage = useSelector((state) => state.activePage.page);
   const vacancies = useSelector((state) => state.vacancies.vacancies);
   const [isLoading, setIsLoading] = useState(false);
@@ -70,17 +70,26 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
   const [selectedVacancy, setSelectedVacancy] = useState(null);
   const [isVisible, setIsVisible] = useState(window.innerWidth > 1024);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [blockReady, setBlockReady] = useState(false);
 
+  const pageRef = useRef(null);
   const formRef = useRef(null);
   const formButtonRef = useRef(null);
   const rocketRef = useRef(null);
   const sputnikRef = useRef(null);
-
-  useEffect(() => {
-    const raf = requestAnimationFrame(() => setBlockReady(true));
-    return () => cancelAnimationFrame(raf);
-  }, []);
+  const rocketSceneRef = useRef(null);
+  const topContainerRef = useRef(null);
+  const firstStarRef = useRef(null);
+  const secondStarRef = useRef(null);
+  const thirdStarRef = useRef(null);
+  const star3d4Ref = useRef(null);
+  const star3d5Ref = useRef(null);
+  const star3d6Ref = useRef(null);
+  const star3d7Ref = useRef(null);
+  const star3d8Ref = useRef(null);
+  const star3d9Ref = useRef(null);
+  const star3d10Ref = useRef(null);
+  const star3d11Ref = useRef(null);
+  const nextStarsRef = useRef(null);
 
   useEffect(() => {
     setViewportUnits();
@@ -115,109 +124,128 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
     }
   }, [vacancies, id]);
 
-  useEffect(() => {
-    if (windowWidth < 1025 || !vacancies || !selectedVacancy) return;
-
-    const frameId = requestAnimationFrame(setupScrollTriggers);
-
-    return () => {
-      cancelAnimationFrame(frameId);
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [windowWidth, vacancies, selectedVacancy]);
-
-  const setupScrollTriggers = useCallback(
+  useGSAP(
     () => {
-      if (!selectedVacancy) return;
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-
-      const triggers = [];
-      vacancies.forEach((vacancy) => {
-        const blockRight = document.getElementById(`blockRight-${vacancy.id}`);
-        const wrapper = document.getElementById(`wrapperTextBlock-${selectedVacancy.id}`);
-        if (!blockRight || !wrapper) return;
-        const trig = setupBlockAnimation(blockRight, wrapper);
-        if (trig) triggers.push(trig);
-      });
-
-      return () => triggers.forEach((t) => t.kill());
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [vacancies, selectedVacancy, windowWidth]
-  );
-
-  const setupBlockAnimation = (blockRight, wrapperTextBlock) => {
-    const blockRightRect = blockRight.getBoundingClientRect();
-    const wrapperTextBlockRect = wrapperTextBlock.getBoundingClientRect();
-    let wrapperTextBlockBottom = wrapperTextBlockRect.bottom + window.scrollY - blockRightRect.height - 300;
-
-    if (windowWidth > 1601) {
-      wrapperTextBlockBottom -= 200;
-    }
-
-    return ScrollTrigger.create({
-      trigger: wrapperTextBlock,
-      start: 'top bottom',
-      end: 'bottom top',
-      scrub: true,
-      onUpdate: (self) => updatePosition(self, blockRight, wrapperTextBlockBottom),
-      onRefresh: (self) => updatePosition(self, blockRight, wrapperTextBlockBottom),
-    });
-  };
-
-  const updatePosition = (self, blockRight, bottom) => {
-    const scrollerPoint = window.scrollY + blockRight.getBoundingClientRect().height;
-    if (scrollerPoint >= bottom) {
-      blockRight.style.position = 'absolute';
-      blockRight.style.top = `${bottom - blockRight.getBoundingClientRect().height}px`;
-    } else {
-      blockRight.style.position = 'fixed';
-      blockRight.style.top = '0';
-    }
-    blockRight.style.right = '0';
-  };
-
-  useEffect(() => {
-    const handleScroll = () => {
       const rocketEl = rocketRef.current;
       const sputnikEl = sputnikRef.current;
 
-      if (!rocketEl || !sputnikEl) return;
+      const stars = [
+        { ref: firstStarRef, rotate: 100, initialPosition: -50 },
+        { ref: secondStarRef, rotate: -100, initialPosition: 50 },
+        { ref: thirdStarRef, rotate: 100, initialPosition: -50 },
+      ];
 
-      const scrollPosition = window.scrollY;
+      const rotatingStars = [
+        { ref: star3d4Ref, from: -100, to: 50 },
+        { ref: star3d5Ref, from: 100, to: -50 },
+        { ref: star3d6Ref, from: -50, to: 0 },
+        { ref: star3d7Ref, from: -100, to: 50 },
+        { ref: star3d8Ref, from: 100, to: 0 },
+      ];
 
-      let xValueRocket, xValueSputnik, rocketStart, sputnikStart;
+      const nextStars = [
+        { ref: star3d9Ref, from: -80, to: 80 },
+        { ref: star3d10Ref, from: 120, to: -40 },
+        { ref: star3d11Ref, from: -40, to: 60 },
+      ];
 
-      if (window.innerWidth > 1024) {
-        xValueRocket = 80;
-        xValueSputnik = -80;
-        rocketStart = -150;
-        sputnikStart = 0;
-      } else if (window.innerWidth > 767) {
-        xValueRocket = 50;
-        xValueSputnik = -50;
-        rocketStart = -80;
-        sputnikStart = 20;
-      } else {
-        xValueRocket = 40;
-        xValueSputnik = -40;
-        rocketStart = -200;
-        sputnikStart = -40;
+      if (topContainerRef.current) {
+        stars.forEach(({ ref, rotate, initialPosition }) => {
+          if (!ref?.current) return;
+
+          gsap.fromTo(
+            ref.current,
+            { rotateZ: initialPosition },
+            {
+              rotateZ: rotate,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: topContainerRef.current,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: true,
+              },
+            }
+          );
+        });
       }
 
-      rocketEl.style.transform = `translateX(${rocketStart + scrollPosition * (xValueRocket / window.innerHeight)}px)`;
-      sputnikEl.style.transform = `translateX(${
-        sputnikStart + scrollPosition * (xValueSputnik / window.innerHeight)
-      }px)`;
-    };
+      if (rocketSceneRef.current) {
+        rotatingStars.forEach(({ ref, from, to }) => {
+          if (!ref?.current) return;
 
-    window.addEventListener('scroll', handleScroll);
+          gsap.fromTo(
+            ref.current,
+            { rotateZ: from },
+            {
+              rotateZ: to,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: rocketSceneRef.current,
+                start: 'top bottom',
+                end: '+=2000',
+                scrub: true,
+              },
+            }
+          );
+        });
+      }
 
-    handleScroll();
+      if (nextStarsRef.current) {
+        nextStars.forEach(({ ref, from, to }) => {
+          if (!ref?.current) return;
 
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [windowWidth]);
+          gsap.fromTo(
+            ref.current,
+            { rotateZ: from },
+            {
+              rotateZ: to,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: nextStarsRef.current,
+                start: 'top bottom',
+                end: '+=1500',
+                scrub: true,
+              },
+            }
+          );
+        });
+      }
+
+      const getMotionConfig = () => {
+        if (windowWidth > 1024) {
+          return { rocketDelta: 80, sputnikDelta: -80, rocketStart: -150, sputnikStart: 0 };
+        }
+        if (windowWidth > 767) {
+          return { rocketDelta: 50, sputnikDelta: -50, rocketStart: -80, sputnikStart: 20 };
+        }
+        return { rocketDelta: 40, sputnikDelta: -40, rocketStart: -200, sputnikStart: -40 };
+      };
+
+      const updatePositions = (scrollPosition) => {
+        const { rocketDelta, sputnikDelta, rocketStart, sputnikStart } = getMotionConfig();
+        const height = window.innerHeight || 1;
+
+        gsap.set(rocketEl, { x: rocketStart + scrollPosition * (rocketDelta / height) });
+        gsap.set(sputnikEl, { x: sputnikStart + scrollPosition * (sputnikDelta / height) });
+      };
+
+      if (rocketEl && sputnikEl) {
+        updatePositions(window.scrollY);
+
+        const trigger = ScrollTrigger.create({
+          trigger: rocketSceneRef.current || rocketEl,
+          start: 0,
+          end: () => ScrollTrigger.maxScroll(window),
+          onUpdate: (self) => updatePositions(self.scroll()),
+          onRefresh: (self) => updatePositions(self.scroll()),
+        });
+
+        return () => trigger.kill();
+      }
+    },
+    { scope: pageRef, dependencies: [windowWidth] }
+  );
 
   useLayoutEffect(() => {
     const button = formButtonRef.current;
@@ -266,7 +294,7 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
       <Helmet>
         <title>Marks Group</title>
       </Helmet>
-      <div className={styles.main_vacancyWrapper}>
+      <div className={styles.main_vacancyWrapper} ref={pageRef}>
         {isLoading && <LoadingVacancy />}
         <ModalVacancyFormSend
           isOpen={isModalOpen}
@@ -277,10 +305,10 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
           variant="manualClose"
         />
         <section className={styles['section-top']}>
-          <div className={styles['section-top__title']}>
-            <img className={styles['section-top__star']} src={star1} alt="иконка звезды" />
-            <img className={styles['section-top__star']} src={star2} alt="иконка звезды" />
-            <img className={styles['section-top__star']} src={star3} alt="иконка звезды" />
+          <div className={styles['section-top__title']} ref={topContainerRef}>
+            <img ref={firstStarRef} className={styles['section-top__star']} src={star1} alt="иконка звезды" />
+            <img ref={secondStarRef} className={styles['section-top__star']} src={star2} alt="иконка звезды" />
+            <img ref={thirdStarRef} className={styles['section-top__star']} src={star3} alt="иконка звезды" />
             <div className={styles['section-top__wrap']}>
               <h1 className={styles['section-top__heading']}>{vacancies[0]?.title || null}</h1>
               <div className={styles['section-top__description']}>
@@ -303,7 +331,7 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
               </div>
               <div className={styles['section-top__advantages-item']}>
                 {advantages.map((item, index) => (
-                  <div key={item.id}>
+                  <div className={styles['section-top__advantages-item_block']} key={item.id}>
                     <img className={styles['section-top__advantages-item_icon']} src={item.img} alt={item.title} />
                     <p className={styles.title}>
                       {item?.rows.map((row, i) => (
@@ -347,12 +375,12 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
             />
           </aside>
         </section>
-        <div className={styles.main_vacancyWrapper__3dGroup}>
-          <div className={styles.background4} style={{ backgroundImage: `url(${star3d_4})` }} />
-          <div className={styles.background5} style={{ backgroundImage: `url(${star3d_5})` }} />
-          <div className={styles.background6} style={{ backgroundImage: `url(${star3d_6})` }} />
-          <div className={styles.background7} style={{ backgroundImage: `url(${star3d_7})` }} />
-          <div className={styles.background10} style={{ backgroundImage: `url(${star3d_8})` }} />
+        <div className={styles.main_vacancyWrapper__3dGroup} ref={rocketSceneRef}>
+          <div ref={star3d4Ref} className={styles.background4} style={{ backgroundImage: `url(${star3d_4})` }} />
+          <div ref={star3d5Ref} className={styles.background5} style={{ backgroundImage: `url(${star3d_5})` }} />
+          <div ref={star3d6Ref} className={styles.background6} style={{ backgroundImage: `url(${star3d_6})` }} />
+          <div ref={star3d7Ref} className={styles.background7} style={{ backgroundImage: `url(${star3d_7})` }} />
+          <div ref={star3d8Ref} className={styles.background10} style={{ backgroundImage: `url(${star3d_8})` }} />
           <div className={styles.background8} ref={rocketRef} style={{ backgroundImage: `url(${rocketBig})` }} />
           <div className={styles.background9} ref={sputnikRef} style={{ backgroundImage: `url(${sputnik})` }} />
           <div className={styles.main_vacancyWrapper__aboutBlockWrapper}>
@@ -421,10 +449,18 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
           <VacancySlider />
         </div>
         <div className={styles.main_vacancyWrapper__frameBlockNext}>
-          <div className={styles.main_vacancyWrapper__3dNext}>
-            <div className={styles.background9next} style={{ backgroundImage: `url(${star3d_9})` }} />
-            <div className={styles.background10next} style={{ backgroundImage: `url(${star3d_10})` }} />
-            <div className={styles.background11next} style={{ backgroundImage: `url(${star3d_11})` }} />
+          <div className={styles.main_vacancyWrapper__3dNext} ref={nextStarsRef}>
+            <div ref={star3d9Ref} className={styles.background9next} style={{ backgroundImage: `url(${star3d_9})` }} />
+            <div
+              ref={star3d10Ref}
+              className={styles.background10next}
+              style={{ backgroundImage: `url(${star3d_10})` }}
+            />
+            <div
+              ref={star3d11Ref}
+              className={styles.background11next}
+              style={{ backgroundImage: `url(${star3d_11})` }}
+            />
           </div>
           <div className={styles.frameBlockLeft}>
             <div className={styles.blockTitle}>Плюсы работы с&nbsp;нами</div>
