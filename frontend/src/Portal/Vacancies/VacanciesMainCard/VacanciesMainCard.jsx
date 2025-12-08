@@ -407,7 +407,7 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
               </div>
               <div className={styles.main_vacancyWrapper__spanWrapperLocation}>
                 <span className={styles.spanLocationText}>
-                  Комфортный оборудованный офис, кофе чай печеньки по утрам
+                  Комфортный оборудованный офис
                 </span>
                 <span className={styles.spanLocationText}>
                   Мы предоставляем все оборудование для комфортной работы и отдыха

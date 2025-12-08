@@ -86,8 +86,6 @@ mailRouter.post('/submitForm', async (req, res) => {
   }
 });
 
-// ______________Подписка______________________
-
 const transporterSubscribe = nodemailer.createTransport({
   pool: true,
   host: 'smtp.mail.ru',
@@ -126,8 +124,6 @@ mailRouter.post('/subscribe', (req, res) => {
     return res.status(200).json({ message: 'Письмо успешно отправлено' });
   });
 });
-
-// ______________HR portal______________________
 
 const transportPortal = nodemailer.createTransport({
   pool: true,
@@ -171,7 +167,7 @@ mailRouter.post('/portalSubmitForm', upload.array('resumeFiles', 2), (req, res) 
       });
       delete resumeFiles[index].buffer;
     });
-   }
+  }
 
   transportPortal.sendMail(mailOptions, (error, info) => {
     if (error) {
