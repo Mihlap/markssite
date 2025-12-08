@@ -64,7 +64,7 @@
             @include value(32px, 300, 40px);
         }
 
-        @media (max-width: 1710px) {
+        @media (max-width: 2560px) {
             &__row {
                 @include row(33px 126px 44px 40px);
             }
