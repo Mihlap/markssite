@@ -21,12 +21,12 @@ router.post('/left', async (req, res) => {
 });
 
 router.get('/left-get', async (req, res) => {
-    try {
-      const data = await PublicationOne.findAll();
-        res.json(data);
-    } catch (error) {
-        console.log(error);
-    }
+  try {
+    const data = await PublicationOne.findAll();
+    res.json(data);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 router.delete('/left-delete/:IdArticle', async (req, res) => {
@@ -40,7 +40,6 @@ router.delete('/left-delete/:IdArticle', async (req, res) => {
   }
 });
 
-// ручка замены публиации  👇
 router.put('/left-update', async (req, res) => {
   try {
     const publicationData = req.body;
