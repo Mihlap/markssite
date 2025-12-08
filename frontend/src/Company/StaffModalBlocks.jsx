@@ -25,30 +25,119 @@ const fromBlock = (block, { byLabel, index }) => {
 
 const firstValue = (block) => (Array.isArray(block) && block[0] ? block[0].value ?? null : null);
 
-const stripTags = (html) =>
-  String(html || '')
-    .replace(/<\s*br\s*\/?>/gi, '\n')
-    .replace(/<\/p>\s*<p>/gi, '\n')
-    .replace(/<\/div>\s*<div>/gi, '\n')
-    .replace(/<\/?(p|div)[^>]*>/gi, '')
-    .replace(/<[^>]+>/g, '')
-    .trim();
-
-const toLines = (raw) => {
-  let s = String(raw ?? '');
+const parseMixedContent = (html) => {
+  const s = String(html ?? '');
   if (!s.trim()) return [];
-  const liMatches = Array.from(s.matchAll(/<li[^>]*>(.*?)<\/li>/gis)).map((m) => stripTags(m[1]));
-  if (liMatches.length) return liMatches.filter(Boolean);
-  s = s
-    .replace(/<\s*br\s*\/?>/gi, '\n')
-    .replace(/<\/p>\s*<p>/gi, '\n')
-    .replace(/<\/div>\s*<div>/gi, '\n')
-    .replace(/<\/?(p|div)[^>]*>/gi, '')
-    .replace(/<[^>]+>/g, '');
-  return s
-    .split(/\r?\n/)
-    .map((x) => x.trim())
-    .filter(Boolean);
+
+  const parts = [];
+
+  try {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(`<div>${s}</div>`, 'text/html');
+    const container = doc.body.firstChild;
+
+    if (!container) {
+      throw new Error('Failed to parse HTML');
+    }
+
+    const walkNodes = (node) => {
+      if (!node) return;
+
+      const ELEMENT_NODE = 1;
+      const TEXT_NODE = 3;
+
+      for (let child = node.firstChild; child; child = child.nextSibling) {
+        if (child.nodeType === ELEMENT_NODE) {
+          const tagName = child.tagName.toLowerCase();
+
+          if (tagName === 'li') {
+            const clone = child.cloneNode(true);
+            const qlUiElements = clone.querySelectorAll('.ql-ui');
+            qlUiElements.forEach((el) => el.remove());
+
+            const content = clone.innerHTML.trim();
+            if (content) {
+              parts.push({ type: 'listItem', content });
+            }
+          } else if (tagName === 'p') {
+            const content = child.innerHTML.trim();
+            if (content) {
+              parts.push({ type: 'text', content });
+            }
+          } else if (tagName === 'ol' || tagName === 'ul') {
+            walkNodes(child);
+          } else {
+            walkNodes(child);
+          }
+        } else if (child.nodeType === TEXT_NODE) {
+          const text = child.textContent.trim();
+          if (text) {
+            parts.push({ type: 'text', content: text });
+          }
+        }
+      }
+    };
+
+    walkNodes(container);
+  } catch (error) {
+    const liMatches = Array.from(s.matchAll(/<li[^>]*>([\s\S]*?)<\/li>/gi));
+    const pMatches = Array.from(s.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/gi));
+
+    const allMatches = [];
+    liMatches.forEach((match) => {
+      const content = match[1]
+        .replace(/<span[^>]*class="ql-ui"[^>]*>[\s\S]*?<\/span>/gi, '')
+        .trim();
+      if (content) {
+        allMatches.push({ index: match.index, type: 'listItem', content, length: match[0].length });
+      }
+    });
+    pMatches.forEach((match) => {
+      const content = match[1].trim();
+      if (content) {
+        allMatches.push({ index: match.index, type: 'text', content, length: match[0].length });
+      }
+    });
+
+    allMatches.sort((a, b) => a.index - b.index);
+
+    let lastIndex = 0;
+    allMatches.forEach((match) => {
+      if (match.index > lastIndex) {
+        const textBefore = s.substring(lastIndex, match.index).trim();
+        if (textBefore && !textBefore.match(/^<[^>]+>$/)) {
+          parts.push({ type: 'text', content: textBefore });
+        }
+      }
+      parts.push({ type: match.type, content: match.content });
+      lastIndex = match.index + match.length;
+    });
+
+    if (lastIndex < s.length) {
+      const textAfter = s.substring(lastIndex).trim();
+      if (textAfter && !textAfter.match(/^<[^>]+>$/)) {
+        parts.push({ type: 'text', content: textAfter });
+      }
+    }
+
+    if (parts.length === 0) {
+      const cleanText = s
+        .replace(/<\s*br\s*\/?>/gi, '\n')
+        .replace(/<\/p>\s*<p>/gi, '\n')
+        .replace(/<\/div>\s*<div>/gi, '\n')
+        .replace(/<\/?(p|div|li|ul|ol)[^>]*>/gi, '')
+        .replace(/<[^>]+>/g, '')
+        .split(/\r?\n/)
+        .map((x) => x.trim())
+        .filter(Boolean);
+
+      cleanText.forEach((line) => {
+        if (line) parts.push({ type: 'text', content: line });
+      });
+    }
+  }
+
+  return parts;
 };
 
 const detectBlockType = (block) => {
@@ -261,18 +350,35 @@ const FactBlock = ({ styles, title = 'Интересный факт', text, imag
 };
 
 const TextWithDot = ({ styles, text, bucketUrl }) => {
-  const items = Array.isArray(text) ? text : toLines(text);
-  if (!items.length) return null;
+  let parts = [];
+  if (Array.isArray(text)) {
+    parts = text.map((item) => ({ type: 'listItem', content: String(item) }));
+  } else {
+    parts = parseMixedContent(text);
+  }
+
+  if (!parts.length) return null;
+
   return (
     <div className={styles.staff_bullet_block}>
-      {items.map((line, i) => (
-        <div className={styles.modal_about_stuff1} key={i}>
-          <div className={styles.modal_about_stuff_symbol}>•</div>
-          <div className={styles.modal_about_md}>
-            <MarkdownChunk styles={styles} markdown={line} bucketUrl={bucketUrl} />
-          </div>
-        </div>
-      ))}
+      {parts.map((part, i) => {
+        if (part.type === 'listItem') {
+          return (
+            <div className={styles.modal_about_stuff1} key={i}>
+              <div className={styles.modal_about_stuff_symbol}>•</div>
+              <div className={styles.modal_about_md}>
+                <MarkdownChunk styles={styles} markdown={part.content} bucketUrl={bucketUrl} />
+              </div>
+            </div>
+          );
+        } else {
+          return (
+            <div className={styles.staff_text_block} key={i}>
+              <MarkdownChunk styles={styles} markdown={part.content} bucketUrl={bucketUrl} />
+            </div>
+          );
+        }
+      })}
     </div>
   );
 };
@@ -494,11 +600,11 @@ function StaffModalBlocks({ selectedCard, bucketUrl = '', styles: stylesProp }) 
           case 'frameText': {
             const val = String(
               firstVal ??
-                fromBlock(block, { byLabel: 'Текстовый блок' }) ??
-                fromBlock(block, { byLabel: 'Текст' }) ??
-                fromBlock(block, { byLabel: 'Markdown' }) ??
-                fromBlock(block, { byLabel: 'md' }) ??
-                ''
+              fromBlock(block, { byLabel: 'Текстовый блок' }) ??
+              fromBlock(block, { byLabel: 'Текст' }) ??
+              fromBlock(block, { byLabel: 'Markdown' }) ??
+              fromBlock(block, { byLabel: 'md' }) ??
+              ''
             ).trim();
             if (!val) return null;
             return (
@@ -523,11 +629,11 @@ function StaffModalBlocks({ selectedCard, bucketUrl = '', styles: stylesProp }) 
           case 'stripeText': {
             const val = String(
               firstVal ??
-                fromBlock(block, { byLabel: 'Текстовый блок' }) ??
-                fromBlock(block, { byLabel: 'Текст' }) ??
-                fromBlock(block, { byLabel: 'Markdown' }) ??
-                fromBlock(block, { byLabel: 'md' }) ??
-                ''
+              fromBlock(block, { byLabel: 'Текстовый блок' }) ??
+              fromBlock(block, { byLabel: 'Текст' }) ??
+              fromBlock(block, { byLabel: 'Markdown' }) ??
+              fromBlock(block, { byLabel: 'md' }) ??
+              ''
             ).trim();
             if (!val) return null;
             return (
@@ -539,12 +645,12 @@ function StaffModalBlocks({ selectedCard, bucketUrl = '', styles: stylesProp }) 
           case 'bgText': {
             const val = String(
               firstVal ??
-                fromBlock(block, { byLabel: 'Текстовый блок с фоном' }) ??
-                fromBlock(block, { byLabel: 'Текстовый блок' }) ??
-                fromBlock(block, { byLabel: 'Текст' }) ??
-                fromBlock(block, { byLabel: 'Markdown' }) ??
-                fromBlock(block, { byLabel: 'md' }) ??
-                ''
+              fromBlock(block, { byLabel: 'Текстовый блок с фоном' }) ??
+              fromBlock(block, { byLabel: 'Текстовый блок' }) ??
+              fromBlock(block, { byLabel: 'Текст' }) ??
+              fromBlock(block, { byLabel: 'Markdown' }) ??
+              fromBlock(block, { byLabel: 'md' }) ??
+              ''
             ).trim();
             if (!val) return null;
             return (
@@ -556,11 +662,11 @@ function StaffModalBlocks({ selectedCard, bucketUrl = '', styles: stylesProp }) 
           case 'markdown': {
             const candidate = String(
               firstVal ??
-                fromBlock(block, { byLabel: 'Текстовый блок' }) ??
-                fromBlock(block, { byLabel: 'Текст' }) ??
-                fromBlock(block, { byLabel: 'Markdown' }) ??
-                fromBlock(block, { byLabel: 'md' }) ??
-                ''
+              fromBlock(block, { byLabel: 'Текстовый блок' }) ??
+              fromBlock(block, { byLabel: 'Текст' }) ??
+              fromBlock(block, { byLabel: 'Markdown' }) ??
+              fromBlock(block, { byLabel: 'md' }) ??
+              ''
             ).trim();
             if (!candidate) return null;
             return (
@@ -609,13 +715,13 @@ function StaffModalBlocks({ selectedCard, bucketUrl = '', styles: stylesProp }) 
           default: {
             const val = String(
               fromBlock(block, { byLabel: 'Текстовый блок' }) ??
-                fromBlock(block, { byLabel: 'Текст' }) ??
-                fromBlock(block, { byLabel: 'Markdown' }) ??
-                fromBlock(block, { byLabel: 'md' }) ??
-                quoteText ??
-                captionVal ??
-                firstVal ??
-                ''
+              fromBlock(block, { byLabel: 'Текст' }) ??
+              fromBlock(block, { byLabel: 'Markdown' }) ??
+              fromBlock(block, { byLabel: 'md' }) ??
+              quoteText ??
+              captionVal ??
+              firstVal ??
+              ''
             ).trim();
             if (!val) return null;
             return (
