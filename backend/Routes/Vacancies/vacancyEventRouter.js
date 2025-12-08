@@ -15,11 +15,11 @@ function getFileNameFromUrl(url) {
 
 const deleteImageIfUnused = async (imageUrl, currentEventId) => {
   try {
-     const otherEventsWithImage = await VacancyMainEvent.findOne({
+    const otherEventsWithImage = await VacancyMainEvent.findOne({
       where: { files: { [Op.contains]: [imageUrl] }, id: { [Op.ne]: currentEventId } },
     });
 
-     if (!otherEventsWithImage) {
+    if (!otherEventsWithImage) {
       const fileName = getFileNameFromUrl(imageUrl);
       await deleteFileFromS3(fileName, 'images/imageEvent');
     }
@@ -44,7 +44,7 @@ router.put('/update-event/:id', fileMiddleware.fields([{ name: 'files', maxCount
 
       const oldFiles = event.files || [];
 
-     if (removedFiles) {
+      if (removedFiles) {
         const removedFilesArray = JSON.parse(removedFiles);
         // eslint-disable-next-line no-restricted-syntax
         for (const fileUrl of removedFilesArray) {
@@ -54,14 +54,13 @@ router.put('/update-event/:id', fileMiddleware.fields([{ name: 'files', maxCount
         event.files = event.files.filter((file) => !removedFilesArray.includes(file));
       }
 
-      // Загрузка новых файлов в S3
       if (req.files && req.files['files']) {
         const newFilesPromises = req.files['files'].map((file) => uploadFileToS3(file, 'images/imageEvent'));
         const newFiles = await Promise.all(newFilesPromises);
         event.files = [...newFiles, ...oldFiles];
       }
 
-       await event.update({
+      await event.update({
         title,
         files: event.files,
         eventData,
@@ -107,22 +106,21 @@ router.post('/save-event-details',
     { name: 'files', maxCount: 500 },
     { name: 'videos', maxCount: 100 },
   ]), async (req, res) => {
-  let details;
-  try {
-    details = JSON.parse(req.body.details);
-  } catch (error) {
-    return res.status(400).json({ error: 'Некорректные данные: не удалось распарсить JSON' });
-  }
+    let details;
+    try {
+      details = JSON.parse(req.body.details);
+    } catch (error) {
+      return res.status(400).json({ error: 'Некорректные данные: не удалось распарсить JSON' });
+    }
 
-  if (!details || !details.eventData || !Array.isArray(details.eventData)) {
-    return res.status(400).json({ error: 'Некорректные данные: отсутствуют необходимые поля' });
-  }
+    if (!details || !details.eventData || !Array.isArray(details.eventData)) {
+      return res.status(400).json({ error: 'Некорректные данные: отсутствуют необходимые поля' });
+    }
 
-    const {eventData} = details;
+    const { eventData } = details;
     const files = [];
 
-     // Загрузка файлов в S3
-     if (req.files && req.files.files) {
+    if (req.files && req.files.files) {
       // eslint-disable-next-line no-restricted-syntax
       for (const file of req.files.files) {
         // eslint-disable-next-line no-await-in-loop
@@ -130,12 +128,12 @@ router.post('/save-event-details',
         files.push(fileUrl);
       }
     }
-  const {title} = req.body;
+    const { title } = req.body;
 
-  try {
+    try {
       await VacancyMainEvent.increment('order', { by: 1, where: {} });
 
-     const newEvent = await VacancyMainEvent.create({
+      const newEvent = await VacancyMainEvent.create({
         title,
         hidden: false,
         files,
@@ -143,12 +141,12 @@ router.post('/save-event-details',
         order: 0
       });
 
-    res.status(200).json({ message: 'Детали мероприятия сохранены успешно.', data: newEvent });
-  } catch (error) {
-    console.error('Ошибка при сохранении деталей мероприятий:', error);
-    res.status(500).json({ error: 'Ошибка при обработке вашего запроса', details: error.errors });
-  }
-});
+      res.status(200).json({ message: 'Детали мероприятия сохранены успешно.', data: newEvent });
+    } catch (error) {
+      console.error('Ошибка при сохранении деталей мероприятий:', error);
+      res.status(500).json({ error: 'Ошибка при обработке вашего запроса', details: error.errors });
+    }
+  });
 
 router.get('/get-events', async (req, res) => {
   try {
@@ -160,7 +158,7 @@ router.get('/get-events', async (req, res) => {
     res.json(data);
   } catch (error) {
     console.error('Произошла ошибка при получении данных.');
-    res.status(500).json({ error: "Ошибка сервера при получении данных"  });
+    res.status(500).json({ error: "Ошибка сервера при получении данных" });
   }
 });
 
@@ -199,8 +197,6 @@ router.put('/toggle-event/:id', async (req, res) => {
     res.status(500).json({ message: 'Ошибка сервера при обновлении статуса мероприятий' });
   }
 });
-
-// удаление из s3 хранилище
 
 router.delete('/delete-event/:id', async (req, res) => {
   const { id } = req.params;

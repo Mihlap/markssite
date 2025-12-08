@@ -56,7 +56,6 @@ export default function FormAddHistory({ initial = null, onClose, registerCloseG
     dynamicDataRef.current = dynamicData;
   }, [dynamicData]);
 
-  // Если редактирование — можно re-use, сейчас чистое создание
   useEffect(() => {
     if (initial) {
       setInputData((p) => ({
@@ -87,7 +86,6 @@ export default function FormAddHistory({ initial = null, onClose, registerCloseG
     }));
   }, []);
 
-  // ===== Валидация верхних полей =====
   const validateTopFields = useCallback(() => {
     const errors = {};
     const yearNum = Number(inputData.year);
@@ -106,7 +104,6 @@ export default function FormAddHistory({ initial = null, onClose, registerCloseG
     return Object.keys(errors).length === 0;
   }, [inputData]);
 
-  // ===== Валидация конструктора =====
   const validateForAdding = useCallback(() => {
     const { ok, errors } = validateDynamicBlocks(dynamicDataRef.current, dynamicPreviews, {
       requiredBlockIds: REQUIRED_BLOCK_IDS,
@@ -125,7 +122,6 @@ export default function FormAddHistory({ initial = null, onClose, registerCloseG
     return ok;
   }, [dynamicPreviews]);
 
-  // ===== Обработчики конструктора =====
   const handleDynamicInputChange = useCallback(
     async (blockIndex, inputIndex, value) => {
       await sharedHandleDynamicInputChange(
@@ -180,7 +176,6 @@ export default function FormAddHistory({ initial = null, onClose, registerCloseG
     [validateForAdding]
   );
 
-  // ===== SUBMIT (FormData + multipart) =====
   const submitHandler = useCallback(
     async (e) => {
       e?.preventDefault?.();
@@ -196,15 +191,13 @@ export default function FormAddHistory({ initial = null, onClose, registerCloseG
       }
 
       const form = new FormData();
-
-      // Подготовим meta для бэка, как в staff
+  
       const meta = {
         year: Number(inputData.year),
         title: String(inputData.title || '').trim(),
         description: String(inputData.description || '').trim(),
         img: inputData.img ? String(inputData.img).trim() : null,
-        hidden: !!inputData.hidden,
-        // далее — dynamicBlocks без File-объектов (только имена)
+        hidden: !!inputData.hidden,  
         dynamicBlocks: (dynamicDataRef.current || []).map((block) =>
           (block || []).map((inp) => {
             const copy = { ...inp };
@@ -218,7 +211,6 @@ export default function FormAddHistory({ initial = null, onClose, registerCloseG
 
       form.append('meta', JSON.stringify(meta));
 
-      // Собираем файлы из динамических блоков
       for (let b = 0; b < (dynamicDataRef.current || []).length; b++) {
         const block = dynamicDataRef.current[b] || [];
         for (let i = 0; i < block.length; i++) {
@@ -277,8 +269,7 @@ export default function FormAddHistory({ initial = null, onClose, registerCloseG
             fieldErrors={fieldErrors}
             customStyles={customStyles}
           />
-
-          {/* Конструктор — тот же, что у сотрудника */}
+   
           <ConstructorSection
             styles={styles}
             blocks={blocks}
