@@ -303,8 +303,9 @@
 }
 
 .card_item_1 {
-  height: 50vh;
-  width: 40vw;
+  height: 50vh;  
+  max-width: 40vw;
+  width: 100%;
   padding-left: 1.875vw;
   cursor: auto;
 }
@@ -314,7 +315,8 @@
   padding-left: 2vw;
   padding-right: 1.875vw;
   height: 60vh;
-  width: 60vw;
+  max-width: 60vw;
+  width: 100%;
   cursor: auto;
 }
 

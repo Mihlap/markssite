@@ -5,6 +5,7 @@ import historyStyles from './CompanyHistory.module.scss';
 import Edit from '../../icon/Edit.svg';
 import Look from '../../icon/eye.svg';
 import noLook from '../../icon/eye2.svg';
+import DragIcon from '../../icon/drag&drop.svg';
 
 function HistoryItem({
   el,
@@ -31,17 +32,18 @@ function HistoryItem({
       onDragOver={handleDragOver}
       onDrop={(e) => handleDrop(e, index)}
       className={`${historyStyles.item} ${historyStyles.draggable}`}>
-      <div className={historyStyles.year}>{el.year}</div>
-
       <div className={historyStyles.body}>
+        <div className={historyStyles.year}>{el.year}</div>
         <div className={historyStyles.content}>
-          <span className={historyStyles.title}>{el.title || 'MARKS GROUP'}</span>    
+          <span className={historyStyles.title}>{el.title || 'MARKS GROUP'}</span>
         </div>
 
         <div className={historyStyles.buttons}>
           {canEdit && (
-            <>          
-              <div className={historyStyles.lookBlock} onClick={() => handleLookClick(el.id)}>
+            <>
+              <div
+                className={`${historyStyles.lookBlock} ${el.hidden ? historyStyles.disabled : ''}`}
+                onClick={() => handleLookClick(el.id)}>
                 <button className={layoutStyles.buttom_look} type="button">
                   <label className={layoutStyles.label}>
                     <div className={layoutStyles.wrapper}>
@@ -50,7 +52,7 @@ function HistoryItem({
                   </label>
                 </button>
               </div>
-             
+
               <div className={historyStyles.editBlock} onClick={() => handleEditClick(el)}>
                 <button className={layoutStyles.buttom_edit} type="button">
                   <label className={layoutStyles.label}>
@@ -82,6 +84,10 @@ function HistoryItem({
               </button>
             </div>
           )}
+        </div>
+
+        <div className={historyStyles.dragHandle}>
+          <img src={DragIcon} alt="drag and drop" />
         </div>
       </div>
 

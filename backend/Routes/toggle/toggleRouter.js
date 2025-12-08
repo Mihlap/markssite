@@ -48,11 +48,11 @@ router.put('/staff-categories', async (req, res) => {
 
 router.put('/project', async (req, res) => {
   try {
-    const { isActiveForButton1 } = req.body; 
-    await SwitchingFilterProjects.destroy({ truncate: true }); 
-      await SwitchingFilterProjects.create({
-        state: isActiveForButton1,
-      });
+    const { isActiveForButton1 } = req.body;
+    await SwitchingFilterProjects.destroy({ truncate: true });
+    await SwitchingFilterProjects.create({
+      state: isActiveForButton1,
+    });
 
     res.json({ success: true, message: 'Status updated successfully' });
   } catch (error) {
@@ -73,13 +73,11 @@ router.get('/project', async (req, res) => {
   }
 });
 
-// << ============ SwitchingFilterArticle ============ >>
-
 router.put('/article', async (req, res) => {
   try {
     const { isActiveForButton2 } = req.body;
     await SwitchingFilterArticle.destroy({ truncate: true });
-  
+
     await SwitchingFilterArticle.create({
       state: isActiveForButton2,
     });
@@ -102,8 +100,6 @@ router.get('/article', async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 });
-
-// << ============ SwitchingFilterRegistration ============ >>
 
 router.put('/button3', async (req, res) => {
   try {
@@ -132,19 +128,17 @@ router.get('/button3', async (req, res) => {
       res.status(404).json({ success: false, message: 'No records found' });
     }
   } catch (error) {
-      console.error('Error while processing /button3:', error);
+    console.error('Error while processing /button3:', error);
     res.status(500).json({ success: false, message: error.message });
   }
 });
 
-// << ============ SwitchingFilterJournal ============ >>
-
 router.put('/journal', async (req, res) => {
   try {
     const { isActiveForButton4 } = req.body;
-  
+
     await SwitchingFilterJournal.destroy({ truncate: true });
- 
+
     await SwitchingFilterJournal.create({
       state: isActiveForButton4,
     });

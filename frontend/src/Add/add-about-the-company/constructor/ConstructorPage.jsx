@@ -35,9 +35,8 @@ export default function ConstructorPage({ handleClick, missingBlocks = [] }) {
 
       {/* Картинка + описание (ОБЯЗАТЕЛЬНЫЙ БЛОК) */}
       <div
-        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockOne} ${
-          missing.has('imageWithCaption') ? styles.required_missing : ''
-        }`}
+        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockOne} ${missing.has('imageWithCaption') ? styles.required_missing : ''
+          }`}
         onClick={() => {
           const inputs = [
             { type: 'file', label: 'Изображение', required: true },
@@ -51,9 +50,8 @@ export default function ConstructorPage({ handleClick, missingBlocks = [] }) {
 
       {/* Цитата (ОБЯЗАТЕЛЬНЫЙ БЛОК) */}
       <div
-        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockNine} ${
-          missing.has('quote') ? styles.required_missing : ''
-        }`}
+        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockNine} ${missing.has('quote') ? styles.required_missing : ''
+          }`}
         onClick={() => {
           const inputs = [
             { type: 'file', label: 'Автор цитаты', required: false, pairKey: 'quoteAuthor' },
@@ -107,9 +105,8 @@ export default function ConstructorPage({ handleClick, missingBlocks = [] }) {
 
       {/* Интересный факт (ОБЯЗАТЕЛЬНЫЙ БЛОК) */}
       <div
-        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockFour} ${
-          missing.has('fact') ? styles.required_missing : ''
-        }`}
+        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockFour} ${missing.has('fact') ? styles.required_missing : ''
+          }`}
         onClick={() => {
           const inputs = [
             { type: 'file', label: 'Изображение', required: false },
