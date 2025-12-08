@@ -16,7 +16,7 @@ const router = express.Router();
 
 const extractFileNameAndFolderFromUrl = (url) => {
 
- if (!url.includes('http')) {
+  if (!url.includes('http')) {
     return {
       fileName: url,
       folder: 'images/imageArticle',
@@ -68,7 +68,6 @@ const deleteImageFromS3 = async (fileUrl) => {
   }
 };
 
-// Функция для обновления dynamicBlocksContent с новыми изображениями
 const updateDynamicBlocksContent = (blocks, newImages) => {
   let imageIndex = 0;
   return blocks.map((blockGroup) =>
@@ -95,31 +94,30 @@ const updateDynamicBlocksContent = (blocks, newImages) => {
 router.post(
   '/postzapros',
   fileMiddleware.fields([{
-      name: 'dropPhoto',
-      maxCount: 4
-    },
-    {
-      name: 'photoAva',
-      maxCount: 1
-    },
-    {
-      name: 'imageOpen',
-      maxCount: 1
-    },
-    {
-      name: 'imageClose',
-      maxCount: 1
-    },
-    {
-      name: 'dynamicImages',
-      maxCount: 100
-    },
+    name: 'dropPhoto',
+    maxCount: 4
+  },
+  {
+    name: 'photoAva',
+    maxCount: 1
+  },
+  {
+    name: 'imageOpen',
+    maxCount: 1
+  },
+  {
+    name: 'imageClose',
+    maxCount: 1
+  },
+  {
+    name: 'dynamicImages',
+    maxCount: 100
+  },
   ]),
   async (req, res) => {
     try {
       let dynamicBlocksContent = null;
 
-      // Загрузка динамических изображений на S3 и получение URL
       const dynamicImageTitles = req.files.dynamicImages ?
         await Promise.all(
           req.files.dynamicImages.map(async (file) => {
@@ -193,25 +191,25 @@ router.post(
 router.put(
   '/editzapros/:articleId',
   fileMiddleware.fields([{
-      name: 'dropPhoto',
-      maxCount: 4
-    },
-    {
-      name: 'photoAva',
-      maxCount: 1
-    },
-    {
-      name: 'imageOpen',
-      maxCount: 1
-    },
-    {
-      name: 'imageClose',
-      maxCount: 1
-    },
-    {
-      name: 'dynamicImages',
-      maxCount: 100
-    },
+    name: 'dropPhoto',
+    maxCount: 4
+  },
+  {
+    name: 'photoAva',
+    maxCount: 1
+  },
+  {
+    name: 'imageOpen',
+    maxCount: 1
+  },
+  {
+    name: 'imageClose',
+    maxCount: 1
+  },
+  {
+    name: 'dynamicImages',
+    maxCount: 100
+  },
   ]),
   async (req, res) => {
     try {
@@ -229,19 +227,16 @@ router.put(
         });
       }
 
-      // Получение текущих изображений
       const currentImageTitles = articleToUpdate.imageTitle ? articleToUpdate.imageTitle.split(', ').map((item) => item.trim()) : [];
       const currentImageAuthors = articleToUpdate.imageAuthor ? [articleToUpdate.imageAuthor] : [];
       const currentImageOpens = articleToUpdate.imageOpen ? [articleToUpdate.imageOpen] : [];
       const currentImageCloses = articleToUpdate.imageClose ? [articleToUpdate.imageClose] : [];
 
-      // Загрузка новых изображений на S3
       const imageTitlesNew = req.files.dropPhoto ? await Promise.all(req.files.dropPhoto.map((file) => uploadFileToS3(file, 'images/imageArticle'))) : [];
       const imageAuthorNew = req.files.photoAva ? await uploadFileToS3(req.files.photoAva[0], 'images/imageArticle') : null;
       const imageOpenNew = req.files.imageOpen ? await uploadFileToS3(req.files.imageOpen[0], 'images/imageArticle') : null;
       const imageCloseNew = req.files.imageClose ? await uploadFileToS3(req.files.imageClose[0], 'images/imageArticle') : null;
 
-      // Изображения от клиента
       let imageTitlesFromClient;
       if (typeof req.body.imageTitle === 'string') {
         imageTitlesFromClient = req.body.imageTitle.split(',').map(item => item.trim());
@@ -254,13 +249,11 @@ router.put(
       const imageOpenFromClient = req.body.imageOpen ? [req.body.imageOpen] : [];
       const imageCloseFromClient = req.body.imageClose ? [req.body.imageClose] : [];
 
-      // Объединение старых и новых изображений
       const updatedImageTitles = [...imageTitlesFromClient, ...imageTitlesNew];
       const updatedImageAuthors = imageAuthorNew ? [imageAuthorNew] : imageAuthorFromClient;
       const updatedImageOpens = imageOpenNew ? [imageOpenNew] : imageOpenFromClient;
       const updatedImageCloses = imageCloseNew ? [imageCloseNew] : imageCloseFromClient;
 
-      // Нормализация URL для корректного сравнения (на основе имени файла)
       const extractFileName = (url) => url.split('/').pop().split('?')[0];
 
       const normalizedCurrentImages = [...currentImageTitles, ...currentImageAuthors, ...currentImageOpens, ...currentImageCloses]
@@ -271,13 +264,10 @@ router.put(
         .filter(Boolean)
         .map(extractFileName);
 
-      // Поиск изображений для удаления (те, которые больше не используются)
       const imagesToRemove = normalizedCurrentImages.filter((image) => !normalizedUpdatedImages.includes(image));
 
-      // Удаление старых изображений из S3
       await Promise.all(imagesToRemove.map(deleteImageFromS3));
 
-      // Обновление существующей статьи
       await articleToUpdate.update({
         title: req.body.title,
         author: req.body.author,
@@ -293,7 +283,6 @@ router.put(
         imageClose: updatedImageCloses[0] || null,
       });
 
-      // Поиск или создание данных конструктора
       const existingConstructor = await ConstructorArticles.findOne({
         where: {
           idBlock: articleId
@@ -304,7 +293,6 @@ router.put(
         JSON.parse(req.body.dynamicBlocksJSON) :
         [];
 
-      // Загрузка новых динамических изображений на S3
       const dynamicImagesNew = req.files.dynamicImages ?
         await Promise.all(
           req.files.dynamicImages.map(async (file) => {
@@ -314,37 +302,30 @@ router.put(
             return fileUrl;
           })) : [];
 
-      // Сохраняем текущие динамические изображения, если они уже существуют
       const existingDynamicImages = existingConstructor && existingConstructor.image ?
         existingConstructor.image.split(', ').map((img) => img.trim()) : [];
 
-      // Объединяем старые и новые динамические изображения
       const allDynamicImages = [...existingDynamicImages, ...dynamicImagesNew];
 
-      // Обновляем контент динамических блоков
       const updatedDynamicBlocksContent = updateDynamicBlocksContent(
         dynamicBlocksContent,
         allDynamicImages
       );
 
-      // Извлекаем изображения из динамических блоков
       const extractImages = (blocks) =>
         blocks
-        .flatMap((blockGroup) => blockGroup)
-        .filter((block) => block.type === 'file' && Array.isArray(block.value))
-        .flatMap((block) => block.value)
-        .filter(Boolean);
+          .flatMap((blockGroup) => blockGroup)
+          .filter((block) => block.type === 'file' && Array.isArray(block.value))
+          .flatMap((block) => block.value)
+          .filter(Boolean);
 
       const newDynamicImages = extractImages(dynamicBlocksContent).map((img) => img.trim());
 
-      // Нормализованные массивы динамических изображений
       const normalizedExistingDynamicImages = existingDynamicImages.map(extractFileName);
       const normalizedNewDynamicImages = newDynamicImages.map(extractFileName);
 
-      // Удаление старых динамических изображений
       const imagesToRemoveFromDynamicBlocks = normalizedExistingDynamicImages.filter((image) => !normalizedNewDynamicImages.includes(image));
 
-      // Удаление старых динамических изображений из S3
       await Promise.all(imagesToRemoveFromDynamicBlocks.map(deleteImageFromS3));
 
       if (existingConstructor) {
@@ -374,14 +355,40 @@ router.put(
 
 router.get('/getzapros', async (req, res) => {
   try {
-    const data = await Articles.findAll({
-      include: [ConstructorArticles],
-      order: [
-        ['id', 'DESC']
-      ]
-    });
+    const page = parseInt(req.query.page, 10);
+    const limit = parseInt(req.query.limit, 10);
 
-    res.json(data);
+    if (page && limit && page > 0 && limit > 0) {
+      const offset = (page - 1) * limit;
+
+      const { count, rows } = await Articles.findAndCountAll({
+        include: [ConstructorArticles],
+        order: [
+          ['id', 'DESC']
+        ],
+        limit,
+        offset,
+      });
+
+      res.json({
+        data: rows,
+        pagination: {
+          total: count,
+          page,
+          limit,
+          totalPages: Math.ceil(count / limit),
+        },
+      });
+    } else {
+      const data = await Articles.findAll({
+        include: [ConstructorArticles],
+        order: [
+          ['id', 'DESC']
+        ]
+      });
+
+      res.json(data);
+    }
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
@@ -394,7 +401,6 @@ router.get('/getdynamicdata/:articleId', async (req, res) => {
       articleId
     } = req.params;
 
-    // Найти данные конструктора по id проекта
     const constructorData = await ConstructorArticles.findOne({
       where: {
         idBlock: articleId
@@ -455,34 +461,28 @@ router.delete('/deletezapros/:id', async (req, res) => {
       }
     };
 
-    // Удаление изображений из Constructor
     if (deleteConstructorImg?.image) {
       const imageConstructorNames = deleteConstructorImg.image.split(', ').map((img) => img.trim());
       await extractAndDeleteImages(imageConstructorNames);
     }
 
-    // Удаление фотографий из imageTitle
     if (post.imageTitle) {
       const imageTitleNames = post.imageTitle.split(', ').map((img) => img.trim());
       await extractAndDeleteImages(imageTitleNames);
     }
 
-    // Удаление фотографий из imageProject
     if (post.imageAuthor) {
       await extractAndDeleteImages([post.imageAuthor]);
     }
 
-    // Удаление фотографии из imageOpen
     if (post.imageOpen) {
       await extractAndDeleteImages([post.imageOpen]);
     }
 
-    // Удаление фотографии из imageClose
     if (post.imageClose) {
       await extractAndDeleteImages([post.imageClose]);
     }
 
-    // Удаление связанных элементов из других таблиц
     await ConstructorArticles.destroy({
       where: {
         idBlock: id
