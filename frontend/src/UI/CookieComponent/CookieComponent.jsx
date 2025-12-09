@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CookieConsent from 'react-cookie-consent';
+import {IS_DEV} from '../../const/is-dev';
 
 const CookieComponent = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 767);
@@ -12,6 +13,10 @@ const CookieComponent = () => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  if (IS_DEV) {
+    return null
+  }
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'auto min-content' }}>
