@@ -1,4 +1,4 @@
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useRef } from 'react';
 import styles from '../../style/style-card.module.scss';
 
 import FormAddHistory from './FormAddEditHistory/FormAddHistory';
@@ -11,10 +11,20 @@ function HistoryModalManager({
   setEditHistoryData,
   modalBlockHeight,
 }) {
+  const closeGuardRef = useRef(null);
+
   const handleClose = useCallback(() => {
     setIsModalOpenHistory(false);
     if (setEditHistoryData) setEditHistoryData(null);
   }, [setIsModalOpenHistory, setEditHistoryData]);
+
+  const handleCloseClick = useCallback(() => {
+    if (closeGuardRef.current) {
+      closeGuardRef.current();
+    } else {
+      handleClose();
+    }
+  }, [handleClose]);
 
   if (!isModalOpenHistory) return null;
 
@@ -22,12 +32,19 @@ function HistoryModalManager({
     <div className={styles.card_components_admin__modal_container}>
       <div style={{ maxHeight: modalBlockHeight }} className={styles.card_components_admin__modal_block}>
         {editHistoryData ? (
-          <FormEditHistory initial={editHistoryData} onClose={handleClose} />
+          <FormEditHistory
+            initial={editHistoryData}
+            onClose={handleClose}
+            registerCloseGuard={(fn) => (closeGuardRef.current = fn)}
+          />
         ) : (
-          <FormAddHistory onClose={handleClose} />
+          <FormAddHistory
+            onClose={handleClose}
+            registerCloseGuard={(fn) => (closeGuardRef.current = fn)}
+          />
         )}
 
-        <button className={styles.card_components_admin__close_button} onClick={handleClose} />
+        <button className={styles.card_components_admin__close_button} onClick={handleCloseClick} />
       </div>
     </div>
   );

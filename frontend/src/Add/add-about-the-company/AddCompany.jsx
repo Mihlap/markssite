@@ -34,13 +34,15 @@ const CAT_KEYS = {
   HR: 'hr',
 };
 
-function Toggle({ on, onClick, style }) {
+const Toggle = React.memo(({ on, onClick, style }) => {
+  const handleClick = React.useCallback((e) => {
+    e.stopPropagation();
+    onClick?.();
+  }, [onClick]);
+
   return (
     <div
-      onClick={(e) => {
-        e.stopPropagation();
-        onClick?.();
-      }}
+      onClick={handleClick}
       style={{
         width: 44,
         height: 24,
@@ -66,7 +68,7 @@ function Toggle({ on, onClick, style }) {
       />
     </div>
   );
-}
+});
 
 export default function AddCompany({ user }) {
   const dispatch = useDispatch();
@@ -97,6 +99,9 @@ export default function AddCompany({ user }) {
   const canDelete = uname === 'obezyankaa' || uname === 'Pokemon';
   const canEdit = uname === 'obezyankaa' || uname === 'manager' || uname === 'Pokemon';
   const canToggle = uname === 'obezyankaa' || uname === 'Pokemon' || uname === 'manager';
+  const canDragStaff = uname !== 'hr778';
+  const canToggleCategory = uname !== 'hr778';
+  const canAddStaff = uname !== 'hr778';
 
   useEffect(() => {
     dispatch(fetchStaffAsync());
@@ -142,18 +147,15 @@ export default function AddCompany({ user }) {
 
   const currentCategory = CATEGORY_OPTIONS[activeIdx];
 
-  const trim = (s) => String(s || '').replace(/\/+$/, '');
-  const ltrim = (s) => String(s || '').replace(/^\/+/, '');
-
-  const photoSrc = (row) => {
+  const photoSrc = useCallback((row) => {
     const key = row?.img;
     if (!key) return defaultPhoto;
     const val = String(key);
     if (/^https?:\/\//i.test(val)) return val;
-    const base = trim(bucket_url);
-    if (val.includes('/')) return `${base}/${ltrim(val)}`;
+    const base = String(bucket_url || '').replace(/\/+$/, '');
+    if (val.includes('/')) return `${base}/${String(val).replace(/^\/+/, '')}`;
     return `${base}/images/imageStaff/${val}`;
-  };
+  }, []);
 
   const filtered = useMemo(() => {
     const list = Array.isArray(items) ? items : [];
@@ -234,7 +236,7 @@ export default function AddCompany({ user }) {
     [dispatch, currentCategory]
   );
 
-  const moveId = (ids, fromId, toId) => {
+  const moveId = useCallback((ids, fromId, toId) => {
     if (fromId === toId) return ids;
     const next = ids.slice();
     const from = next.indexOf(fromId);
@@ -243,15 +245,15 @@ export default function AddCompany({ user }) {
     const [m] = next.splice(from, 1);
     next.splice(to, 0, m);
     return next;
-  };
+  }, []);
 
-  const handleDragStart = (e, id) => {
+  const handleDragStart = useCallback((e, id) => {
     setDragId(id);
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('text/plain', id);
-  };
+  }, []);
 
-  const handleDragEnter = (e, overId) => {
+  const handleDragEnter = useCallback((e, overId) => {
     e.preventDefault();
     if (!dragId || dragId === overId) return;
     setOrderIds((prev) => {
@@ -259,13 +261,13 @@ export default function AddCompany({ user }) {
       if (next !== prev) setDirty(true);
       return next;
     });
-  };
+  }, [dragId, moveId]);
 
-  const handleDragOver = (e) => {
+  const handleDragOver = useCallback((e) => {
     e.preventDefault();
-  };
+  }, []);
 
-  const handleDragEnd = () => {
+  const handleDragEnd = useCallback(() => {
     if (!dirty) {
       setDragId(null);
       return;
@@ -275,13 +277,14 @@ export default function AddCompany({ user }) {
     dispatch(reorderStaffAsync(payload));
     setDragId(null);
     setDirty(false);
-  };
+  }, [dirty, ordered, orderIds, dispatch]);
 
-  const toggleCategory = (cat) => {
+  const toggleCategory = useCallback((cat) => {
+    if (!canToggleCategory) return;
     const key = CAT_KEYS[cat];
     const nextVal = !staffCats[key];
     dispatch(updateStaffCategoryToggleAsync({ key, value: nextVal }));
-  };
+  }, [staffCats, dispatch, canToggleCategory]);
 
   const byId = useMemo(() => {
     const m = new Map();
@@ -298,7 +301,7 @@ export default function AddCompany({ user }) {
   return (
     <section className={styles.card_components_admin}>
       <div className={styles.card_components_admin__block}>
-      <AddCompanyHistory user={user} />
+        <AddCompanyHistory user={user} />
         <div className={styles.card_components_admin__block_title_btn}>
           <div className={styles.card_components_admin__title}>Сотрудники</div>
         </div>
@@ -310,18 +313,17 @@ export default function AddCompany({ user }) {
               const isEnabled = !!staffCats?.[key];
               const isActive = isEnabled && activeIdx === i;
 
-              const btnClass = `${styles.card_components_admin__buttonFilter__group} ${
-                isActive ? styles.activeButtonVacancy : ''
-              } ${i === 0 ? styles.noAnimation : ''}`;
+              const btnClass = `${styles.card_components_admin__buttonFilter__group} ${isActive ? styles.activeButtonVacancy : ''
+                } ${i === 0 ? styles.noAnimation : ''}`;
 
               const btnStyle = isEnabled
                 ? { paddingRight: 16, cursor: 'pointer' }
                 : {
-                    paddingRight: 16,
-                    background: 'var(--light-light-gray-EBECEE)',
-                    color: 'var(--gray-959DA6)',
-                    transition: 'none',
-                  };
+                  paddingRight: 16,
+                  background: 'var(--light-light-gray-EBECEE)',
+                  color: 'var(--gray-959DA6)',
+                  transition: 'none',
+                };
 
               return (
                 <button
@@ -347,15 +349,18 @@ export default function AddCompany({ user }) {
                     }
                   }}>
                   <span className={styles.buttonText}>{cat}</span>
-                  <Toggle on={isEnabled} onClick={() => toggleCategory(cat)} style={{ marginLeft: 'auto' }} />
+                  {canToggleCategory && (
+                    <Toggle on={isEnabled} onClick={() => toggleCategory(cat)} style={{ marginLeft: 'auto' }} />
+                  )}
                 </button>
               );
             })}
           </div>
         </div>
 
-        <div className={styles.card_components_admin__button_block} onClick={openAddModal}>
-          <button className={styles.card_components_admin__button}>
+        {canAddStaff && (
+          <div className={styles.card_components_admin__button_block} onClick={openAddModal}>
+            <button className={styles.card_components_admin__button}>
             <div>
               <svg
                 className={styles.card_components_admin__icon}
@@ -378,6 +383,7 @@ export default function AddCompany({ user }) {
             <div className={styles.card_components_admin__button_text}>Добавить сотрудника</div>
           </button>
         </div>
+        )}
 
         {isModalOpen && (
           <div className={styles.card_components_admin__modal_container}>
@@ -440,10 +446,10 @@ export default function AddCompany({ user }) {
                 <React.Fragment key={el.id}>
                   <div
                     className={styles.cart_project_container}
-                    draggable
-                    onDragStart={(e) => handleDragStart(e, el.id)}
-                    onDragEnter={(e) => handleDragEnter(e, el.id)}
-                    onDragEnd={handleDragEnd}
+                    draggable={canDragStaff}
+                    onDragStart={canDragStaff ? (e) => handleDragStart(e, el.id) : undefined}
+                    onDragEnter={canDragStaff ? (e) => handleDragEnter(e, el.id) : undefined}
+                    onDragEnd={canDragStaff ? handleDragEnd : undefined}
                     onMouseEnter={() => setHoverId(el.id)}
                     onMouseLeave={() => setHoverId((p) => (p === el.id ? null : p))}
                     style={{
@@ -451,9 +457,9 @@ export default function AddCompany({ user }) {
                       width: '100%',
                       opacity: isDragging ? 0.6 : 1,
                       transition: 'opacity 120ms ease',
-                      ...(hoverId === el.id && !dragId ? { cursor: `url(${cursorPng}) 12 12, pointer` } : {}),
+                      ...(hoverId === el.id && !dragId && canDragStaff ? { cursor: `url(${cursorPng}) 12 12, pointer` } : {}),
                     }}>
-                    {hoverId === el.id && !dragId && (
+                    {hoverId === el.id && !dragId && canDragStaff && (
                       <img
                         src={dragDrop}
                         alt=""

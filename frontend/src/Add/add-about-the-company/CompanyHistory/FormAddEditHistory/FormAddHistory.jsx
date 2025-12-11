@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 
 import styles from '../../../add-project/FormAddEditProject/FormAddProject.module.scss';
 import adminStyles from '../../../style/style-card.module.scss';
-import customStyles from '../../../add-project/FormAddEditProject/utils/customStyles';
 
 import SubmitButtons from '../../../../UI/SubmitButtons/SubmitButtons';
 import ExitConfirmModal from '../../../../UI/ExitConfirmModal/ExitConfirmModal';
@@ -16,11 +15,9 @@ import {
 } from '../../../../store/Slice/companyHistorySlice';
 
 import ConstructorSection from '../../FormAddEditStaff/ConstructorSection';
-import ConstructorPage from '../../constructor/ConstructorPage';
+import ConstructorPageBase from '../../constructor/ConstructorPage';
 import HistoryHeaderBlock from './HistoryHeaderBlock';
-
 import useInterceptExternalClose from '../../../hooks/useInterceptExternalClose';
-
 import {
   sharedHandleDynamicInputChange,
   sharedHandleDeletePreview,
@@ -28,7 +25,9 @@ import {
 } from '../../utils/formShared';
 import { validateDynamicBlocks } from '../../utils/dynamicValidation';
 
-const REQUIRED_BLOCK_IDS = ['imageWithCaption', 'quote', 'fact'];
+const ConstructorPage = (props) => <ConstructorPageBase {...props} isHistoryForm={true} />;
+
+const REQUIRED_BLOCK_IDS = ['imageWithCaption', 'quote', 'fact', 'personOfYear', 'personWithName'];
 
 export default function FormAddHistory({ initial = null, onClose, registerCloseGuard }) {
   const dispatch = useDispatch();
@@ -37,6 +36,9 @@ export default function FormAddHistory({ initial = null, onClose, registerCloseG
     year: '',
     title: '',
     description: '',
+    previewText: '',
+    previewImageUrl: '',
+    previewImageFile: null,
     img: '',
     hidden: false,
   });
@@ -63,6 +65,9 @@ export default function FormAddHistory({ initial = null, onClose, registerCloseG
         year: initial.year ?? '',
         title: initial.title ?? '',
         description: initial.description ?? '',
+        previewText: initial.previewText ?? '',
+        previewImageUrl: initial.previewImageUrl ?? initial.img ?? '',
+        previewImageFile: null,
         img: initial.img ?? '',
         hidden: !!initial.hidden,
       }));
@@ -89,15 +94,22 @@ export default function FormAddHistory({ initial = null, onClose, registerCloseG
   const validateTopFields = useCallback(() => {
     const errors = {};
     const yearNum = Number(inputData.year);
+    const previewPlainText = (inputData.previewText || '')
+      .replace(/<[^>]+>/g, '')
+      .replace(/&nbsp;/g, ' ')
+      .trim();
 
     if (!inputData.year || Number.isNaN(yearNum)) {
-      errors.year = 'Укажите год (число)';
+      errors.year = 'Обязательно для заполнения';
     }
     if (!inputData.title || !String(inputData.title).trim()) {
-      errors.title = 'Заполните заголовок';
+      errors.title = 'Обязательно для заполнения';
     }
-    if (!inputData.description || !String(inputData.description).trim()) {
-      errors.description = 'Заполните описание';
+    if (!inputData.previewImageUrl && !inputData.previewImageFile) {
+      errors.img = 'Обязательно для загрузки';
+    }
+    if (!previewPlainText || previewPlainText.length === 0) {
+      errors.previewText = 'Обязательно для заполнения';
     }
 
     setFieldErrors((prev) => ({ ...prev, ...errors }));
@@ -191,13 +203,14 @@ export default function FormAddHistory({ initial = null, onClose, registerCloseG
       }
 
       const form = new FormData();
-  
+
       const meta = {
         year: Number(inputData.year),
         title: String(inputData.title || '').trim(),
         description: String(inputData.description || '').trim(),
-        img: inputData.img ? String(inputData.img).trim() : null,
-        hidden: !!inputData.hidden,  
+        previewText: String(inputData.previewText || '').trim(),
+        img: inputData.previewImageUrl ? String(inputData.previewImageUrl).trim() : null,
+        hidden: !!inputData.hidden,
         dynamicBlocks: (dynamicDataRef.current || []).map((block) =>
           (block || []).map((inp) => {
             const copy = { ...inp };
@@ -210,6 +223,9 @@ export default function FormAddHistory({ initial = null, onClose, registerCloseG
       };
 
       form.append('meta', JSON.stringify(meta));
+      if (inputData.previewImageFile instanceof File) {
+        form.append('photoAva', inputData.previewImageFile, inputData.previewImageFile.name);
+      }
 
       for (let b = 0; b < (dynamicDataRef.current || []).length; b++) {
         const block = dynamicDataRef.current[b] || [];
@@ -266,10 +282,9 @@ export default function FormAddHistory({ initial = null, onClose, registerCloseG
             styles={styles}
             inputData={inputData}
             setInputData={setInputData}
-            fieldErrors={fieldErrors}
-            customStyles={customStyles}
+            forceValidate={forceValidateTick}
           />
-   
+
           <ConstructorSection
             styles={styles}
             blocks={blocks}
