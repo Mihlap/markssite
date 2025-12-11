@@ -17,6 +17,18 @@ export default function Login() {
   const [showLoader, setShowLoader] = useState(false);
   const [errorDiv, setErrorDiv] = useState(false);
   const status = useSelector((state) => state.auth.status);
+  const error = useSelector((state) => state.auth.error);
+  const user = useSelector((state) => state.auth.user);
+
+  useEffect(() => {
+    setErrorDiv(false);
+  }, []);
+ 
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
   const changeHandler = (event) => {
     const { name, value } = event.target;
     setInputGroup((prev) => ({
@@ -36,22 +48,19 @@ export default function Login() {
 
   const submitHandler = (event) => {
     event.preventDefault();
-
-    // Показать лоудер
+  
     setShowLoader(true);
-
-    // Задержка перед входом
+  
     setTimeout(async () => {
       try {
         await dispatch(loginUser(inputGroup)).unwrap();
         localStorage.removeItem('activeClass');
-        navigate('/');
-        // window.location.reload();
+        navigate('/');   
       } catch (error) {
         setErrorDiv(true);
-        setShowLoader(false); // Скрыть лоудер, если произошла ошибка
+        setShowLoader(false);
       }
-    }, 2500); // Задержка в 2 секунды
+    }, 2500);
   };
 
   useEffect(() => {
