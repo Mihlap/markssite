@@ -8,8 +8,7 @@ const { Legend, ConstructorLegend, User } = require('../db/models');
 const fileMiddleware = require('../middleware/file');
 const { uploadFileToS3, deleteFileFromS3 } = require('../s3Utils/s3Service');
 
-const LEGEND_BASE_DIR = 'images/imageHistory';
-const LEGEND_FILES_DIR = 'images/imageHistory/imagesFolder';
+const LEGEND_FILES_DIR = 'images/imageHistory';
 const LEGEND_MD_IMAGES_DIR = 'images/imageHistory/imagesFolder/imageMarkdown';
 const LEGEND_MD_DOCS_DIR = 'images/imageHistory/imagesFolder/documents';
 
@@ -386,13 +385,15 @@ router.delete('/:id', async (req, res, next) => {
       await t.rollback();
       return res.status(404).json({ message: 'Legend not found' });
     }
- 
+
     const constructorRows = await ConstructorLegend.findAll({
       where: { legendId: id },
       transaction: t,
     });
- 
+
     const files = [];
+    if (legend.img) files.push(legend.img);
+
     for (const c of constructorRows || []) {
       if (c.image) files.push(c.image);
       const inputs = flattenInputs(c.data);
@@ -404,14 +405,14 @@ router.delete('/:id', async (req, res, next) => {
     }
 
     const mdLinks = collectMarkdownLinksFromConstructor(constructorRows);
-  
+
     await ConstructorLegend.destroy({ where: { legendId: id }, transaction: t });
     const deleted = await Legend.destroy({ where: { id }, transaction: t });
 
     await t.commit();
 
     if (!deleted) return res.status(404).json({ message: 'Legend not found' });
-   
+
     const uniqueFiles = [
       ...new Set(files.map((x) => (typeof x === 'string' ? x.trim() : x)).filter(Boolean)),
     ];
@@ -424,7 +425,7 @@ router.delete('/:id', async (req, res, next) => {
         if (!parsed) return;
         try {
           await deleteFileFromS3(parsed.fileName, parsed.folder);
-        } catch {        
+        } catch {
         }
       })
     );
@@ -483,8 +484,7 @@ router.post('/mp', fileMiddleware.any(), async (req, res) => {
     const meta = req.body?.meta ? JSON.parse(req.body.meta) : {};
     const year = Number(meta.year);
     const title = String(meta.title || '').trim();
-    const description = String(meta.description || '').trim();
-    const img = meta.img || null;
+    const description = String(meta.previewText || meta.description || '').trim();
     const hidden = !!meta.hidden;
 
     let minOrder = await Legend.min('order', { transaction: t });
@@ -493,11 +493,17 @@ router.post('/mp', fileMiddleware.any(), async (req, res) => {
     }
     const nextOrder = minOrder - 1;
 
+    const photoAvaFile = (req.files || []).find((f) => f.fieldname === 'photoAva');
+    let imgKey = meta.img || null;
+    if (photoAvaFile) {
+      imgKey = await uploadFileToS3(photoAvaFile, LEGEND_FILES_DIR);
+    }
+
     const legend = await Legend.create(
       {
         year,
         title,
-        img,
+        img: imgKey,
         description,
         hidden,
         order: nextOrder,
@@ -505,7 +511,7 @@ router.post('/mp', fileMiddleware.any(), async (req, res) => {
       },
       { transaction: t }
     );
-  
+
     const filesMap = {};
     const batchId =
       req.batchId ||
@@ -587,6 +593,7 @@ router.put('/mp/:id', fileMiddleware.any(), async (req, res) => {
     const meta = req.body?.meta ? JSON.parse(req.body.meta) : {};
 
     const oldMdLinks = collectMarkdownLinksFromConstructor(legend.ConstructorLegends);
+    const oldAvatar = legend.img || null;
     const oldDynamicFiles = (legend.ConstructorLegends || []).flatMap((c) => {
       const inputs = flattenInputs(c.data);
       const fileInputs = inputs
@@ -598,6 +605,12 @@ router.put('/mp/:id', fileMiddleware.any(), async (req, res) => {
         ...fileInputs,
       ];
     });
+
+    const newPhotoAva = (req.files || []).find((f) => f.fieldname === 'photoAva');
+    let newAvatarKey = meta.img !== undefined ? meta.img : oldAvatar;
+    if (newPhotoAva) {
+      newAvatarKey = await uploadFileToS3(newPhotoAva, LEGEND_FILES_DIR);
+    }
 
     const filesMap = {};
     const batchId =
@@ -637,8 +650,8 @@ router.put('/mp/:id', fileMiddleware.any(), async (req, res) => {
       {
         year: meta.year ?? legend.year,
         title: meta.title ?? legend.title,
-        description: meta.description ?? legend.description,
-        img: meta.img !== undefined ? meta.img : legend.img,
+        description: meta.previewText !== undefined ? String(meta.previewText || '').trim() : (meta.description !== undefined ? String(meta.description || '').trim() : legend.description),
+        img: newAvatarKey,
         hidden: meta.hidden !== undefined ? !!meta.hidden : legend.hidden,
         userId: meta.userId ?? legend.userId,
       },
@@ -664,7 +677,7 @@ router.put('/mp/:id', fileMiddleware.any(), async (req, res) => {
     const removedMd = oldMdLinks.filter((u) => !newMdLinks.includes(u));
 
     await t.commit();
-   
+
     const oldAll = [...new Set(oldDynamicFiles || [])].filter(Boolean);
     const newAll = [...new Set(actualDynamicFiles || [])].filter(Boolean);
 
@@ -673,7 +686,11 @@ router.put('/mp/:id', fileMiddleware.any(), async (req, res) => {
       .filter(Boolean)
       .filter((v) => !newAll.includes(v));
 
-    await Promise.all(toDelete.map(deleteImageFromS3Safe)); 
+    await Promise.all(toDelete.map(deleteImageFromS3Safe));
+
+    if (oldAvatar && oldAvatar !== newAvatarKey) {
+      await deleteImageFromS3Safe(oldAvatar);
+    }
     await Promise.all(
       removedMd.map(async (url) => {
         const parsed = extractMdFileNameAndFolder(url);

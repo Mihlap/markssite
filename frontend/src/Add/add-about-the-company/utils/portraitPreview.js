@@ -17,5 +17,5 @@ export const PORTRAIT_IMG_STYLE = {
 
 export const isPortraitLabel = (label) => {
   const s = String(label || '').toLowerCase();
-  return s === 'портрет сотрудника' || s === 'автор цитаты';
+  return s === 'портрет сотрудника' || s === 'автор цитаты' || s === 'человек года';
 };

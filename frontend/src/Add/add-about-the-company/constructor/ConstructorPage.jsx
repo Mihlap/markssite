@@ -1,3 +1,4 @@
+import { memo, useMemo } from 'react';
 import styles from './ConstructorPage.module.scss';
 
 import quoteRight from '../../add-articles/constructor/svg/icomoon-free_quotes-right.svg';
@@ -7,14 +8,33 @@ import svg2 from './svg/card_additional_block1.svg';
 import svg3 from './svg/card_additional_block6.svg';
 import svg6 from './svg/card_additional_block5.svg';
 import svg7 from './svg/card_additional_block4.svg';
+import svg11 from './svg/card additional block_new.svg';
+import svg12 from './svg/card additional block_item.svg';
 import svg9 from '../../add-articles/constructor/svg/Group46412.svg';
 import svg10 from '../../add-articles/constructor/svg/Group4348.svg';
 
-export default function ConstructorPage({ handleClick, missingBlocks = [] }) {
-  const missing = new Set(missingBlocks);
+function ConstructorPage({ handleClick, missingBlocks = [], isHistoryForm = false }) {
+  const missing = useMemo(() => new Set(missingBlocks), [missingBlocks]);
 
   return (
     <div className={styles.div_conteiner}>
+      
+      {/* Товарищ года (ОБЯЗАТЕЛЬНЫЙ БЛОК) - только для истории */}
+      {isHistoryForm && (
+        <div
+          className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockOne} ${styles.div_conteiner__blockOnePersonOfYear} ${missing.has('personOfYear') ? styles.required_missing : ''
+            }`}
+          onClick={() => {
+            const inputs = [
+              { type: 'file', label: 'Человек года', required: true },
+            ];
+            const meta = { blockId: 'personOfYear', requiredBlock: true };
+            handleClick(inputs, meta);
+          }}>
+          <img src={svg12} alt="person_of_year" />
+        </div>
+      )}
+
       {/* Текст в рамочке */}
       <div
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockEight}`}
@@ -146,23 +166,49 @@ export default function ConstructorPage({ handleClick, missingBlocks = [] }) {
         <img src={svg3} alt="svg_3" />
       </div>
 
-      {/* Текст с точкой */}
-      <div
-        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}
-        onClick={() => {
-          const inputs = [
-            {
-              type: 'textarea',
-              label: 'Текстовый блок с точкой',
-              placeholder: 'Нет ограничения по символам',
-              required: true,
-            },
-          ];
-          const meta = { blockId: 'dotList', requiredBlock: false };
-          handleClick(inputs, meta);
-        }}>
-        <img src={svg6} alt="svg_6" />
-      </div>
+      {/* Товарищ с именем (ОБЯЗАТЕЛЬНЫЙ БЛОК) - только для истории */}
+      {isHistoryForm && (
+        <div
+          className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockOne} ${styles.div_conteiner__blockOnePersonWithName} ${missing.has('personWithName') ? styles.required_missing : ''
+            }`}
+          onClick={() => {
+            const inputs = [
+              { type: 'file', label: 'Портрет сотрудника', required: true },
+              {
+                type: 'text',
+                label: 'ФИО/Описание',
+                placeholder: 'ФИО/Описание',
+                required: false,
+              },
+            ];
+            const meta = { blockId: 'personWithName', requiredBlock: true };
+            handleClick(inputs, meta);
+          }}>
+          <img src={svg11} alt="person_with_name" />
+        </div>
+      )}
+
+      {/* Текст с точкой - не отображается в формах истории */}
+      {!isHistoryForm && (
+        <div
+          className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}
+          onClick={() => {
+            const inputs = [
+              {
+                type: 'textarea',
+                label: 'Текстовый блок с точкой',
+                placeholder: 'Нет ограничения по символам',
+                required: true,
+              },
+            ];
+            const meta = { blockId: 'dotList', requiredBlock: false };
+            handleClick(inputs, meta);
+          }}>
+          <img src={svg6} alt="svg_6" />
+        </div>
+      )}
     </div>
   );
 }
+
+export default memo(ConstructorPage);
