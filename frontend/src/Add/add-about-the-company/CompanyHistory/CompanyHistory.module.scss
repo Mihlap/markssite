@@ -217,7 +217,6 @@
   line-height: 16px;
 }
 
-/* Карточка превью под серым блоком */
 .historyPreviewCard {
   margin-top: 16px;
   padding: 36px 15px 32px 15px;
@@ -238,7 +237,7 @@
 }
 
 .historyPreviewSub {
-color: var(--blue-75BBFD);
+  color: var(--blue-75BBFD);
   font-variant-numeric: lining-nums proportional-nums;
   font-family: var(--font-raleway);
   font-size: 12px;
@@ -247,70 +246,10 @@ color: var(--blue-75BBFD);
   line-height: 16px;
 }
 
-/* справа кнопка загрузки + кружочек i */
 .historyPreviewActions {
-  display: inline-flex; 
+  display: inline-flex;
   gap: 8px;
 }
-
-// .historyPreviewUploadButton {
-//   border: none;
-//   outline: none;
-// }
-
-// .historyPreviewInfo {
-//   width: 20px;
-//   height: 20px;
-//   border-radius: 50%;
-//   border: 1px solid var(--light-gray-C0C5CB);
-//   background-color: transparent;
-//   display: inline-flex;
-//   align-items: center;
-//   justify-content: center;
-//   font-family: var(--font-raleway);
-//   font-size: 12px;
-//   color: var(--light-gray-C0C5CB);
-//   cursor: pointer;
-// }
-
-// /* тело карточки */
-// .historyPreviewBody {
-//   display: flex;
-//   flex-direction: column;
-//   gap: 8px;
-// }
-
-// /* тулбар B/U/список */
-// .historyPreviewToolbar {
-//   display: inline-flex;
-//   align-items: center;
-//   gap: 8px;
-//   margin-bottom: 4px;
-// }
-
-// .historyToolbarButton {
-//   width: 32px;
-//   height: 32px;
-//   border-radius: 10px;
-//   border: 1px solid var(--light-gray-C0C5CB);
-//   background-color: var(--originWhite-FFFFFF);
-//   display: inline-flex;
-//   align-items: center;
-//   justify-content: center;
-//   font-family: var(--font-raleway);
-//   font-size: 14px;
-//   font-style: normal;
-//   font-weight: 500;
-//   line-height: 1;
-//   color: var(--secondary-dark-gray-525459);
-//   cursor: pointer;
-//   padding: 0;
-// }
-
-// .historyToolbarButton:hover {
-//   border-color: var(--blue-75BBFD);
-//   color: var(--blue-75BBFD);
-// }
 
 .yearMenuList {
   position: relative;
@@ -324,4 +263,52 @@ color: var(--blue-75BBFD);
   background-color: var(--light-blue-D4EDFB);
   pointer-events: none;
   z-index: 0;
+}
+
+.historyPreviewQuill {
+  border-radius: 6px;
+  border: 1px solid var(--light-blue-D4EDFB);
+  background: var(--white-F6F6F6);
+}
+
+.historyPreviewQuill_error {
+  border-color: var(--crimson-E00747);
+}
+
+.historyPreviewBody {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.historyPreviewTextWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+
+  :global(.qlScope-historyPreviewText) {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    .ql-container {
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    .ql-editor {
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+  }
 }

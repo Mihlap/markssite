@@ -29,12 +29,12 @@ export default function AddNavbar({ user, handleReturn }) {
   const isHr778User = user?.name === 'hr778';
   const isManagerUser = user?.name === 'manager';
 
-    // useEffect(() => {
-    //   const handleResize = () => setWindowWidth(window.innerWidth);
-    //   window.addEventListener('resize', handleResize);
+  // useEffect(() => {
+  //   const handleResize = () => setWindowWidth(window.innerWidth);
+  //   window.addEventListener('resize', handleResize);
 
-    //   return () => window.removeEventListener('resize', handleResize);
-    // }, []);
+  //   return () => window.removeEventListener('resize', handleResize);
+  // }, []);
 
   //  const shouldRenderTree = windowWidth > 1024;
   //  const treeLeftPosition = windowWidth >= 2500 ? '400px' : '200px';
@@ -47,31 +47,31 @@ export default function AddNavbar({ user, handleReturn }) {
   }, []);
 
 
-   const updateIndicatorPosition = useCallback((itemName) => {
-     const item = itemRefs.current[itemName];
-     if (item && indicatorRef.current) {
-       let newIndicatorX = item.offsetLeft;
-       let newIndicatorY = item.offsetTop + item.offsetHeight - 2;
+  const updateIndicatorPosition = useCallback((itemName) => {
+    const item = itemRefs.current[itemName];
+    if (item && indicatorRef.current) {
+      let newIndicatorX = item.offsetLeft;
+      let newIndicatorY = item.offsetTop + item.offsetHeight - 2;
 
-       if (window.innerWidth <= 1600) {
-         newIndicatorY = item.offsetTop + item.offsetHeight - 6;
-       }
+      if (window.innerWidth <= 1600) {
+        newIndicatorY = item.offsetTop + item.offsetHeight - 6;
+      }
 
-       if (window.innerWidth <= 1023) {
-         newIndicatorY = item.offsetTop + item.offsetHeight + 16;
-       }
+      if (window.innerWidth <= 1023) {
+        newIndicatorY = item.offsetTop + item.offsetHeight + 16;
+      }
 
-       setIndicatorX(newIndicatorX);
-       setIndicatorY(newIndicatorY);
-     }
-   }, []);
+      setIndicatorX(newIndicatorX);
+      setIndicatorY(newIndicatorY);
+    }
+  }, []);
 
-  
- useLayoutEffect(() => {
-   updateIndicatorPosition(selectedItem);
- }, [selectedItem, updateIndicatorPosition]);
 
- 
+  useLayoutEffect(() => {
+    updateIndicatorPosition(selectedItem);
+  }, [selectedItem, updateIndicatorPosition]);
+
+
   useLayoutEffect(() => {
     if (indicatorRef.current) {
       indicatorRef.current.style.transform = `translate(${indicatorX}px, ${indicatorY}px)`;
@@ -79,10 +79,11 @@ export default function AddNavbar({ user, handleReturn }) {
   }, [indicatorX, indicatorY]);
 
   const logouthandler = useCallback(async () => {
+    navigate('/', { replace: true }); 
+    dispatch(resetCurrentPage());
+
     try {
-      dispatch(logoutUser());
-      dispatch(resetCurrentPage());
-      navigate('/');
+      await dispatch(logoutUser()).unwrap();
     } catch (error) {
       console.error('Ошибка при выходе из системы', error);
     }
@@ -116,7 +117,7 @@ export default function AddNavbar({ user, handleReturn }) {
         path: '/admin/add-a-company',
         icon: caseIcon,
         label: 'О компании',
-        visible: isPokemonUser || isObezyankaaUser || isManagerUser,
+        visible: (isPokemonUser || isObezyankaaUser || isManagerUser) && !isHr778User,
       },
       {
         name: 'add-hr-portal',
@@ -135,7 +136,7 @@ export default function AddNavbar({ user, handleReturn }) {
     ],
     [isPokemonUser, isObezyankaaUser, isManagerUser, isHr778User]
   );
-  
+
 
   return (
     <>
@@ -151,13 +152,12 @@ export default function AddNavbar({ user, handleReturn }) {
                     <li key={item.name} className={styles.add_navbar_container__item_li}>
                       <Link
                         ref={(el) => (itemRefs.current[item.name] = el)}
-                        className={`${styles.add_navbar_container__item} ${
-                          selectedItem === item.name ? styles.active : ''
-                        }`}
+                        className={`${styles.add_navbar_container__item} ${selectedItem === item.name ? styles.active : ''
+                          }`}
                         to={item.path}
                         onClick={() => {
-                        setSelectedItem(item.name);
-                        localStorage.setItem('selectedItem', item.name);
+                          setSelectedItem(item.name);
+                          localStorage.setItem('selectedItem', item.name);
                         }}
                       >
                         <img className={styles.add_navbar_container__item__icons} src={item.icon} alt={item.icon} />
@@ -174,7 +174,7 @@ export default function AddNavbar({ user, handleReturn }) {
               <p className={styles.add_navbar_container__exit_ipad}>Выйти из аккаунта</p>
             </button>
           </li>
-      {/* {shouldRenderTree && (
+          {/* {shouldRenderTree && (
         <img
           style={{
             position: 'absolute',
