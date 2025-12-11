@@ -23,7 +23,9 @@ import {
   getPreviewClassName as sharedGetPreviewClassName,
 } from '../utils/formShared';
 import { validateDynamicBlocks } from '../utils/dynamicValidation';
+import { isFullUrl } from '../utils/imageUtils';
 
+const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 const REQUIRED_BLOCK_IDS = ['imageWithCaption', 'quote', 'fact'];
 
 export default function FormAddStaff({ initial = null, onClose, registerCloseGuard, currentCategory = null }) {
@@ -62,7 +64,19 @@ export default function FormAddStaff({ initial = null, onClose, registerCloseGua
   useEffect(() => {
     if (initial) {
       setInputData((p) => ({ ...p, ...initial }));
-      if (initial.img) setPreviewPhotoAva([{ url: initial.img }]);
+      if (initial.img) {
+        const imgVal = String(initial.img || '');
+        let normalizedImg = imgVal;
+        if (!isFullUrl(imgVal)) {
+          const base = String(bucket_url || '').replace(/\/+$/, '');
+          if (imgVal.includes('/')) {
+            normalizedImg = `${base}/${imgVal.replace(/^\/+/, '')}`;
+          } else {
+            normalizedImg = `${base}/images/imageStaff/${imgVal}`;
+          }
+        }
+        setPreviewPhotoAva([{ url: normalizedImg }]);
+      }
     }
   }, [initial]);
 

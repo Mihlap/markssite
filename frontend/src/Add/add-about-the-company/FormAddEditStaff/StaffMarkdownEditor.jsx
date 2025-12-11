@@ -20,7 +20,7 @@ function extractLinks(md = '') {
   return out;
 }
 
-export default function StaffMarkdownEditor({ value, onChange, onTempFilesChange }) {
+export default function StaffMarkdownEditor({ value, onChange, onTempFilesChange, onUploadFile, onDeleteFile }) {
   const dispatch = useDispatch();
 
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -81,10 +81,11 @@ export default function StaffMarkdownEditor({ value, onChange, onTempFilesChange
       if (!files.length) return;
 
       const textarea = e.target.closest('textarea');
+      const uploadFn = onUploadFile || ((file) => dispatch(uploadStaffMarkdownFile(file)).unwrap());
 
       for (let file of files) {
         try {      
-          const url = await dispatch(uploadStaffMarkdownFile(file)).unwrap();
+          const url = await uploadFn(file);
 
           setUploadedFiles((prev) => {
             const m = new Map(prev);
@@ -96,35 +97,40 @@ export default function StaffMarkdownEditor({ value, onChange, onTempFilesChange
           const newMd = textarea ? insertTextAtCursor(textarea, tag) : (value || '') + '\n' + tag;
           onChange?.(newMd);
         } catch (err) {
-          console.error('uploadStaffMarkdownFile failed', err);
+          console.error('upload markdown file failed', err);
         }
       }
     },
-    [dispatch, insertTextAtCursor, onChange, value]
+    [onUploadFile, dispatch, insertTextAtCursor, onChange, value]
   );
  
-  const debouncedCheck = useDebouncedCallback(() => {
-    const links = extractLinks(value || '');
-    uploadedFiles.forEach((count, url) => {
-      if (!links.includes(url)) {
-        setUploadedFiles((prev) => {
-          const m = new Map(prev);
-          const c = m.get(url) || 0;
-          if (c > 1) {
-            m.set(url, c - 1);
-          } else {
-            dispatch(deleteStaffMarkdownFile(url)).unwrap().catch(console.error);
-            m.delete(url);
-          }
-          return m;
-        });
-      }
-    });
-  }, 500);
+  const debouncedCheck = useDebouncedCallback(
+    () => {
+      const links = extractLinks(value || '');
+      const deleteFn = onDeleteFile || ((url) => dispatch(deleteStaffMarkdownFile(url)).unwrap().catch(console.error));
+      
+      uploadedFiles.forEach((count, url) => {
+        if (!links.includes(url)) {
+          setUploadedFiles((prev) => {
+            const m = new Map(prev);
+            const c = m.get(url) || 0;
+            if (c > 1) {
+              m.set(url, c - 1);
+            } else {
+              deleteFn(url);
+              m.delete(url);
+            }
+            return m;
+          });
+        }
+      });
+    },
+    500
+  );
 
   useEffect(() => {
     debouncedCheck();
-  }, [value, debouncedCheck, uploadedFiles]);
+  }, [value, debouncedCheck, uploadedFiles, onDeleteFile, dispatch]);
 
   return (
     <div

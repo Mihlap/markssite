@@ -17,6 +17,11 @@ function HistoryList({ user, setIsModalOpenHistory, setEditHistoryData }) {
   const dispatch = useDispatch();
   const yearsFromStore = useSelector((state) => state.companyHistory.items || []);
 
+  const canDrag = useMemo(() => {
+    const uname = String(user?.name ?? user?.userName ?? '').trim();
+    return uname !== 'hr778';
+  }, [user]);
+
   const years = useMemo(
     () =>
       [...yearsFromStore].sort((a, b) => {
@@ -60,19 +65,25 @@ function HistoryList({ user, setIsModalOpenHistory, setEditHistoryData }) {
       full,
       collapsed: Math.min(full, baseHeight + totalGap + paddingTotal + safetyOffset),
     });
-  }, [years]);
+  }, []);
 
   useLayoutEffect(() => {
     measureHeights();
   }, [measureHeights]);
 
   useEffect(() => {
-    window.addEventListener('resize', measureHeights);
-    return () => window.removeEventListener('resize', measureHeights);
+    measureHeights();
+  }, [years, measureHeights]);
+
+  useEffect(() => {
+    const handleResize = () => measureHeights();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, [measureHeights]);
 
   const handleDragStart = useCallback(
     (e, index) => {
+      if (!canDrag) return;
       const item = years[index];
       setDraggedItem(item);
       try {
@@ -80,7 +91,7 @@ function HistoryList({ user, setIsModalOpenHistory, setEditHistoryData }) {
       } catch (_) { }
       e.dataTransfer.effectAllowed = 'move';
     },
-    [years]
+    [years, canDrag]
   );
 
   const handleDragOver = useCallback((e) => {
@@ -93,7 +104,7 @@ function HistoryList({ user, setIsModalOpenHistory, setEditHistoryData }) {
   const handleDrop = useCallback(
     async (e, index) => {
       e.preventDefault();
-      if (!draggedItem) return;
+      if (!canDrag || !draggedItem) return;
 
       const draggedIndex = years.findIndex((y) => y.id === draggedItem.id);
       if (draggedIndex === index) return;
@@ -112,7 +123,7 @@ function HistoryList({ user, setIsModalOpenHistory, setEditHistoryData }) {
         setDraggedItem(null);
       }
     },
-    [dispatch, years, draggedItem]
+    [dispatch, years, draggedItem, canDrag]
   );
 
   const handleLookClick = useCallback(
@@ -157,12 +168,12 @@ function HistoryList({ user, setIsModalOpenHistory, setEditHistoryData }) {
   );
 
   if (!years.length) {
-    // return <div className={historyStyles.nullHistory}>История компании пока не добавлена</div>;
-     return (
-       <div className={historyStyles.nullHistory} style={{ fontSize: '1.5rem' }}>
-         Прямо сейчас мы создаём историю
-       </div>
-     ); // временно
+    return <div className={historyStyles.nullHistory}>История компании пока не добавлена</div>;
+    //  return (
+    //    <div className={historyStyles.nullHistory} style={{ fontSize: '1.5rem' }}>
+    //      Прямо сейчас мы создаём историю
+    //    </div>
+    //  ); // временно
   }
 
   const shouldClamp = years.length > 4 && listHeights.full > 0;

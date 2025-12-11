@@ -84,9 +84,10 @@ const authSlice = createSlice({
         state.user = action.payload;
         state.error = null;
       })
-      .addCase(checkUserAuth.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.payload;
+      .addCase(checkUserAuth.rejected, (state) => {    
+        state.status = 'idle';
+        state.user = null;
+        state.error = null;
       })
       .addCase(logoutUser.pending, (state) => {
         state.status = 'loading';
@@ -96,9 +97,10 @@ const authSlice = createSlice({
         state.user = null;
         state.error = null;
       })
-      .addCase(logoutUser.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.payload;
+      .addCase(logoutUser.rejected, (state) => {     
+        state.status = 'idle';
+        state.user = null;
+        state.error = null;
       })
       .addCase(getAllUserNames.pending, (state) => {
         state.status = 'loading';
