@@ -16,64 +16,24 @@
 }
 
 @mixin circle {
-    width: 100px;
-    height: 100px;
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
-    // overflow: hidden;
+    overflow: hidden;
     background: radial-gradient(50% 50% at 50% 50%, #1D2E43 0%, #1D2E43 30%, #21344A 50%, #263D56 60%, #304D6B 70%, #426890 80%, #598DC0 90%, #75BBFD 100%);
     box-shadow: 0 0 10px 0 rgb(79 126 173);
     will-change: transform;
-    animation: circleDropLeft 3s linear;
 
     img {
-        position: relative;
+        // position: relative;
         width: 100%;
         height: 100%;
         object-fit: cover;
         border-radius: 50%;
         will-change: transform;
         transition: transform 0.3s ease;
-        z-index: 1; // выше декоративной пимпы
+        z-index: 1;
     }
-
-
-    // &:nth-child(2) {
-    //     @include position-circle(224px, 224px, 80%, 50%);
-    //     animation: circleDropCenter 3s ease forwards;
-    // }
-
-    // &:last-child {
-    //     @include position-circle(445px, 445px, 40%, null, 20%);
-    //     animation: circleDropRight 3s ease forwards;
-    // }
-
-    // @keyframes circleDropCenter {
-    //     0% {
-    //         transform: translate(-50%, -50%);
-    //     }
-
-    //     50% {
-    //         transform: translate(-50%, -50%) translateY(-10px);
-    //     }
-
-    //     100% {
-    //         // transform: translate(-50%, -50%) translateY(-100vh);
-    //     }
-    // }
-
-    // @keyframes circleDropRight {
-    //     0% {
-    //         transform: translate(50%, -50%);
-    //     }
-
-    //     50% {
-    //         transform: translate(50%, -50%) translateY(20px);
-    //     }
-
-    //     100% {
-    //         transform: translate(50%, -50%) translateY(-100vh);
-    //     }
-    // }
 }
 
 .loading-container {
@@ -89,66 +49,365 @@
     position: relative;
 }
 
-.circle {
-    &:first-child {
-        position: relative;
-        overflow: visible; // нужно, чтобы пимпа не обрезалась
+.progres-bar {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 
+.circle-white {
+    width: 66px;
+    height: 66px;
+    background-color: var(--white-F6F6F6);
+    border-radius: 50%;
+    position: absolute;
+    // box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+    // opacity: 0.9;
+
+    // пипка идущая вниз 
+    &::before {
+        content: '';
+        position: absolute;
+        top: -9px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 11px;
+        height: 11px;
+        background: url('./images/pimpa-2-white.png') center/contain no-repeat;
+        pointer-events: none;
+        z-index: 0; // ниже картинки, но не исчезает
+    }
+
+    // веревочка, идущая вверх от пимпы
+    &::after {
+        content: '';
+        position: absolute;
+        top: -100dvh; // начинаем от верхней границы экрана
+        left: 50%;
+        transform: translateX(-50%);
+        width: 2px;
+        height: calc(100dvh - 4px); // тянемся до пимпы
+        background: var(--white-F6F6F6);
+        border-radius: 6px;
+        z-index: -1;
+    }
+
+    &--1 {
+        @include position-circle(66px, 66px, 22%, 18%);
+        animation: whiteFloat1 1.5s linear 0s forwards, whiteFloat1Two 1s ease-in 1s forwards;
+
+        // убираем верёвку/пипку после движения
+        // задержка 2s = 1.5s первой + 0.5s оставшейся второй
         &::before {
-            content: '';
-            position: absolute;
-            top: -36px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 42px;
-            height: 42px;
-            background: url('./images/pimpa.png') center/contain no-repeat;
-            pointer-events: none;
-            z-index: 0; // ниже картинки, но не исчезает
+            animation: pipDrop 500ms linear forwards;
+            animation-delay: 2s;
         }
 
-        // веревочка, идущая вверх от пимпы
         &::after {
-            content: '';
-            position: absolute;
-            top: -100dvh; // начинаем от верхней границы экрана
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
-            height: calc(100dvh - 36px); // тянемся до пимпы
-            background: linear-gradient(180deg, #f3e7b7 0%, #d7b75a 100%);
-            border-radius: 6px;
-            z-index: -1;
+            animation: ropeHide 500ms linear forwards;
+            animation-delay: 2s;
+        }
+    }
+
+    &--2 {
+        @include position-circle(66px, 66px, 24%, 50%);
+        animation: whiteFloat2 1.5s linear 0s forwards, whiteFloat2Two 1s ease-in 1s forwards;
+    }
+
+    &--3 {
+        @include position-circle(66px, 66px, 86%, 82%);
+        animation: whiteFloat3 1.5s linear 0s forwards, whiteFloat3Two 1s ease-in 1s forwards;
+
+        // убираем верёвку/пипку после движения
+        &::before {
+            animation: pipDrop 500ms linear forwards;
+            animation-delay: 2s;
         }
 
-        
-
-        @include circle();
-        @include position-circle(374px, 374px, 50%, 18%); // размеры для круга
-        animation: circleDropLeft 3s ease forwards;
-
-        @keyframes circleDropLeft {
-            0% {
-                transform: translate(-50%, -50%) translateY(0);
-            }
-
-            50% {
-                transform: translate(-50%, -50%) translateY(20px);
-            }
-
-            100% {
-                transform: translate(-50%, -50%) translateY(-100vh);
-            }
+        &::after {
+            animation: ropeHide 500ms linear forwards;
+            animation-delay: 2s;
         }
+    }
+}
 
-        @keyframes circleImgLeft {
-            0% {
-                transform: translateY(0);
-            }
+.logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 21.5px;
+    z-index: 2;
 
-            100% {
-                transform: translateY(-20px);
-            }
+    &-wrap {
+        overflow: hidden;
+
+        img {
+            animation: logo2Rise 1.5s linear forwards;
+            animation-delay: 1s;
         }
+    }
+
+}
+
+
+.circle {
+    @include circle();
+}
+
+.circle-wrap {
+    position: absolute;
+    width: 374px;
+    height: 374px;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: -36px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 42px;
+        height: 42px;
+        background: url('./images/pimpa.png') center/contain no-repeat;
+        pointer-events: none;
+        z-index: 0; // ниже картинки, но не исчезает
+    }
+
+    // веревочка, идущая вверх от пимпы
+    &::after {
+        content: '';
+        position: absolute;
+        top: -100dvh; // начинаем от верхней границы экрана
+        left: 50%;
+        transform: translateX(-50%);
+        width: 2px;
+        height: calc(100dvh - 34px); // тянемся до пимпы
+        background: #75BBFD;
+        border-radius: 6px;
+        z-index: -1;
+    }
+
+    // Левый шар
+    &:nth-of-type(1) {
+        @include position-circle(374px, 374px, 52%, 28%);
+        animation: circleDropLeft 1.5s linear 0s forwards, circleDropLeftTwo 1s ease-in 1s forwards;
+
+        img {
+            animation: circleImgLeft 1.5s linear forwards;
+        }
+    }
+
+    // Центральный шар
+    &:nth-of-type(2) {
+        @include position-circle(224px, 224px, 76%, 60%);
+        animation: circleDropCenter 1.5s linear 0s forwards, circleDropCenterTwo 1s ease-in 1s forwards;
+
+        img {
+            animation: circleImgCenter 1.5s linear forwards;
+        }
+    }
+
+    // Правый шар
+    &:nth-of-type(3) {
+        @include position-circle(445px, 445px, 55%, null, 14%);
+        animation: circleDropRight 1.5s linear forwards, circleDropRightTwo 1s ease-in 1s forwards;
+
+        img {
+            animation: circleImgRight 1.5s linear forwards;
+        }
+    }
+}
+
+@keyframes circleDropLeft {
+    0% {
+        transform: translate(-50%, -50%) translateY(0);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) translateY(20px);
+    }
+}
+
+@keyframes circleDropLeftTwo {
+    0% {
+        transform: translate(-50%, -50%) translateY(20px);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) translateY(-847px);
+    }
+}
+
+@keyframes circleImgLeft {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes circleDropCenter {
+    0% {
+        transform: translate(-50%, -50%) translateY(0);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) translateY(-28px);
+    }
+}
+
+@keyframes circleDropCenterTwo {
+    0% {
+        transform: translate(-50%, -50%) translateY(-28px);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) translateY(-931px);
+    }
+}
+
+@keyframes circleImgCenter {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(28px);
+    }
+}
+
+@keyframes circleDropRight {
+    0% {
+        transform: translate(50%, -50%) translateY(0);
+    }
+
+    100% {
+        transform: translate(50%, -50%) translateY(20px);
+    }
+}
+
+@keyframes circleDropRightTwo {
+    0% {
+        transform: translate(50%, -50%) translateY(20px);
+    }
+
+    100% {
+        transform: translate(50%, -50%) translateY(-100vh);
+    }
+}
+
+@keyframes circleImgRight {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes pipDrop {
+    0% {
+        top: -9px;
+    }
+
+    100% {
+        top: 1px; // опускаем на 10px
+    }
+}
+
+@keyframes ropeHide {
+    0% {
+        top: -100dvh;
+    }
+
+    100% {
+        top: -200dvh; // резко уводим вверх
+    }
+}
+
+@keyframes whiteFloat1 {
+    0% {
+        top: 22%;
+        left: 18%;
+        transform: translate(-50%, -50%) translateY(0);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) translateY(-80px);
+    }
+}
+
+@keyframes whiteFloat1Two {
+    0% {
+        top: 22%;
+        left: 18%;
+        transform: translate(-50%, -50%) translateY(-80px);
+    }
+
+    100% {
+        top: 47.5%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes whiteFloat2 {
+    0% {
+        transform: translate(-50%, -50%) translateY(0);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) translateY(20px);
+    }
+}
+
+@keyframes whiteFloat2Two {
+    0% {
+        transform: translate(-50%, -50%) translateY(20px);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) translateY(-100vh);
+    }
+}
+
+@keyframes whiteFloat3 {
+    0% {
+        top: 86%;
+        left: 82%;
+        transform: translate(-50%, -50%) translateY(0);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) translateY(20px);
+    }
+}
+
+@keyframes whiteFloat3Two {
+    0% {
+        top: 86%;
+        left: 82%;
+        transform: translate(-50%, -50%) translateY(20px);
+    }
+
+    100% {
+        top: 47.5%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes logo2Rise {
+    0% {
+        transform: translateY(0px);
+    }
+
+    100% {
+        transform: translateY(-50px)
     }
 }

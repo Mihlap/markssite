@@ -10,17 +10,17 @@ export const circles = [
         classStyle: "circle"
 
     },
-    // {
-    //     id: 2,
-    //     src: circle2,
-    //     alt: 'Circle 2',
-    //     classStyle: "circle"
+    {
+        id: 2,
+        src: circle2,
+        alt: 'Circle 2',
+        classStyle: "circle"
 
-    // },
-    // {
-    //     id: 3,
-    //     src: circle3,
-    //     alt: 'Circle 3',
-    //     classStyle: "circle"
-    // },
+    },
+    {
+        id: 3,
+        src: circle3,
+        alt: 'Circle 3',
+        classStyle: "circle"
+    },
 ];
