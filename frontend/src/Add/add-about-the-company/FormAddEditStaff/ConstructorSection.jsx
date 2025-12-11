@@ -22,7 +22,7 @@ const normalize = (s = '') =>
 
 const isPortraitLabelNorm = (s = '') => {
   const n = normalize(s);
-  return n === 'портрет сотрудника' || n === 'автор цитаты';
+  return n === 'портрет сотрудника' || n === 'автор цитаты' || n === 'человек года';
 };
 
 const isDotListLabelNorm = (s = '') => normalize(s) === 'текстовый блок с точкой';
@@ -70,14 +70,14 @@ function ConstructorSection({
     });
 
     let targetKey = keys[0];
-    outer: for (let bi = 0; bi < (dynamicData?.length || 0); bi++) {
+    for (let bi = 0; bi < (dynamicData?.length || 0); bi++) {
       const block = dynamicData?.[bi] || [];
       const idx = block.findIndex((x) => x?.type === 'textarea' && normalize(x?.label || '') === 'цитата');
       if (idx >= 0) {
         const k = `${bi}-${idx}`;
         if (fieldErrors[k]) {
           targetKey = k;
-          break outer;
+          break;
         }
       }
     }
@@ -151,6 +151,12 @@ function ConstructorSection({
     const isQuote = inputType === 'textarea' && normalize(labelSafeRaw) === 'цитата';
     const isDotList = inputType === 'textarea' && isDotListLabelNorm(labelSafeRaw);
     const showHelp = inputType === 'file' && isPortraitLabelNorm(labelSafeRaw);
+   
+    const isPersonWithNameBlock =
+      inputType === 'file' &&
+      normalize(labelSafeRaw) === 'портрет сотрудника' &&
+      dynamicData?.[blockIndex]?.[inputIndex + 1]?.type === 'text' &&
+      normalize(dynamicData[blockIndex][inputIndex + 1]?.label || '') === 'фио/описание';
 
     const markTouched = () => setTouched((t) => ({ ...t, [errKey]: true }));
     const errorText = inputType === 'file' ? REQUIRED_FILE_MSG : REQUIRED_TEXT_MSG;
@@ -209,10 +215,23 @@ function ConstructorSection({
           <div>
             <div
               className={styles.form_container__checkbox_block_constructor}
-              style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <div>
-                {labelSafe}
-                {required}
+              style={{
+                display: 'flex',
+                flexDirection: normalize(labelSafeRaw) === 'человек года' ? 'column' : 'row',
+                alignItems: normalize(labelSafeRaw) === 'человек года' ? 'flex-start' : 'center',
+                gap: 8,
+              }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <div>
+                  {labelSafe}
+                  {required}
+                </div>
+                {normalize(labelSafeRaw) === 'человек года' && (
+                  <span
+                    style={{ color: 'var(--blue-A8DBF6, #75BBFD)' }}>
+                    *для отображения в хронике
+                  </span>
+                )}
               </div>
             </div>
 
@@ -223,7 +242,33 @@ function ConstructorSection({
               onBlur={markTouched}
               tabIndex={0}
               aria-invalid={hasError && touched[errKey] ? 'true' : 'false'}
-              aria-describedby={hasError && touched[errKey] ? `err-${errKey}` : undefined}>
+              aria-describedby={hasError && touched[errKey] ? `err-${errKey}` : undefined}
+              style={
+                normalize(labelSafeRaw) === 'человек года'
+                  ? {
+                    margin: '8px 0 0 0',
+                    backgroundColor: '#BADDFE',
+                  }
+                  : isPersonWithNameBlock
+                    ? {
+                      marginBottom: 8,
+                    }
+                    : undefined
+              }
+              onMouseEnter={
+                normalize(labelSafeRaw) === 'человек года'
+                  ? (e) => {
+                    e.currentTarget.style.backgroundColor = '#9BCDFD';
+                  }
+                  : undefined
+              }
+              onMouseLeave={
+                normalize(labelSafeRaw) === 'человек года'
+                  ? (e) => {
+                    e.currentTarget.style.backgroundColor = '#BADDFE';
+                  }
+                  : undefined
+              }>
               <input
                 type="file"
                 multiple
@@ -257,7 +302,16 @@ function ConstructorSection({
             {showHelp && <HelpButton />}
 
             {hasError && touched[errKey] && (
-              <div id={`err-${errKey}`} className={styles.required_hint} style={{ marginTop: -10, marginBottom: 10 }}>
+              <div
+                id={`err-${errKey}`}
+                className={styles.required_hint}
+                style={
+                  normalize(labelSafeRaw) === 'человек года'
+                    ? { marginTop: 2 }
+                    : isPersonWithNameBlock && normalize(labelSafeRaw) === 'портрет сотрудника'
+                      ? { marginTop: 0 }
+                      : { marginTop: -10, marginBottom: 10 }
+                }>
                 {REQUIRED_FILE_MSG}
               </div>
             )}
@@ -359,8 +413,23 @@ function ConstructorSection({
 
   const renderInputs = (inputs, blockIndex) => {
     if (!Array.isArray(inputs)) return null;
+  
+    const firstInput = inputs[0];
+    const isPersonOfYearBlock =
+      firstInput?.type === 'file' &&
+      normalize(firstInput?.label || '') === 'человек года';
+    const isPersonWithNameBlock =
+      firstInput?.type === 'file' &&
+      normalize(firstInput?.label || '') === 'портрет сотрудника' &&
+      inputs[1]?.type === 'text' &&
+      normalize(inputs[1]?.label || '') === 'фио/описание';
+    const isHistorySpecialBlock = isPersonOfYearBlock || isPersonWithNameBlock;
+
     return (
-      <div key={blockIndex} className={styles.blockContainer}>
+      <div
+        key={blockIndex}
+        className={styles.blockContainer}
+        style={isHistorySpecialBlock ? { paddingTop: 16 } : undefined}>
         {inputs.map((input, inputIndex) => {
           const reactKey = input?.key || `${blockIndex}-${inputIndex}`;
           return renderInputWithLabel(input.type, input.label, input.placeholder, blockIndex, inputIndex, reactKey);

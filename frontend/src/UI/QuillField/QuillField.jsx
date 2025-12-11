@@ -39,6 +39,7 @@ const QuillField = memo(function QuillField(props) {
     error = false,
     ariaInvalid,
     ariaDescribedby,
+    borderColor,
   } = props;
 
   const uid = useMemo(() => makeUid(scopeKey), [scopeKey]);
@@ -102,7 +103,7 @@ const QuillField = memo(function QuillField(props) {
         .${scopeClass} .ql-container.ql-snow{ border:none; }
         .${scopeClass} .ql-editor{
           padding:1rem !important; border-radius:6px; background:#fff;
-          box-shadow: inset 0 0 0 1px rgba(0,0,0,.06);
+          box-shadow: inset 0 0 0 1px ${borderColor || 'rgba(0,0,0,.06)'};
           font-size:16px; line-height:16px; font-family:Raleway, sans-serif;
           color: var(--black-1D2E43); white-space: pre-wrap; min-height:10.8rem;
         }
