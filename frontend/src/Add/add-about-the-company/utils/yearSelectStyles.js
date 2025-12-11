@@ -1,7 +1,8 @@
-export function buildYearSelectStyles() {
-    return {     
+export function buildYearSelectStyles(hasError = false) {
+    return {
         control: (provided, state) => {
             const isActive = state.isFocused || state.selectProps?.menuIsOpen;
+            const borderColor = hasError ? '#E00747' : (isActive ? '#75BBFD' : '#959DA6');
 
             return {
                 ...provided,
@@ -12,12 +13,12 @@ export function buildYearSelectStyles() {
                 alignItems: 'center',
                 cursor: 'default',
                 borderRadius: 0,
-                borderBottom: `1px solid ${isActive ? '#75BBFD' : '#959DA6;'}`,
+                borderBottom: `1px solid ${borderColor}`,
                 paddingLeft: 0,
                 paddingRight: 0,
 
                 '&:hover': {
-                    borderBottom: `1px solid ${isActive ? '#75BBFD' : '#959DA6'}`,
+                    borderBottom: `1px solid ${borderColor}`,
                 },
             };
         },
@@ -99,12 +100,12 @@ export function buildYearSelectStyles() {
                 ...provided,
                 position: 'relative',
                 backgroundColor: 'transparent',
-                cursor: 'pointer', 
+                cursor: 'pointer',
                 color: isPivot
                     ? 'var(--dark-gray-566269, #566272)'
                     : 'var(--gray-959DA6, #959DA6)',
                 fontWeight: isPivot ? 500 : 400,
-              
+
                 '&:hover': {
                     backgroundColor: 'transparent',
                     color: isPivot
@@ -112,7 +113,7 @@ export function buildYearSelectStyles() {
                         : 'var(--gray-959DA6, #959DA6)',
                 },
             };
-        },       
+        },
 
         menu: (provided) => ({
             ...provided,

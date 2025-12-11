@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 import layoutStyles from '../../style/style-card.module.scss';
 import historyStyles from './CompanyHistory.module.scss';
 
@@ -21,17 +21,18 @@ function HistoryItem({
   handleDeleteModalClose,
   handleFormDelete,
 }) {
-  const canEdit = ['obezyankaa', 'Pokemon', 'manager', 'hr778'].includes(user?.name);
-  const canDelete = ['obezyankaa', 'Pokemon'].includes(user?.name);
+  const canEdit = useMemo(() => ['obezyankaa', 'Pokemon', 'manager'].includes(user?.name), [user?.name]);
+  const canDelete = useMemo(() => ['obezyankaa', 'Pokemon'].includes(user?.name), [user?.name]);
+  const canDrag = useMemo(() => user?.name !== 'hr778', [user?.name]);
 
   return (
     <div
       role="listitem"
-      draggable
-      onDragStart={(e) => handleDragStart(e, index)}
-      onDragOver={handleDragOver}
-      onDrop={(e) => handleDrop(e, index)}
-      className={`${historyStyles.item} ${historyStyles.draggable}`}>
+      draggable={canDrag}
+      onDragStart={canDrag ? (e) => handleDragStart(e, index) : undefined}
+      onDragOver={canDrag ? handleDragOver : undefined}
+      onDrop={canDrag ? (e) => handleDrop(e, index) : undefined}
+      className={`${historyStyles.item} ${canDrag ? historyStyles.draggable : ''}`}>
       <div className={historyStyles.body}>
         <div className={historyStyles.year}>{el.year}</div>
         <div className={historyStyles.content}>
