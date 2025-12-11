@@ -19,7 +19,7 @@ const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 const CAT_META = [
   { name: 'Руководство', key: 'leadership' },
   { name: 'Научно-техническое сопровождение', key: 'science' },
-  // { name: 'HR', key: 'hr' },
+  { name: 'HR', key: 'hr' },
 ];
 
 const norm = (s) =>
@@ -90,7 +90,7 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
   const [selectedCard, setSelectedCard] = useState(null);
 
   const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth <= 767 : false);
-  
+
   const showSkeleton = loading || isSwitchingCategory;
 
   useEffect(() => {
@@ -196,18 +196,18 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
     document.body.classList.remove('modal-open');
   }, []);
 
- const onCategoryClick = useCallback(
-   (cat) => {
-     if (cat === category) return;
+  const onCategoryClick = useCallback(
+    (cat) => {
+      if (cat === category) return;
 
-     setIsSwitchingCategory(true);
-     setActiveButton(cat);
-     setCategory(cat);
-   },
-   [category]
+      setIsSwitchingCategory(true);
+      setActiveButton(cat);
+      setCategory(cat);
+    },
+    [category]
   );
-  
-  useEffect(() => {  
+
+  useEffect(() => {
     if (!loading && isSwitchingCategory) {
       const t = setTimeout(() => {
         setIsSwitchingCategory(false);
