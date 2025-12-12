@@ -2,13 +2,12 @@ FROM node:18-alpine
 
 WORKDIR /backend/
 
-#RUN apk update && apk add postgresql-client
+# Установка postgresql-client для проверки готовности БД
+RUN apk update && apk add --no-cache postgresql-client
 
 COPY package*.json /backend/
 
-#RUN npm cache clean --force
 RUN npm install
-#RUN npm install bcrypt
 
 COPY . /backend/
 
