@@ -1,8 +1,29 @@
 version: '3.8'
+
 services:
+  db:
+    container_name: db
+    image: postgres:15.4-alpine
+    restart: always
+    environment:
+      - POSTGRES_DB=${DBNAME}
+      - POSTGRES_USER=${PGUSER}
+      - POSTGRES_PASSWORD=${PGPASS}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - markssite-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${PGUSER}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   mainServer:
     container_name: mainServerContainer
-    image: backend-image
     restart: always
     build:
       context: ./backend
@@ -10,26 +31,45 @@ services:
     ports:
       - "3002:3002"
     environment:
-      - DATABASE=${DATABASE}
+      - PORT=3002
+      - DB_HOST=db
+      - DB_USER=${PGUSER}
+      - DB_PASS=${PGPASS}
+      - DB_NAME=${DBNAME}
+      - DB_USER_PROD=${PGUSER}
+      - DB_PASS_PROD=${PGPASS}
+      - DB_NAME_PROD=${DBNAME}
+      - DB_HOST_PROD=db
+      - NODE_ENV=production
+      - SESSION_SECRET=${SESSION_SECRET:-dunno}
     depends_on:
-      - db
-  db:
-    container_name: db
-    image: postgres:15.4-alpine
-    environment:
-      - POSTGRES_DB=${DBNAME}
-      - POSTGRES_USER=${PGUSER}
-      - POSTGRES_PASSWORD=${PGPASS}
-      - PGDATA=/var/lib/postgresql/data/pgdata
-    volumes:
-      - ${PGPATH}/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+      db:
+        condition: service_healthy
+    networks:
+      - markssite-network
+
   frontend:
+    container_name: frontendContainer
+    restart: always
     build:
       context: ./frontend
       dockerfile: Dockerfile.frontend
+      args:
+        - REACT_APP_SERVER_HOST=${REACT_APP_SERVER_HOST:-http://localhost:3002}
+        - REACT_APP_API_URL=${REACT_APP_API_URL:-http://localhost:3002}
+        - REACT_APP_S3_BUCKET_URL=${REACT_APP_S3_BUCKET_URL:-}
     ports:
       - "3000:3000"
+    depends_on:
+      - mainServer
+    networks:
+      - markssite-network
 
-# запуск docker-compose --env-file composeenv up --build
+networks:
+  markssite-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+
+    # запуск: docker-compose --env-file composeEnv up --build
