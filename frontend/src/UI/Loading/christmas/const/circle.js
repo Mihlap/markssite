@@ -15,7 +15,6 @@ export const circles = [
         src: circle2,
         alt: 'Circle 2',
         classStyle: "circle"
-
     },
     {
         id: 3,
