@@ -1,3 +1,16 @@
+@mixin christmas-background {
+    $christmas-bg-color: rgba(29, 46, 67, 1);
+    $christmas-bg-gradient: linear-gradient(to top,
+            rgba(117, 187, 253, 1) 0%,
+            rgba(117, 187, 253, 0.67) 22.0139%,
+            rgba(117, 187, 253, 0.31) 45.6377%,
+            rgba(117, 187, 253, 0.09) 64.844%,
+            rgba(117, 187, 253, 0) 79.0568%);
+
+    background: $christmas-bg-gradient;
+    background-color: $christmas-bg-color;
+}
+
 @mixin position-circle($width,
     $height,
     $top: null,
@@ -57,13 +70,7 @@
 .loading-container {
     width: 100%;
     height: 100dvh;
-    background: linear-gradient(to top,
-            rgba(117, 187, 253, 1) 0%,
-            rgba(117, 187, 253, 0.67) 22.0139%,
-            rgba(117, 187, 253, 0.31) 45.6377%,
-            rgba(117, 187, 253, 0.09) 64.844%,
-            rgba(117, 187, 253, 0) 79.0568%);
-    background-color: rgba(29, 46, 67, 1);
+    @include christmas-background();
     position: relative;
 }
 
@@ -108,6 +115,7 @@
     }
 
     &--1 {
+        // --circleWhile1-top: 205px;
         //width,height, top, left, right, bottom:, $center-y: false
         @include position-circle(66px, 66px, 147px, 180px, null, 120px);
         animation: whiteFloat1 1.5s linear 0s forwards, whiteFloat1Two 1s ease-in-out 1.5s forwards;
@@ -219,6 +227,7 @@
 
     // Левый шар
     &:nth-of-type(1) {
+        // --circle1-top: 205px;
         @include position-circle(374px, 374px, 205px, 115px);
         animation: circleDropLeft 1.5s linear 0s forwards, circleDropLeftTwo 1s ease-in 1.5s forwards;
 
@@ -260,7 +269,7 @@
 
 @keyframes circleDropLeftTwo {
     0% {
-        top: 205px;
+        top: var(--circle1-top, 205px);
         transform: translateY(20px);
     }
 
@@ -292,7 +301,8 @@
 
 @keyframes circleDropCenterTwo {
     0% {
-        top: 514px;
+        top: var(--circle2-top, 514px);
+        // top: 514px;
         transform: translateY(-20px);
     }
 
@@ -324,12 +334,14 @@
 
 @keyframes circleDropRightTwo {
     0% {
-        top: 103.6px;
+        top: var(--circle3-top, 103.6px);
+        // top: 103.6px;
         transform: translateY(39px);
     }
 
     100% {
-        top: -479px;
+        top: var(--circle3-top-100, -479px);
+        // top: -479px;
         transform: translateY(0);
     }
 }
@@ -346,11 +358,11 @@
 
 @keyframes pipDrop {
     0% {
-        top: -9px;
+        top: var(--pip-top, -9px);
     }
 
     100% {
-        top: 1px; 
+        top: 1px;
     }
 }
 
@@ -376,7 +388,8 @@
 
 @keyframes whiteFloat1Two {
     0% {
-        top: 147px;
+        top: var(--circleWhile1-top, 147px);
+        // top: 147px;
         transform: translate(-50%, -50%) translateY(-28px);
     }
 
@@ -402,7 +415,8 @@
     }
 
     100% {
-        top: -231px;
+        top: var(--circleWhile2-top, -231px);
+        // top: -231px;
         transform: translate(-50%, -50%) translateY(0);
     }
 }
@@ -419,7 +433,8 @@
 
 @keyframes whiteFloat3Two {
     0% {
-        top: 545px;
+        top: var(--circleWhile3-top, 545px);
+        // top: 545px;
         transform: translate(50%, -50%) translateY(-16px);
     }
 
@@ -438,5 +453,270 @@
     100% {
         transform: scaleY(0);
         transform-origin: top center;
+    }
+}
+
+@media (min-width: 375px) and (max-width: 767px) {
+
+    .loading-container {
+        overflow: clip;
+    }
+
+        .logo {
+            &-dec {
+                bottom: -15.5px;
+            }
+        }
+
+    .circle-wrap {
+        &:nth-of-type(1) {
+            --circle1-top: 68.68px;
+            @include position-circle(274px, 274px, 68.68px, -55px);
+        }
+
+        &:nth-of-type(2) {
+            --circle2-top: 542px;
+            @include position-circle(200px, 200px, 542px, 26px);
+        }
+
+        &:nth-of-type(3) {
+            --circle3-top: 277px;
+            @include position-circle(236px, 236px, 277px, 221px);
+        }
+    }
+
+    .circle-white {
+        --pip-top: -3px;
+
+        &::before {
+            width: 4px;
+            height: 4px;
+            top: -3px;
+        }
+
+        &::after {
+            width: 1px;
+            height: calc(100dvh - 2px);
+        }
+
+        &--1 {
+            --circleWhile1-top: 279.7px;
+            @include position-circle(20.6px, 20.6px, 279.7px, 19.75px);
+        }
+
+        &--2 {
+            --circleWhile2-top: -158px;
+            @include position-circle(28px, 28px, 158px, 264px);
+        }
+
+        &--3 {
+            --circleWhile3-top: 545px;
+            @include position-circle(20.6px, 20.6px, 545px, null, 19.25px);
+        }
+    }
+}
+
+@media (min-width: 768px) {
+
+    .loading-container {
+        overflow: clip;
+    }
+
+    .circle-wrap {
+        &:nth-of-type(1) {
+            --circle1-top: 90.68px;
+            @include position-circle(274px, 274px, 90.68px, -55px);
+            // transform: translateX(-50%);
+        }
+
+        &:nth-of-type(2) {
+            --circle2-top: 642px;
+            @include position-circle(200px, 200px, 642px, 380px);
+        }
+
+        &:nth-of-type(3) {
+            --circle3-top: 277px;
+            @include position-circle(296px, 296px, 277px, 521px);
+        }
+    }
+
+    .circle-white {
+        &--1 {
+            --circleWhile1-top: 147px;
+            @include position-circle(47px, 47px, 147px, 100px);
+        }
+
+        &--2 {
+            --circleWhile2-top: -158px;
+            @include position-circle(47px, 47px, 158px, 364px);
+        }
+
+        &--3 {
+            --circleWhile3-top: 645px;
+            @include position-circle(47px, 47px, 645px, null, 100px);
+        }
+    }
+}
+
+@media (min-width: 1024px) {
+
+    .loading-container {
+        overflow: clip;
+    }
+
+    .circle-wrap {
+        &:nth-of-type(1) {
+            --circle1-top: 205px;
+            @include position-circle(374px, 374px, 205px, 115px);
+        }
+
+        &:nth-of-type(2) {
+            --circle2-top: 514px;
+            @include position-circle(224px, 224px, 514px, 691px);
+        }
+
+        &:nth-of-type(3) {
+            --circle3-top: 103.6px;
+            @include position-circle(292px, 292px, 103.6px, null, 82px);
+        }
+    }
+
+    .circle-white {
+        &--1 {
+            --circleWhile1-top: 147px;
+            @include position-circle(47px, 47px, 147px, 128px);
+        }
+
+        &--2 {
+            --circleWhile2-top: -158px;
+            @include position-circle(47px, 47px, 158px, 364px);
+        }
+
+        &--3 {
+            --circleWhile3-top: 645px;
+            @include position-circle(47px, 47px, 645px, null, 131px);
+        }
+    }
+}
+
+@media (min-width: 1440px) {
+
+    .circle-wrap {
+        &:nth-of-type(1) {
+            --circle1-top: 205px;
+            @include position-circle(374px, 374px, 205px, 115px);
+        }
+
+        &:nth-of-type(2) {
+            --circle2-top: 514px;
+            @include position-circle(224px, 224px, 514px, 691px);
+        }
+
+        &:nth-of-type(3) {
+            --circle3-top: 103.6px;
+            @include position-circle(445px, 445px, 103.6px, 896px);
+        }
+    }
+
+    .circle-white {
+        &--1 {
+            --circleWhile1-top: 147px;
+            @include position-circle(66px, 66px, 147px, 180px, null, 120px);
+        }
+
+        &--2 {
+            --circleWhile2-top: -145px;
+            @include position-circle(66px, 66px, 145px, 685px);
+        }
+
+        &--3 {
+            --circleWhile3-top: 545px;
+            @include position-circle(66px, 66px, 545px, null, 185px);
+        }
+    }
+}
+
+
+@media (min-width: 1728px) {
+    .circle-wrap {
+        &:nth-of-type(1) {
+            --circle1-top: 324px;
+            @include position-circle(424px, 424px, 324px, 220px);
+        }
+
+        &:nth-of-type(2) {
+            --circle2-top: 630px;
+            @include position-circle(298px, 298px, 630px, 800px);
+        }
+
+        &:nth-of-type(3) {
+            --circle3-top: 185px;
+            --circle3-top-100: -779px;
+            @include position-circle(532px, 532px, 185px, 1050px);
+        }
+    }
+
+    .circle-white {
+        &--1 {
+            --circleWhile1-top: 147px;
+            // @include position-circle(117.3px, 117.3px, 219px, 320px);
+            @include position-circle(66px, 66px, 147px, 345px);
+        }
+
+        &--2 {
+            --circleWhile2-top: -263px;
+            // @include position-circle(117.3px, 117.3px, 263px, 1217px);
+            @include position-circle(66px, 66px, 145px, 685px);
+        }
+
+        &--3 {
+            --circleWhile3-top: 922px;
+            // @include position-circle(117.3px, 117.3px, 922px, 1425px);
+            @include position-circle(66px, 66px, 922px, 1310px);
+        }
+    }
+}
+
+// брейкпоинт для ультрашироких
+@media (min-width: 2560px) {
+    body {
+        width: min(100vw, 2560px);
+        margin: 0 auto;
+        @include christmas-background();
+    }
+
+    .circle-wrap {
+        &:nth-of-type(1) {
+            --circle1-top: 334px;
+            @include position-circle(624px, 624px, 334px, 240px);
+        }
+
+        &:nth-of-type(2) {
+            --circle2-top: 852px;
+            @include position-circle(368px, 368px, 852px, 1235px);
+        }
+
+        &:nth-of-type(3) {
+            --circle3-top: 175px;
+            --circle3-top-100: -779px;
+            @include position-circle(732px, 732px, 175px, 1622px);
+        }
+    }
+
+    .circle-white {
+        &--1 {
+            --circleWhile1-top: 219px;
+            @include position-circle(117.3px, 117.3px, 219px, 320px);
+        }
+
+        &--2 {
+            --circleWhile2-top: -263px;
+            @include position-circle(117.3px, 117.3px, 263px, 1217px);
+        }
+
+        &--3 {
+            --circleWhile3-top: 922px;
+            @include position-circle(117.3px, 117.3px, 922px, 2114px);
+        }
     }
 }
