@@ -29,7 +29,7 @@ import PageFade from './UI/PageFade/PageFade';
 import ButtonAdmin from './UI/ButtonAdmin/ButtonAdmin';
 import CustomCursor from './UI/CustomCursor/CustomCursor';
 import CookieComponent from './UI/CookieComponent/CookieComponent';
-import LoadingNew from './Loading/LoadingNew';
+// import LoadingNew from './Loading/LoadingNew';
 import Loading from './UI/Loading/christmas/Loading';
 
 const Header = lazy(() => import('./Header/Header'));
@@ -147,7 +147,7 @@ export default function App() {
               <ButtonAdmin user={user} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} />
             )}
 
-            {/* {!isAdminPage && !isNavPreviewPage && <NavBar />} */}
+            {!isAdminPage && !isNavPreviewPage && <NavBar />}
 
             <Routes location={location}>
 
@@ -417,7 +417,7 @@ export default function App() {
 
             {!isFooterFormPage && showNavbarFooter && currentPage !== 'add' && (
               <>
-                {/* {isPortalPage ? (
+                {isPortalPage ? (
                   <Footer
                     handleMouseEnterFooter={handleMouseEnterFooter}
                     handleMouseEnterFooterMore={handleMouseEnterFooterMore}
@@ -431,7 +431,7 @@ export default function App() {
                     handleMouseLeaveFooter={handleMouseLeaveFooter}
                     handleMouseLeave={handleMouseLeave}
                   />
-                )} */}
+                )}
               </>
             )}
 
@@ -441,7 +441,7 @@ export default function App() {
 
         {shouldShowGlobalLoader && (
           <div className="app-shell__loaderOverlay">
-            <LoadingNew isReady={isReady} onFinish={() => setLoading(false)} />
+            <Loading isReady={isReady} onFinish={() => setLoading(false)} />
           </div>
         )}
       </div>
