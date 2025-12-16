@@ -18,6 +18,8 @@ export default function CompanyHistory() {
 
   const titleRef = useRef(null);
   const subtitleRef = useRef(null);
+  const subtitleLineRef = useRef(null);
+  const marksGroupRef = useRef(null);
   const subtitleLine1Ref = useRef(null);
   const subtitleLine2Ref = useRef(null);
   const historyListRef = useRef(null);
@@ -61,124 +63,100 @@ export default function CompanyHistory() {
     const startOffsetLeft = -window.innerWidth; // За левым краем экрана
 
     const tl = gsap.timeline();
+    const duration = 2.5; // Медленная плавная анимация
 
-    // Анимация заголовка "История" - выезжает справа с эффектом отскока
+    // Анимация заголовка "История" - выезжает справа медленно, opacity синхронно
     if (titleRef.current) {
       gsap.set(titleRef.current, {
         x: startOffsetRight,
         opacity: 0,
       });
 
-      // Движение с эффектом отскока
       tl.to(
         titleRef.current,
         {
           x: titleOffsetX,
-          ease: 'back.out(1.2)',
-          duration: 2,
+          opacity: 1,
+          ease: 'power2.out',
+          duration: duration,
         },
         0
       );
+    }
 
-      // Проявление при приближении к центру
+    // Анимация линии - выезжает справа медленно, opacity синхронно
+    if (subtitleLineRef.current) {
+      gsap.set(subtitleLineRef.current, {
+        x: startOffsetRight,
+        opacity: 0,
+      });
+
       tl.to(
-        titleRef.current,
+        subtitleLineRef.current,
         {
+          x: 0,
           opacity: 1,
           ease: 'power2.out',
-          duration: 1.2,
+          duration: duration,
         },
-        0.4 // Начинается при приближении к центру
+        0
       );
     }
 
-    // Анимация "MARKS GROUP" - выезжает слева с эффектом отскока
-    if (subtitleRef.current) {
-      gsap.set(subtitleRef.current, {
+    // Анимация "MARKS GROUP" - выезжает слева медленно, opacity синхронно
+    if (marksGroupRef.current) {
+      gsap.set(marksGroupRef.current, {
         x: startOffsetLeft,
         opacity: 0,
       });
 
-      // Движение с эффектом отскока
       tl.to(
-        subtitleRef.current,
+        marksGroupRef.current,
         {
           x: 0,
-          ease: 'back.out(1.2)',
-          duration: 2,
+          opacity: 1,
+          ease: 'power2.out',
+          duration: duration,
         },
         0
       );
-
-      // Проявление при приближении к центру
-      tl.to(
-        subtitleRef.current,
-        {
-          opacity: 1,
-          ease: 'power2.out',
-          duration: 1.2,
-        },
-        0.4
-      );
     }
 
-    // Анимация первой строки описания - выезжает справа с эффектом отскока
+    // Анимация первой строки описания - выезжает справа медленно, opacity синхронно
     if (subtitleLine1Ref.current) {
       gsap.set(subtitleLine1Ref.current, {
         x: startOffsetRight,
         opacity: 0,
       });
 
-      // Движение с эффектом отскока
       tl.to(
         subtitleLine1Ref.current,
         {
           x: 0,
-          ease: 'back.out(1.2)',
-          duration: 2,
+          opacity: 1,
+          ease: 'power2.out',
+          duration: duration,
         },
         0
       );
-
-      // Проявление при приближении к центру
-      tl.to(
-        subtitleLine1Ref.current,
-        {
-          opacity: 1,
-          ease: 'power2.out',
-          duration: 1.2,
-        },
-        0.4
-      );
     }
 
-    // Анимация второй строки описания - выезжает справа с эффектом отскока
+    // Анимация второй строки описания - выезжает справа медленно, opacity синхронно
     if (subtitleLine2Ref.current) {
       gsap.set(subtitleLine2Ref.current, {
         x: startOffsetRight,
         opacity: 0,
       });
 
-      // Движение с эффектом отскока
       tl.to(
         subtitleLine2Ref.current,
         {
           x: 0,
-          ease: 'back.out(1.2)',
-          duration: 2,
-        },
-        0
-      );
-
-      // Проявление при приближении к центру
-      tl.to(
-        subtitleLine2Ref.current,
-        {
           opacity: 1,
           ease: 'power2.out',
-          duration: 1.2,
+          duration: duration,
         },
-        0.4
+        0
       );
     }
 
@@ -227,8 +205,8 @@ export default function CompanyHistory() {
             История
           </h1>
           <div ref={subtitleRef} className={styles.history_subtitle}>
-            <span className={styles.marks_group}>MARKS GROUP</span>
-            <span className={styles.subtitle_line}></span>
+            <span ref={marksGroupRef} className={styles.marks_group}>MARKS GROUP</span>
+            <span ref={subtitleLineRef} className={styles.subtitle_line}></span>
           </div>
           <div className={styles.history_description}>
             <p ref={subtitleLine1Ref} className={styles.description_line}>
