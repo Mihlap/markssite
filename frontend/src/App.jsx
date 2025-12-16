@@ -29,7 +29,8 @@ import PageFade from './UI/PageFade/PageFade';
 import ButtonAdmin from './UI/ButtonAdmin/ButtonAdmin';
 import CustomCursor from './UI/CustomCursor/CustomCursor';
 import CookieComponent from './UI/CookieComponent/CookieComponent';
-import LoadingNew from './Loading/LoadingNew';
+// import LoadingNew from './Loading/LoadingNew';
+import Loading from './UI/Loading/christmas/Loading';
 
 const Header = lazy(() => import('./Header/Header'));
 const Contacts = lazy(() => import('./Contacts/Contacts'));
@@ -149,6 +150,11 @@ export default function App() {
             {!isAdminPage && !isNavPreviewPage && <NavBar />}
 
             <Routes location={location}>
+
+              <Route
+                path="/test"
+                element={<Loading/>}
+              />
               <Route
                 path="/"
                 element={
@@ -446,7 +452,7 @@ export default function App() {
 
         {shouldShowGlobalLoader && (
           <div className="app-shell__loaderOverlay">
-            <LoadingNew isReady={isReady} onFinish={() => setLoading(false)} />
+            <Loading isReady={isReady} onFinish={() => setLoading(false)} />
           </div>
         )}
       </div>
