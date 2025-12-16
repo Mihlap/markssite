@@ -28,6 +28,7 @@ import CounterCompanyMobile2 from '../UI/CounterCompanyMobile2';
 import CompanySlider from './CompanySlider/CompanySlider';
 // import ModalVacancyFormSend from '../UI/VacancyFormContact/ModalVacancyFormSend';
 import CompanyStaffPublic from './CompanyStaffPublic';
+import CompanyHistory from './CompanyHistory/CompanyHistory';
 import { useHashScroll } from './CompanyGroupSlider/hooks/useHashScroll';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
@@ -62,8 +63,6 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
   const dispatch = useDispatch();
 
   const blockSlider = useRef(null);
-  const nameCompanyRef = useRef(null);
-  const thisBlockRef = useRef(null);
 
   const countDepartment = useSelector((state) => state.counter.countDepartment);
   const countGap = useSelector((state) => state.counter.countGap);
@@ -149,39 +148,6 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
     };
   }, []);
 
-  useEffect(() => {
-    const nameCompanyElement = nameCompanyRef.current;
-    const thisBlockElement = thisBlockRef.current;
-
-    function handleScroll() {
-      if (!nameCompanyElement || !thisBlockElement) return;
-
-      const nameCompanyRect = nameCompanyElement.getBoundingClientRect();
-      const thisBlockRect = thisBlockElement.getBoundingClientRect();
-      const screenWidth = window.innerWidth;
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-
-      if (scrollTop > thisBlockRect.top && screenWidth >= 2000) {
-        const translateYValue = nameCompanyRect.height + 190;
-        nameCompanyElement.style.transform = `translateY(${translateYValue}px)`;
-        thisBlockElement.style.transform = `translateY(150px) translateX(10vw) rotate(-90deg)`;
-      } else if (scrollTop > thisBlockRect.top && screenWidth < 1999 && screenWidth >= 1480) {
-        const translateYValue = nameCompanyRect.height + 200;
-        nameCompanyElement.style.transform = `translateY(${translateYValue}px)`;
-        thisBlockElement.style.transform = `translateY(170px) translateX(10vw) rotate(-90deg)`;
-      } else if (scrollTop > thisBlockRect.top && screenWidth <= 1479) {
-        const translateYValue = nameCompanyRect.height + 230;
-        nameCompanyElement.style.transform = `translateY(${translateYValue}px)`;
-        thisBlockElement.style.transform = `translateY(180px) translateX(10vw) rotate(-90deg)`;
-      } else {
-        nameCompanyElement.style.transform = 'none';
-        thisBlockElement.style.transform = 'rotate(-180deg)';
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   return (
     <>
@@ -256,7 +222,9 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
           <SliderHeader />
         </div>
 
-        <div id="history" className={styles.about_main}>
+        <CompanyHistory />
+
+        {/* <div id="history" className={styles.about_main}>
           <div className={styles.left_about}>
             <div ref={nameCompanyRef} className={styles.name_company}>
               MARKS GROUP
@@ -334,7 +302,7 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
               </div>
             )}
           </div>
-        </div>
+        </div> */}
 
         <CompanySlider />
 
