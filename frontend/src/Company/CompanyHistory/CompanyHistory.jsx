@@ -47,53 +47,138 @@ export default function CompanyHistory() {
   useEffect(() => {
     if (!inView) return;
 
-    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+    // Определяем смещение для "История" в зависимости от размера экрана
+    const getTitleOffset = () => {
+      const isLargeScreen = window.innerWidth >= 1600;
+      // Для стандартного экрана: смещение до буквы "S" (≈240px)
+      // Для экрана 1600px+: смещение до буквы "R" (≈120px)
+      return isLargeScreen ? 120 : 240;
+    };
 
-    // Анимация заголовка "История"
+    const titleOffsetX = getTitleOffset();
+    // Начальные позиции за краями экрана
+    const startOffsetRight = window.innerWidth; // За правым краем экрана
+    const startOffsetLeft = -window.innerWidth; // За левым краем экрана
+
+    const tl = gsap.timeline();
+
+    // Анимация заголовка "История" - выезжает справа с эффектом отскока
     if (titleRef.current) {
-      tl.from(titleRef.current, {
-        x: -100,
+      gsap.set(titleRef.current, {
+        x: startOffsetRight,
         opacity: 0,
-        duration: 0.8,
       });
+
+      // Движение с эффектом отскока
+      tl.to(
+        titleRef.current,
+        {
+          x: titleOffsetX,
+          ease: 'back.out(1.2)',
+          duration: 2,
+        },
+        0
+      );
+
+      // Проявление при приближении к центру
+      tl.to(
+        titleRef.current,
+        {
+          opacity: 1,
+          ease: 'power2.out',
+          duration: 1.2,
+        },
+        0.4 // Начинается при приближении к центру
+      );
     }
 
-    // Анимация "MARKS GROUP" с линии справа
+    // Анимация "MARKS GROUP" - выезжает слева с эффектом отскока
     if (subtitleRef.current) {
-      tl.from(
+      gsap.set(subtitleRef.current, {
+        x: startOffsetLeft,
+        opacity: 0,
+      });
+
+      // Движение с эффектом отскока
+      tl.to(
         subtitleRef.current,
         {
-          x: 100,
-          opacity: 0,
-          duration: 0.8,
+          x: 0,
+          ease: 'back.out(1.2)',
+          duration: 2,
         },
-        '-=0.4'
+        0
+      );
+
+      // Проявление при приближении к центру
+      tl.to(
+        subtitleRef.current,
+        {
+          opacity: 1,
+          ease: 'power2.out',
+          duration: 1.2,
+        },
+        0.4
       );
     }
 
-    // Анимация первой строки подзаголовка слева
+    // Анимация первой строки описания - выезжает справа с эффектом отскока
     if (subtitleLine1Ref.current) {
-      tl.from(
+      gsap.set(subtitleLine1Ref.current, {
+        x: startOffsetRight,
+        opacity: 0,
+      });
+
+      // Движение с эффектом отскока
+      tl.to(
         subtitleLine1Ref.current,
         {
-          x: -150,
-          opacity: 0,
-          duration: 0.8,
+          x: 0,
+          ease: 'back.out(1.2)',
+          duration: 2,
         },
-        '-=0.4'
+        0
+      );
+
+      // Проявление при приближении к центру
+      tl.to(
+        subtitleLine1Ref.current,
+        {
+          opacity: 1,
+          ease: 'power2.out',
+          duration: 1.2,
+        },
+        0.4
       );
     }
 
-    // Анимация второй строки подзаголовка справа
+    // Анимация второй строки описания - выезжает справа с эффектом отскока
     if (subtitleLine2Ref.current) {
-      tl.from(
+      gsap.set(subtitleLine2Ref.current, {
+        x: startOffsetRight,
+        opacity: 0,
+      });
+
+      // Движение с эффектом отскока
+      tl.to(
         subtitleLine2Ref.current,
         {
-          x: 150,
-          opacity: 0,
-          duration: 0.8,
+          x: 0,
+          ease: 'back.out(1.2)',
+          duration: 2,
         },
-        '-=0.4'
+        0
+      );
+
+      // Проявление при приближении к центру
+      tl.to(
+        subtitleLine2Ref.current,
+        {
+          opacity: 1,
+          ease: 'power2.out',
+          duration: 1.2,
+        },
+        0.4
       );
     }
 
@@ -112,8 +197,21 @@ export default function CompanyHistory() {
       );
     }
 
+    // Обработчик изменения размера окна для обновления позиции заголовка
+    const handleResize = () => {
+      if (titleRef.current && inView) {
+        const isLargeScreen = window.innerWidth >= 1600;
+        const newOffsetX = isLargeScreen ? 120 : 240;
+        // Обновляем позицию без анимации при ресайзе
+        gsap.set(titleRef.current, { x: newOffsetX });
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
     return () => {
       tl.kill();
+      window.removeEventListener('resize', handleResize);
     };
   }, [inView, visibleItems.length]);
 
@@ -170,7 +268,7 @@ export default function CompanyHistory() {
             ))}
           </div>
         ) : (
-          <div className={styles.empty_history}>История компании пока пуста</div>
+          <div className={styles.empty_history}>История компании обновляется</div>
         )}
       </div>
     </div>
