@@ -47,17 +47,25 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin-bottom: 80px;
+  margin-bottom: 0px;
   padding: 0 2rem;
 }
 
 .history_title {
   font-family: var(--font-unbounded);
   font-weight: var(--fw-300);
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  line-height: 1.2;
+  font-size: 64px;
+  line-height: 64px;
   color: var(--black-1D2E43);
   margin: 0 0 24px 0;
+}
+
+@media screen and (min-width: 1600px) {
+  .history_title {
+    font-size: 96px;
+    line-height: 96px;
+    margin: 0 0 32px 0;
+  }
 }
 
 .history_subtitle {
@@ -65,20 +73,27 @@
   align-items: center;
   justify-content: center;
   gap: 24px;
-  margin-bottom: 32px;
+  margin-bottom: 84px;
 }
 
 .marks_group {
   font-family: var(--font-unbounded);
-  font-weight: var(--fw-500);
-  font-size: clamp(2rem, 4vw, 3.5rem);
-  line-height: 1.2;
+  font-weight: var(--fw-300);
+  font-size: 64px;
+  line-height: 64px;
   color: var(--black-1D2E43);
 }
 
+@media screen and (min-width: 1600px) {
+  .marks_group {
+    font-size: 96px;
+    line-height: 96px;
+  }
+}
+
 .subtitle_line {
-  width: 120px;
-  height: 4px;
+  width: 118px;
+  height: 6px;
   background-color: var(--black-1D2E43);
   flex-shrink: 0;
 }
@@ -91,12 +106,20 @@
 }
 
 .description_line {
+  font-variant-numeric: lining-nums proportional-nums;
   font-family: var(--font-raleway);
   font-weight: var(--fw-400);
-  font-size: clamp(1rem, 2vw, 1.25rem);
-  line-height: 1.6;
+  font-size: 24px;
+  line-height: 32px;
   color: var(--black-1D2E43);
   margin: 0;
+}
+
+@media screen and (min-width: 1600px) {
+  .description_line {
+    font-size: 32px;
+    line-height: 40px;
+  }
 }
 
 .history_list {
@@ -244,4 +267,3 @@
     padding: 20px 0;
   }
 }
-
