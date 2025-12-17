@@ -1,13 +1,9 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useInView } from 'react-intersection-observer';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import styles from './CompanyHistory.module.scss';
 import { fetchCompanyHistory } from '../../store/Slice/companyHistorySlice';
 import cityVector from '../icons/cityVector.svg';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
@@ -48,150 +44,70 @@ export default function CompanyHistory() {
 
   useEffect(() => {
     if (!inView) return;
+   
+    const setAnimationVariables = () => {
+      if (!marksGroupRef.current || !titleRef.current || !subtitleLine1Ref.current) return;
+    
+      const elements = [titleRef.current, marksGroupRef.current, subtitleLineRef.current, subtitleLine1Ref.current, subtitleLine2Ref.current];
+      elements.forEach(el => {
+        if (el) el.style.transform = 'none';
+      });
+  
+      const titleRect = titleRef.current.getBoundingClientRect();
+      const marksRect = marksGroupRef.current.getBoundingClientRect();
+      const titleNaturalCenterX = titleRect.left + titleRect.width / 2;
 
-    // Определяем смещение для "История" в зависимости от размера экрана
-    const getTitleOffset = () => {
-      const isLargeScreen = window.innerWidth >= 1600;
-      // Для стандартного экрана: смещение до буквы "S" (≈240px)
-      // Для экрана 1600px+: смещение до буквы "R" (≈120px)
-      return isLargeScreen ? 120 : 240;
+      let titleTargetCenterX;
+      if (window.innerWidth >= 1600) {
+        titleTargetCenterX = marksRect.left + marksRect.width / 2;
+      } else {
+        titleTargetCenterX = marksRect.right - titleRect.width / 2;
+      }
+      const titleOffsetX = titleTargetCenterX - titleNaturalCenterX;
+    
+      const line1Rect = subtitleLine1Ref.current.getBoundingClientRect();
+      const lineNaturalLeft = line1Rect.left;
+
+      let descTargetLeft;
+      if (window.innerWidth >= 1600) {
+        descTargetLeft = marksRect.left + marksRect.width / 2;
+      } else {
+        descTargetLeft = marksRect.left + marksRect.width * 0.65;
+      }
+      const descOffsetX = descTargetLeft - lineNaturalLeft;
+  
+      document.documentElement.style.setProperty('--title-offset-x', `${titleOffsetX}px`);
+      document.documentElement.style.setProperty('--desc-offset-x', `${descOffsetX}px`);
+   
+      requestAnimationFrame(() => {
+        if (titleRef.current) titleRef.current.classList.add(styles.animate);
+        if (marksGroupRef.current) marksGroupRef.current.classList.add(styles.animate);
+        if (subtitleLineRef.current) subtitleLineRef.current.classList.add(styles.animate);
+        if (subtitleLine1Ref.current) subtitleLine1Ref.current.classList.add(styles.animate);
+        if (subtitleLine2Ref.current) subtitleLine2Ref.current.classList.add(styles.animate);
+
+        if (historyListRef.current && visibleItems.length > 0) {
+          Array.from(historyListRef.current.children).forEach((item, index) => {
+            setTimeout(() => {
+              item.classList.add(styles.animate);
+            }, 2500 + index * 150);
+          });
+        }
+      });
     };
 
-    const titleOffsetX = getTitleOffset();
-    // Начальные позиции за краями экрана
-    const startOffsetRight = window.innerWidth; // За правым краем экрана
-    const startOffsetLeft = -window.innerWidth; // За левым краем экрана
+    setTimeout(setAnimationVariables, 100);
 
-    const tl = gsap.timeline();
-    const duration = 2.5; // Медленная плавная анимация
-
-    // Анимация заголовка "История" - выезжает справа медленно, opacity синхронно
-    if (titleRef.current) {
-      gsap.set(titleRef.current, {
-        x: startOffsetRight,
-        opacity: 0,
-      });
-
-      tl.to(
-        titleRef.current,
-        {
-          x: titleOffsetX,
-          opacity: 1,
-          ease: 'power2.out',
-          duration: duration,
-        },
-        0
-      );
-    }
-
-    // Анимация линии - выезжает справа медленно, opacity синхронно
-    if (subtitleLineRef.current) {
-      gsap.set(subtitleLineRef.current, {
-        x: startOffsetRight,
-        opacity: 0,
-      });
-
-      tl.to(
-        subtitleLineRef.current,
-        {
-          x: 0,
-          opacity: 1,
-          ease: 'power2.out',
-          duration: duration,
-        },
-        0
-      );
-    }
-
-    // Анимация "MARKS GROUP" - выезжает слева медленно, opacity синхронно
-    if (marksGroupRef.current) {
-      gsap.set(marksGroupRef.current, {
-        x: startOffsetLeft,
-        opacity: 0,
-      });
-
-      tl.to(
-        marksGroupRef.current,
-        {
-          x: 0,
-          opacity: 1,
-          ease: 'power2.out',
-          duration: duration,
-        },
-        0
-      );
-    }
-
-    // Анимация первой строки описания - выезжает справа медленно, opacity синхронно
-    if (subtitleLine1Ref.current) {
-      gsap.set(subtitleLine1Ref.current, {
-        x: startOffsetRight,
-        opacity: 0,
-      });
-
-      tl.to(
-        subtitleLine1Ref.current,
-        {
-          x: 0,
-          opacity: 1,
-          ease: 'power2.out',
-          duration: duration,
-        },
-        0
-      );
-    }
-
-    // Анимация второй строки описания - выезжает справа медленно, opacity синхронно
-    if (subtitleLine2Ref.current) {
-      gsap.set(subtitleLine2Ref.current, {
-        x: startOffsetRight,
-        opacity: 0,
-      });
-
-      tl.to(
-        subtitleLine2Ref.current,
-        {
-          x: 0,
-          opacity: 1,
-          ease: 'power2.out',
-          duration: duration,
-        },
-        0
-      );
-    }
-
-    // Анимация списка истории
-    if (historyListRef.current && visibleItems.length > 0) {
-      const items = historyListRef.current.children;
-      tl.from(
-        items,
-        {
-          y: 50,
-          opacity: 0,
-          duration: 0.6,
-          stagger: 0.15,
-        },
-        '-=0.2'
-      );
-    }
-
-    // Обработчик изменения размера окна для обновления позиции заголовка
     const handleResize = () => {
-      if (titleRef.current && inView) {
-        const isLargeScreen = window.innerWidth >= 1600;
-        const newOffsetX = isLargeScreen ? 120 : 240;
-        // Обновляем позицию без анимации при ресайзе
-        gsap.set(titleRef.current, { x: newOffsetX });
-      }
+      setAnimationVariables();
     };
 
     window.addEventListener('resize', handleResize);
 
     return () => {
-      tl.kill();
       window.removeEventListener('resize', handleResize);
     };
-  }, [inView, visibleItems.length]);
+  }, [inView, visibleItems.length]); 
 
   return (
     <div id="history" ref={ref} className={styles.history_section}>
