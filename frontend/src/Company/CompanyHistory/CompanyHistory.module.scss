@@ -1,5 +1,133 @@
 @import '../../App.css';
 
+@keyframes slideFromRightTitle {
+  0% {
+    transform: translateX(100vw);
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 0.1;
+  }
+
+  45% {
+    opacity: 0.35;
+  }
+
+  60% {
+    opacity: 1;
+  }
+
+  74% {
+    transform: translateX(calc(var(--title-offset-x, 0px) + 30px));
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(var(--title-offset-x, 0px));
+    opacity: 1;
+  }
+}
+
+@keyframes slideFromLeft {
+  0% {
+    transform: translateX(-100vw);
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 0.1;
+  }
+
+  45% {
+    opacity: 0.35;
+  }
+
+  60% {
+    opacity: 1;
+  }
+
+  74% {
+    transform: translateX(30px);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideFromRightLine {
+  0% {
+    transform: translateX(100vw);
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 0.1;
+  }
+
+  45% {
+    opacity: 0.35;
+  }
+
+  60% {
+    opacity: 1;
+  }
+
+  74% {
+    transform: translateX(30px);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideFromRightDescription {
+  0% {
+    transform: translateX(100vw);
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 0.1;
+  }
+
+  45% {
+    opacity: 0.35;
+  }
+
+  60% {
+    opacity: 1;
+  }
+
+  74% {
+    transform: translateX(calc(var(--desc-offset-x, 0px) - 30px));
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(var(--desc-offset-x, 0px));
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .history_section {
   position: relative;
   width: 100%;
@@ -58,6 +186,12 @@
   line-height: 64px;
   color: var(--black-1D2E43);
   margin: 0 0 24px 0;
+  opacity: 0;
+  transform: translateX(100vw);
+
+  &.animate {
+    animation: slideFromRightTitle 2.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
 }
 
 @media screen and (min-width: 1600px) {
@@ -82,6 +216,12 @@
   font-size: 64px;
   line-height: 64px;
   color: var(--black-1D2E43);
+  opacity: 0;
+  transform: translateX(-100vw);
+
+  &.animate {
+    animation: slideFromLeft 2.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
 }
 
 @media screen and (min-width: 1600px) {
@@ -96,6 +236,12 @@
   height: 6px;
   background-color: var(--black-1D2E43);
   flex-shrink: 0;
+  opacity: 0;
+  transform: translateX(100vw);
+
+  &.animate {
+    animation: slideFromRightLine 2.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
 }
 
 .history_description {
@@ -103,6 +249,7 @@
   flex-direction: column;
   gap: 8px;
   max-width: 800px;
+  align-items: flex-start;
 }
 
 .description_line {
@@ -113,6 +260,13 @@
   line-height: 32px;
   color: var(--black-1D2E43);
   margin: 0;
+  text-align: left;
+  opacity: 0;
+  transform: translateX(100vw);
+
+  &.animate {
+    animation: slideFromRightDescription 2.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
 }
 
 @media screen and (min-width: 1600px) {
@@ -135,9 +289,15 @@
   align-items: flex-start;
   padding: 32px 0;
   border-bottom: 1px solid rgba(29, 46, 67, 0.1);
+  opacity: 0;
+  transform: translateY(50px);
 
   &:last-child {
     border-bottom: none;
+  }
+
+  &.animate {
+    animation: fadeInUp 0.6s ease-out forwards;
   }
 }
 
