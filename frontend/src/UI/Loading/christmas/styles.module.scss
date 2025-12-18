@@ -5,6 +5,14 @@
     --ball-start: null;
     --ball-mid: null;
 
+    --logo-dec-end: -30px;
+    --ball-three-position: 47%;
+
+    --rope-size: 2px;
+    --rope-offset: 4px;
+    --pimpa-width: 11px;
+    --pisma-height: 17.6px;
+    --pimpa-offset: -9px;
 }
 
 @mixin christmas-background {
@@ -20,94 +28,38 @@
     background-color: $christmas-bg-color;
 }
 
-@mixin position-circle($width,
-    $height,
-    $top: null,
-    $left: null,
-    $right: null,
-    $bottom: null,
-    $center-y: false) {
-    width: $width;
-    height: $height;
-    position: absolute;
-
-    @if $center-y ==true {
-        top: 50%;
-        transform: translateY(-50%);
-    }
-
-    @else {
-        @if $top !=null {
-            top: $top;
-        }
-
-        @if $bottom !=null {
-            bottom: $bottom;
-        }
-    }
-
-    @if $left !=null {
-        left: $left;
-    }
-
-    @if $right !=null {
-        right: $right;
-    }
-}
-
-@mixin circle {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    overflow: hidden;
-    background: radial-gradient(50% 50% at 50% 50%, #1D2E43 0%, #1D2E43 30%, #21344A 50%, #263D56 60%, #304D6B 70%, #426890 80%, #598DC0 90%, #75BBFD 100%);
-    box-shadow: 0 0 10px 0 rgb(79 126 173);
-    will-change: transform;
-
-    img {
-        // position: relative;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 50%;
-        will-change: transform;
-        transition: transform 0.3s ease;
-        z-index: 1;
-    }
-}
 
 .loading-container {
     width: 100%;
     height: 100dvh;
     @include christmas-background();
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.progres-bar {
-    position: absolute;
-    bottom: 10%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
 
-.circle-white {
-    width: 66px;
-    height: 66px;
+@mixin ball-white() {
+    width: var(--ball-size);
+    height: var(--ball-size);
     background-color: var(--white-F6F6F6);
     border-radius: 50%;
-    position: absolute;
 
     // пипка идущая вниз 
     &::before {
         content: '';
         position: absolute;
-        top: -9px;
+        top: var(--pimpa-offset);
         left: 50%;
         transform: translateX(-50%);
-        width: 11px;
-        height: 11px;
+        width: var(--pimpa-width);
+        height: var(--pisma-height);
         background: url('./images/pimpa-2-white.png') center/contain no-repeat;
         pointer-events: none;
+
+        animation: hide-drop 500ms linear forwards;
+        animation-delay: 2.6s;
     }
 
     // веревочка, идущая вверх от пимпы
@@ -117,60 +69,44 @@
         top: -100dvh; // начинаем от верхней границы экрана
         left: 50%;
         transform: translateX(-50%);
-        width: 2px;
-        height: calc(100dvh - 4px); // тянемся до пимпы
+        width: var(--rope-size);
+        height: calc(100dvh - var(--rope-offset)); // тянемся до пимпы
         background: var(--white-F6F6F6);
         border-radius: 6px;
+
+        animation: hide-rope 500ms linear forwards;
+        animation-delay: 2.6s;
     }
 
-    &--1 {
-        // --circleWhile1-top: 205px;
-        //width,height, top, left, right, bottom:, $center-y: false
-        @include position-circle(66px, 66px, 147px, 180px, null, 120px);
-        animation: whiteFloat1 1.5s linear 0s forwards, whiteFloat1Two 1s ease-in-out 1.5s forwards;
-
-        // убираем верёвку/пипку после движения
-        // задержка 2s = 1.5s первой + 0.5s оставшейся второй
-        &::before {
-            animation: pipDrop 500ms linear forwards;
-            animation-delay: 2.6s;
-        }
-
-        &::after {
-            animation: ropeHide 500ms linear forwards;
-            animation-delay: 2.6s;
-        }
+    @media (min-width: 320px) {
+        --pimpa-width: 3.5px;
+        --pisma-height: 5.5px;
+        --pimpa-offset: -3px;
+        --rope-size: 1px;
+        --rope-offset: 2px;
     }
 
-    &--2 {
-        //width,height, top, left, right, bottom:, $center-y: false
-        @include position-circle(66px, 66px, 145px, 685px);
-        animation: whiteFloat2 1.5s linear 0s forwards, whiteFloat2Two 1s ease-in 1.5s forwards;
+    @media (min-width: 768px) {
+        --pimpa-width: 7.8px;
+        --pisma-height: 12.5px;
+        --pimpa-offset: -6px;
+        --rope-size: 1.5px;
     }
 
-    &--3 {
-        //width, height, top, left, right, bottom:, $center-y: false
-        @include position-circle(66px, 66px, 545px, null, 185px);
-        animation: whiteFloat3 1.5s linear 0s forwards, whiteFloat3Two 1s ease-in-out 1.5s forwards;
-
-        // убираем верёвку/пипку после движения
-        &::before {
-            animation: pipDrop 500ms linear forwards;
-            animation-delay: 2.6s;
-        }
-
-        &::after {
-            animation: ropeHide 500ms linear forwards;
-            animation-delay: 2.6s;
-        }
+    @media (min-width: 1440px) {
+        --pimpa-width: 11px;
+        --pisma-height: 17.5px;
+        --pimpa-offset: -8px;
+        --rope-size: 2px;
     }
-}
 
-@mixin ball-white() {
-    width: var(--ball-size);
-    height: var(--ball-size);
-    background-color: white;
-    border-radius: 50%;
+    @media (min-width: 2560px) {
+        --pimpa-width: 19.5px;
+        --pisma-height: 31.2px;
+        --pimpa-offset: -17px;
+        --rope-size: 3.6px;
+        --logo-dec-end: -50px;
+    }
 }
 
 
@@ -198,46 +134,86 @@
         ball-second 1s ease-in 1.5s forwards;
 }
 
+.ball-three {
+    //41
+    --ball-size: 66px;
+    --ball-start: -172px;
+    --ball-mid: -131px;
+    position: absolute;
+    left: var(--ball-three-position);
+    transform: translateY(var(--ball-start));
+    @include ball-white;
+
+    animation:
+        ball-first 1.5s linear forwards,
+        ball-third 1s ease-in 1.5s forwards;
+}
+
 
 @media (min-width: 320px) {
     .ball-one {
         --ball-size: 20.6px;
-        // --ball-start: -186px;
-        // --ball-mid: -157px;
+        --ball-start: -47px;
+        --ball-mid: -75px;
     }
 
     .ball-two {
         --ball-size: 20.6px;
-        // --ball-start: 272px;
-        // --ball-mid: 243px;
+        --ball-start: 160px;
+        --ball-mid: 144px;
+    }
+
+    .ball-three {
+        --ball-three-position: 70%;
+        --ball-size: 28px;
+        --ball-start: -202px;
+        --ball-mid: -161px;
+        left: var(--ball-three-position);
     }
 }
 
 @media (min-width: 768px) {
+
+    //28
     .ball-one {
         --ball-size: 47px;
-        // --ball-start: -186px;
-        // --ball-mid: -157px;
+        --ball-start: -74px;
+        --ball-mid: -102px;
     }
 
+    // 16
     .ball-two {
         --ball-size: 47px;
-        // --ball-start: 272px;
-        // --ball-mid: 243px;
+        --ball-start: 108px;
+        --ball-mid: 92px;
+    }
+
+    .ball-three {
+        --ball-three-position: 47%;
+        --ball-size: 45.5px;
+        --ball-start: -110px;
+        --ball-mid: -69px;
+        left: var(--ball-three-position);
     }
 }
 
 @media (min-width: 1440px) {
     .ball-one {
         --ball-size: 66px;
-        // --ball-start: -186px;
-        // --ball-mid: -157px;
+        --ball-start: -115px;
+        --ball-mid: -143px;
     }
 
     .ball-two {
         --ball-size: 66px;
-        // --ball-start: 272px;
-        // --ball-mid: 243px;
+        --ball-start: 165px;
+        --ball-mid: 149px;
+    }
+
+    .ball-three {
+        --ball-size: 66px;
+        --ball-start: -174px;
+        --ball-mid: -131px;
     }
 }
 
@@ -252,6 +228,12 @@
         --ball-size: 117px;
         --ball-start: 272px;
         --ball-mid: 243px;
+    }
+
+    .ball-three {
+        --ball-size: 113px;
+        --ball-start: -275px;
+        --ball-mid: -243px;
     }
 }
 
@@ -276,19 +258,46 @@
     }
 }
 
+@keyframes ball-third {
+    from {
+        transform: translateY(var(--ball-mid));
+    }
+
+    to {
+        transform: translateY(-1000px);
+    }
+}
+
+
+
 
 
 .logo {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @media (min-width: 320px) {
+        gap: 6.72px;
+    }
+
+    @media (min-width: 768px) {
+        gap: 15.3px;
+    }
+
+    @media (min-width: 1440px) {
+        gap: 21.51px;
+    }
+
+    @media (min-width: 2560px) {
+        gap: 38.25px;
+        --logo-dec-end: -50px;
+    }
 
     &-wrap {
         position: relative;
+        z-index: 4;
         display: flex;
-        // gap: 32px;
 
         @media (min-width: 320px) {
             gap: 10px;
@@ -311,14 +320,9 @@
         overflow: hidden;
 
         img {
-            animation: logo2Rise 1s linear forwards;
+            animation: hide-img 1s linear forwards;
             animation-delay: 1.5s;
         }
-    }
-
-    &-dec {
-        position: absolute;
-        bottom: -41.5px;
     }
 
     &::before {
@@ -333,186 +337,9 @@
 
 }
 
-@keyframes test {
+@keyframes hide-drop {
     0% {
-        transform: translateY(165px);
-    }
-
-    100% {
-        transform: translateY(145px);
-    }
-}
-
-@keyframes testTwo {
-    0% {
-        transform: translateY(145px);
-    }
-
-    100% {
-        transform: translateY(0);
-    }
-}
-
-
-.circle {
-    @include circle();
-}
-
-.circle-wrap {
-    position: absolute;
-    width: 374px;
-    height: 374px;
-
-    &::before {
-        content: '';
-        position: absolute;
-        top: -30px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 42px;
-        height: 42px;
-        background: url('./images/pimpa.png') center/contain no-repeat;
-        pointer-events: none;
-    }
-
-    // веревочка, идущая вверх от пимпы
-    &::after {
-        content: '';
-        position: absolute;
-        top: -100dvh; // начинаем от верхней границы экрана
-        left: 50%;
-        transform: translateX(-50%);
-        width: 2px;
-        height: calc(100dvh - 25px); // тянемся до пимпы
-        background: #75BBFD;
-        border-radius: 6px;
-    }
-
-    // Левый шар
-    &:nth-of-type(1) {
-        // --circle1-top: 205px;
-        @include position-circle(374px, 374px, 205px, 115px);
-        animation: circleDropLeft 1.5s linear 0s forwards, circleDropLeftTwo 1s ease-in 1.5s forwards;
-
-        img {
-            animation: circleImgLeft 1.5s linear forwards;
-        }
-    }
-
-    // Центральный шар
-    &:nth-of-type(2) {
-        @include position-circle(224px, 224px, 514px, 691px);
-        animation: circleDropCenter 1.5s linear 0s forwards, circleDropCenterTwo 1s ease-in 1.5s forwards;
-
-        img {
-            animation: circleImgCenter 1.5s linear forwards;
-        }
-    }
-
-    // Правый шар
-    &:nth-of-type(3) {
-        @include position-circle(445px, 445px, 103.6px, 896px);
-        animation: circleDropRight 1.5s linear 0s forwards, circleDropRightTwo 1s ease-in 1.5s forwards;
-
-        img {
-            animation: circleImgRight 1.5s linear forwards;
-        }
-    }
-}
-
-
-@keyframes circleDropLeftTwo {
-    0% {
-        top: var(--circle1-top, 205px);
-        transform: translateY(20px);
-    }
-
-    100% {
-        top: -828px;
-        transform: translateY(0);
-    }
-}
-
-@keyframes circleImgLeft {
-    0% {
-        transform: translateY(0);
-    }
-
-    100% {
-        transform: translateY(-20px);
-    }
-}
-
-@keyframes circleDropCenter {
-    0% {
-        transform: translateY(0);
-    }
-
-    100% {
-        transform: translateY(-20px);
-    }
-}
-
-@keyframes circleDropCenterTwo {
-    0% {
-        top: var(--circle2-top, 514px);
-        // top: 514px;
-        transform: translateY(-20px);
-    }
-
-    100% {
-        top: -940px;
-        transform: translateY(0);
-    }
-}
-
-@keyframes circleImgCenter {
-    0% {
-        transform: translateY(0);
-    }
-
-    100% {
-        transform: translateY(20px);
-    }
-}
-
-@keyframes circleDropRight {
-    0% {
-        transform: translateY(0);
-    }
-
-    100% {
-        transform: translateY(39px);
-    }
-}
-
-@keyframes circleDropRightTwo {
-    0% {
-        top: var(--circle3-top, 103.6px);
-        // top: 103.6px;
-        transform: translateY(39px);
-    }
-
-    100% {
-        top: var(--circle3-top-100, -479px);
-        // top: -479px;
-        transform: translateY(0);
-    }
-}
-
-@keyframes circleImgRight {
-    0% {
-        transform: translateY(0);
-    }
-
-    100% {
-        transform: translateY(-39px);
-    }
-}
-
-@keyframes pipDrop {
-    0% {
-        top: var(--pip-top, -9px);
+        top: var(--pimpa-offset);
     }
 
     100% {
@@ -520,7 +347,7 @@
     }
 }
 
-@keyframes ropeHide {
+@keyframes hide-rope {
     0% {
         top: -100dvh;
     }
@@ -530,347 +357,12 @@
     }
 }
 
-@keyframes whiteFloat1 {
+@keyframes hide-img {
     0% {
-        transform: translate(-50%, -50%) translateY(0);
+        transform: translateY(0);
     }
 
     100% {
-        transform: translate(-50%, -50%) translateY(-28px);
-    }
-}
-
-@keyframes whiteFloat1Two {
-    0% {
-        top: var(--circleWhile1-top, 147px);
-        // top: 147px;
-        transform: translate(-50%, -50%) translateY(-28px);
-    }
-
-    100% {
-        top: 50%;
-        transform: translate(-50%, -50%) translateY(0);
-    }
-}
-
-@keyframes whiteFloat2 {
-    0% {
-        transform: translate(-50%, -50%) translateY(0);
-    }
-
-    100% {
-        transform: translate(-50%, -50%) translateY(41px);
-    }
-}
-
-@keyframes whiteFloat2Two {
-    0% {
-        transform: translate(-50%, -50%) translateY(41px);
-    }
-
-    100% {
-        top: var(--circleWhile2-top, -231px);
-        // top: -231px;
-        transform: translate(-50%, -50%) translateY(0);
-    }
-}
-
-@keyframes whiteFloat3 {
-    0% {
-        transform: translate(50%, -50%) translateY(0);
-    }
-
-    100% {
-        transform: translate(50%, -50%) translateY(-16px);
-    }
-}
-
-@keyframes whiteFloat3Two {
-    0% {
-        top: var(--circleWhile3-top, 545px);
-        // top: 545px;
-        transform: translate(50%, -50%) translateY(-16px);
-    }
-
-    100% {
-        top: 50%;
-        transform: translate(50%, -50%) translateY(0);
-    }
-}
-
-@keyframes logo2Rise {
-    0% {
-        transform: scaleY(1);
-        transform-origin: top center;
-    }
-
-    100% {
-        transform: scaleY(0);
-        transform-origin: top center;
-    }
-}
-
-@media (min-width: 375px) and (max-width: 767px) {
-
-    .loading-container {
-        overflow: clip;
-    }
-
-    .logo {
-        &-dec {
-            bottom: -15.5px;
-        }
-    }
-
-    .circle-wrap {
-        &:nth-of-type(1) {
-            --circle1-top: 68.68px;
-            @include position-circle(274px, 274px, 68.68px, -55px);
-        }
-
-        &:nth-of-type(2) {
-            --circle2-top: 542px;
-            @include position-circle(200px, 200px, 542px, 26px);
-        }
-
-        &:nth-of-type(3) {
-            --circle3-top: 277px;
-            @include position-circle(236px, 236px, 277px, 221px);
-        }
-    }
-
-    .circle-white {
-        --pip-top: -3px;
-
-        &::before {
-            width: 4px;
-            height: 4px;
-            top: -3px;
-        }
-
-        &::after {
-            width: 1px;
-            height: calc(100dvh - 2px);
-        }
-
-        &--1 {
-            --circleWhile1-top: 279.7px;
-            @include position-circle(20.6px, 20.6px, 279.7px, 19.75px);
-        }
-
-        &--2 {
-            --circleWhile2-top: -158px;
-            @include position-circle(28px, 28px, 158px, 264px);
-        }
-
-        &--3 {
-            --circleWhile3-top: 545px;
-            @include position-circle(20.6px, 20.6px, 545px, null, 19.25px);
-        }
-    }
-}
-
-@media (min-width: 768px) {
-
-    .loading-container {
-        overflow: clip;
-    }
-
-    .circle-wrap {
-        &:nth-of-type(1) {
-            --circle1-top: 90.68px;
-            @include position-circle(274px, 274px, 90.68px, -55px);
-            // transform: translateX(-50%);
-        }
-
-        &:nth-of-type(2) {
-            --circle2-top: 642px;
-            @include position-circle(200px, 200px, 642px, 380px);
-        }
-
-        &:nth-of-type(3) {
-            --circle3-top: 277px;
-            @include position-circle(296px, 296px, 277px, 521px);
-        }
-    }
-
-    .circle-white {
-        &--1 {
-            --circleWhile1-top: 147px;
-            @include position-circle(47px, 47px, 147px, 100px);
-        }
-
-        &--2 {
-            --circleWhile2-top: -158px;
-            @include position-circle(47px, 47px, 158px, 364px);
-        }
-
-        &--3 {
-            --circleWhile3-top: 645px;
-            @include position-circle(47px, 47px, 645px, null, 100px);
-        }
-    }
-}
-
-@media (min-width: 1024px) {
-
-    .loading-container {
-        overflow: clip;
-    }
-
-    .circle-wrap {
-        &:nth-of-type(1) {
-            --circle1-top: 205px;
-            @include position-circle(374px, 374px, 205px, 115px);
-        }
-
-        &:nth-of-type(2) {
-            --circle2-top: 514px;
-            @include position-circle(224px, 224px, 514px, 691px);
-        }
-
-        &:nth-of-type(3) {
-            --circle3-top: 103.6px;
-            @include position-circle(292px, 292px, 103.6px, null, 82px);
-        }
-    }
-
-    .circle-white {
-        &--1 {
-            --circleWhile1-top: 147px;
-            @include position-circle(47px, 47px, 147px, 128px);
-        }
-
-        &--2 {
-            --circleWhile2-top: -158px;
-            @include position-circle(47px, 47px, 158px, 364px);
-        }
-
-        &--3 {
-            --circleWhile3-top: 645px;
-            @include position-circle(47px, 47px, 645px, null, 131px);
-        }
-    }
-}
-
-@media (min-width: 1440px) {
-
-    .circle-wrap {
-        &:nth-of-type(1) {
-            --circle1-top: 205px;
-            @include position-circle(374px, 374px, 205px, 115px);
-        }
-
-        &:nth-of-type(2) {
-            --circle2-top: 514px;
-            @include position-circle(224px, 224px, 514px, 691px);
-        }
-
-        &:nth-of-type(3) {
-            --circle3-top: 103.6px;
-            @include position-circle(445px, 445px, 103.6px, 896px);
-        }
-    }
-
-    .circle-white {
-        &--1 {
-            --circleWhile1-top: 147px;
-            @include position-circle(66px, 66px, 147px, 180px, null, 120px);
-        }
-
-        &--2 {
-            --circleWhile2-top: -145px;
-            @include position-circle(66px, 66px, 145px, 685px);
-        }
-
-        &--3 {
-            --circleWhile3-top: 545px;
-            @include position-circle(66px, 66px, 545px, null, 185px);
-        }
-    }
-}
-
-
-@media (min-width: 1728px) {
-    .circle-wrap {
-        &:nth-of-type(1) {
-            --circle1-top: 324px;
-            @include position-circle(424px, 424px, 324px, 220px);
-        }
-
-        &:nth-of-type(2) {
-            --circle2-top: 630px;
-            @include position-circle(298px, 298px, 630px, 800px);
-        }
-
-        &:nth-of-type(3) {
-            --circle3-top: 185px;
-            --circle3-top-100: -779px;
-            @include position-circle(532px, 532px, 185px, 1050px);
-        }
-    }
-
-    .circle-white {
-        &--1 {
-            --circleWhile1-top: 147px;
-            // @include position-circle(117.3px, 117.3px, 219px, 320px);
-            @include position-circle(66px, 66px, 147px, 345px);
-        }
-
-        &--2 {
-            --circleWhile2-top: -263px;
-            // @include position-circle(117.3px, 117.3px, 263px, 1217px);
-            @include position-circle(66px, 66px, 145px, 685px);
-        }
-
-        &--3 {
-            --circleWhile3-top: 922px;
-            // @include position-circle(117.3px, 117.3px, 922px, 1425px);
-            @include position-circle(66px, 66px, 922px, 1310px);
-        }
-    }
-}
-
-// брейкпоинт для ультрашироких
-@media (min-width: 2560px) {
-    body {
-        width: min(100vw, 2560px);
-        margin: 0 auto;
-        @include christmas-background();
-    }
-
-    .circle-wrap {
-        &:nth-of-type(1) {
-            --circle1-top: 334px;
-            @include position-circle(624px, 624px, 334px, 240px);
-        }
-
-        &:nth-of-type(2) {
-            --circle2-top: 852px;
-            @include position-circle(368px, 368px, 852px, 1235px);
-        }
-
-        &:nth-of-type(3) {
-            --circle3-top: 175px;
-            --circle3-top-100: -779px;
-            @include position-circle(732px, 732px, 175px, 1622px);
-        }
-    }
-
-    .circle-white {
-        &--1 {
-            --circleWhile1-top: 219px;
-            @include position-circle(117.3px, 117.3px, 219px, 320px);
-        }
-
-        &--2 {
-            --circleWhile2-top: -263px;
-            @include position-circle(117.3px, 117.3px, 263px, 1217px);
-        }
-
-        &--3 {
-            --circleWhile3-top: 922px;
-            @include position-circle(117.3px, 117.3px, 922px, 2114px);
-        }
+        transform: translateY(var(--logo-dec-end));
     }
 }
