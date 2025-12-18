@@ -27,6 +27,7 @@ const Loading = ({ isReady = false, onFinish }) => {
             </picture>
 
             <div className={styles['ball-two']} />
+            <div className={styles['ball-three']} />
           </div>
           <div className={styles['logo-decoration']}>
             <picture>
@@ -38,16 +39,13 @@ const Loading = ({ isReady = false, onFinish }) => {
           </div>
         </div>
 
-        {/* {circles?.map((circle) => (
+        {circles?.map((circle) => (
           <div key={circle.id} className={styles['circle-wrap']}>
             <div className={styles[`${circle.classStyle}`]}>
               <img src={circle.src} alt={circle.alt} />
             </div>
           </div>
         ))}
-        {['circle-white--1', 'circle-white--2', 'circle-white--3'].map((cls, index) => (
-          <div key={`white-${index}`} className={`${styles['circle-white']} ${styles[cls]}`} />
-        ))} */}
         {/* <div className={styles['progres-bar']}>{<LoadingProgress isReady={isReady} onFinish={onFinish} />}</div> */}
       </section>
     </Snowfall>
