@@ -1,3 +1,12 @@
+:root {
+    --ball-size: null;
+    --initial-position: null;
+
+    --ball-start: null;
+    --ball-mid: null;
+
+}
+
 @mixin christmas-background {
     $christmas-bg-color: rgba(29, 46, 67, 1);
     $christmas-bg-gradient: linear-gradient(to top,
@@ -157,6 +166,118 @@
     }
 }
 
+@mixin ball-white() {
+    width: var(--ball-size);
+    height: var(--ball-size);
+    background-color: white;
+    border-radius: 50%;
+}
+
+
+.ball-one {
+    --ball-size: 66px;
+    --ball-start: -115px;
+    --ball-mid: -143px;
+    transform: translateY(var(--ball-start));
+
+    @include ball-white;
+    animation:
+        ball-first 1.5s linear forwards,
+        ball-second 1s ease-in 1.5s forwards;
+}
+
+.ball-two {
+    --ball-size: 66px;
+    --ball-start: 165px;
+    --ball-mid: 149px;
+    transform: translateY(var(--ball-start));
+
+    @include ball-white;
+    animation:
+        ball-first 1.5s linear forwards,
+        ball-second 1s ease-in 1.5s forwards;
+}
+
+
+@media (min-width: 320px) {
+    .ball-one {
+        --ball-size: 20.6px;
+        // --ball-start: -186px;
+        // --ball-mid: -157px;
+    }
+
+    .ball-two {
+        --ball-size: 20.6px;
+        // --ball-start: 272px;
+        // --ball-mid: 243px;
+    }
+}
+
+@media (min-width: 768px) {
+    .ball-one {
+        --ball-size: 47px;
+        // --ball-start: -186px;
+        // --ball-mid: -157px;
+    }
+
+    .ball-two {
+        --ball-size: 47px;
+        // --ball-start: 272px;
+        // --ball-mid: 243px;
+    }
+}
+
+@media (min-width: 1440px) {
+    .ball-one {
+        --ball-size: 66px;
+        // --ball-start: -186px;
+        // --ball-mid: -157px;
+    }
+
+    .ball-two {
+        --ball-size: 66px;
+        // --ball-start: 272px;
+        // --ball-mid: 243px;
+    }
+}
+
+@media (min-width: 2560px) {
+    .ball-one {
+        --ball-size: 117px;
+        --ball-start: -186px;
+        --ball-mid: -157px;
+    }
+
+    .ball-two {
+        --ball-size: 117px;
+        --ball-start: 272px;
+        --ball-mid: 243px;
+    }
+}
+
+
+@keyframes ball-first {
+    from {
+        transform: translateY(var(--ball-start));
+    }
+
+    to {
+        transform: translateY(var(--ball-mid));
+    }
+}
+
+@keyframes ball-second {
+    from {
+        transform: translateY(var(--ball-mid));
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+
+
 .logo {
     position: absolute;
     top: 50%;
@@ -165,6 +286,28 @@
     z-index: 2;
 
     &-wrap {
+        position: relative;
+        display: flex;
+        // gap: 32px;
+
+        @media (min-width: 320px) {
+            gap: 10px;
+        }
+
+        @media (min-width: 768px) {
+            gap: 22px;
+        }
+
+        @media (min-width: 1440px) {
+            gap: 32px;
+        }
+
+        @media (min-width: 2560px) {
+            gap: 57px;
+        }
+    }
+
+    &-decoration {
         overflow: hidden;
 
         img {
@@ -188,6 +331,26 @@
         z-index: -1;
     }
 
+}
+
+@keyframes test {
+    0% {
+        transform: translateY(165px);
+    }
+
+    100% {
+        transform: translateY(145px);
+    }
+}
+
+@keyframes testTwo {
+    0% {
+        transform: translateY(145px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
 }
 
 
@@ -257,15 +420,6 @@
     }
 }
 
-@keyframes circleDropLeft {
-    0% {
-        transform: translateY(0);
-    }
-
-    100% {
-        transform: translateY(20px);
-    }
-}
 
 @keyframes circleDropLeftTwo {
     0% {
@@ -462,11 +616,11 @@
         overflow: clip;
     }
 
-        .logo {
-            &-dec {
-                bottom: -15.5px;
-            }
+    .logo {
+        &-dec {
+            bottom: -15.5px;
         }
+    }
 
     .circle-wrap {
         &:nth-of-type(1) {
