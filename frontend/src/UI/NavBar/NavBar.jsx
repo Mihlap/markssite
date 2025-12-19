@@ -24,11 +24,8 @@ const NavBar = () => {
   const container = useRef();
 
   // сustom hooks 
-  const { pathname, hash, isCompany, isVacancyDetail, isInternship, linkBack, textBack, isHrPortal } = useHrNavMeta();
+  const { pathname, hash, isCompany, isVacancyDetail, linkBack, textBack, isHrPortal } = useHrNavMeta();
   const { primary, cta } = useNavLinks();
-
-  console.log(linkBack, textBack);
-  console.log(isInternship);
 
   const goToCompanySection = (hashOrId) => {
     if (!hashOrId) return;
