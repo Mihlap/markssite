@@ -13,6 +13,14 @@
     --pimpa-width: 11px;
     --pisma-height: 17.6px;
     --pimpa-offset: -9px;
+
+    --circle-blue-width: 374px;
+    --circle-blue-height: 374px;
+    --x: 0px;
+    --y: 0px;
+    --mid: 0px;
+    --end: 0px;
+    --img-position: null;
 }
 
 @mixin christmas-background {
@@ -37,6 +45,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: clip;
 }
 
 
@@ -318,6 +327,7 @@
 
     &-decoration {
         overflow: hidden;
+        z-index: 3;
 
         img {
             animation: hide-img 1s linear forwards;
@@ -357,12 +367,211 @@
     }
 }
 
-@keyframes hide-img {
-    0% {
+// @keyframes hide-img {
+//     0% {
+//         transform: translateY(0);
+//     }
+
+//     100% {
+//         transform: translateY(var(--logo-dec-end));
+//     }
+// }
+
+
+@mixin circle-blue() {
+    width: var(--circle-blue-width);
+    height: var(--circle-blue-height);
+    border-radius: 50%;
+    overflow: hidden;
+    background: radial-gradient(50% 50% at 50% 50%, #1D2E43 0%, #1D2E43 30%, #21344A 50%, #263D56 60%, #304D6B 70%, #426890 80%, #598DC0 90%, #75BBFD 100%);
+    box-shadow: 0 0 10px 0 rgb(79 126 173);
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+        will-change: transform;
+        transition: transform 0.3s ease;
+        z-index: 1;
+
+        animation: img-blue-ball 1.5s linear forwards;
+    }
+}
+
+
+.circle-wrap {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform:
+        translate(-50%, -50%) translate(var(--x, 0), var(--y, 0));
+}
+
+.circle {
+    @include circle-blue();
+}
+
+.circle-left {
+    --img-position: -20px;
+    animation: blue-ball-first 1.5s linear forwards,
+        blue-ball-second 1s ease-in 1.5s forwards;
+}
+
+.circle-center {
+    --img-position: 20px;
+    animation: blue-ball-first 1.5s linear forwards,
+        blue-ball-second 1s ease-in 1.5s forwards;
+}
+
+.circle-right {
+    --img-position: -20px;
+    animation: blue-ball-first 1.5s linear forwards,
+        blue-ball-second 1s ease-in 1.5s forwards;
+}
+
+   @media (min-width: 320px) {
+    .circle-left {
+            --circle-blue-width: 274px;
+            --circle-blue-height: 274px;
+            --x: -92px;
+            --y: -166px;
+            --mid: -146px;
+            --end: calc(-100dvh - 269px);
+        }
+    
+        .circle-center {
+            --circle-blue-width: 200px;
+            --circle-blue-height: 200px;
+            --x: -65px;
+            --y: 220px;
+            --mid: 240px;
+            --end: calc(-100dvh - 214px);
+        }
+    
+        .circle-right {
+            --circle-blue-width: 236px;
+            --circle-blue-height: 236px;
+            --x: 135px;
+            --y: -10px;
+            --mid: -30px;
+            --end: calc(-100dvh - 27px);
+        }
+   }
+
+   @media (min-width: 768px) {
+    .circle-left {
+            --circle-blue-width: 249px;
+            --circle-blue-height: 249px;
+            --x: -295px;
+            --y: -10px;
+            --mid: 10px;
+            --end: calc(-100dvh - 269px);
+        }
+    
+        .circle-center {
+            --circle-blue-width: 147px;
+            --circle-blue-height: 147px;
+            --x: 50px;
+            --y: 250px;
+            --mid: 230px;
+            --end: calc(-100dvh - 214px);
+        }
+    
+        .circle-right {
+            --circle-blue-width: 292px;
+            --circle-blue-height: 292px;
+            --x: 282px;
+            --y: -35px;
+            --mid: -15px;
+            --end: calc(-100dvh - 27px);
+        }
+   }
+
+   @media (min-width: 1440px) {
+       .circle-left {
+           --circle-blue-width: 374px;
+           --circle-blue-height: 374px;
+           --x: -420px;
+           --y: 0px;
+           --mid: 20px;
+           --end: calc(-100dvh - 269px);
+       }
+
+       .circle-center {
+           --circle-blue-width: 224px;
+           --circle-blue-height: 224px;
+           --x: 20px;
+           --y: 240px;
+           --mid: 220px;
+           --end: calc(-100dvh - 214px);
+       }
+
+       .circle-right {
+           --circle-blue-width: 445px;
+           --circle-blue-height: 445px;
+           --x: 400px;
+           --y: -50px;
+           --mid: -30px;
+           --end: calc(-100dvh - 27px);
+       }
+   }
+
+   @media (min-width: 2560px) {
+        .circle-left {
+                --circle-blue-width: 624px;
+                --circle-blue-height: 624px;
+                --x: -730px;
+                --y: 0px;
+                --mid: 20px;
+                --end: calc(-100dvh - 269px);
+            }
+        
+            .circle-center {
+                --circle-blue-width: 368px;
+                --circle-blue-height: 368px;
+                --x: 110px;
+                --y: 380px;
+                --mid: 360px;
+                --end: calc(-100dvh - 214px);
+            }
+        
+            .circle-right {
+                --circle-blue-width: 732px;
+                --circle-blue-height: 732px;
+                --x: 710px;
+                --y: -80px;;
+                --mid: -70px;
+                --end: calc(-100dvh - 27px);
+            }
+   }
+
+@keyframes blue-ball-first {
+    from {
+        transform: translate(-50%, -50%) translate(var(--x), var(--y));
+    }
+
+    to {
+        transform: translate(-50%, -50%) translate(var(--x), var(--mid));
+    }
+}
+
+@keyframes blue-ball-second {
+    from {
+        transform: translate(-50%, -50%) translate(var(--x), var(--mid));
+    }
+
+    to {
+        transform: translate(-50%, -50%) translate(var(--x), var(--end));
+    }
+}
+
+@keyframes img-blue-ball {
+    from {
         transform: translateY(0);
     }
 
-    100% {
-        transform: translateY(var(--logo-dec-end));
+    to {
+        transform: translateY(var(--img-position));
     }
 }

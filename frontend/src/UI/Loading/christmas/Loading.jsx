@@ -39,9 +39,9 @@ const Loading = ({ isReady = false, onFinish }) => {
           </div>
         </div>
 
-        {circles?.map((circle) => (
-          <div key={circle.id} className={styles['circle-wrap']}>
-            <div className={styles[`${circle.classStyle}`]}>
+        {circles.map((circle) => (
+          <div key={circle.id} className={`${styles['circle-wrap']} ${styles[circle.wrapClass]}`}>
+            <div className={styles.circle}>
               <img src={circle.src} alt={circle.alt} />
             </div>
           </div>
