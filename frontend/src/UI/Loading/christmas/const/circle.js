@@ -7,19 +7,19 @@ export const circles = [
         id: 1,
         src: circle1,
         alt: 'Circle 1',
-        classStyle: "circle"
+        wrapClass: "circle-left"
 
     },
     {
         id: 2,
         src: circle2,
         alt: 'Circle 2',
-        classStyle: "circle"
+        wrapClass: "circle-center"
     },
     {
         id: 3,
         src: circle3,
         alt: 'Circle 3',
-        classStyle: "circle"
+        wrapClass: "circle-right"
     },
 ];
