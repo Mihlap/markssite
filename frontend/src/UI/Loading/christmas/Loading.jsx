@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import Snowfall from '../Snow/Snowfall';
 import { circles } from './const/circle';
 import logoMobile from './images/logo-phone.svg';
@@ -12,6 +13,38 @@ import styles from './styles.module.scss';
 import LoadingProgress from '../../../Loading/LoadingProgress';
 
 const Loading = ({ isReady = false, onFinish }) => {
+  const MIN_LOADER_DURATION_MS = 3500;
+  const startTimeRef = useRef(Date.now());
+  const finishTimeoutRef = useRef(null);
+  const finishRequestedRef = useRef(false);
+
+  useEffect(() => {
+    startTimeRef.current = Date.now();
+
+    return () => {
+      if (finishTimeoutRef.current) {
+        clearTimeout(finishTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  // Держим лоудер на экране минимум 3.5s, чтобы анимации успели завершиться
+  const handleFinishRequest = () => {
+    if (finishRequestedRef.current) return;
+    finishRequestedRef.current = true;
+
+    const elapsed = Date.now() - startTimeRef.current;
+    const remaining = MIN_LOADER_DURATION_MS - elapsed;
+
+    if (remaining > 0) {
+      finishTimeoutRef.current = setTimeout(() => {
+        onFinish?.();
+      }, remaining);
+    } else {
+      onFinish?.();
+    }
+  };
+
   return (
     <Snowfall>
       <section className={styles['loading-container']}>
@@ -46,7 +79,14 @@ const Loading = ({ isReady = false, onFinish }) => {
             </div>
           </div>
         ))}
-        {/* <div className={styles['progres-bar']}>{<LoadingProgress isReady={isReady} onFinish={onFinish} />}</div> */}
+        <div className={styles['progres-bar']}>
+          {
+            <LoadingProgress
+              isReady={isReady}
+              onFinish={handleFinishRequest}
+            />
+          }
+        </div>
       </section>
     </Snowfall>
   );
