@@ -53,6 +53,26 @@
     overflow: clip;
 }
 
+.progres-bar {
+    position: absolute;
+
+
+        @media (min-width: 320px) {
+               top: 55%;
+            }
+        
+            @media (min-width: 768px) {
+                top: 60%;
+            }
+        
+            @media (min-width: 1440px) {
+                top: 65%;
+            }
+        
+            @media (min-width: 2560px) {
+              
+            }
+}
 
 @mixin ball-white() {
     width: var(--ball-size);
@@ -282,10 +302,6 @@
     }
 }
 
-
-
-
-
 .logo {
     display: flex;
     flex-direction: column;
@@ -446,20 +462,20 @@
 
 .circle-left {
     --img-position: -20px;
-    // animation: blue-ball-first 1.5s linear forwards,
-    //     blue-ball-second 1s ease-in 1.5s forwards;
+    animation: blue-ball-first 1.5s linear forwards,
+        blue-ball-second 1s ease-in 1.5s forwards;
 }
 
 .circle-center {
     --img-position: 20px;
-    // animation: blue-ball-first 1.5s linear forwards,
-    //     blue-ball-second 1s ease-in 1.5s forwards;
+    animation: blue-ball-first 1.5s linear forwards,
+        blue-ball-second 1s ease-in 1.5s forwards;
 }
 
 .circle-right {
     --img-position: -20px;
-    // animation: blue-ball-first 1.5s linear forwards,
-    //     blue-ball-second 1s ease-in 1.5s forwards;
+    animation: blue-ball-first 1.5s linear forwards,
+        blue-ball-second 1s ease-in 1.5s forwards;
 }
 
    @media (min-width: 320px) {

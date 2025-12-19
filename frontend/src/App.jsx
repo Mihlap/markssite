@@ -29,7 +29,7 @@ import PageFade from './UI/PageFade/PageFade';
 import ButtonAdmin from './UI/ButtonAdmin/ButtonAdmin';
 import CustomCursor from './UI/CustomCursor/CustomCursor';
 import CookieComponent from './UI/CookieComponent/CookieComponent';
-// import LoadingNew from './Loading/LoadingNew';
+// import Loading from './Loading/LoadingNew';
 import Loading from './UI/Loading/christmas/Loading';
 
 const Header = lazy(() => import('./Header/Header'));
@@ -147,14 +147,9 @@ export default function App() {
               <ButtonAdmin user={user} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} />
             )}
 
-            {/* {!isAdminPage && !isNavPreviewPage && <NavBar />} */}
+            {!isAdminPage && !isNavPreviewPage && <NavBar />}
 
             <Routes location={location}>
-
-              <Route
-                path="/test"
-                element={<Loading/>}
-              />
               <Route
                 path="/"
                 element={
@@ -426,7 +421,7 @@ export default function App() {
 
             <CookieComponent />
 
-            {/* {!isFooterFormPage && showNavbarFooter && currentPage !== 'add' && (
+            {!isFooterFormPage && showNavbarFooter && currentPage !== 'add' && (
               <>
                 {isPortalPage ? (
                   <Footer
@@ -444,7 +439,7 @@ export default function App() {
                   />
                 )}
               </>
-            )} */}
+            )}
 
             {showNavbarFooter && currentPage !== 'add' && <CustomCursor />}
           </div>
