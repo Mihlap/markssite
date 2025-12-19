@@ -21,6 +21,11 @@
     --mid: 0px;
     --end: 0px;
     --img-position: null;
+
+    --rope-blue-size: 2px;
+    --pimpa-blue-width: 48.4px;
+    --pimpa-blue-height: 48.4px;
+    --pimpa-blue-offset: -30px;
 }
 
 @mixin christmas-background {
@@ -367,15 +372,15 @@
     }
 }
 
-// @keyframes hide-img {
-//     0% {
-//         transform: translateY(0);
-//     }
+@keyframes hide-img {
+    0% {
+        transform: translateY(0);
+    }
 
-//     100% {
-//         transform: translateY(var(--logo-dec-end));
-//     }
-// }
+    100% {
+        transform: translateY(var(--logo-dec-end));
+    }
+}
 
 
 @mixin circle-blue() {
@@ -410,28 +415,59 @@
 
 .circle {
     @include circle-blue();
+
+        &::before {
+                content: '';
+                position: absolute;
+                top: var(--pimpa-blue-offset);
+                left: 50%;
+                transform: translateX(-50%);
+                width: var(--pimpa-blue-width);
+                height: var(--pimpa-blue-height);
+                background: url('./images/pimpa.png') center/contain no-repeat;
+                pointer-events: none;
+                z-index: -1;
+            }
+        
+            // веревочка, идущая вверх от пимпы
+            &::after {
+                content: '';
+                position: absolute;
+                top: -100dvh; // начинаем от верхней границы экрана
+                left: 50%;
+                transform: translateX(-50%);
+                width: var(--rope-blue-size);
+                height: calc(100dvh - 10px); // тянемся до пимпы
+                background: #75BBFD;
+                border-radius: 6px;
+                z-index: -2;
+            }
 }
 
 .circle-left {
     --img-position: -20px;
-    animation: blue-ball-first 1.5s linear forwards,
-        blue-ball-second 1s ease-in 1.5s forwards;
+    // animation: blue-ball-first 1.5s linear forwards,
+    //     blue-ball-second 1s ease-in 1.5s forwards;
 }
 
 .circle-center {
     --img-position: 20px;
-    animation: blue-ball-first 1.5s linear forwards,
-        blue-ball-second 1s ease-in 1.5s forwards;
+    // animation: blue-ball-first 1.5s linear forwards,
+    //     blue-ball-second 1s ease-in 1.5s forwards;
 }
 
 .circle-right {
     --img-position: -20px;
-    animation: blue-ball-first 1.5s linear forwards,
-        blue-ball-second 1s ease-in 1.5s forwards;
+    // animation: blue-ball-first 1.5s linear forwards,
+    //     blue-ball-second 1s ease-in 1.5s forwards;
 }
 
    @media (min-width: 320px) {
     .circle-left {
+        --rope-blue-size: 2.2px;
+        --pimpa-blue-offset: -19px;
+            --pimpa-blue-width: 35.4px;
+            --pimpa-blue-height: 35.4px;
             --circle-blue-width: 274px;
             --circle-blue-height: 274px;
             --x: -92px;
@@ -441,6 +477,10 @@
         }
     
         .circle-center {
+                    --rope-blue-size: 2.2px;
+            --pimpa-blue-offset: -19px;
+                --pimpa-blue-width: 35.4px;
+                --pimpa-blue-height: 35.4px;
             --circle-blue-width: 200px;
             --circle-blue-height: 200px;
             --x: -65px;
@@ -450,6 +490,10 @@
         }
     
         .circle-right {
+                    --rope-blue-size: 2.2px;
+            --pimpa-blue-offset: -19px;
+                --pimpa-blue-width: 35.4px;
+                --pimpa-blue-height: 35.4px;
             --circle-blue-width: 236px;
             --circle-blue-height: 236px;
             --x: 135px;
@@ -461,6 +505,12 @@
 
    @media (min-width: 768px) {
     .circle-left {
+                --rope-blue-size: 2.6px;
+
+            --pimpa-blue-offset: -19px;
+            --pimpa-blue-width: 32.3px;
+            --pimpa-blue-height: 32.3px;
+            
             --circle-blue-width: 249px;
             --circle-blue-height: 249px;
             --x: -295px;
@@ -470,6 +520,11 @@
         }
     
         .circle-center {
+                    --rope-blue-size: 2.6px;
+
+               --pimpa-blue-offset: -19px;
+            --pimpa-blue-width: 32.3px;
+            --pimpa-blue-height: 32.3px;
             --circle-blue-width: 147px;
             --circle-blue-height: 147px;
             --x: 50px;
@@ -479,6 +534,11 @@
         }
     
         .circle-right {
+                    --rope-blue-size: 2.6px;
+
+               --pimpa-blue-offset: -19px;
+            --pimpa-blue-width: 32.3px;
+            --pimpa-blue-height: 32.3px;
             --circle-blue-width: 292px;
             --circle-blue-height: 292px;
             --x: 282px;
@@ -490,6 +550,13 @@
 
    @media (min-width: 1440px) {
        .circle-left {
+        // 57.5
+                --rope-blue-size: 3.9px;
+                                    --pimpa-blue-offset: -28.6px;
+
+                --pimpa-blue-width:  57.5px;
+                --pimpa-blue-height:  57.5px;
+
            --circle-blue-width: 374px;
            --circle-blue-height: 374px;
            --x: -420px;
@@ -499,6 +566,12 @@
        }
 
        .circle-center {
+                --rope-blue-size: 3.9px;
+                                    --pimpa-blue-offset: -28.6px;
+
+                --pimpa-blue-width: 57.5px;
+                    --pimpa-blue-height: 57.5px;
+
            --circle-blue-width: 224px;
            --circle-blue-height: 224px;
            --x: 20px;
@@ -508,6 +581,12 @@
        }
 
        .circle-right {
+                --rope-blue-size: 3.9px;
+                                    --pimpa-blue-offset: -28.6px;
+
+                --pimpa-blue-width: 57.5px;
+                    --pimpa-blue-height: 57.5px;
+
            --circle-blue-width: 445px;
            --circle-blue-height: 445px;
            --x: 400px;
@@ -519,6 +598,11 @@
 
    @media (min-width: 2560px) {
         .circle-left {
+                    --rope-blue-size: 6.5px;
+                    --pimpa-blue-offset: -55px;
+                    --pimpa-blue-width: 94.7px;
+                        --pimpa-blue-height: 94.7px;
+
                 --circle-blue-width: 624px;
                 --circle-blue-height: 624px;
                 --x: -730px;
@@ -528,6 +612,11 @@
             }
         
             .circle-center {
+                        --rope-blue-size: 6.5px;
+                                            --pimpa-blue-offset: -55px;
+                        --pimpa-blue-width: 94.7px;
+                            --pimpa-blue-height: 94.7px;
+
                 --circle-blue-width: 368px;
                 --circle-blue-height: 368px;
                 --x: 110px;
@@ -537,6 +626,11 @@
             }
         
             .circle-right {
+                        --rope-blue-size: 6.5px;
+                                            --pimpa-blue-offset: -55px;
+                        --pimpa-blue-width: 94.7px;
+                            --pimpa-blue-height: 94.7px;
+
                 --circle-blue-width: 732px;
                 --circle-blue-height: 732px;
                 --x: 710px;
