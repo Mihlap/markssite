@@ -1,4 +1,4 @@
-import { useState, useRef, lazy, Suspense } from 'react';
+import { useState, useRef, lazy, Suspense, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { useGSAP } from '@gsap/react';
@@ -21,6 +21,7 @@ const NavBar = () => {
   const [openDropDownId, setOpenDropDownId] = useState(null);
   const [showDropdownContent, setShowDropdownContent] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isNavbarHidden, setIsNavbarHidden] = useState(false);
   const container = useRef();
 
   // сustom hooks 
@@ -108,25 +109,57 @@ const NavBar = () => {
     goToCompanySection(hashOrId);
   };
 
-  useGSAP(
-    () => {
-      if (!container.current) return;
+const NAV_CLOSED_HEIGHT = 60;
+const dropdownRef = useRef(null);
 
-      if (linkChildren) {
-        // Показать и опустить вниз
-        gsap.to(container.current, {
-          duration: 0.3,
-          height: `${openDropDownId === 3 ? '216px' : '260px'}`,
-          ease: 'none',
-          onStart: () => setShowDropdownContent(false),
-          onComplete: () => setShowDropdownContent(true),
-        });
-      }
-    },
-    { dependencies: [linkChildren] }
-  );
+const getOpenHeight = () => {
+  const dropdownHeight = dropdownRef.current?.getBoundingClientRect().height ?? 0;
+  if (!dropdownHeight) {
+    return openDropDownId === 3 ? 240 : 284; // fallback
+  }
+  return Math.ceil(NAV_CLOSED_HEIGHT + dropdownHeight);
+};
+
+useGSAP(
+  () => {
+    if (!container.current || !linkChildren) return;
+
+    gsap.to(container.current, {
+      duration: 0.3,
+      height: getOpenHeight(),
+      ease: 'none',
+      onStart: () => setShowDropdownContent(false),
+      onComplete: () => setShowDropdownContent(true),
+    });
+  },
+  { dependencies: [linkChildren, openDropDownId] }
+);
+
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    let lastScrollY = window.scrollY;
+    const MIN_DELTA = 4;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (Math.abs(currentScrollY - lastScrollY) < MIN_DELTA) return;
+      const nextDirection = currentScrollY > lastScrollY ? 'down' : 'up';
+      setIsNavbarHidden(nextDirection === 'down');
+      lastScrollY = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <nav ref={container} className={styles['navbar']}>
+    <nav
+      ref={container}
+      className={clsx(
+        styles['navbar'],
+        isNavbarHidden && styles['navbar--hidden']
+      )}>
       <div className={styles['navbar-top']}>
         {isVacancyDetail ? (
           <Link className={styles['navbar-link_back']} to={linkBack}>
@@ -173,10 +206,11 @@ const NavBar = () => {
                   </button>
                   {openDropDownId === item.id && (
                     <ul
+                      ref={dropdownRef}
                       className={styles['navbar-dropdown']}
                       style={{ opacity: showDropdownContent ? 1 : 0, transition: 'opacity 200ms ease' }}>
                       {item.children.map((el) => (
-                        <li className={styles['navbar-dropdown-item']} key={el.id} role="menuitem">
+                        <li key={el.id} role="menuitem">
                           <NavLink
                             to={el.path}
                             onClick={(event) =>
@@ -189,7 +223,9 @@ const NavBar = () => {
                                 goToCompanySection,
                               })
                             }
-                            className={({ isActive }) => (isActive ? `${styles['navbar-item-active']}` : undefined)}>
+                            className={({ isActive }) =>
+                              clsx(styles['navbar-dropdown-item'], isActive && styles['navbar-item-active'])
+                            }>
                             <div className={styles['navbar-dropdown-item_label']}>{el.label}</div>
                             <div className={styles['navbar-dropdown-item_description']}>
                               {el.description.includes('ведущих') ? (

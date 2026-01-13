@@ -3,14 +3,15 @@
     white-space: pre; // разрешает \A как реальный перенос
 }
 
-@mixin navbar-cta-button($bg: null, $color: null, $hover-color: null, $hover-bg: null, $padding: 20px 24px) {
+@mixin navbar-cta-button($size, $height, $bg: null, $color: null, $hover-color: null, $hover-bg: null, $padding: 20px 24px) {
+    font-size: $size;
     padding: $padding;
     background: var($bg);
     color: var($color);
     font-variant-numeric: lining-nums proportional-nums;
     font-style: normal;
     font-weight: 600;
-    line-height: 24px;
+    line-height: $height;
     text-align: center;
 
     &:hover {
@@ -52,10 +53,10 @@
 }
 
 .navbar {
-    // position: fixed;
-    position: sticky;
+    position: fixed;
+    // position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 12;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -63,12 +64,18 @@
     font-family: var(--font-raleway);
     font-style: normal;
     white-space: nowrap;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+
+    &--hidden {
+        transform: translateY(-100%);
+    }
 
     &-top {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        background-color: var(--white-F6F6F6);
+        background-color: inherit;
+        transition: background-color 0.2s ease;
         // z-index: 5;
     }
 
@@ -103,6 +110,10 @@
         gap: 33px;
     }
 
+    &-cta {
+        display: flex;
+    }
+
     &-item {
         @include item(--dark-gray-566272, 14px, 400, 20px, true);
         display: flex;
@@ -110,6 +121,8 @@
         gap: 8px;
 
         &-en {
+            @include item(--dark-gray-566272, 14px, 400, 20px, true);
+            padding: 21px 48px;
             padding: 20px 27px;
         }
 
@@ -162,11 +175,11 @@
         }
 
         &--cta-primary {
-            @include navbar-cta-button(--light-light-gray-EBECEE, --gray-959DA6, --originWhite-FFFFFF, --black-1D2E43, 20px 24px)
+            @include navbar-cta-button(14px, 20px, --light-light-gray-EBECEE, --gray-959DA6, --originWhite-FFFFFF, --black-1D2E43, 20px 24px)
         }
 
         &--cta-secondary {
-            @include navbar-cta-button(--black-1D2E43, --originWhite-FFFFFF, --originWhite-FFFFFF, --dark-gray-566272, 18px 44px)
+            @include navbar-cta-button(14px, 20px, --black-1D2E43, --originWhite-FFFFFF, --originWhite-FFFFFF, --dark-gray-566272, 18px 44px)
         }
     }
 
@@ -176,18 +189,20 @@
         display: flex;
         flex-direction: column;
         gap: 20px;
+        padding-top: 12px;
+        padding-bottom: 32px;
 
         &-item {
             display: flex;
             flex-direction: column;
             gap: 4px;
-
+            
             &_label {
                 @include item(--dark-gray-566272, 14px, 400, 20px);
             }
 
             &_description {
-                @include item(--gray-959DA6, 12px, 400, 16px);
+                @include item(--gray-959DA6, 12px, 400, 24px);
             }
 
             &:hover,
@@ -473,6 +488,15 @@
     }
 }
 
+@media screen and (max-width: 1440px) {
+    .navbar {
+        &-dropdown { 
+            padding-top: 8px;
+        }
+    }
+}
+
+
 
 @media screen and (min-width: 2560px) {
     .navbar {
@@ -490,6 +514,7 @@
     }
 
     .navbar-list {
+        padding: 21px 0px;
         gap: 60px;
     }
 
@@ -498,11 +523,25 @@
         line-height: 26px;
     }
 
+    .navbar-link--cta-primary {
+        @include navbar-cta-button(18px, 26px, --light-light-gray-EBECEE, --gray-959DA6, --originWhite-FFFFFF, --black-1D2E43, 20px 24px)
+    }
+
+    .navbar-item-en {
+        @include item(--dark-gray-566272, 18px, 400, 26px, true);
+        padding: 21px 48px;
+    }
+
+    .navbar-dropdown {
+        padding-bottom: 40px;
+    }
+
+        // @mixin item($color, $size, $weight, $height, $hover: false, $focus_height: 20px) {
     .navbar-dropdown-item_label {
-        font-size: 18px;
+            @include item(--dark-gray-566272, 18px, 400, 26px)
     }
 
     .navbar-dropdown-item_description {
-        font-size: 16px;
+            @include item(--gray-959DA6, 16px, 400, 24px);
     }
 }
