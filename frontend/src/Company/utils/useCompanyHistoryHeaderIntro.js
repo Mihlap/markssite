@@ -1,0 +1,215 @@
+import { useEffect } from 'react';
+import gsap from 'gsap';
+import styles from '../CompanyHistory/CompanyHistory.module.scss';
+import headerStyles from '../CompanyHistory/CompanyHistoryHeader.module.scss';
+
+export function useCompanyHistoryHeaderIntro({
+    inView,
+    visibleItemsLength,
+    historyListRef,
+    historyHeaderRef,
+    titleRef,
+    marksGroupRef,
+    subtitleLineRef,
+    subtitleLine1Ref,
+    subtitleLine2Ref,
+    hasSplitTriggered,
+    hasScrollToHeaderTriggered,
+    textAnimationReady,
+    headerIntroArmedRef,
+    headerIntroInProgressRef,
+    cardsIntroTriggeredRef,
+    setAnimationReady,
+}) {
+    useEffect(() => {
+        if (!inView) return;
+
+        const applyOffsetsForIntro = () => {
+            if (headerIntroInProgressRef.current) return;
+            if (hasSplitTriggered.current) return;
+            if (!marksGroupRef.current || !titleRef.current || !subtitleLine1Ref.current) return;
+
+            const elements = [
+                titleRef.current,
+                marksGroupRef.current,
+                subtitleLineRef.current,
+                subtitleLine1Ref.current,
+                subtitleLine2Ref.current,
+            ];
+
+            elements.forEach((el) => {
+                if (!el) return;
+                el.style.transform = 'none';
+            });
+
+            const titleRect = titleRef.current.getBoundingClientRect();
+            const marksRect = marksGroupRef.current.getBoundingClientRect();
+            const titleNaturalCenterX = titleRect.left + titleRect.width / 2;
+
+            let titleTargetCenterX;
+            if (window.innerWidth >= 1600) {
+                titleTargetCenterX = marksRect.left + marksRect.width / 2;
+            } else {
+                titleTargetCenterX = marksRect.right - titleRect.width / 2;
+            }
+            const titleOffsetX = titleTargetCenterX - titleNaturalCenterX;
+
+            const line1Rect = subtitleLine1Ref.current.getBoundingClientRect();
+            const lineNaturalLeft = line1Rect.left;
+
+            let descTargetLeft;
+            if (window.innerWidth >= 1600) {
+                descTargetLeft = marksRect.left + marksRect.width / 2;
+            } else {
+                descTargetLeft = marksRect.left + marksRect.width * 0.65;
+            }
+            const descOffsetX = descTargetLeft - lineNaturalLeft;
+
+            document.documentElement.style.setProperty('--title-offset-x', `${titleOffsetX}px`);
+            document.documentElement.style.setProperty('--desc-offset-x', `${descOffsetX}px`);
+
+            elements.forEach((el) => {
+                if (!el) return;
+                el.style.transform = '';
+            });
+        };
+
+        const handleResize = () => {
+            applyOffsetsForIntro();
+        };
+
+        applyOffsetsForIntro();
+        const rafId = requestAnimationFrame(applyOffsetsForIntro);
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            cancelAnimationFrame(rafId);
+            window.removeEventListener('resize', handleResize);
+        };
+    }, [
+        inView,
+        hasSplitTriggered,
+        headerIntroInProgressRef,
+        marksGroupRef,
+        titleRef,
+        subtitleLineRef,
+        subtitleLine1Ref,
+        subtitleLine2Ref,
+    ]);
+
+    useEffect(() => {
+        if (!inView) return;
+
+        const startHeaderIntro = () => {
+            if (headerIntroInProgressRef.current) return;
+
+            const title = titleRef.current;
+            const marksGroup = marksGroupRef.current;
+            const subtitleLine = subtitleLineRef.current;
+            const descLine1 = subtitleLine1Ref.current;
+            const descLine2 = subtitleLine2Ref.current;
+            if (!title || !marksGroup || !descLine1) return;
+
+            const elements = [title, marksGroup, subtitleLine, descLine1, descLine2].filter(Boolean);
+            elements.forEach((el) => {
+                gsap.set(el, { clearProps: 'transform,opacity' });
+                el.classList.remove(headerStyles.animate);
+                el.style.animation = '';
+                el.style.opacity = '';
+                el.style.transform = '';
+            });
+
+            // eslint-disable-next-line no-unused-expressions
+            title.offsetWidth;
+
+            requestAnimationFrame(() => {
+                if (titleRef.current) titleRef.current.classList.add(headerStyles.animate);
+                if (marksGroupRef.current) marksGroupRef.current.classList.add(headerStyles.animate);
+                if (subtitleLineRef.current) subtitleLineRef.current.classList.add(headerStyles.animate);
+                if (subtitleLine1Ref.current) subtitleLine1Ref.current.classList.add(headerStyles.animate);
+                if (subtitleLine2Ref.current) subtitleLine2Ref.current.classList.add(headerStyles.animate);
+            });
+
+            headerIntroInProgressRef.current = true;
+            textAnimationReady.current = false;
+
+            setTimeout(() => {
+                textAnimationReady.current = true;
+                headerIntroInProgressRef.current = false;
+            }, 2700);
+
+            if (!cardsIntroTriggeredRef.current && historyListRef.current && visibleItemsLength > 0) {
+                cardsIntroTriggeredRef.current = true;
+
+                const cards = historyListRef.current.querySelectorAll('[class*="history_card_wrapper"]');
+                cards.forEach((card, index) => {
+                    setTimeout(() => {
+                        card.classList.add(styles.animate);
+                    }, 2500 + index * 150);
+                });
+
+                const totalDelay = 2500 + (cards.length - 1) * 150 + 600;
+                setTimeout(() => {
+                    setAnimationReady(true);
+                }, totalDelay);
+            } else if (!cardsIntroTriggeredRef.current) {
+                setTimeout(() => {
+                    setAnimationReady(true);
+                }, 2700);
+            }
+        };
+
+        const onScroll = () => {
+            const headerEl = historyHeaderRef.current;
+            const cardsEl = historyListRef.current;
+            if (!headerEl || !cardsEl) return;
+
+            const triggerY = window.innerHeight * 0.25;
+            const headerRect = headerEl.getBoundingClientRect();
+            const cardsRect = cardsEl.getBoundingClientRect();
+
+            const isInHeader =
+                triggerY >= headerRect.top &&
+                triggerY <= headerRect.bottom &&
+                !(triggerY >= cardsRect.top && triggerY <= cardsRect.bottom);
+
+            if (!isInHeader) {
+                headerIntroArmedRef.current = true;
+                return;
+            }
+
+            if (!headerIntroArmedRef.current) return;
+            headerIntroArmedRef.current = false;
+
+            if (!hasScrollToHeaderTriggered.current) {
+                startHeaderIntro();
+            }
+        };
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+
+        return () => {
+            window.removeEventListener('scroll', onScroll);
+        };
+    }, [
+        inView,
+        visibleItemsLength,
+        historyListRef,
+        historyHeaderRef,
+        titleRef,
+        marksGroupRef,
+        subtitleLineRef,
+        subtitleLine1Ref,
+        subtitleLine2Ref,
+        hasScrollToHeaderTriggered,
+        headerIntroArmedRef,
+        headerIntroInProgressRef,
+        cardsIntroTriggeredRef,
+        textAnimationReady,
+        setAnimationReady,
+    ]);
+}
+
+

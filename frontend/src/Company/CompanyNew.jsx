@@ -62,6 +62,8 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
 
   const dispatch = useDispatch();
 
+  const companyTopRef = useRef(null);
+
   const blockSlider = useRef(null);
 
   const countDepartment = useSelector((state) => state.counter.countDepartment);
@@ -70,7 +72,7 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
   const countScienceDegree = useSelector((state) => state.counter.countScienceDegree);
 
   const aliasMap = useMemo(() => ({ section1: 'history', section2: 'awards', section3: 'staff' }), []);
-  useHashScroll({ aliasMap, offsetY: 120 });
+  useHashScroll({ aliasMap, offsetY: 120, offsetYById: { history: 0 } });
 
   const [ref, inView] = useInView({
     threshold: 0.5,
@@ -155,7 +157,7 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
         <title>MARKS GROUP</title>
       </Helmet>
 
-      <div className={styles.company_main}>
+      <div ref={companyTopRef} className={styles.company_main}>
         <div className={styles.company_intro}>
           <div className={styles.block_video_company}>
             {videoSrc2 && (
@@ -222,7 +224,7 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
           <SliderHeader />
         </div>
 
-        <CompanyHistory />
+        <CompanyHistory parentStartRef={companyTopRef} />
 
         {/* <div id="history" className={styles.about_main}>
           <div className={styles.left_about}>
