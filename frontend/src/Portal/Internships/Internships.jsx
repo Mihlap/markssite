@@ -95,7 +95,7 @@ const Internships = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, hid
             isInternship={true}
           />
 
-          <div className={`${styles.temporaryText} ${styles.temporaryText_intership}`}>
+          <div id="form" className={`${styles.temporaryText} ${styles.temporaryText_intership}`}>
             {/* {windowWidth > 1024 ? 'Не нашли подходящую вакансию?' : 'Мы ищем именно тебя!'} */}
             Хочешь пройти у&nbsp;нас&nbsp;стажировку, но&nbsp;не&nbsp;нашел подходящую?
           </div>

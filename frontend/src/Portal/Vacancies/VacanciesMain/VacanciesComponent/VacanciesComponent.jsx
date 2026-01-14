@@ -403,7 +403,7 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
             handleMouseLeave={handleMouseLeave}
             isInternship={false}
           />
-          <div className={styles.temporaryText}>
+          <div id="form" className={styles.temporaryText}>
             {windowWidth > 1024 ? 'Не нашли подходящую вакансию?' : 'Мы ищем именно тебя!'}
           </div>
           <div className={styles.textUnderForm}>
