@@ -7,7 +7,6 @@ const cors = require('cors');
 const path = require('path');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
-/* eslint-disable import/no-extraneous-dependencies */
 const rateLimit = require('express-rate-limit');
 
 const authRouter = require('./Routes/authRouter');
@@ -27,8 +26,6 @@ const vacancyDetailsRouter = require('./Routes/Vacancies/vacancyDetailsRouter');
 const vacancyEventRouter = require('./Routes/Vacancies/vacancyEventRouter');
 const journalRouter = require('./Routes/Journal/journalRouter');
 
-// const { createProxyMiddleware } = require('http-proxy-middleware');
-
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -39,7 +36,7 @@ const sessionConfig = {
   saveUninitialized: false,
   store: new FileStore(),
   cookie: {
-    maxAge: 10 * 24 * 60 * 60 * 1000, // 10 дней в миллисекундах
+    maxAge: 10 * 24 * 60 * 60 * 1000, // 10 дней
     httpOnly: true,
     sameSite: 'lax', // 'lax' или 'strict' для HTTP
     secure: false, // false для HTTP
