@@ -1,36 +1,89 @@
 const JavaScriptObfuscator = require('webpack-obfuscator');
 const TerserPlugin = require('terser-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const os = require('os');
+const path = require('path');
 
 module.exports = {
   webpack: (config, env) => {
-    const isProd = env === 'production';
-    config.cache = { type: 'filesystem' };
+    const isProd = env === 'production';    
+
+    config.cache = {
+      type: 'filesystem',
+      buildDependencies: {
+        config: [__filename],
+      },
+      cacheDirectory: path.resolve(__dirname, '.webpack-cache'),
+      compression: 'gzip',
+    };
 
     if (isProd) {
-      // process.env.GENERATE_SOURCEMAP = 'false';
       config.devtool = false;
 
       config.plugins = (config.plugins || []).filter(
         (p) => (p && p.constructor && p.constructor.name) !== 'ESLintWebpackPlugin'
       );
+   
+      const splitChunksConfig = {
+        chunks: 'all',
+        cacheGroups: {
+          default: false,
+          vendors: false,    
+          vendor: {
+            name: 'vendor',
+            chunks: 'all',
+            test: /[\\/]node_modules[\\/]/,
+            priority: 20,
+          },      
+          react: {
+            name: 'react',
+            test: /[\\/]node_modules[\\/](react|react-dom|react-router)[\\/]/,
+            chunks: 'all',
+            priority: 30,
+          },        
+          three: {
+            name: 'three',
+            test: /[\\/]node_modules[\\/](three|@react-three)[\\/]/,
+            chunks: 'all',
+            priority: 25,
+          },
+        },
+      };
 
       config.optimization = {
         ...config.optimization,
         minimize: true,
-        minimizer: [
-          new TerserPlugin({
-            parallel: true,
+        splitChunks: splitChunksConfig,
+        minimizer: [      
+          new TerserPlugin({       
+            parallel: os.cpus().length - 1,
             extractComments: false,
             terserOptions: {
-              compress: { passes: 1, drop_console: true, drop_debugger: true },
-              mangle: true,
-              format: { comments: false },
+              compress: {
+                passes: 2,
+                drop_console: true,
+                drop_debugger: true,
+                pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.trace'], // Явное удаление console
+              },
+              mangle: {
+                safari10: true,
+              },
+              format: {
+                comments: false,
+              },
             },
-          }),
+          }),        
           new CssMinimizerPlugin({
-            parallel: true,
-            minimizerOptions: { preset: ['default', { discardComments: { removeAll: true } }] },
+            parallel: os.cpus().length - 1,
+            minimizerOptions: {
+              preset: [
+                'default',
+                {
+                  discardComments: { removeAll: true },
+                  normalizeWhitespace: true,
+                },
+              ],
+            },
           }),
         ],
       };

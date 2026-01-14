@@ -1,4 +1,3 @@
-// searchPublicationSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 const serverHost = process.env.REACT_APP_SERVER_HOST;

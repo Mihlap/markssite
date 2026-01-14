@@ -7,6 +7,7 @@ const router = express.Router();
 const { Legend, ConstructorLegend, User } = require('../db/models');
 const fileMiddleware = require('../middleware/file');
 const { uploadFileToS3, deleteFileFromS3 } = require('../s3Utils/s3Service');
+const { logResourceAction } = require('../utils/fileLogger');
 
 const LEGEND_FILES_DIR = 'images/imageHistory';
 const LEGEND_MD_IMAGES_DIR = 'images/imageHistory/imagesFolder/imageMarkdown';
@@ -69,12 +70,12 @@ function extractMdFileNameAndFolder(url) {
   }
 }
 
-const deleteImageFromS3Safe = async (fileUrlOrKey) => {
+const deleteImageFromS3Safe = async (fileUrlOrKey, logInfo = null) => {
   const parsed = extractFileNameAndFolderFromUrl(fileUrlOrKey);
   if (!parsed) return;
   const { fileName, folder } = parsed;
   try {
-    await deleteFileFromS3(fileName, folder);
+    await deleteFileFromS3(fileName, folder, logInfo);
   } catch {
 
   }
@@ -220,6 +221,17 @@ router.post('/', async (req, res, next) => {
       );
     }
 
+    if (req.session?.user) {
+      logResourceAction({
+        action: 'CREATE',
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'legend',
+        resourceId: legend.id.toString(),
+        resourceName: title || 'Легенда',
+      });
+    }
+
     return res.status(201).json(fullLegend);
   } catch (err) {
     if (!t.finished) {
@@ -246,15 +258,58 @@ router.put('/:id', async (req, res, next) => {
       return res.status(404).json({ message: 'Legend not found' });
     }
 
+    const oldYear = legend.year;
+    const oldTitle = legend.title;
+    const oldImg = legend.img;
+    const oldDescription = legend.description;
+    const oldHidden = legend.hidden;
+    const oldOrder = legend.order;
+    const oldUserId = legend.userId;
+
+    const newYear = year ?? legend.year;
+    const newTitle = title ?? legend.title;
+    const newImg = img !== undefined ? img : legend.img;
+    const newDescription = description !== undefined ? description : legend.description;
+    const newHidden = hidden !== undefined ? hidden : legend.hidden;
+    const newOrder = order ?? legend.order;
+    const newUserId = userId !== undefined ? userId : legend.userId;
+
+    let constructorChanged = false;
+    if (constructor) {
+      const existingConstructor = await ConstructorLegend.findOne({
+        where: { legendId: legend.id },
+        transaction: t,
+      });
+      if (existingConstructor) {
+        const oldData = JSON.stringify(existingConstructor.data);
+        const oldImage = existingConstructor.image;
+        const newData = JSON.stringify(constructor.data !== undefined ? constructor.data : existingConstructor.data);
+        const newImage = constructor.image !== undefined ? constructor.image : existingConstructor.image;
+        constructorChanged = oldData !== newData || oldImage !== newImage;
+      } else if (constructor.data || constructor.image) {
+        constructorChanged = true;
+      }
+    }
+
+    const hasChanges =
+      oldYear !== newYear ||
+      oldTitle !== newTitle ||
+      oldImg !== newImg ||
+      oldDescription !== newDescription ||
+      oldHidden !== newHidden ||
+      oldOrder !== newOrder ||
+      oldUserId !== newUserId ||
+      constructorChanged;
+
     await legend.update(
       {
-        year: year ?? legend.year,
-        title: title ?? legend.title,
-        img: img !== undefined ? img : legend.img,
-        description: description !== undefined ? description : legend.description,
-        hidden: hidden !== undefined ? hidden : legend.hidden,
-        order: order ?? legend.order,
-        userId: userId !== undefined ? userId : legend.userId,
+        year: newYear,
+        title: newTitle,
+        img: newImg,
+        description: newDescription,
+        hidden: newHidden,
+        order: newOrder,
+        userId: newUserId,
       },
       { transaction: t }
     );
@@ -288,6 +343,18 @@ router.put('/:id', async (req, res, next) => {
     }
 
     await t.commit();
+
+    if (req.session?.user) {
+      logResourceAction({
+        action: 'UPDATE',
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'legend',
+        resourceId: id,
+        resourceName: newTitle || legend.title,
+        hasChanges,
+      });
+    }
 
     let fullLegend = legend;
     try {
@@ -386,6 +453,8 @@ router.delete('/:id', async (req, res, next) => {
       return res.status(404).json({ message: 'Legend not found' });
     }
 
+    const legendTitle = legend.title || 'Легенда';
+
     const constructorRows = await ConstructorLegend.findAll({
       where: { legendId: id },
       transaction: t,
@@ -413,22 +482,40 @@ router.delete('/:id', async (req, res, next) => {
 
     if (!deleted) return res.status(404).json({ message: 'Legend not found' });
 
+    const userInfo = req.session?.user ? {
+      userName: req.session.user.name,
+      userId: req.session.user.id.toString(),
+      resourceType: 'legend',
+      resourceId: id,
+    } : null;
+
     const uniqueFiles = [
       ...new Set(files.map((x) => (typeof x === 'string' ? x.trim() : x)).filter(Boolean)),
     ];
 
-    await Promise.all(uniqueFiles.map(deleteImageFromS3Safe));
+    await Promise.all(uniqueFiles.map((url) => deleteImageFromS3Safe(url, userInfo)));
 
     await Promise.all(
       mdLinks.map(async (url) => {
         const parsed = extractMdFileNameAndFolder(url);
         if (!parsed) return;
         try {
-          await deleteFileFromS3(parsed.fileName, parsed.folder);
+          await deleteFileFromS3(parsed.fileName, parsed.folder, userInfo);
         } catch {
         }
       })
     );
+
+    if (req.session?.user) {
+      logResourceAction({
+        action: 'DELETE',
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'legend',
+        resourceId: id,
+        resourceName: legendTitle,
+      });
+    }
 
     res.json({ message: 'Deleted', id });
   } catch (err) {
@@ -448,12 +535,18 @@ router.post('/upload-markdown-file', fileMiddleware.single('markdownFile'), asyn
   try {
     if (!req.file) return res.status(400).json({ message: 'Файл не найден в запросе' });
 
+    const userInfo = req.session?.user ? {
+      userName: req.session.user.name,
+      userId: req.session.user.id.toString(),
+      resourceType: 'legend',
+    } : null;
+
     const uploadFolder =
       req.file.mimetype === 'application/pdf' ? LEGEND_MD_DOCS_DIR : LEGEND_MD_IMAGES_DIR;
 
     const { fileName } = buildHashedKey(req.file, uploadFolder);
     const fileForUpload = { ...req.file, originalname: fileName };
-    const url = await uploadFileToS3(fileForUpload, uploadFolder);
+    const url = await uploadFileToS3(fileForUpload, uploadFolder, userInfo);
 
     return res.status(200).json({ message: 'Файл успешно загружен', url });
   } catch (e) {
@@ -464,13 +557,19 @@ router.post('/upload-markdown-file', fileMiddleware.single('markdownFile'), asyn
 
 router.delete('/delete-markdown-file', async (req, res) => {
   try {
+    const userInfo = req.session?.user ? {
+      userName: req.session.user.name,
+      userId: req.session.user.id.toString(),
+      resourceType: 'legend',
+    } : null;
+
     const { url } = req.body || {};
     if (!url) return res.status(400).json({ message: 'URL не предоставлен' });
 
     const parsed = extractMdFileNameAndFolder(url);
     if (!parsed) return res.status(400).json({ message: 'Невозможно определить имя файла/папку' });
 
-    await deleteFileFromS3(parsed.fileName, parsed.folder);
+    await deleteFileFromS3(parsed.fileName, parsed.folder, userInfo);
     return res.status(200).json({ message: 'Файл удалён' });
   } catch (e) {
     console.error('Ошибка при удалении markdown-файла (legend):', e);
@@ -481,6 +580,12 @@ router.delete('/delete-markdown-file', async (req, res) => {
 router.post('/mp', fileMiddleware.any(), async (req, res) => {
   const t = await Legend.sequelize.transaction();
   try {
+    const userInfo = req.session?.user ? {
+      userName: req.session.user.name,
+      userId: req.session.user.id.toString(),
+      resourceType: 'legend',
+    } : null;
+
     const meta = req.body?.meta ? JSON.parse(req.body.meta) : {};
     const year = Number(meta.year);
     const title = String(meta.title || '').trim();
@@ -496,7 +601,7 @@ router.post('/mp', fileMiddleware.any(), async (req, res) => {
     const photoAvaFile = (req.files || []).find((f) => f.fieldname === 'photoAva');
     let imgKey = meta.img || null;
     if (photoAvaFile) {
-      imgKey = await uploadFileToS3(photoAvaFile, LEGEND_FILES_DIR);
+      imgKey = await uploadFileToS3(photoAvaFile, LEGEND_FILES_DIR, userInfo);
     }
 
     const legend = await Legend.create(
@@ -569,6 +674,17 @@ router.post('/mp', fileMiddleware.any(), async (req, res) => {
       ],
     });
 
+    if (req.session?.user) {
+      logResourceAction({
+        action: 'CREATE',
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'legend',
+        resourceId: legend.id.toString(),
+        resourceName: title || 'Легенда',
+      });
+    }
+
     res.status(201).json(fullLegend || legend);
   } catch (e) {
     if (!t.finished) await t.rollback();
@@ -581,6 +697,14 @@ router.put('/mp/:id', fileMiddleware.any(), async (req, res) => {
   const t = await Legend.sequelize.transaction();
   try {
     const id = req.params.id;
+
+    const userInfo = req.session?.user ? {
+      userName: req.session.user.name,
+      userId: req.session.user.id.toString(),
+      resourceType: 'legend',
+      resourceId: id,
+    } : null;
+
     const legend = await Legend.findByPk(id, {
       include: [{ model: ConstructorLegend }],
     });
@@ -592,8 +716,18 @@ router.put('/mp/:id', fileMiddleware.any(), async (req, res) => {
 
     const meta = req.body?.meta ? JSON.parse(req.body.meta) : {};
 
-    const oldMdLinks = collectMarkdownLinksFromConstructor(legend.ConstructorLegends);
+    const oldYear = legend.year;
+    const oldTitle = legend.title;
+    const oldDescription = legend.description;
+    const oldHidden = legend.hidden;
+    const oldUserId = legend.userId;
     const oldAvatar = legend.img || null;
+    const oldConstructorData = (legend.ConstructorLegends || []).map(c => ({
+      data: JSON.stringify(c.data),
+      image: c.image
+    }));
+
+    const oldMdLinks = collectMarkdownLinksFromConstructor(legend.ConstructorLegends);
     const oldDynamicFiles = (legend.ConstructorLegends || []).flatMap((c) => {
       const inputs = flattenInputs(c.data);
       const fileInputs = inputs
@@ -609,7 +743,7 @@ router.put('/mp/:id', fileMiddleware.any(), async (req, res) => {
     const newPhotoAva = (req.files || []).find((f) => f.fieldname === 'photoAva');
     let newAvatarKey = meta.img !== undefined ? meta.img : oldAvatar;
     if (newPhotoAva) {
-      newAvatarKey = await uploadFileToS3(newPhotoAva, LEGEND_FILES_DIR);
+      newAvatarKey = await uploadFileToS3(newPhotoAva, LEGEND_FILES_DIR, userInfo);
     }
 
     const filesMap = {};
@@ -625,7 +759,7 @@ router.put('/mp/:id', fileMiddleware.any(), async (req, res) => {
       filesMap[b] ??= {};
       filesMap[b][i] ??= [];
       f.originalname = `${batchId}__${f.originalname || 'file'}`;
-      const savedKey = await uploadFileToS3(f, LEGEND_FILES_DIR);
+      const savedKey = await uploadFileToS3(f, LEGEND_FILES_DIR, userInfo);
       filesMap[b][i].push(savedKey);
     }
 
@@ -686,22 +820,48 @@ router.put('/mp/:id', fileMiddleware.any(), async (req, res) => {
       .filter(Boolean)
       .filter((v) => !newAll.includes(v));
 
-    await Promise.all(toDelete.map(deleteImageFromS3Safe));
+    await Promise.all(toDelete.map((url) => deleteImageFromS3Safe(url, userInfo)));
 
     if (oldAvatar && oldAvatar !== newAvatarKey) {
-      await deleteImageFromS3Safe(oldAvatar);
+      await deleteImageFromS3Safe(oldAvatar, userInfo);
     }
     await Promise.all(
       removedMd.map(async (url) => {
         const parsed = extractMdFileNameAndFolder(url);
         if (!parsed) return;
         try {
-          await deleteFileFromS3(parsed.fileName, parsed.folder);
+          await deleteFileFromS3(parsed.fileName, parsed.folder, userInfo);
         } catch (e) {
           console.error('Не удалось удалить markdown-файл legend:', url, e);
         }
       })
     );
+
+    const newYear = meta.year ?? legend.year;
+    const newTitle = meta.title ?? legend.title;
+    const newDescription = meta.previewText !== undefined ? String(meta.previewText || '').trim() : (meta.description !== undefined ? String(meta.description || '').trim() : legend.description);
+    const newHidden = meta.hidden !== undefined ? !!meta.hidden : legend.hidden;
+    const newUserId = meta.userId ?? legend.userId;
+
+    const newConstructorData = mergedBlocks.map(g => JSON.stringify(g));
+    const oldConstructorDataStr = oldConstructorData.map(c => c.data);
+    const constructorChanged =
+      oldConstructorData.length !== newConstructorData.length ||
+      oldConstructorDataStr.some((oldData, idx) => {
+        if (idx >= newConstructorData.length) return true;
+        return oldData !== newConstructorData[idx];
+      });
+
+    const hasChanges =
+      oldYear !== newYear ||
+      oldTitle !== newTitle ||
+      oldDescription !== newDescription ||
+      oldHidden !== newHidden ||
+      oldUserId !== newUserId ||
+      oldAvatar !== newAvatarKey ||
+      constructorChanged ||
+      oldMdLinks.length !== newMdLinks.length ||
+      oldMdLinks.some(link => !newMdLinks.includes(link));
 
     const fullLegend = await Legend.findByPk(id, {
       include: [
@@ -709,6 +869,18 @@ router.put('/mp/:id', fileMiddleware.any(), async (req, res) => {
         { model: User, as: 'author', attributes: ['id', 'userName'] },
       ],
     });
+
+    if (req.session?.user) {
+      logResourceAction({
+        action: 'UPDATE',
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'legend',
+        resourceId: id,
+        resourceName: newTitle || legend.title,
+        hasChanges,
+      });
+    }
 
     res.json(fullLegend || legend);
   } catch (e) {

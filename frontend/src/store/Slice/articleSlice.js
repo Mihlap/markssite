@@ -22,8 +22,7 @@ const articleSlice = createSlice({
     },
     fetchArticleSuccess(state, action) {
       state.loading = false;
-      state.article = action.payload;
-      // state.error = null;
+      state.article = action.payload; 
     },
     fetchArticleFailure(state, action) {
       state.loading = false;
@@ -49,7 +48,6 @@ const articleSlice = createSlice({
       state.dynamicImages = action.payload;
     },
     clearFormData(state) {
-      // state.articleId = null;
       state.formData = {
         title: '',
         author: '',
@@ -108,45 +106,35 @@ export const fetchArticle = createAsyncThunk('article/fetchArticle', async (form
           let photosArray = [];
 
           value.forEach((outerObj) => {
-            outerObj.forEach((innerObj) => {
-              // console.log("Inner object:", innerObj);
-              if (innerObj.type === 'file' && Array.isArray(innerObj.value) && innerObj.value.length > 0) {
-                // console.log("Files to add:", innerObj.value);
+            outerObj.forEach((innerObj) => {          
+              if (innerObj.type === 'file' && Array.isArray(innerObj.value) && innerObj.value.length > 0) {               
                 photosArray = photosArray.concat(innerObj.value);
               }
             });
           });
 
           const cloneDynamicBlocks = value.map((outerArray) => {
-            return outerArray.map((obj) => {
-              // Проверяем, что значение value не равно undefined и не пустой массив
-              if (obj.type === 'file' && Array.isArray(obj.value) && obj.value.length > 0) {
-                // Обработка значений типа file
-                const processedFiles = obj.value.map((file) => {
-                  // Проверяем, что файл не равен undefined и не null
-                  if (file && typeof file === 'object') {
-                    // Если это объект, возвращаем его имя
+            return outerArray.map((obj) => {          
+              if (obj.type === 'file' && Array.isArray(obj.value) && obj.value.length > 0) {              
+                const processedFiles = obj.value.map((file) => {            
+                  if (file && typeof file === 'object') {               
                     return file.name;
-                  } else {
-                    // Если это уже имя файла, возвращаем его без изменений
+                  } else { 
                     return file;
                   }
                 });
-
-                // Возвращаем обновленный объект с обработанными значениями value
+            
                 return {
                   ...obj,
                   value: processedFiles,
                 };
-              }
-              // Возвращаем объект без изменений, если тип не file или значение value пустой массив или undefined
+              }           
               return obj;
             });
           });
 
      
-          formData.append('dynamicBlocksJSON', JSON.stringify(cloneDynamicBlocks));
-          // console.log(cloneDynamicBlocks, '<----cloneDynamicBlocks');
+          formData.append('dynamicBlocksJSON', JSON.stringify(cloneDynamicBlocks));    
 
           photosArray.forEach((photo) => {
             formData.append('dynamicImages', photo);
@@ -169,6 +157,7 @@ export const fetchArticle = createAsyncThunk('article/fetchArticle', async (form
       headers: {
         'Content-Type': 'multipart/form-data',
       },
+      withCredentials: true,
     });
 
     dispatch(clearFormData());
@@ -218,7 +207,7 @@ export const getFetchFormArticle = () => async (dispatch, getState) => {
 
 export const deleteFormArticle = (id) => async (dispatch) => {
   try {
-    await axios.delete(`${serverHost}/api-article/deletezapros/${id}`);
+    await axios.delete(`${serverHost}/api-article/deletezapros/${id}`, { withCredentials: true });
     dispatch(deleteArticleSuccess(id));
   } catch (error) {
     dispatch(deleteArticleFailure(error.message));

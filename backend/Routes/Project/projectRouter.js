@@ -12,6 +12,7 @@ const {
   uploadFileToS3,
   deleteFileFromS3
 } = require('../../s3Utils/s3Service');
+const { logResourceAction } = require('../../utils/fileLogger');
 
 const router = express.Router();
 
@@ -71,7 +72,7 @@ const extractFileNameAndFolderFromUrl = (url) => {
   }
 };
 
-const deleteImageFromS3 = async (fileUrl) => {
+const deleteImageFromS3 = async (fileUrl, logInfo = null) => {
   const result = extractFileNameAndFolderFromUrl(fileUrl);
   if (result) {
     let {
@@ -81,8 +82,7 @@ const deleteImageFromS3 = async (fileUrl) => {
     fileName = decodeURIComponent(fileName);
     folder = decodeURIComponent(folder);
     try {
-      const response = await deleteFileFromS3(fileName, folder);
-      console.log(`Файл ${fileName} успешно удалён с S3:`, response);
+      await deleteFileFromS3(fileName, folder, logInfo);
     } catch (error) {
       console.error(`Ошибка при удалении файла ${fileName}:`, error);
     }
@@ -138,13 +138,19 @@ router.post(
   },
   ]),
   async (req, res) => {
-    try {
+    try {     
+      const userInfo = req.session?.user ? {
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'project',
+      } : null;
+
       let dynamicBlocksContent = null;
 
       const dynamicImageTitles = req.files.dynamicImages ?
         await Promise.all(
           req.files.dynamicImages.map(async (file) => {
-            const fileUrl = await uploadFileToS3(file, 'images/imageAdd');
+            const fileUrl = await uploadFileToS3(file, 'images/imageAdd', userInfo);
             return fileUrl;
           })
         ) : [];
@@ -163,19 +169,19 @@ router.post(
       const imageTitles = req.files.dropPhoto ?
         await Promise.all(
           req.files.dropPhoto.map(async (file) => {
-            const fileUrl = await uploadFileToS3(file, 'images/imageAdd');
+            const fileUrl = await uploadFileToS3(file, 'images/imageAdd', userInfo);
             return fileUrl;
           })
         ) : [];
 
       const imageProjects = req.files.photoAva ?
-        await uploadFileToS3(req.files.photoAva[0], 'images/imageAdd') :
+        await uploadFileToS3(req.files.photoAva[0], 'images/imageAdd', userInfo) :
         null;
       const imageOpens = req.files.imageOpen ?
-        await uploadFileToS3(req.files.imageOpen[0], 'images/imageAdd') :
+        await uploadFileToS3(req.files.imageOpen[0], 'images/imageAdd', userInfo) :
         null;
       const imageCloses = req.files.imageClose ?
-        await uploadFileToS3(req.files.imageClose[0], 'images/imageAdd') :
+        await uploadFileToS3(req.files.imageClose[0], 'images/imageAdd', userInfo) :
         null;
 
       const createdProject = await Project.create({
@@ -217,6 +223,17 @@ router.post(
         idBlock: createdProject.id,
       });
 
+      if (req.session?.user) {
+        logResourceAction({
+          action: 'CREATE',
+          userName: req.session.user.name,
+          userId: req.session.user.id.toString(),
+          resourceType: 'project',
+          resourceId: createdProject.id.toString(),
+          resourceName: req.body.title || 'Проект',
+        });
+      }
+
       res.status(200).json({
         message: 'Данные успешно сохранены'
       });
@@ -257,6 +274,14 @@ router.put(
       const {
         projectId
       } = req.params;
+      
+      const userInfo = req.session?.user ? {
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'project',
+        resourceId: projectId,
+      } : null;
+
       const projectToUpdate = await Project.findByPk(projectId, {
         include: [Constructor],
       });
@@ -267,15 +292,76 @@ router.put(
         });
       }
 
+      const normalizeValue = (value, existingValue) => {
+        if (value === undefined || value === null) {
+          return existingValue ?? '';
+        }
+        return String(value);
+      };
+
+      const oldTitle = normalizeValue(projectToUpdate.title, '');
+      const oldSelectCompetencies = normalizeValue(projectToUpdate.selectCompetencies, '');
+      const oldCountryCity = normalizeValue(projectToUpdate.countryCity, '');
+      const oldMonthYear = normalizeValue(projectToUpdate.monthYear, '');
+      const oldViewConstruction = normalizeValue(projectToUpdate.viewConstruction, '');
+      const oldStyle = normalizeValue(projectToUpdate.style, '');
+      const oldTitleTextBlock = normalizeValue(projectToUpdate.titleTextBlock, '');
+      const oldDescriptionProject = normalizeValue(projectToUpdate.descriptionProject, '');
+      const oldTotalArea = normalizeValue(projectToUpdate.totalArea, '');
+      const oldSiteArea = normalizeValue(projectToUpdate.siteArea, '');
+      const oldFloors = normalizeValue(projectToUpdate.floors, '');
+      const oldAltitude = normalizeValue(projectToUpdate.altitude, '');
+      const oldConstructionVolume = normalizeValue(projectToUpdate.constructionVolume, '');
+      const oldLocation = normalizeValue(projectToUpdate.location, '');
+      const oldDegreeParticipation = normalizeValue(projectToUpdate.degreeParticipation, '');
+      const oldStatusObject = normalizeValue(projectToUpdate.statusObject, '');
+      const oldCustomer = normalizeValue(projectToUpdate.customer, '');
+      const oldPublication = normalizeValue(projectToUpdate.publication, '');
+      const oldLinkToPublication = normalizeValue(projectToUpdate.linkToPublication, '');
+      const oldPublicationTwo = normalizeValue(projectToUpdate.publicationTwo, '');
+      const oldLinkToPublicationTwo = normalizeValue(projectToUpdate.linkToPublicationTwo, '');
+      const oldAwards = normalizeValue(projectToUpdate.awards, '');
+      const oldHeadingTextBlock = normalizeValue(projectToUpdate.headingTextBlock, '');
+      const oldTextBlock = normalizeValue(projectToUpdate.textBlock, '');
+      const oldNumberOfLanes = normalizeValue(projectToUpdate.numberOfLanes, '');
+      const oldLong = normalizeValue(projectToUpdate.long, '');
+
+      const newTitle = normalizeValue(req.body.title, oldTitle);
+      const newSelectCompetencies = normalizeValue(req.body.selectCompetencies, oldSelectCompetencies);
+      const newCountryCity = normalizeValue(req.body.countryCity, oldCountryCity);
+      const newMonthYear = normalizeValue(req.body.monthYear, oldMonthYear);
+      const newViewConstruction = normalizeValue(req.body.viewConstruction, oldViewConstruction);
+      const newStyle = normalizeValue(req.body.radioValue, oldStyle);
+      const newTitleTextBlock = normalizeValue(req.body.titleTextBlock, oldTitleTextBlock);
+      const newDescriptionProject = normalizeValue(req.body.descriptionProject, oldDescriptionProject);
+      const newTotalArea = normalizeValue(req.body.totalArea, oldTotalArea);
+      const newSiteArea = normalizeValue(req.body.siteArea, oldSiteArea);
+      const newFloors = normalizeValue(req.body.floors, oldFloors);
+      const newAltitude = normalizeValue(req.body.altitude, oldAltitude);
+      const newConstructionVolume = normalizeValue(req.body.constructionVolume, oldConstructionVolume);
+      const newLocation = normalizeValue(req.body.location, oldLocation);
+      const newDegreeParticipation = normalizeValue(req.body.degreeParticipation, oldDegreeParticipation);
+      const newStatusObject = normalizeValue(req.body.statusObject, oldStatusObject);
+      const newCustomer = normalizeValue(req.body.customer, oldCustomer);
+      const newPublication = normalizeValue(req.body.publication, oldPublication);
+      const newLinkToPublication = normalizeValue(req.body.linkToPublication, oldLinkToPublication);
+      const newPublicationTwo = normalizeValue(req.body.publicationTwo, oldPublicationTwo);
+      const newLinkToPublicationTwo = normalizeValue(req.body.linkToPublicationTwo, oldLinkToPublicationTwo);
+      const newAwards = normalizeValue(req.body.awards, oldAwards);
+      const newHeadingTextBlock = normalizeValue(req.body.headingTextBlock, oldHeadingTextBlock);
+      const newTextBlock = normalizeValue(req.body.textBlock, oldTextBlock);
+      const newNumberOfLanes = normalizeValue(req.body.numberOfLanes, oldNumberOfLanes);
+      const newLong = normalizeValue(req.body.long, oldLong);
+
       const currentImageTitles = projectToUpdate.imageTitle ? projectToUpdate.imageTitle.split(', ').map((item) => item.trim()) : [];
       const currentImageProjects = projectToUpdate.imageProject ? [projectToUpdate.imageProject] : [];
       const currentImageOpens = projectToUpdate.imageOpen ? [projectToUpdate.imageOpen] : [];
       const currentImageCloses = projectToUpdate.imageClose ? [projectToUpdate.imageClose] : [];
 
-      const imageTitlesNew = req.files.dropPhoto ? await Promise.all(req.files.dropPhoto.map((file) => uploadFileToS3(file, 'images/imageAdd'))) : [];
-      const imageProjectNew = req.files.photoAva ? await uploadFileToS3(req.files.photoAva[0], 'images/imageAdd') : null;
-      const imageOpenNew = req.files.imageOpen ? await uploadFileToS3(req.files.imageOpen[0], 'images/imageAdd') : null;
-      const imageCloseNew = req.files.imageClose ? await uploadFileToS3(req.files.imageClose[0], 'images/imageAdd') : null;
+      const imageTitlesNew = req.files.dropPhoto ? await Promise.all(req.files.dropPhoto.map((file) => uploadFileToS3(file, 'images/imageAdd', userInfo))) : [];
+      const imageProjectNew = req.files.photoAva ? await uploadFileToS3(req.files.photoAva[0], 'images/imageAdd', userInfo) : null;
+      const imageOpenNew = req.files.imageOpen ? await uploadFileToS3(req.files.imageOpen[0], 'images/imageAdd', userInfo) : null;
+      const imageCloseNew = req.files.imageClose ? await uploadFileToS3(req.files.imageClose[0], 'images/imageAdd', userInfo) : null;
 
       const imageTitlesFromClient = req.body.imageTitle ? req.body.imageTitle.split(',').map((item) => item.trim()) : [];
       const imageProjectFromClient = req.body.imageProject ? [req.body.imageProject] : [];
@@ -299,40 +385,7 @@ router.put(
 
       const imagesToRemove = normalizedCurrentImages.filter((image) => !normalizedUpdatedImages.includes(image));
 
-      await Promise.all(imagesToRemove.map(deleteImageFromS3));
-
-      await projectToUpdate.update({
-        title: req.body.title,
-        selectCompetencies: req.body.selectCompetencies,
-        countryCity: req.body.countryCity,
-        monthYear: req.body.monthYear,
-        viewConstruction: req.body.viewConstruction,
-        style: req.body.radioValue,
-        titleTextBlock: req.body.titleTextBlock,
-        descriptionProject: req.body.descriptionProject,
-        totalArea: req.body.totalArea,
-        siteArea: req.body.siteArea,
-        floors: req.body.floors,
-        altitude: req.body.altitude,
-        constructionVolume: req.body.constructionVolume,
-        location: req.body.location,
-        degreeParticipation: req.body.degreeParticipation,
-        statusObject: req.body.statusObject,
-        customer: req.body.customer,
-        publication: req.body.publication,
-        linkToPublication: req.body.linkToPublication,
-        publicationTwo: req.body.publicationTwo,
-        linkToPublicationTwo: req.body.linkToPublicationTwo,
-        awards: req.body.awards,
-        headingTextBlock: req.body.headingTextBlock,
-        textBlock: req.body.textBlock,
-        numberOfLanes: req.body.numberOfLanes,
-        long: req.body.long,
-        imageTitle: updatedImageTitles.join(', '),
-        imageProject: updatedImageProjects[0] || null,
-        imageOpen: updatedImageOpens[0] || null,
-        imageClose: updatedImageCloses[0] || null,
-      });
+      await Promise.all(imagesToRemove.map((imageUrl) => deleteImageFromS3(imageUrl, userInfo)));
 
       const existingConstructor = await Constructor.findOne({
         where: {
@@ -347,9 +400,7 @@ router.put(
       const dynamicImagesNew = req.files.dynamicImages ?
         await Promise.all(
           req.files.dynamicImages.map(async (file) => {
-            const {
-              fileUrl
-            } = await uploadFileToS3(file, 'images/imageAdd');
+            const fileUrl = await uploadFileToS3(file, 'images/imageAdd', userInfo);
             return fileUrl;
           })
         ) : [];
@@ -376,16 +427,95 @@ router.put(
       const normalizedExistingDynamicImages = existingDynamicImages.map(extractFileName);
       const normalizedNewDynamicImages = newDynamicImages.map(extractFileName);
 
+      const oldImageTitle = projectToUpdate.imageTitle || '';
+      const oldImageProject = projectToUpdate.imageProject || '';
+      const oldImageOpen = projectToUpdate.imageOpen || '';
+      const oldImageClose = projectToUpdate.imageClose || '';
+      const oldDynamicBlocksData = existingConstructor ? JSON.stringify(existingConstructor.data || []) : '[]';
+      const newDynamicBlocksData = JSON.stringify(updatedDynamicBlocksContent || []);
+
+      const newImageTitle = updatedImageTitles.join(', ');
+      const newImageProject = updatedImageProjects[0] || '';
+      const newImageOpen = updatedImageOpens[0] || '';
+      const newImageClose = updatedImageCloses[0] || '';
+
+      const hasChanges =
+        oldTitle !== newTitle ||
+        oldSelectCompetencies !== newSelectCompetencies ||
+        oldCountryCity !== newCountryCity ||
+        oldMonthYear !== newMonthYear ||
+        oldViewConstruction !== newViewConstruction ||
+        oldStyle !== newStyle ||
+        oldTitleTextBlock !== newTitleTextBlock ||
+        oldDescriptionProject !== newDescriptionProject ||
+        oldTotalArea !== newTotalArea ||
+        oldSiteArea !== newSiteArea ||
+        oldFloors !== newFloors ||
+        oldAltitude !== newAltitude ||
+        oldConstructionVolume !== newConstructionVolume ||
+        oldLocation !== newLocation ||
+        oldDegreeParticipation !== newDegreeParticipation ||
+        oldStatusObject !== newStatusObject ||
+        oldCustomer !== newCustomer ||
+        oldPublication !== newPublication ||
+        oldLinkToPublication !== newLinkToPublication ||
+        oldPublicationTwo !== newPublicationTwo ||
+        oldLinkToPublicationTwo !== newLinkToPublicationTwo ||
+        oldAwards !== newAwards ||
+        oldHeadingTextBlock !== newHeadingTextBlock ||
+        oldTextBlock !== newTextBlock ||
+        oldNumberOfLanes !== newNumberOfLanes ||
+        oldLong !== newLong ||
+        oldImageTitle !== newImageTitle ||
+        oldImageProject !== newImageProject ||
+        oldImageOpen !== newImageOpen ||
+        oldImageClose !== newImageClose ||
+        oldDynamicBlocksData !== newDynamicBlocksData ||
+        JSON.stringify(normalizedExistingDynamicImages) !== JSON.stringify(normalizedNewDynamicImages);
+
       const imagesToRemoveFromDynamicBlocks = normalizedExistingDynamicImages.filter((image) => !normalizedNewDynamicImages.includes(image));
 
-      await Promise.all(imagesToRemoveFromDynamicBlocks.map(deleteImageFromS3));
+      await Promise.all(imagesToRemoveFromDynamicBlocks.map((imageUrl) => deleteImageFromS3(imageUrl, userInfo)));
+
+      await projectToUpdate.update({
+        title: newTitle || projectToUpdate.title,
+        selectCompetencies: newSelectCompetencies || projectToUpdate.selectCompetencies,
+        countryCity: newCountryCity || projectToUpdate.countryCity,
+        monthYear: newMonthYear || projectToUpdate.monthYear,
+        viewConstruction: newViewConstruction || projectToUpdate.viewConstruction,
+        style: newStyle || projectToUpdate.style,
+        titleTextBlock: newTitleTextBlock || projectToUpdate.titleTextBlock,
+        descriptionProject: newDescriptionProject || projectToUpdate.descriptionProject,
+        totalArea: newTotalArea || projectToUpdate.totalArea,
+        siteArea: newSiteArea || projectToUpdate.siteArea,
+        floors: newFloors || projectToUpdate.floors,
+        altitude: newAltitude || projectToUpdate.altitude,
+        constructionVolume: newConstructionVolume || projectToUpdate.constructionVolume,
+        location: newLocation || projectToUpdate.location,
+        degreeParticipation: newDegreeParticipation || projectToUpdate.degreeParticipation,
+        statusObject: newStatusObject || projectToUpdate.statusObject,
+        customer: newCustomer || projectToUpdate.customer,
+        publication: newPublication || projectToUpdate.publication,
+        linkToPublication: newLinkToPublication || projectToUpdate.linkToPublication,
+        publicationTwo: newPublicationTwo || projectToUpdate.publicationTwo,
+        linkToPublicationTwo: newLinkToPublicationTwo || projectToUpdate.linkToPublicationTwo,
+        awards: newAwards || projectToUpdate.awards,
+        headingTextBlock: newHeadingTextBlock || projectToUpdate.headingTextBlock,
+        textBlock: newTextBlock || projectToUpdate.textBlock,
+        numberOfLanes: newNumberOfLanes || projectToUpdate.numberOfLanes,
+        long: newLong || projectToUpdate.long,
+        imageTitle: newImageTitle,
+        imageProject: newImageProject || null,
+        imageOpen: newImageOpen || null,
+        imageClose: newImageClose || null,
+      });
 
       if (existingConstructor) {
         await existingConstructor.update({
           data: updatedDynamicBlocksContent,
           image: newDynamicImages.join(', '),
         });
-      } else {
+      } else if (updatedDynamicBlocksContent && updatedDynamicBlocksContent.length > 0) {
         await Constructor.create({
           data: updatedDynamicBlocksContent,
           image: newDynamicImages.join(', '),
@@ -394,6 +524,18 @@ router.put(
       }
 
       await syncProjectMain(projectId);
+      
+      if (req.session?.user) {
+        logResourceAction({
+          action: 'UPDATE',
+          userName: req.session.user.name,
+          userId: req.session.user.id.toString(),
+          resourceType: 'project',
+          resourceId: projectId,
+          resourceName: req.body.title || projectToUpdate.title,
+          hasChanges,
+        });
+      }
 
       res.status(200).json({
         message: 'Данные успешно обновлены',
@@ -510,6 +652,14 @@ router.delete('/deletezapros/:id', async (req, res) => {
     const {
       id
     } = req.params;
+ 
+    const userInfo = req.session?.user ? {
+      userName: req.session.user.name,
+      userId: req.session.user.id.toString(),
+      resourceType: 'project',
+      resourceId: id,
+    } : null;
+
     const post = await Project.findByPk(id);
     const deleteConstructorImg = await Constructor.findOne({
       where: {
@@ -531,8 +681,7 @@ router.delete('/deletezapros/:id', async (req, res) => {
           } = result;
           try {
             // eslint-disable-next-line no-await-in-loop
-            await deleteFileFromS3(fileName, folder);
-            console.log(`Файл ${fileName} удалён из ${folder}`);
+            await deleteFileFromS3(fileName, folder, userInfo);
           } catch (error) {
             console.error(`Ошибка при удалении файла ${fileName}:`, error);
           }
@@ -579,6 +728,17 @@ router.delete('/deletezapros/:id', async (req, res) => {
         id
       }
     });
+
+    if (req.session?.user) {
+      logResourceAction({
+        action: 'DELETE',
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'project',
+        resourceId: id,
+        resourceName: post.title || 'Проект',
+      });
+    }
 
     res.sendStatus(200);
   } catch (error) {

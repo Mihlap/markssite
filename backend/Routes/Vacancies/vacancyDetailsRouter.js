@@ -3,6 +3,7 @@ const { Op } = require('sequelize');
 const fileMiddleware = require('../../middleware/file');
 const { VacancyMainSlideCard } = require('../../db/models');
 const { uploadFileToS3, deleteFileFromS3 } = require('../../s3Utils/s3Service');
+const { logResourceAction } = require('../../utils/fileLogger');
 
 const router = express.Router();
 
@@ -11,15 +12,15 @@ function getFileNameFromUrl(url) {
   return urlParts[urlParts.length - 1];
 }
 
-const deleteImageIfUnused = async (imageName, currentSlideId) => {
+const deleteImageIfUnused = async (imageName, currentSlideId, logInfo = null) => {
   try {
-     const otherSlidesWithImage = await VacancyMainSlideCard.findOne({
+    const otherSlidesWithImage = await VacancyMainSlideCard.findOne({
       where: { photoAva: imageName, id: { [Op.ne]: currentSlideId } },
     });
 
-     if (!otherSlidesWithImage) {
+    if (!otherSlidesWithImage) {
       const fileName = getFileNameFromUrl(imageName);
-      await deleteFileFromS3(fileName, 'images/slideCard');
+      await deleteFileFromS3(fileName, 'images/slideCard', logInfo);
     }
   } catch (error) {
     console.error(`Ошибка при удалении изображения ${imageName}:`, error);
@@ -30,6 +31,12 @@ router.post(
   '/save-vacancy-details',
   fileMiddleware.fields([{ name: 'photoAva', maxCount: 1 }]),
   async (req, res) => {
+    const userInfo = req.session?.user ? {
+      userName: req.session.user.name,
+      userId: req.session.user.id.toString(),
+      resourceType: 'vacancy-slide',
+    } : null;
+
     let details;
     try {
       details = JSON.parse(req.body.details);
@@ -44,7 +51,7 @@ router.post(
     let photoAva = '';
     if (req.files && req.files['photoAva']) {
       try {
-        photoAva = await uploadFileToS3(req.files['photoAva'][0], 'images/slideCard');
+        photoAva = await uploadFileToS3(req.files['photoAva'][0], 'images/slideCard', userInfo);
       } catch (error) {
         console.error('Ошибка при загрузке фото на S3:', error);
         return res.status(500).json({ error: 'Ошибка при загрузке фото' });
@@ -57,7 +64,7 @@ router.post(
       card3: details.card3,
     };
 
-    try {   
+    try {
       const maxOrder = await VacancyMainSlideCard.max('order');
       const nextOrder = Number.isFinite(maxOrder) ? Number(maxOrder) + 1 : 0;
 
@@ -66,6 +73,15 @@ router.post(
         hidden: false,
         photoAva,
         order: nextOrder,
+      });
+
+      logResourceAction({
+        action: 'CREATE',
+        userName: req.session?.user?.name || 'Неизвестный',
+        userId: req.session?.user?.id?.toString() || 'N/A',
+        resourceType: 'vacancy-slide',
+        resourceId: newSlide.id.toString(),
+        resourceName: details.card1?.title || 'Слайд вакансии',
       });
 
       res.status(200).json({ message: 'Детали вакансии сохранены успешно.', data: newSlide });
@@ -80,6 +96,14 @@ router.put('/update-slide/:id', fileMiddleware.fields([{ name: 'photoAva', maxCo
   async (req, res) => {
     try {
       const { id } = req.params;
+
+      const userInfo = req.session?.user ? {
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'vacancy-slide',
+        resourceId: id,
+      } : null;
+
       const details = JSON.parse(req.body.details);
       const slide = await VacancyMainSlideCard.findByPk(id);
 
@@ -88,14 +112,16 @@ router.put('/update-slide/:id', fileMiddleware.fields([{ name: 'photoAva', maxCo
       }
 
       const oldImage = slide.photoAva;
+      const oldCardData = JSON.stringify(slide.cardData);
+      const newCardData = JSON.stringify(details);
 
-       if (req.body.removePhotoAva === 'true' && slide.photoAva) {
-        await deleteImageIfUnused(slide.photoAva, id);
+      if (req.body.removePhotoAva === 'true' && slide.photoAva) {
+        await deleteImageIfUnused(slide.photoAva, id, userInfo);
         slide.photoAva = '';
       }
 
       if (req.files && req.files['photoAva']) {
-        const fileUrl = await uploadFileToS3(req.files['photoAva'][0], 'images/slideCard');
+        const fileUrl = await uploadFileToS3(req.files['photoAva'][0], 'images/slideCard', userInfo);
         slide.photoAva = fileUrl;
       }
 
@@ -105,8 +131,20 @@ router.put('/update-slide/:id', fileMiddleware.fields([{ name: 'photoAva', maxCo
       });
 
       if (oldImage && oldImage !== slide.photoAva) {
-        await deleteImageIfUnused(oldImage, id);
+        await deleteImageIfUnused(oldImage, id, userInfo);
       }
+
+      const hasChanges = oldImage !== slide.photoAva || oldCardData !== newCardData;
+
+      logResourceAction({
+        action: 'UPDATE',
+        userName: req.session?.user?.name || 'Неизвестный',
+        userId: req.session?.user?.id?.toString() || 'N/A',
+        resourceType: 'vacancy-slide',
+        resourceId: id,
+        resourceName: details.card1?.title || slide.cardData?.card1?.title || 'Слайд вакансии',
+        hasChanges,
+      });
 
       res.json({ message: "Слайд успешно обновлен", data: slide });
     } catch (error) {
@@ -179,11 +217,28 @@ router.put('/toggle-slide/:id', async (req, res) => {
     const { id } = req.params;
     const { hidden } = req.body;
 
+    const slide = await VacancyMainSlideCard.findByPk(id);
+    if (!slide) {
+      return res.status(404).json({ error: 'Слайд не найден' });
+    }
+
+    const hasChanges = slide.hidden !== hidden;
+
     const updated = await VacancyMainSlideCard.update({ hidden }, {
       where: { id }
     });
 
     if (updated) {
+      logResourceAction({
+        action: 'UPDATE',
+        userName: req.session?.user?.name || 'Неизвестный',
+        userId: req.session?.user?.id?.toString() || 'N/A',
+        resourceType: 'vacancy-slide',
+        resourceId: id,
+        resourceName: slide.cardData?.card1?.title || 'Слайд вакансии',
+        hasChanges,
+      });
+
       res.json({ message: 'Статус вакансии успешно обновлен', id, hidden });
     } else {
       res.status(404).json({ error: 'Вканансии не найдено' });
@@ -195,7 +250,14 @@ router.put('/toggle-slide/:id', async (req, res) => {
 });
 
 router.delete('/delete-slide/:id', async (req, res) => {
-  const {id} = req.params;
+  const { id } = req.params;
+
+  const userInfo = req.session?.user ? {
+    userName: req.session.user.name,
+    userId: req.session.user.id.toString(),
+    resourceType: 'vacancy-slide',
+    resourceId: id,
+  } : null;
 
   if (!id || isNaN(parseInt(id))) {
     return res.status(400).json({ error: "Некорректный идентификатор слайда." });
@@ -211,14 +273,23 @@ router.delete('/delete-slide/:id', async (req, res) => {
     const result = await VacancyMainSlideCard.destroy({ where: { id } });
 
     if (result > 0) {
-       const otherSlidesWithImage = await VacancyMainSlideCard.findOne({
+      const otherSlidesWithImage = await VacancyMainSlideCard.findOne({
         where: { photoAva: slide.photoAva, id: { [Op.ne]: id } }
       });
 
       if (!otherSlidesWithImage && slide.photoAva) {
         const fileName = getFileNameFromUrl(slide.photoAva);
-        await deleteFileFromS3(fileName, 'images/slideCard');
+        await deleteFileFromS3(fileName, 'images/slideCard', userInfo);
       }
+
+      logResourceAction({
+        action: 'DELETE',
+        userName: req.session?.user?.name || 'Неизвестный',
+        userId: req.session?.user?.id?.toString() || 'N/A',
+        resourceType: 'vacancy-slide',
+        resourceId: id,
+        resourceName: slide.cardData?.card1?.title || 'Слайд вакансии',
+      });
 
       res.json({ message: "Слайд удален", id });
     } else {
