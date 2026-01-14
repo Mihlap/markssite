@@ -3,7 +3,6 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    // Сидирование для SwitchingFilterProjects
     await queryInterface.bulkInsert(
       'SwitchingFilterProjects',
       [
@@ -15,8 +14,7 @@ module.exports = {
       ],
       {},
     );
-
-    // Сидирование для SwitchingFilterArticle
+ 
     await queryInterface.bulkInsert(
       'SwitchingFilterArticles',
       [

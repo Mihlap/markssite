@@ -53,7 +53,6 @@ export const getUpdatedArticles = () => async (dispatch) => {
   try {
     const response = await axios.get(`${serverHost}/search-articles/right-get`);
     const data = response.data;
-    // console.log(data);
     dispatch(fetchArticleRightSuccess(data));
   } catch (error) {
     dispatch(fetchArticleRightFailure(error.message));
@@ -95,8 +94,7 @@ export const searchArticleRightDelete = (IdArticle) => async (dispatch) => {
   dispatch(fetchArticleRightStart());
 
   try {
-    await axios.delete(`${serverHost}/search-articles/right-delete/${IdArticle}`);
-    // console.log(response.status); // Check the response status
+    await axios.delete(`${serverHost}/search-articles/right-delete/${IdArticle}`);  
     dispatch(deleteArticleRightSuccess(IdArticle));
   } catch (error) {
     dispatch(deleteArticleRightFailure(error.message));
@@ -105,7 +103,7 @@ export const searchArticleRightDelete = (IdArticle) => async (dispatch) => {
 
 export const updateArticleRight =
   (filterArticle, setSaveIdOne, setSearcIdOne, setIsBtnDisabledPublicOne) => async (dispatch) => {
-    console.log('updateArticleLeft called:', filterArticle); // Add this line for debugging
+    console.log('updateArticleLeft called:', filterArticle);
 
     dispatch(fetchArticleRightStart());
 
@@ -115,7 +113,7 @@ export const updateArticleRight =
         IdArticle: filterArticle.id,
       });
       const updatedArticle = response.data;
-      console.log('Response from the server:', updatedArticle); // Add this line for debugging
+      console.log('Response from the server:', updatedArticle);
       dispatch(updateArticleRightSuccess(updatedArticle));
       setSearcIdOne('');
       setSaveIdOne(null);

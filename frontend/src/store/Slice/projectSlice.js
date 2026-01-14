@@ -206,6 +206,7 @@ export const fetchProject = createAsyncThunk('project/fetchProject', async (form
       url: requestUrl,
       data: formData,
       headers: { 'Content-Type': 'multipart/form-data' },
+      withCredentials: true,
     });
 
  
@@ -296,7 +297,7 @@ export const getFetchFormLocationFilter = (page, projectsPerPage, location, coun
 
 export const deleteForm = (id) => async (dispatch) => {
   try {
-    await axios.delete(`${serverHost}/api-project/deletezapros/${id}`);
+    await axios.delete(`${serverHost}/api-project/deletezapros/${id}`, { withCredentials: true });
     dispatch(deleteProjectSuccess(id));
   } catch (error) {
     dispatch(deleteProjectFailure(error.message));

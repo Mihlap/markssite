@@ -11,6 +11,7 @@ export const postEventData = createAsyncThunk(
         headers: {
           'Content-Type': 'multipart/form-data',
         },
+        withCredentials: true,
       });
 
       if (response.data) {
@@ -57,6 +58,7 @@ export const editEvent = createAsyncThunk('events/editEvent', async ({ id, data 
       headers: {
         'Content-Type': 'multipart/form-data',
       },
+      withCredentials: true,
     });
 
     if (response.status === 200) {
@@ -90,8 +92,7 @@ export const toggleEventVisibility = createAsyncThunk(
     try {
       const response = await axios.put(`${serverHost}/api-events/toggle-event/${id}`, { hidden });
       if (response.status === 200) {
-        dispatch(updateEventVisibility({ id, hidden }));
-        // dispatch(fetchEvents());
+        dispatch(updateEventVisibility({ id, hidden }));      
         return response.data;
       }
     } catch (error) {
@@ -103,7 +104,7 @@ export const toggleEventVisibility = createAsyncThunk(
 
 export const deleteEvent = createAsyncThunk('events/deleteEvent', async (id, { rejectWithValue }) => {
   try {
-    await axios.delete(`${serverHost}/api-events/delete-event/${id}`);
+    await axios.delete(`${serverHost}/api-events/delete-event/${id}`, { withCredentials: true });
     return id;
   } catch (error) {
     return rejectWithValue('Ошибка при удалении мероприятия: ' + error.message);
@@ -126,8 +127,7 @@ const formAddEventSlice = createSlice({
     updateEventVisibility(state, action) {
       const index = state.events.findIndex((event) => event.id === action.payload.id);
       if (index !== -1) {
-        state.events[index].hidden = action.payload.hidden;
-        // state.events = [...state.events];
+        state.events[index].hidden = action.payload.hidden;    
       }
     },
     updateEventsOrderLocally(state, action) {

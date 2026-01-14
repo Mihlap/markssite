@@ -5,6 +5,7 @@ const {
   Employee,
   VacanciesMain
 } = require('../../db/models');
+const { logResourceAction } = require('../../utils/fileLogger');
 
 const router = express.Router();
 
@@ -48,6 +49,18 @@ router.post('/addVacancy', async (req, res) => {
 
     await newVacancy.save();
 
+    const resourceType = formData.type === 'стажировка' ? 'internship' : 'vacancy';
+    const resourceName = formData.title || (formData.type === 'стажировка' ? 'Стажировка' : 'Вакансия');
+
+    logResourceAction({
+      action: 'CREATE',
+      userName: req.session?.user?.name || 'Неизвестный',
+      userId: req.session?.user?.id?.toString() || 'N/A',
+      resourceType,
+      resourceId: newVacancy.id.toString(),
+      resourceName,
+    });
+
     res.status(201).json({
       message: 'Вакансия успешно добавлена'
     });
@@ -82,6 +95,19 @@ router.post('/copyVacancy/:id', async (req, res) => {
     if (!newVacancy) {
       throw new Error('Не удалось создать копию вакансии');
     }
+
+    const resourceType = newVacancy.type === 'стажировка' ? 'internship' : 'vacancy';
+    const resourceName = newVacancy.title || (newVacancy.type === 'стажировка' ? 'Стажировка (копия)' : 'Вакансия (копия)');
+
+    logResourceAction({
+      action: 'CREATE',
+      userName: req.session?.user?.name || 'Неизвестный',
+      userId: req.session?.user?.id?.toString() || 'N/A',
+      resourceType,
+      resourceId: newVacancy.id.toString(),
+      resourceName,
+    });
+
     res.status(201).json({
       message: 'Вакансия успешно скопирована',
       copiedId: newVacancy.id
@@ -108,20 +134,90 @@ router.put('/editVacancy/:id', async (req, res) => {
       });
     }
 
+    const normalizeValue = (value, existingValue) => {
+      if (value === undefined || value === null) {
+        return existingValue;
+      }
+      if (typeof value === 'object' && value?.value !== undefined) {
+        return value.value;
+      }
+      return value;
+    };
+
+    const normalizeBoolean = (value, existingValue) => {
+      if (value === undefined || value === null) {
+        return existingValue;
+      }
+      if (typeof value === 'string') {
+        return value === 'true' || value === '1';
+      }
+      return Boolean(value);
+    };
+
+    const normalizeString = (value) => {
+      if (value === null || value === undefined) {
+        return '';
+      }
+      return String(value);
+    };
+
+    const newTitle = normalizeString(formData.title ?? existingVacancy.title);
+    const newDirection = normalizeValue(formData.direction, existingVacancy.direction);
+    const newExperience = normalizeValue(formData.experience, existingVacancy.experience);
+    const newLocation = normalizeValue(formData.location, existingVacancy.locationStaff);
+    const newBusyness = normalizeValue(formData.busyness, existingVacancy.busyness);
+    const newWorkMode = normalizeValue(formData.workMode, existingVacancy.modeOperating);
+    const newSkills = normalizeString(formData.skills ?? existingVacancy.skills);
+    const newBenefits = normalizeString(formData.benefits ?? existingVacancy.advantages);
+    const newTextBlock1 = normalizeString(formData.textBlock1 ?? existingVacancy.searchStaff);
+    const newTextBlock2 = normalizeString(formData.textBlock2 ?? existingVacancy.haveToWork);
+    const newTextBlock3 = normalizeString(formData.textBlock3 ?? existingVacancy.requirements);
+    const newType = normalizeString(formData.type ?? existingVacancy.type);
+    const newHidden = normalizeBoolean(formData.hidden, existingVacancy.hidden);
+
+    const oldTitle = normalizeString(existingVacancy.title);
+    const oldDirection = normalizeValue(existingVacancy.direction, existingVacancy.direction);
+    const oldExperience = normalizeValue(existingVacancy.experience, existingVacancy.experience);
+    const oldLocation = normalizeValue(existingVacancy.locationStaff, existingVacancy.locationStaff);
+    const oldBusyness = normalizeValue(existingVacancy.busyness, existingVacancy.busyness);
+    const oldWorkMode = normalizeValue(existingVacancy.modeOperating, existingVacancy.modeOperating);
+    const oldSkills = normalizeString(existingVacancy.skills);
+    const oldBenefits = normalizeString(existingVacancy.advantages);
+    const oldTextBlock1 = normalizeString(existingVacancy.searchStaff);
+    const oldTextBlock2 = normalizeString(existingVacancy.haveToWork);
+    const oldTextBlock3 = normalizeString(existingVacancy.requirements);
+    const oldType = normalizeString(existingVacancy.type);
+    const oldHidden = normalizeBoolean(existingVacancy.hidden, existingVacancy.hidden);
+
+    const hasChanges =
+      oldTitle !== newTitle ||
+      oldDirection !== newDirection ||
+      oldExperience !== newExperience ||
+      oldLocation !== newLocation ||
+      oldBusyness !== newBusyness ||
+      oldWorkMode !== newWorkMode ||
+      oldSkills !== newSkills ||
+      oldBenefits !== newBenefits ||
+      oldTextBlock1 !== newTextBlock1 ||
+      oldTextBlock2 !== newTextBlock2 ||
+      oldTextBlock3 !== newTextBlock3 ||
+      oldType !== newType ||
+      oldHidden !== newHidden;
+
     await Employee.update({
-      title: formData.title,
-      direction: formData.direction,
-      experience: formData.experience,
-      locationStaff: formData.location,
-      busyness: formData.busyness,
-      modeOperating: formData.workMode,
-      skills: formData.skills,
-      advantages: formData.benefits,
-      searchStaff: formData.textBlock1,
-      haveToWork: formData.textBlock2,
-      requirements: formData.textBlock3,
-      type: formData.type,
-      hidden: formData.hidden,
+      title: newTitle || existingVacancy.title,
+      direction: newDirection ?? existingVacancy.direction,
+      experience: newExperience ?? existingVacancy.experience,
+      locationStaff: newLocation ?? existingVacancy.locationStaff,
+      busyness: newBusyness ?? existingVacancy.busyness,
+      modeOperating: newWorkMode ?? existingVacancy.modeOperating,
+      skills: newSkills || existingVacancy.skills,
+      advantages: newBenefits || existingVacancy.advantages,
+      searchStaff: newTextBlock1 || existingVacancy.searchStaff,
+      haveToWork: newTextBlock2 || existingVacancy.haveToWork,
+      requirements: newTextBlock3 || existingVacancy.requirements,
+      type: newType || existingVacancy.type,
+      hidden: newHidden,
     }, {
       where: {
         id
@@ -129,6 +225,20 @@ router.put('/editVacancy/:id', async (req, res) => {
     });
 
     await syncVacancyMain(id);
+
+    const resourceType = formData.type === 'стажировка' || existingVacancy.type === 'стажировка' ? 'internship' : 'vacancy';
+    const resourceName = formData.title || existingVacancy.title || (existingVacancy.type === 'стажировка' ? 'Стажировка' : 'Вакансия');
+
+    logResourceAction({
+      action: 'UPDATE',
+      userName: req.session?.user?.name || 'Неизвестный',
+      userId: req.session?.user?.id?.toString() || 'N/A',
+      resourceType,
+      resourceId: id,
+      resourceName,
+      hasChanges,
+    });
+
     res.json({
       message: 'Вакансия успешно обновлена'
     });
@@ -145,14 +255,34 @@ router.put('/updateVacancyLookStatus/:id', async (req, res) => {
     const { id } = req.params;
     const { hidden } = req.body;
 
+    const vacancy = await Employee.findByPk(id);
+    if (!vacancy) {
+      return res.status(404).json({ error: 'Вакансия не найдена' });
+    }
+
+    const hasChanges = vacancy.hidden !== hidden;
+
     const updated = await Employee.update({ hidden }, {
       where: { id }
     });
 
     if (updated) {
+      const resourceType = vacancy.type === 'стажировка' ? 'internship' : 'vacancy';
+      const resourceName = vacancy.title || (vacancy.type === 'стажировка' ? 'Стажировка' : 'Вакансия');
+
+      logResourceAction({
+        action: 'UPDATE',
+        userName: req.session?.user?.name || 'Неизвестный',
+        userId: req.session?.user?.id?.toString() || 'N/A',
+        resourceType,
+        resourceId: id,
+        resourceName,
+        hasChanges,
+      });
+
       res.json({ message: 'Статус вакансии успешно обновлен', id, hidden });
     } else {
-      res.status(404).json({ error: 'Вканансии не найдено' });
+      res.status(404).json({ error: 'Вакансия не найдена' });
     }
   } catch (error) {
     console.error('Ошибка обновления статуса вакансии:', error);
@@ -275,6 +405,9 @@ router.delete('/deletezapros/:id', async (req, res) => {
   const transaction = await sequelize.transaction();
 
   try {
+    const vacancy = await Employee.findByPk(id, { transaction });
+    const vacancyTitle = vacancy?.title || 'Вакансия';
+
     const vacancyMainEntry = await VacanciesMain.findOne({ where: { IdVacancy: id }, transaction });
     if (vacancyMainEntry) {
       await vacancyMainEntry.destroy({ transaction });
@@ -283,6 +416,19 @@ router.delete('/deletezapros/:id', async (req, res) => {
     await Employee.destroy({ where: { id }, transaction });
 
     await transaction.commit();
+
+    const resourceType = vacancy?.type === 'стажировка' ? 'internship' : 'vacancy';
+    const resourceName = vacancyTitle || (vacancy?.type === 'стажировка' ? 'Стажировка' : 'Вакансия');
+
+    logResourceAction({
+      action: 'DELETE',
+      userName: req.session?.user?.name || 'Неизвестный',
+      userId: req.session?.user?.id?.toString() || 'N/A',
+      resourceType,
+      resourceId: id,
+      resourceName,
+    });
+
     res.json({
       message: 'Вакансия и связанная запись успешно удалены',
       id

@@ -4,6 +4,7 @@ const { URL } = require('url');
 const { Journal } = require('../../db/models');
 const fileMiddleware = require('../../middleware/file');
 const { uploadFileToS3, deleteFileFromS3 } = require('../../s3Utils/s3Service');
+const { logResourceAction } = require('../../utils/fileLogger');
 
 const router = express.Router();
 
@@ -44,6 +45,12 @@ router.post('/uploadMarkdownFile', fileMiddleware.single('markdownFile'), async 
     if (!req.file) {
       return res.status(400).json({ message: 'Файл не найден в запросе' });
     }
+   
+    const userInfo = req.session?.user ? {
+      userName: req.session.user.name,
+      userId: req.session.user.id.toString(),
+      resourceType: 'journal',
+    } : null;
 
     const timestamp = Date.now();
     const originalName = req.file.originalname;
@@ -57,7 +64,7 @@ router.post('/uploadMarkdownFile', fileMiddleware.single('markdownFile'), async 
 
     const fileForUpload = { ...req.file, originalname: uniqueFileName };
 
-    const uploadedUrl = await uploadFileToS3(fileForUpload, uploadFolder);
+    const uploadedUrl = await uploadFileToS3(fileForUpload, uploadFolder, userInfo);
 
     return res.status(200).json({
       message: 'Файл успешно загружен',
@@ -76,7 +83,13 @@ router.post(
     { name: 'markdownImages', maxCount: 100 },
   ]),
   async (req, res) => {
-    try {
+    try {   
+      const userInfo = req.session?.user ? {
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'journal',
+      } : null;
+
       const {
         title,
         publication_date,
@@ -111,7 +124,7 @@ router.post(
 
       if (req.files && req.files.authorImages) {
         const uploadedFiles = await Promise.all(
-          req.files.authorImages.map(async (file) => uploadFileToS3(file, 'images/imageJournal')),
+          req.files.authorImages.map(async (file) => uploadFileToS3(file, 'images/imageJournal', userInfo)),
         );
 
         const updatedParsedAuthors = parsedAuthors.map((author, i) => {
@@ -127,6 +140,17 @@ router.post(
       }
 
       await journal.save();
+   
+      if (req.session?.user) {
+        logResourceAction({
+          action: 'CREATE',
+          userName: req.session.user.name,
+          userId: req.session.user.id.toString(),
+          resourceType: 'journal',
+          resourceId: journal.id.toString(),
+          resourceName: title || 'Запись журнала',
+        });
+      }
 
       return res.status(201).json({ message: 'Запись успешно создана', journal });
     } catch (error) {
@@ -166,6 +190,14 @@ router.put(
   async (req, res) => {
     try {
       const { journalId } = req.params;
+   
+      const userInfo = req.session?.user ? {
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'journal',
+        resourceId: journalId,
+      } : null;
+
       const {
         title,
         publication_date,
@@ -183,22 +215,38 @@ router.put(
         return res.status(404).json({ message: 'Запись не найдена' });
       }
 
-      const oldMarkdown = journal.markdown_content || '';
-
-      const oldLinks = extractMarkdownLinks(oldMarkdown);
-      const newLinks = extractMarkdownLinks(newMarkdown);
-
-      const removedLinks = oldLinks.filter((link) => !newLinks.includes(link));
-
-      removedLinks.forEach(async (link) => {
-        const result = extractFileNameAndFolderFromUrl(link);
-        if (result) {
-          const decodedFileName = decodeURIComponent(result.fileName);
-          await deleteFileFromS3(decodedFileName, result.folder);
-        } else {
-          console.error('Не удалось извлечь данные из ссылки:', link);
+      const normalizeValue = (value, existingValue) => {
+        if (value === undefined || value === null) {
+          return existingValue ?? '';
         }
-      });
+        return String(value);
+      };
+
+      const normalizeAuthorsForComparison = (authorsArray) => {
+        return JSON.stringify(
+          authorsArray.map((author) => ({
+            ...author,
+            image: author.image ? author.image.split('?timestamp=')[0] : null,
+          }))
+        );
+      };
+
+      const normalizeAttachmentsForComparison = (attachmentsArray) => {
+        return JSON.stringify(
+          attachmentsArray.map((attachment) => attachment.split('?timestamp=')[0])
+        );
+      };
+
+      const oldTitle = normalizeValue(journal.title, '');
+      const oldPublicationDate = journal.publication_date ? String(journal.publication_date) : '';
+      const oldCategory = JSON.stringify(journal.category || []);
+      const oldIssueNumber = journal.issue_number !== null && journal.issue_number !== undefined ? String(journal.issue_number) : '';
+      const oldOrganizations = JSON.stringify(journal.organizations || []);
+      const oldLocations = JSON.stringify(journal.locations || []);
+      const oldMarkdown = journal.markdown_content || '';
+      const oldImageKey = normalizeValue(journal.imageKey, '');
+      const oldAuthors = normalizeAuthorsForComparison(journal.authors || []);
+      const oldAttachments = normalizeAttachmentsForComparison(journal.attachments || []);
 
       const parsedAuthors = authors ? JSON.parse(authors) : [];
       const parsedOrganizations = JSON.parse(organizations || '[]');
@@ -209,7 +257,7 @@ router.put(
       let uploadedFiles = [];
       if (req.files && req.files.authorImages) {
         uploadedFiles = await Promise.all(
-          req.files.authorImages.map((file) => uploadFileToS3(file, 'images/imageJournal')),
+          req.files.authorImages.map((file) => uploadFileToS3(file, 'images/imageJournal', userInfo)),
         );
       }
 
@@ -229,6 +277,32 @@ router.put(
 
       const updatedAttachments = updatedAuthors.map((author) => author.image).filter(Boolean);
 
+      const newTitle = normalizeValue(title, oldTitle);
+      const newPublicationDate = publication_date ? String(publication_date) : '';
+      const newCategory = JSON.stringify(parsedCategory);
+      const newIssueNumber = issue_number ? String(parseInt(issue_number, 10)) : '';
+      const newOrganizations = JSON.stringify(parsedOrganizations);
+      const newLocations = JSON.stringify(parsedLocations);
+      const newMarkdownContent = normalizeValue(newMarkdown, oldMarkdown);
+      const newImageKey = normalizeValue(imageKey, oldImageKey);
+      const newAuthors = normalizeAuthorsForComparison(updatedAuthors);
+      const newAttachments = normalizeAttachmentsForComparison(updatedAttachments);
+
+      const oldLinks = extractMarkdownLinks(oldMarkdown);
+      const newLinks = extractMarkdownLinks(newMarkdownContent);
+
+      const removedLinks = oldLinks.filter((link) => !newLinks.includes(link));
+
+      removedLinks.forEach(async (link) => {
+        const result = extractFileNameAndFolderFromUrl(link);
+        if (result) {
+          const decodedFileName = decodeURIComponent(result.fileName);
+          await deleteFileFromS3(decodedFileName, result.folder, userInfo);
+        } else {
+          console.error('Не удалось извлечь данные из ссылки:', link);
+        }
+      });
+
       const attachmentsToRemove = currentAttachments.filter(
         (attachment) =>
           !updatedAttachments.some((updatedAttachment) => {
@@ -242,7 +316,7 @@ router.put(
         attachmentsToRemove.map(async (url) => {
           try {
             const fileName = url.split('/').pop().split('?')[0];
-            await deleteFileFromS3(fileName, 'images/imageJournal');
+            await deleteFileFromS3(fileName, 'images/imageJournal', userInfo);
           } catch (error) {
             console.error('Ошибка при удалении из S3:', error);
           }
@@ -257,24 +331,48 @@ router.put(
         const result = extractFileNameAndFolderFromUrl(link);
         if (result) {
           const decodedFileName = decodeURIComponent(result.fileName);
-          await deleteFileFromS3(decodedFileName, result.folder);
+          await deleteFileFromS3(decodedFileName, result.folder, userInfo);
         } else {
           console.error('Не удалось извлечь данные из PDF-ссылки:', link);
         }
       });
 
+      const hasChanges =
+        oldTitle !== newTitle ||
+        oldPublicationDate !== newPublicationDate ||
+        oldCategory !== newCategory ||
+        oldIssueNumber !== newIssueNumber ||
+        oldOrganizations !== newOrganizations ||
+        oldLocations !== newLocations ||
+        oldMarkdown !== newMarkdownContent ||
+        oldImageKey !== newImageKey ||
+        oldAuthors !== newAuthors ||
+        oldAttachments !== newAttachments;
+
       await journal.update({
-        title,
-        publication_date,
+        title: newTitle || journal.title,
+        publication_date: newPublicationDate || publication_date || null,
         category: parsedCategory,
-        issue_number: issue_number ? parseInt(issue_number, 10) : null,
+        issue_number: newIssueNumber ? parseInt(newIssueNumber, 10) : null,
         authors: updatedAuthors,
         organizations: parsedOrganizations,
         locations: parsedLocations,
-        markdown_content: newMarkdown,
+        markdown_content: newMarkdownContent || journal.markdown_content,
         attachments: updatedAttachments,
-        imageKey,
+        imageKey: newImageKey || journal.imageKey,
       });
+  
+      if (req.session?.user) {
+        logResourceAction({
+          action: 'UPDATE',
+          userName: req.session.user.name,
+          userId: req.session.user.id.toString(),
+          resourceType: 'journal',
+          resourceId: journalId,
+          resourceName: title || journal.title,
+          hasChanges,
+        });
+      }
 
       res.status(200).json({ message: 'Запись успешно обновлена', journal });
     } catch (error) {
@@ -337,7 +435,13 @@ router.get('/getzapros/:id', async (req, res) => {
 });
 
 router.delete('/delete-file', async (req, res) => {
-  try {
+  try {  
+    const userInfo = req.session?.user ? {
+      userName: req.session.user.name,
+      userId: req.session.user.id.toString(),
+      resourceType: 'journal',
+    } : null;
+
     const { url } = req.body;
     if (!url) {
       return res.status(400).json({ message: 'URL не предоставлен' });
@@ -347,7 +451,7 @@ router.delete('/delete-file', async (req, res) => {
       return res.status(400).json({ message: 'Невозможно определить данные из URL' });
     }
     const { fileName, folder } = result;
-    await deleteFileFromS3(fileName, folder);
+    await deleteFileFromS3(fileName, folder, userInfo);
     res.status(200).json({ message: 'Файл удалён' });
   } catch (error) {
     console.error('Ошибка при удалении файла:', error);
@@ -358,6 +462,14 @@ router.delete('/delete-file', async (req, res) => {
 router.delete('/deletezapros/:id', async (req, res) => {
   try {
     const { id } = req.params;
+  
+    const userInfo = req.session?.user ? {
+      userName: req.session.user.name,
+      userId: req.session.user.id.toString(),
+      resourceType: 'journal',
+      resourceId: id,
+    } : null;
+
     const post = await Journal.findByPk(id);
 
     if (!post) {
@@ -391,7 +503,7 @@ router.delete('/deletezapros/:id', async (req, res) => {
           }
 
           try {
-            await deleteFileFromS3(extractedFileName, folder);
+            await deleteFileFromS3(extractedFileName, folder, userInfo);
           } catch (error) {
             console.error(`Ошибка при удалении файла ${extractedFileName}:`, error);
           }
@@ -414,6 +526,17 @@ router.delete('/deletezapros/:id', async (req, res) => {
     await Journal.destroy({
       where: { id },
     });
+  
+    if (req.session?.user) {
+      logResourceAction({
+        action: 'DELETE',
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'journal',
+        resourceId: id,
+        resourceName: post.title || 'Запись журнала',
+      });
+    }
 
     res.sendStatus(200);
   } catch (error) {
