@@ -25,26 +25,38 @@ const NavBar = () => {
   const container = useRef();
 
   // сustom hooks 
-  const { pathname, hash, isCompany, isVacancyDetail, linkBack, textBack, isHrPortal } = useHrNavMeta();
+  const { pathname, hash, isCompany, isVacancyDetail, isInternship, linkBack, textBack, isHrPortal } = useHrNavMeta();
   const { primary, cta } = useNavLinks();
+
+  const scrollToAnchor = (hashOrId) => {
+    if (!hashOrId || typeof window === 'undefined') return false;
+    const targetHash = hashOrId.startsWith('#') ? hashOrId : `#${hashOrId}`;
+    const target = document.querySelector(targetHash);
+    if (!target) return false;
+
+    gsap.to(window, {
+      duration: 0.6,
+      ease: 'power2.out',
+      scrollTo: { y: target, offsetY: 120 },
+    });
+    return true;
+  };
+
+  const getPathParts = (path) => {
+    if (typeof path !== 'string') return { basePath: '', hash: '' };
+    const [basePath, rawHash] = path.split('#');
+    return { basePath, hash: rawHash ? `#${rawHash}` : '' };
+  };
 
   const goToCompanySection = (hashOrId) => {
     if (!hashOrId) return;
-    const hash = hashOrId.startsWith('#') ? hashOrId : `#${hashOrId}`;
-
-    const doScroll = () => {
-      gsap.to(window, {
-        duration: 0.6,
-        ease: 'power2.out',
-        scrollTo: { y: hash, offsetY: 120 },
-      });
-    };
+    const targetHash = hashOrId.startsWith('#') ? hashOrId : `#${hashOrId}`;
 
     if (pathname !== '/company') {
-      closeDropdown(() => navigate(`/company${hash}`));
+      closeDropdown(() => navigate(`/company${targetHash}`));
       return;
     }
-    closeDropdown(doScroll);
+    closeDropdown(() => scrollToAnchor(targetHash));
   };
 
   const closeDropdown = (afterClose) => {
@@ -97,10 +109,21 @@ const NavBar = () => {
 
   const closeMenu = () => setIsMenuOpen(false);
 
+  const navigateWithHash = (path) => {
+    if (!path) return;
+    const { basePath, hash: targetHash } = getPathParts(path);
+    const sameRoute = !basePath || basePath === pathname;
+    if (targetHash && sameRoute && hash === targetHash) {
+      scrollToAnchor(targetHash);
+      return;
+    }
+    navigate(path);
+  };
+
   const handleSidebarNavigate = (path) => {
     if (!path) return;
     closeMenu();
-    handlerLink(path);
+    navigateWithHash(path);
   };
 
   const handleSidebarCompanySection = (hashOrId) => {
@@ -135,9 +158,27 @@ useGSAP(
   { dependencies: [linkChildren, openDropDownId] }
 );
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (hash !== '#form') return;
+    let attempts = 0;
+    let retryId;
+    const tryScroll = () => {
+      if (scrollToAnchor(hash) || attempts >= 5) return;
+      attempts += 1;
+      retryId = window.setTimeout(tryScroll, 150);
+    };
+    tryScroll();
+    return () => window.clearTimeout(retryId);
+  }, [hash, pathname]);
+
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
+    if (isVacancyDetail || isInternship) {
+      setIsNavbarHidden(false);
+      return;
+    }
     let lastScrollY = window.scrollY;
     const MIN_DELTA = 4;
 
@@ -151,7 +192,7 @@ useGSAP(
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isVacancyDetail, isInternship]);
 
   return (
     <nav
@@ -284,13 +325,15 @@ useGSAP(
                   {label}
                 </a>
               ) : (
-                <NavLink
+                  // кнопка тут
+                <button
                   style={{ opacity: `${isVacancyDetail ? 0 : 1}` }}
                   key={id}
-                  to={path}
-                  className={({ isActive }) => clsx(baseClasses, isActive && styles['navbar-link--active'])}>
+                  className={clsx(baseClasses, styles['navbar-link--active'])}
+                  type="button"
+                  onClick={() => closeDropdown(() => navigateWithHash(path))}>
                   {label}
-                </NavLink>
+                </button>
               );
             })}
           </div>

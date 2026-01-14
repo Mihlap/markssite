@@ -107,7 +107,8 @@
     &-list {
         display: flex;
         align-items: center;
-        gap: 33px;
+        gap: 40px;
+        padding: 20px 0px;
     }
 
     &-cta {
@@ -179,7 +180,7 @@
         }
 
         &--cta-secondary {
-            @include navbar-cta-button(14px, 20px, --black-1D2E43, --originWhite-FFFFFF, --originWhite-FFFFFF, --dark-gray-566272, 18px 44px)
+            @include navbar-cta-button(14px, 20px, --black-1D2E43, --originWhite-FFFFFF, --originWhite-FFFFFF, --dark-gray-566272, 20px 44px)
         }
     }
 

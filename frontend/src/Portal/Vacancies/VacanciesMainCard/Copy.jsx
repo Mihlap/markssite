@@ -406,7 +406,7 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
             <BenefitsVacancy />
           </div>
         </div>
-        <div className={styles.temporaryText}>Мы ищем именно тебя!</div>
+        <div id="form" className={styles.temporaryText}>Мы ищем именно тебя!</div>
         <div className={styles.textUnderForm}>
           Оставьте ваши контакты, мы всегда&nbsp;в&nbsp;поиске талантливых профессионалов
         </div>
