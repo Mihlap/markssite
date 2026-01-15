@@ -410,7 +410,7 @@
             }
 
             &--btn {
-                @include navbar-cta-button(--black-1D2E43, --white-F6F6F6, null, null, 24px 91.5px);
+                @include navbar-cta-button(null, null,--black-1D2E43, --white-F6F6F6, null, null, 24px 91.5px);
                 white-space: nowrap;
             }
         }
