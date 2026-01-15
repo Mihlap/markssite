@@ -101,7 +101,7 @@ const Intro = () => {
             </div>
           ) : (
             <div className={styles.Intro__starsWrapper}>
-              {/* <StarsImpulse /> */}
+              <StarsImpulse />
             </div>
           )}
         </div>
