@@ -57,7 +57,7 @@
     position: relative;
     --timeline-overlap: clamp(24px, 4vh, 72px);
     padding: 60px 0 120px;
-    margin-top: calc(-1 * var(--timeline-overlap));
+    margin-top: clamp(60px, 8vh, 120px);
     margin-bottom: 80px;
     z-index: 1;
     will-change: transform;
@@ -397,7 +397,7 @@
 
     .history_timeline_container {
         --timeline-overlap: 0px;
-        margin-top: 60px;
+        margin-top: 80px;
         margin-bottom: 80px;
         padding: 40px 0 100px;
     }
@@ -468,7 +468,7 @@
 
     .history_timeline_container {
         --timeline-overlap: 0px;
-        margin-top: 40px;
+        margin-top: 60px;
         margin-bottom: 60px;
         padding: 30px 0 80px;
     }
