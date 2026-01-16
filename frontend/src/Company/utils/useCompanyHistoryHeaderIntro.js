@@ -99,6 +99,10 @@ export function useCompanyHistoryHeaderIntro({
     ]);
 
     useEffect(() => {
+        if (inView) {
+            textAnimationReady.current = true;
+        }
+
         if (!inView) return;
 
         const startHeaderIntro = () => {
@@ -120,8 +124,10 @@ export function useCompanyHistoryHeaderIntro({
                 el.style.transform = '';
             });
 
-            // eslint-disable-next-line no-unused-expressions
-            title.offsetWidth;
+            void title.offsetWidth;
+
+            textAnimationReady.current = true;
+            headerIntroInProgressRef.current = false;
 
             requestAnimationFrame(() => {
                 if (titleRef.current) titleRef.current.classList.add(headerStyles.animate);
@@ -131,32 +137,19 @@ export function useCompanyHistoryHeaderIntro({
                 if (subtitleLine2Ref.current) subtitleLine2Ref.current.classList.add(headerStyles.animate);
             });
 
-            headerIntroInProgressRef.current = true;
-            textAnimationReady.current = false;
-
-            setTimeout(() => {
-                textAnimationReady.current = true;
-                headerIntroInProgressRef.current = false;
-            }, 2700);
-
-            if (!cardsIntroTriggeredRef.current && historyListRef.current && visibleItemsLength > 0) {
+            if (!cardsIntroTriggeredRef.current) {
                 cardsIntroTriggeredRef.current = true;
 
-                const cards = historyListRef.current.querySelectorAll('[class*="history_card_wrapper"]');
-                cards.forEach((card, index) => {
-                    setTimeout(() => {
+                const cards = historyListRef.current?.querySelectorAll('[class*="history_card_wrapper"]');
+                if (cards) {
+                    cards.forEach((card) => {
                         card.classList.add(styles.animate);
-                    }, 2500 + index * 150);
-                });
+                    });
+                }
 
-                const totalDelay = 2500 + (cards.length - 1) * 150 + 600;
                 setTimeout(() => {
                     setAnimationReady(true);
-                }, totalDelay);
-            } else if (!cardsIntroTriggeredRef.current) {
-                setTimeout(() => {
-                    setAnimationReady(true);
-                }, 2700);
+                }, 800);
             }
         };
 
@@ -174,14 +167,10 @@ export function useCompanyHistoryHeaderIntro({
                 triggerY <= headerRect.bottom &&
                 (!cardsRect || !(triggerY >= cardsRect.top && triggerY <= cardsRect.bottom));
 
-            // Проверяем, виден ли хедер в области просмотра и не перекрыт ли он карточками
             const headerVisible = headerRect.top < window.innerHeight && headerRect.bottom > 0;
             const cardsNotOverlapping = !cardsRect || cardsRect.top > headerRect.bottom || cardsRect.bottom < headerRect.top;
             const isHeaderVisible = headerVisible && cardsNotOverlapping;
 
-            // Если мы вернулись из фокуса карточек (hasScrollToHeaderTriggered был true, а теперь false)
-            // и хедер виден, запускаем анимацию автоматически
-            // Проверяем, что мы вооружены (headerIntroArmedRef.current === true) и хедер виден
             const shouldRestoreAnimation = !hasScrollToHeaderTriggered.current && headerIntroArmedRef.current && isHeaderVisible && !headerIntroInProgressRef.current;
 
             if (!isInHeader && !shouldRestoreAnimation) {
@@ -193,9 +182,6 @@ export function useCompanyHistoryHeaderIntro({
 
             headerIntroArmedRef.current = false;
 
-            // Запускаем анимацию если:
-            // 1. Мы в хедере и анимация еще не запускалась (обычный случай)
-            // 2. Мы вернулись из фокуса карточек и хедер виден (восстановление анимации)
             if ((isInHeader && !hasScrollToHeaderTriggered.current) || shouldRestoreAnimation) {
                 startHeaderIntro();
             }
