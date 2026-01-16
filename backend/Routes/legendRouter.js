@@ -630,7 +630,7 @@ router.post('/mp', fileMiddleware.any(), async (req, res) => {
       filesMap[b] ??= {};
       filesMap[b][i] ??= [];
       f.originalname = `${batchId}__${f.originalname || 'file'}`;
-      const savedKey = await uploadFileToS3(f, LEGEND_FILES_DIR);
+      const savedKey = await uploadFileToS3(f, LEGEND_FILES_DIR, userInfo);
       filesMap[b][i].push(savedKey);
     }
 

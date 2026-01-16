@@ -63,6 +63,7 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
   const dispatch = useDispatch();
 
   const companyTopRef = useRef(null);
+  const sliderWrapperRef = useRef(null);
 
   const blockSlider = useRef(null);
 
@@ -220,11 +221,11 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
           </div>
         </div>
 
-        <div className={styles.sliderMobile_wrapper}>
+        <div ref={sliderWrapperRef} className={styles.sliderMobile_wrapper}>
           <SliderHeader />
         </div>
 
-        <CompanyHistory parentStartRef={companyTopRef} />
+        <CompanyHistory parentStartRef={companyTopRef} sliderRef={sliderWrapperRef} />
 
         {/* <div id="history" className={styles.about_main}>
           <div className={styles.left_about}>

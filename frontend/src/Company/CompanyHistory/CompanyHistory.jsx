@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useInView } from 'react-intersection-observer';
@@ -14,7 +14,14 @@ import { useCompanyHistoryHeaderIntro } from '../utils/useCompanyHistoryHeaderIn
 
 gsap.registerPlugin(ScrollToPlugin);
 
-export default function CompanyHistory({ parentStartRef, externalHistoryHeaderRef }) {
+/**
+ * Компонент истории компании
+ * Управляет отображением карточек истории, анимациями при скролле и переходами между состояниями
+ * @param {Object} parentStartRef - ссылка на элемент родительского компонента для навигации
+ * @param {Object} sliderRef - ссылка на слайдер, который должен быть виден при скролле вверх
+ * @param {Object} externalHistoryHeaderRef - внешняя ссылка на хедер истории (опционально)
+ */
+export default function CompanyHistory({ parentStartRef, sliderRef, externalHistoryHeaderRef }) {
     const dispatch = useDispatch();
     const historyItems = useSelector((state) => state.companyHistory.items || []);
     const loading = useSelector((state) => state.companyHistory.loading);
@@ -25,6 +32,7 @@ export default function CompanyHistory({ parentStartRef, externalHistoryHeaderRe
     const marksGroupRef = useRef(null);
     const subtitleLine1Ref = useRef(null);
     const subtitleLine2Ref = useRef(null);
+    const backgroundRef = useRef(null);
     const historyListRef = useRef(null);
     const timelineWrapperRef = useRef(null);
     const historyTagRef = useRef(null);
@@ -39,6 +47,7 @@ export default function CompanyHistory({ parentStartRef, externalHistoryHeaderRe
     const headerIntroArmedRef = useRef(true);
     const headerIntroInProgressRef = useRef(false);
     const cardsIntroTriggeredRef = useRef(false);
+    const returnedToSliderRef = useRef(false);
 
     const [animationReady, setAnimationReady] = useState(false);
     const [cardsFocused, setCardsFocused] = useState(false);
@@ -50,6 +59,10 @@ export default function CompanyHistory({ parentStartRef, externalHistoryHeaderRe
         triggerOnce: true,
     });
 
+    /**
+     * Фильтрует и сортирует видимые элементы истории
+     * Скрывает элементы с флагом hidden и сортирует по порядку, затем по году
+     */
     const visibleItems = useMemo(
         () =>
             [...historyItems]
@@ -63,6 +76,10 @@ export default function CompanyHistory({ parentStartRef, externalHistoryHeaderRe
         [historyItems]
     );
 
+    /**
+     * Группирует карточки по годам и распределяет их между верхним и нижним рядом
+     * Четные индексы идут в верхний ряд, нечетные - в нижний
+     */
     const { timelineItems, cardsByYear } = useMemo(() => {
         const uniqueYears = [...new Set(visibleItems.map((item) => item.year))].sort((a, b) => a - b);
 
@@ -84,6 +101,9 @@ export default function CompanyHistory({ parentStartRef, externalHistoryHeaderRe
         return { timelineItems: uniqueYears, cardsByYear: grouped };
     }, [visibleItems]);
 
+    /**
+     * Загружает данные истории компании при монтировании компонента
+     */
     useEffect(() => {
         dispatch(fetchCompanyHistory());
     }, [dispatch]);
@@ -107,30 +127,8 @@ export default function CompanyHistory({ parentStartRef, externalHistoryHeaderRe
         setAnimationReady,
     });
 
-    // wheel up: return from cards focus to header
-    useEffect(() => {
-        if (!inView) return;
-
-        const handleWheelUp = (e) => {
-            if (e.deltaY >= 0) return;
-
-            const cardsEl = historyListRef.current;
-            const timelineEl = timelineWrapperRef.current;
-            if (!cardsEl) return;
-
-            if (!cardsFocused || cardsFocusInProgressRef.current) return;
-
-            // If the focused container can scroll vertically, let wheel-up scroll it first.
-            // Exit focus only when we're at the very top.
-            const hasVerticalOverflow = cardsEl.scrollHeight > cardsEl.clientHeight + 1;
-            if (hasVerticalOverflow && cardsEl.scrollTop > 1) return;
-
-            const canScrollLeft = timelineEl && timelineEl.scrollLeft > 1;
-            if (canScrollLeft) return;
-
-            e.preventDefault();
-            e.stopPropagation();
-
+    const exitCardsFocus = useCallback(
+        (cardsEl) => {
             cardsFocusInProgressRef.current = true;
             hasScrollToHeaderTriggered.current = true;
             hasScrollToCardsTriggered.current = false;
@@ -139,18 +137,18 @@ export default function CompanyHistory({ parentStartRef, externalHistoryHeaderRe
                 gsap.to(historyTagRef.current, { opacity: 0, duration: 0.2 });
             }
 
-            gsap.to(cardsEl, {
-                y: 0,
-                duration: 1.0,
-                ease: 'power2.inOut',
+            const returnDuration = 1.0;
+            const returnEase = 'power2.inOut';
+            const tl = gsap.timeline({
+                defaults: { duration: returnDuration, ease: returnEase },
                 onComplete: () => {
                     cardsFocusInProgressRef.current = false;
                     setCardsFocused(false);
                     hasScrollToHeaderTriggered.current = false;
-                    // re-arm header intro so it can replay when we return from cards focus
+                    // Перезаряжаем интро хедера, чтобы оно могло проиграться при возврате из фокуса карточек
                     headerIntroArmedRef.current = true;
 
-                    // restore header animation positioning
+                    // Восстанавливаем позиционирование анимации хедера
                     if (!animationReady || hasRestoreTriggered.current) return;
                     const marksGroup = marksGroupRef.current;
                     const title = titleRef.current;
@@ -172,19 +170,96 @@ export default function CompanyHistory({ parentStartRef, externalHistoryHeaderRe
                         el.classList.remove(headerStyles.animate);
                     });
 
-                    // force header intro hook to re-evaluate "in header" and replay animation
+                    // Принудительно заставляем хук интро хедера переоценить "в хедере" и переиграть анимацию
                     requestAnimationFrame(() => {
                         window.dispatchEvent(new Event('scroll'));
                     });
                 },
             });
+
+            if (backgroundRef.current) {
+                tl.to(backgroundRef.current, { y: 0 }, 0);
+            }
+
+            tl.to(cardsEl, { y: 0 }, 0);
+        },
+        [animationReady]
+    );
+
+    /**
+     * Обработчик скролла вверх: возврат от фокуса карточек к хедеру
+     * Срабатывает когда пользователь скроллит вверх в режиме фокуса карточек
+     */
+    useEffect(() => {
+        if (!inView) return;
+
+        const handleWheelUp = (e) => {
+            if (e.deltaY >= 0) return;
+
+            const cardsEl = historyListRef.current;
+            const timelineEl = timelineWrapperRef.current;
+            if (!cardsEl) return;
+
+            if (!cardsFocused || cardsFocusInProgressRef.current) return;
+
+            // Если контейнер может скроллиться вертикально, сначала прокручиваем его
+            // Выходим из фокуса только когда мы в самом верху
+            const hasVerticalOverflow = cardsEl.scrollHeight > cardsEl.clientHeight + 1;
+            if (hasVerticalOverflow && cardsEl.scrollTop > 1) return;
+
+            const canScrollLeft = timelineEl && timelineEl.scrollLeft > 1;
+            if (canScrollLeft) return;
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            exitCardsFocus(cardsEl);
         };
 
         window.addEventListener('wheel', handleWheelUp, { passive: false });
         return () => window.removeEventListener('wheel', handleWheelUp);
-    }, [inView, cardsFocused, animationReady]);
+    }, [inView, cardsFocused, exitCardsFocus]);
 
-    // wheel up in header: split text + scroll focus to parent start
+    /**
+     * Обработчик скролла вниз: выход из фокуса карточек в следующую секцию
+     * Срабатывает когда пользователь скроллит вниз и больше нечего скроллить внутри таймлайна/контейнера
+     */
+    useEffect(() => {
+        if (!inView) return;
+
+        const handleWheelDownExit = (e) => {
+            if (e.deltaY <= 0) return;
+
+            const cardsEl = historyListRef.current;
+            const timelineEl = timelineWrapperRef.current;
+            if (!cardsEl) return;
+            if (!cardsFocused || cardsFocusInProgressRef.current) return;
+
+            const hasVerticalOverflow = cardsEl.scrollHeight > cardsEl.clientHeight + 1;
+            if (hasVerticalOverflow) {
+                const maxScrollTop = cardsEl.scrollHeight - cardsEl.clientHeight;
+                if (cardsEl.scrollTop < maxScrollTop - 1) return;
+            }
+
+            if (timelineEl) {
+                const maxScrollLeft = timelineEl.scrollWidth - timelineEl.clientWidth;
+                if (timelineEl.scrollLeft < maxScrollLeft - 1) return;
+            }
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            exitCardsFocus(cardsEl);
+        };
+
+        window.addEventListener('wheel', handleWheelDownExit, { passive: false });
+        return () => window.removeEventListener('wheel', handleWheelDownExit);
+    }, [inView, cardsFocused, exitCardsFocus]);
+
+    /**
+     * Обработчик скролла вверх в хедере: разъезжание текста и скролл к началу родительского компонента
+     * Срабатывает когда пользователь скроллит вверх находясь в области хедера
+     */
     useEffect(() => {
         if (!inView) return;
 
@@ -207,11 +282,11 @@ export default function CompanyHistory({ parentStartRef, externalHistoryHeaderRe
             // Проверяем, идет ли интро ДО проверки "в хедере", чтобы сделать проверку более мягкой
             const isIntroActive = headerIntroInProgressRef.current || !textAnimationReady.current;
 
-            // Deterministic "in header" check:
-            // - prefer pointer position (where the user is actually scrolling)
-            // - fallback to a stable point in viewport
-            // - during intro: be more lenient - allow if header is visible in viewport
-            // We intentionally DO NOT exclude cardsRect because cards overlap the header by design.
+            // Детерминированная проверка "в хедере":
+            // - предпочитаем позицию курсора (где пользователь реально скроллит)
+            // - запасной вариант на стабильную точку в области просмотра
+            // - во время интро: более мягкая проверка - разрешаем если хедер виден в области просмотра
+            // Намеренно НЕ исключаем cardsRect, так как карточки по дизайну перекрывают хедер
             const headerRect = headerEl.getBoundingClientRect();
             const pointerY = Number.isFinite(e.clientY) ? e.clientY : null;
             const triggerY = window.innerHeight * 0.25;
@@ -220,7 +295,7 @@ export default function CompanyHistory({ parentStartRef, externalHistoryHeaderRe
             // "В хедере" считаем если:
             // - курсор (куда реально крутят) находится в пределах хедера, ИЛИ
             // - хедер занимает контрольную точку вьюпорта (25% высоты), даже если курсор ниже/выше, ИЛИ
-            // - во время интро: хедер виден в viewport (верхняя половина экрана)
+            // - во время интро: хедер виден в области просмотра (верхняя половина экрана)
             const isPointerInHeader = probeY >= headerRect.top && probeY <= headerRect.bottom;
             const isTriggerPointInHeader = triggerY >= headerRect.top && triggerY <= headerRect.bottom;
             // Во время интро делаем проверку более мягкой - если хедер виден в верхней половине экрана
@@ -238,7 +313,7 @@ export default function CompanyHistory({ parentStartRef, externalHistoryHeaderRe
             e.stopPropagation();
             if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
 
-            // kill competing scroll tweens so every wheel-up always results in a scroll
+            // Убиваем конкурирующие scroll-твины, чтобы каждое wheel-up всегда приводило к скроллу
             gsap.killTweensOf(window);
 
             exitToParentInProgressRef.current = true;
@@ -280,10 +355,22 @@ export default function CompanyHistory({ parentStartRef, externalHistoryHeaderRe
                 el.style.transition = 'none';
             });
 
-            const targetEl = parentStartRef?.current ?? null;
-            const targetY = targetEl ? targetEl.getBoundingClientRect().top + window.pageYOffset : 0;
             const startY = window.pageYOffset || document.documentElement.scrollTop || 0;
-            const y = Math.max(0, Number.isFinite(targetY) ? targetY : 0);
+
+            // Вычисляем позицию так, чтобы слайдер был внизу видимой части экрана
+            const sliderEl = sliderRef?.current;
+            let y = 0;
+
+            if (sliderEl) {
+                const sliderRect = sliderEl.getBoundingClientRect();
+                const sliderAbsoluteBottom = sliderRect.bottom + window.pageYOffset;
+                // Позиционируем так, чтобы низ слайдера был у низа экрана (с небольшим отступом)
+                const bottomOffset = 60;
+                y = Math.max(0, sliderAbsoluteBottom - window.innerHeight + bottomOffset);
+            } else {
+                // Fallback: скроллим к самому верху
+                y = 0;
+            }
 
             // Используем сохраненное значение isIntroActive вместо пересчета
             const isDuringIntro = isIntroActive;
@@ -296,6 +383,9 @@ export default function CompanyHistory({ parentStartRef, externalHistoryHeaderRe
                     headerIntroArmedRef.current = true;
                     hasScrollToHeaderTriggered.current = false;
                     exitToParentInProgressRef.current = false;
+                    // Сбрасываем флаги для перезапуска анимации интро при скролле вниз
+                    textAnimationReady.current = false;
+                    returnedToSliderRef.current = true;
                 },
             });
 
@@ -308,31 +398,23 @@ export default function CompanyHistory({ parentStartRef, externalHistoryHeaderRe
                     duration: scrollDuration,
                     ease: 'power2.inOut',
                     overwrite: 'auto',
-                    scrollTo: { y: targetEl ?? y, autoKill: false },
+                    scrollTo: { y, autoKill: false },
                 },
                 0
             );
 
-            // Fallback для прерванного интро: если GSAP scrollTo не сработает быстро, делаем native smooth scroll.
+            // Запасной вариант для прерванного интро: если GSAP scrollTo не сработает быстро, делаем нативный плавный скролл
             // Используем более короткий таймаут для прерванного интро
             const fallbackDelay = isDuringIntro ? 80 : 120;
             const fallbackTimer = window.setTimeout(() => {
                 const currentY = window.pageYOffset || document.documentElement.scrollTop || 0;
-                // Если скролл вообще не сдвинулся от стартовой позиции (GSAP не стартовал), делаем native smooth scroll.
+                // Если скролл вообще не сдвинулся от стартовой позиции (GSAP не стартовал), делаем нативный плавный скролл
                 const moved = Math.abs(currentY - startY) > 2;
                 if (!moved) {
                     try {
-                        if (targetEl) {
-                            targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        } else {
-                            window.scrollTo({ top: y, left: 0, behavior: 'smooth' });
-                        }
+                        window.scrollTo({ top: y, left: 0, behavior: 'smooth' });
                     } catch (err) {
-                        if (targetEl) {
-                            targetEl.scrollIntoView();
-                        } else {
-                            window.scrollTo(0, y);
-                        }
+                        window.scrollTo(0, y);
                     }
                 }
             }, fallbackDelay);
@@ -363,9 +445,59 @@ export default function CompanyHistory({ parentStartRef, externalHistoryHeaderRe
 
         window.addEventListener('wheel', handleWheelExitUp, { passive: false });
         return () => window.removeEventListener('wheel', handleWheelExitUp);
-    }, [inView, cardsFocused, historyHeaderRef, externalHistoryHeaderRef, parentStartRef]);
+    }, [inView, cardsFocused, historyHeaderRef, externalHistoryHeaderRef, parentStartRef, sliderRef]);
 
-    // wheel down in header: split text + focus cards (cards rise to 100vh)
+    /**
+     * Обработчик скролла вниз от слайдера: плавный переход к центру хедера с перезапуском интро-анимации
+     * Срабатывает после возврата к слайдеру при скролле вверх
+     */
+    useEffect(() => {
+        if (!inView) return;
+
+        const handleWheelFromSlider = (e) => {
+            if (e.deltaY <= 0) return;
+            if (!returnedToSliderRef.current) return;
+            if (cardsFocused || cardsFocusInProgressRef.current) return;
+            if (exitToParentInProgressRef.current) return;
+
+            const sliderEl = sliderRef?.current;
+            const headerEl = historyHeaderRef.current;
+            if (!sliderEl || !headerEl) return;
+
+            const sliderRect = sliderEl.getBoundingClientRect();
+
+            // Проверяем, что слайдер находится в нижней части экрана (позиция после возврата)
+            const isSliderVisible = sliderRect.top < window.innerHeight && sliderRect.bottom > 0;
+            if (!isSliderVisible) return;
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            returnedToSliderRef.current = false;
+
+            // Плавно скроллим так, чтобы слайдер ушел за пределы экрана
+            // и был виден только хедер истории с анимацией текста
+            const headerRect = headerEl.getBoundingClientRect();
+            const headerAbsoluteTop = headerRect.top + window.pageYOffset;
+            // Небольшой отступ сверху для хедера
+            const topOffset = 40;
+            const targetY = Math.max(0, headerAbsoluteTop - topOffset);
+
+            gsap.to(window, {
+                duration: 0.8,
+                ease: 'power2.inOut',
+                scrollTo: { y: targetY, autoKill: false },
+            });
+        };
+
+        window.addEventListener('wheel', handleWheelFromSlider, { passive: false });
+        return () => window.removeEventListener('wheel', handleWheelFromSlider);
+    }, [inView, cardsFocused, sliderRef, historyHeaderRef]);
+
+    /**
+     * Обработчик скролла вниз в хедере: разъезжание текста и фокус на карточках (карточки поднимаются на 100vh)
+     * Срабатывает когда пользователь скроллит вниз находясь в области хедера
+     */
     useEffect(() => {
         if (!inView) return;
 
@@ -427,6 +559,17 @@ export default function CompanyHistory({ parentStartRef, externalHistoryHeaderRe
             // Создаём timeline для синхронизации анимаций: разъезжание текста + подъём карточек + появление таба
             const tl = gsap.timeline();
 
+            const backgroundEl = backgroundRef.current;
+            if (backgroundEl) {
+                const rect = backgroundEl.getBoundingClientRect();
+                const shiftY = -Math.max(1, rect.height);
+                tl.to(
+                    backgroundEl,
+                    { y: shiftY, duration: 1.2, ease: 'power2.inOut', force3D: true },
+                    0
+                );
+            }
+
             // Анимация разъезжания текста
             tl.fromTo(
                 marksGroup,
@@ -444,7 +587,7 @@ export default function CompanyHistory({ parentStartRef, externalHistoryHeaderRe
                 );
             });
 
-            // Фиксируем позицию ДО включения `.cards_focus` для компенсации layout-jump
+            // Фиксируем позицию ДО включения `.cards_focus` для компенсации скачка макета
             const rectBefore = cardsEl.getBoundingClientRect();
             const topBefore = rectBefore.top;
 
@@ -466,13 +609,13 @@ export default function CompanyHistory({ parentStartRef, externalHistoryHeaderRe
                 setCardsFocused(true);
             });
 
-            // Синхронно измеряем layout jump сразу после flushSync (без ожидания RAF)
+            // Синхронно измеряем скачок макета сразу после flushSync (без ожидания requestAnimationFrame)
             // Это критично для точной компенсации
             const rectAfter = cardsEl.getBoundingClientRect();
             const topAfter = rectAfter.top;
             const layoutJump = topAfter - topBefore;
 
-            // Мгновенно компенсируем layout-jump через transform ДО показа контейнера
+            // Мгновенно компенсируем скачок макета через transform ДО показа контейнера
             // Используем прямое присваивание style.transform для максимальной синхронности
             if (Math.abs(layoutJump) > 0.5) {
                 cardsEl.style.transform = `translateZ(0) translateY(${-layoutJump}px)`;
@@ -495,11 +638,16 @@ export default function CompanyHistory({ parentStartRef, externalHistoryHeaderRe
                 const rectFinal = cardsEl.getBoundingClientRect();
                 const rawShiftY = -rectFinal.top;
 
-                // Ограничиваем shiftY, чтобы тег "История MARKS GROUP" не заходил под слайдер бегущей строки
-                const sliderHeight = 42;
-                const tagTopOffset = 24;
-                const minSafeTop = sliderHeight + tagTopOffset + 6;
-                const safeTop = Math.max(minSafeTop, Math.min(120, window.innerHeight * 0.1));
+                // Ограничиваем shiftY так, чтобы карточки не заходили под тег истории
+                let safeTop = Math.min(120, window.innerHeight * 0.1);
+                const tagEl = historyTagRef.current;
+                if (tagEl) {
+                    const tagRect = tagEl.getBoundingClientRect();
+                    const cardsStyles = window.getComputedStyle(cardsEl);
+                    const paddingTop = parseFloat(cardsStyles.paddingTop) || 0;
+                    const gap = 12;
+                    safeTop = tagRect.bottom + gap - paddingTop;
+                }
 
                 const minShiftY = safeTop - rectFinal.top;
                 const shiftY = Math.max(rawShiftY, minShiftY);
@@ -528,7 +676,10 @@ export default function CompanyHistory({ parentStartRef, externalHistoryHeaderRe
         return () => window.removeEventListener('wheel', handleWheelDown);
     }, [inView, cardsFocused, historyHeaderRef]);
 
-    // vertical wheel drives horizontal scroll when cards are centered
+    /**
+     * Обработчик вертикального скролла для горизонтального скролла таймлайна когда карточки в центре
+     * Преобразует вертикальные движения колесика мыши в горизонтальный скролл таймлайна
+     */
     useEffect(() => {
         if (!timelineWrapperRef.current || !inView) return;
 
@@ -544,12 +695,12 @@ export default function CompanyHistory({ parentStartRef, externalHistoryHeaderRe
             const cardsEl = historyListRef.current;
             const hasVerticalOverflow =
                 !!cardsEl && cardsFocused && cardsEl.scrollHeight > cardsEl.clientHeight + 1;
-            // When cards are focused we should never allow vertical page scrolling.
-            // If we're not in the "center zone" we still preventDefault (but don't stopPropagation)
-            // so other wheel handlers (exit focus) can receive the event.
+            // Когда карточки в фокусе, мы никогда не должны разрешать вертикальный скролл страницы
+            // Если мы не в "центральной зоне", все равно делаем preventDefault (но не stopPropagation)
+            // чтобы другие обработчики wheel (выход из фокуса) могли получить событие
             if (!isInCenter) {
                 const isVerticalScroll = Math.abs(e.deltaY) > Math.abs(e.deltaX || 0);
-                // If the focused container can scroll vertically, allow that scrolling.
+                // Если контейнер в фокусе может скроллиться вертикально, разрешаем этот скролл
                 if (cardsFocused && isVerticalScroll && Math.abs(e.deltaY) > 5 && !hasVerticalOverflow) {
                     e.preventDefault();
                 }
@@ -560,8 +711,8 @@ export default function CompanyHistory({ parentStartRef, externalHistoryHeaderRe
             const isVerticalScroll = Math.abs(deltaY) > Math.abs(e.deltaX || 0);
             if (!isVerticalScroll || Math.abs(deltaY) <= 5) return;
 
-            // If content doesn't fit vertically in focus mode, prioritize vertical scroll.
-            // Horizontal scrolling still works via trackpad horizontal, scrollbar, or Shift+wheel.
+            // Если контент не помещается вертикально в режиме фокуса, приоритет вертикальному скроллу
+            // Горизонтальный скролл все еще работает через горизонтальный тачпад, скроллбар или Shift+wheel
             if (hasVerticalOverflow && !e.shiftKey) return;
 
             const maxScrollLeft = container.scrollWidth - container.clientWidth;
@@ -599,6 +750,7 @@ export default function CompanyHistory({ parentStartRef, externalHistoryHeaderRe
             <div className={styles.history_content}>
                 <CompanyHistoryHeader
                     historyHeaderRef={historyHeaderRef}
+                    backgroundRef={backgroundRef}
                     titleRef={titleRef}
                     subtitleRef={subtitleRef}
                     marksGroupRef={marksGroupRef}

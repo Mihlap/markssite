@@ -2,6 +2,7 @@ import styles from './CompanyHistoryHeader.module.scss';
 
 export default function CompanyHistoryHeader({
   historyHeaderRef,
+  backgroundRef,
   titleRef,
   subtitleRef,
   marksGroupRef,
@@ -12,7 +13,7 @@ export default function CompanyHistoryHeader({
 }) {
   return (
     <div ref={historyHeaderRef} className={styles.history_header}>
-      <div className={styles.history_background}>
+      <div ref={backgroundRef} className={styles.history_background}>
         <img src={cityVector} alt="" className={styles.background_illustration} />
       </div>
       <h1 ref={titleRef} className={styles.history_title}>
