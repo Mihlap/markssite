@@ -206,6 +206,17 @@
                 @include item(--gray-959DA6, 12px, 400, 24px);
             }
 
+            &.navbar-item-active {
+                .navbar-dropdown-item_label {
+                    color: var(--black-1D2E43);
+                    font-weight: 700;
+                }
+
+                .navbar-dropdown-item_description {
+                    color: var(--black-1D2E43);
+                }
+            }
+
             &:hover,
             &:focus-within {
                 .navbar-dropdown-item_label {

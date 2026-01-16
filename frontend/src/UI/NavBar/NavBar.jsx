@@ -59,7 +59,10 @@ const NavBar = () => {
       closeDropdown(() => navigate(`/company${targetHash}`));
       return;
     }
-    closeDropdown(() => scrollToAnchor(targetHash));
+    closeDropdown(() => {
+      navigate({ pathname, hash: targetHash }, { replace: true });
+      scrollToAnchor(targetHash);
+    });
   };
 
   // Закрытие дропдауна с плавной анимацией
@@ -284,11 +287,14 @@ const NavBar = () => {
                       ref={dropdownRef}
                       className={styles['navbar-dropdown']}
                       style={{ opacity: showDropdownContent ? 1 : 0, transition: 'opacity 200ms ease' }}>
-                      {item.children.map((el) => (
-                        <li key={el.id} role="menuitem">
-                          <NavLink
-                            to={el.path}
-                            onClick={(event) =>
+                      {item.children.map((el) => {
+                        const isDropdownActive = isRouteActive(pathname, hash, el.path);
+
+                        return (
+                          <li key={el.id} role="menuitem">
+                            <NavLink
+                              to={el.path}
+                              onClick={(event) =>
                               handleCompanyAwareNavigation({
                                 event,
                                 path: el.path,
@@ -298,24 +304,26 @@ const NavBar = () => {
                                 goToCompanySection,
                               })
                             }
-                            className={({ isActive }) =>
-                              clsx(styles['navbar-dropdown-item'], isActive && styles['navbar-item-active'])
-                            }>
-                            <div className={styles['navbar-dropdown-item_label']}>{el.label}</div>
-                            <div className={styles['navbar-dropdown-item_description']}>
-                              {el.description.includes('ведущих') ? (
-                                <>
-                                  {el.description.split('ведущих')[0]}
-                                  <span className={styles['break']}>ведущих</span>
-                                  {el.description.split('ведущих')[1]}
-                                </>
-                              ) : (
-                                el.description
-                              )}
-                            </div>
-                          </NavLink>
-                        </li>
-                      ))}
+                              className={clsx(
+                                styles['navbar-dropdown-item'],
+                                isDropdownActive && styles['navbar-item-active']
+                              )}>
+                              <div className={styles['navbar-dropdown-item_label']}>{el.label}</div>
+                              <div className={styles['navbar-dropdown-item_description']}>
+                                {el.description.includes('ведущих') ? (
+                                  <>
+                                    {el.description.split('ведущих')[0]}
+                                    <span className={styles['break']}>ведущих</span>
+                                    {el.description.split('ведущих')[1]}
+                                  </>
+                                ) : (
+                                  el.description
+                                )}
+                              </div>
+                            </NavLink>
+                          </li>
+                        );
+                      })}
                     </ul>
                   )}
                 </li>

@@ -9,6 +9,7 @@
   --circle-blue-shift: -24px;
   --hr-shift: -42px;
   --hr-sidebar-shift: -35px;
+  --logo-animation-delay: 200ms;
 
   display: flex;
   align-items: center;
@@ -32,9 +33,6 @@
   }
 }
 
-/* .logo-block:has(.navbar-logo-circle-blue-animate) .navbar-logo-hr {
-  animation: spinOnce 03.6s ease 1s both;
-} */
 
 .logo-circle,
 .logo-circle-blue {
@@ -61,12 +59,14 @@
 }
 
 .logo-hr-animate {
-  animation: icon-appear 500ms ease 1.5s forwards;
+  animation: icon-appear 500ms ease calc(var(--logo-animation-delay) + 1.5s) forwards;
 }
 
 .logo-circle-animate {
   animation: circle-to-square 300ms linear forwards,
     circle-shrink 500ms ease 1s forwards;
+  animation-delay: var(--logo-animation-delay),
+    calc(var(--logo-animation-delay) + 1s);
 }
 
 .logo-image-animate {
@@ -74,6 +74,7 @@
     animation-duration: 200ms;
     animation-fill-mode: forwards;
     animation-timing-function: linear;
+    animation-delay: var(--logo-animation-delay);
 }
 
 @keyframes circle-to-square {
