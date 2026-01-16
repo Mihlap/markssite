@@ -162,27 +162,41 @@ export function useCompanyHistoryHeaderIntro({
 
         const onScroll = () => {
             const headerEl = historyHeaderRef.current;
-            const cardsEl = historyListRef.current;
-            if (!headerEl || !cardsEl) return;
+            if (!headerEl) return;
 
             const triggerY = window.innerHeight * 0.25;
             const headerRect = headerEl.getBoundingClientRect();
-            const cardsRect = cardsEl.getBoundingClientRect();
+            const cardsEl = historyListRef.current;
+            const cardsRect = cardsEl ? cardsEl.getBoundingClientRect() : null;
 
             const isInHeader =
                 triggerY >= headerRect.top &&
                 triggerY <= headerRect.bottom &&
-                !(triggerY >= cardsRect.top && triggerY <= cardsRect.bottom);
+                (!cardsRect || !(triggerY >= cardsRect.top && triggerY <= cardsRect.bottom));
 
-            if (!isInHeader) {
+            // Проверяем, виден ли хедер в области просмотра и не перекрыт ли он карточками
+            const headerVisible = headerRect.top < window.innerHeight && headerRect.bottom > 0;
+            const cardsNotOverlapping = !cardsRect || cardsRect.top > headerRect.bottom || cardsRect.bottom < headerRect.top;
+            const isHeaderVisible = headerVisible && cardsNotOverlapping;
+
+            // Если мы вернулись из фокуса карточек (hasScrollToHeaderTriggered был true, а теперь false)
+            // и хедер виден, запускаем анимацию автоматически
+            // Проверяем, что мы вооружены (headerIntroArmedRef.current === true) и хедер виден
+            const shouldRestoreAnimation = !hasScrollToHeaderTriggered.current && headerIntroArmedRef.current && isHeaderVisible && !headerIntroInProgressRef.current;
+
+            if (!isInHeader && !shouldRestoreAnimation) {
                 headerIntroArmedRef.current = true;
                 return;
             }
 
-            if (!headerIntroArmedRef.current) return;
+            if (!headerIntroArmedRef.current && !shouldRestoreAnimation) return;
+
             headerIntroArmedRef.current = false;
 
-            if (!hasScrollToHeaderTriggered.current) {
+            // Запускаем анимацию если:
+            // 1. Мы в хедере и анимация еще не запускалась (обычный случай)
+            // 2. Мы вернулись из фокуса карточек и хедер виден (восстановление анимации)
+            if ((isInHeader && !hasScrollToHeaderTriggered.current) || shouldRestoreAnimation) {
                 startHeaderIntro();
             }
         };

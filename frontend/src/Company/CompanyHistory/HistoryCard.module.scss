@@ -7,7 +7,7 @@
     display: flex;
     flex-direction: column;
     gap: 24px;
-    width: 100%;
+    width: 689px;
     box-sizing: border-box;
     position: relative;
     overflow: hidden;
@@ -16,9 +16,9 @@
 .card_image {
     position: relative;
     width: 100%;
+    height: 290px;
     border-radius: 16px;
     overflow: hidden;
-    aspect-ratio: 472 / 253;
     flex-shrink: 0;
 
     img {
@@ -37,8 +37,8 @@
 }
 
 .card_avatar {
-    width: 68px;
-    height: 68px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     overflow: hidden;
     flex-shrink: 0;
@@ -54,7 +54,7 @@
     .avatar_placeholder {
         width: 100%;
         height: 100%;
-        background: #e0e0e0;
+        background: linear-gradient(147deg, rgba(131, 199, 252, 1) 0%, rgba(255, 149, 126, 1) 82%);
     }
 }
 
@@ -69,8 +69,8 @@
 .card_title {
     font-family: var(--font-raleway);
     font-weight: var(--fw-400);
-    font-size: 16px;
-    line-height: 24px;
+    font-size: 20px;
+    line-height: 1.4;
     color: #1d2e43;
     margin: 0;
     overflow-wrap: break-word;
@@ -86,16 +86,17 @@
 .card_link {
     font-family: var(--font-raleway);
     font-weight: var(--fw-400);
-    font-size: 16px;
-    line-height: 24px;
+    font-size: 20px;
+    line-height: 1.4;
     color: #389fff;
     margin: 0;
+    cursor: pointer;
 }
 
 .card_image_placeholder {
     width: 100%;
-    aspect-ratio: 472 / 253;
-    background: #e0e0e0;
+    height: 290px;
+    background: linear-gradient(147deg, rgba(131, 199, 252, 1) 0%, rgba(255, 149, 126, 1) 82%);
     border-radius: 16px;
     flex-shrink: 0;
 }
@@ -103,20 +104,91 @@
 @media screen and (min-width: 1024px) and (max-width: 1599px) {
     .history_card {
         width: 532px;
-        min-height: 384px;
-        padding: 30px;
+        padding: 24px;
     }
 
     .card_image {
-        height: 253px;
-        aspect-ratio: 472 / 253;
+        height: 240px;
+    }
+
+    .card_avatar {
+        width: 85px;
+        height: 85px;
+    }
+
+    .card_title {
+        font-size: 18px;
+    }
+
+    .card_link {
+        font-size: 18px;
+    }
+
+    .card_image_placeholder {
+        height: 240px;
     }
 }
 
 @media screen and (min-width: 1600px) {
     .history_card {
-        width: 100%;
-        max-width: 689px;
+        width: 689px;
     }
 }
 
+@media screen and (max-width: 1023px) {
+    .history_card {
+        width: 440px;
+        padding: 24px;
+        gap: 20px;
+    }
+
+    .card_image {
+        height: 200px;
+    }
+
+    .card_avatar {
+        width: 75px;
+        height: 75px;
+    }
+
+    .card_title {
+        font-size: 17px;
+    }
+
+    .card_link {
+        font-size: 17px;
+    }
+
+    .card_image_placeholder {
+        height: 200px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .history_card {
+        width: calc(100vw - 3rem);
+        max-width: 360px;
+        padding: 16px;
+    }
+
+    .card_image {
+        height: 160px;
+    }
+
+    .card_avatar {
+        width: 60px;
+        height: 60px;
+    }
+
+    .card_title {
+        font-size: 14px;
+    }
+
+    .card_link {
+        font-size: 14px;
+    }
+
+    .card_image_placeholder {
+        height: 160px;
+    }
+}
