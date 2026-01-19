@@ -257,7 +257,7 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
             </div>
             <div className={styles.vacancies_header_wrapper}>
               <span className={styles.vacancies_header1}>Мы ищем специалистов в&nbsp;наш дружный коллектив</span>
-              <span className={styles.vacancies_header2}>Работа у нас</span>
+              <span className={styles.vacancies_header2}>Вакансии</span>
             </div>
           </div>
           <div className={styles.menu_button_group_vacancy_wrapper_main}>

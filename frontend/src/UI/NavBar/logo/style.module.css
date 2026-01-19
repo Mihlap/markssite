@@ -5,15 +5,11 @@
   --circle-start: 0px;
   --circle-target: calc(var(--logo-height) * 15 - 6px);
   --circle-shift: 10px;
-  --logo-image-shift: -22px;
-  --circle-blue-shift: -24px;
-  --hr-shift: -42px;
-  --hr-sidebar-shift: -35px;
   --logo-animation-delay: 200ms;
 
   display: flex;
   align-items: center;
-  justify-content: center;
+  /* justify-content : center; */
   gap: var(--right-gap);
   padding-left: 48px;
   position: relative;
@@ -34,16 +30,12 @@
 }
 
 
-.logo-circle,
-.logo-circle-blue {
+.logo-circle {
   width: var(--circle-size);
   height: var(--circle-size);
   border-radius: 50%;
 }
-
-.logo-circle {
-  background-color: var(--black-1D2E43);
-}
+.logo-circle { background-color: var(--black-1D2E43); }
 
 .logo-image {
   z-index: 4;
@@ -141,9 +133,11 @@
 
 @media screen and (max-width: 1024px) {
   .logo-block {
-    padding-top: 21px;
-    padding-bottom: 21px;
+    padding-top: 22px;
+    padding-bottom: 22px;
     padding-left: 33px;
+    --logo-height: 16px;
+    --circle-size: 16px;
   }
 }
 
