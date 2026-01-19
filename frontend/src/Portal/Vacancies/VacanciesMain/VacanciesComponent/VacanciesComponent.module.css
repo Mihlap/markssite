@@ -751,7 +751,9 @@ font-family: var(--font-raleway);
   }
 
   .vacancies_header_wrapper {
-    top: 45%;
+    /* top: 45%; */
+    left: 20px;
+    padding-right: 7rem;
   }
 
   .vacancies_header1 {
