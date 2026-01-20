@@ -355,9 +355,17 @@
           rgba(188, 188, 188, 0.09) 106.591%);
     }
 
-    @media (max-width: 1024px) {
-      display: none;
-    }
+        @media (max-width: 2560px) {
+          width: 757px;
+        }
+    
+        @media (max-width: 1440px) {
+          width: 522px;
+        }
+
+        @media (max-width: 1024px) {
+          display: none;
+        }
   }
 }
 
@@ -2083,7 +2091,7 @@
         bottom: 2rem;
         left: 50%;
         transform: translateX(-50%);
-        z-index: 1000;
+        z-index: 11;
       }
 
       &.hidden {
@@ -2625,7 +2633,7 @@
         bottom: 2rem;
         left: 50%;
         transform: translateX(-50%);
-        z-index: 1000;
+        z-index: 11;
       }
 
       &.hidden {

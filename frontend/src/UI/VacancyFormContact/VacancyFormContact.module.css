@@ -5,10 +5,33 @@
   border-left: 1px solid var(--light-light-gray-EBECEE, #EBECEE);
   background: rgba(255, 255, 255, 0.70);
   backdrop-filter: blur(4.5px);
+  /* padding-top: 135px; */
+}
+
+.form-btn {
+    padding: 20px 32px;
+    background-color: var(--blue-75BBFD);
+  
+
+    color: var(--white-F6F6F6);
+    font-family: var(--font-raleway);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+
+    @media (min-width: 2560px) {
+       padding-top: 27px;
+       padding-bottom: 27px;
+
+       font-size: 18px;
+       line-height: 26px;
+    }
 }
 
 .wrap {
-  padding: 0px 100px;
+  padding-right: 93px;
+  padding-left: 100px;
 
 
   @media (max-width: 1710px) {
@@ -22,12 +45,12 @@
   position: relative;
 }
 
-.form_vacancy_wrapperSimple {
+/* .form_vacancy_wrapperSimple {
   display: flex;
   height: fit-content;
   width: 100%;
   position: relative;
-}
+} */
 
 .form_vacancy_block {
   display: grid;
@@ -39,8 +62,12 @@
 .form_vacancy_block_simple {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
-  column-gap: 76px;
+  gap: 68px;  
   width: 100%;
+
+@media (min-width: 2560px) { 
+  gap: 134px;
+}
 }
 
 .form_vacancy_left,
@@ -67,7 +94,7 @@
   border: none;
   outline: none;
   background-color: transparent;
-  padding-top: 3.5rem;
+  /* padding-top: 3.5rem; */
   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);
@@ -185,7 +212,7 @@
   justify-content: center;
   align-items: center;
   border-radius: 4.125rem;
-  border: 1px solid transparent;
+  /* border: 1px solid transparent; */
   background-color: var(--blue-75BBFD);
   margin-top: 1rem;
   transition: background-color 0.4s ease;
@@ -193,10 +220,10 @@
 
 .button_vacancySimple {
   display: inline-flex;
-  padding: 1rem 2rem;
+  padding: 27px;
   justify-content: center;
   align-items: center;
-  border: 1px solid transparent;
+  /* border: 1px solid transparent; */
   background-color: var(--blue-75BBFD);
   margin-top: 3rem;
   transition: background-color 0.4s ease;
@@ -213,10 +240,10 @@
   color: var(--white-F6F6F6);
   font-variant-numeric: lining-nums proportional-nums;
   font-family: var(--font-raleway);
-  font-size: 1rem;
+  font-size: 18px;
   font-style: normal;
   font-weight: var(--fw-400);
-  line-height: 1.5rem;
+  line-height: 26px;
 }
 
 .button_resume_file {
@@ -519,7 +546,7 @@
     padding: 1rem 2rem;
     justify-content: center;
     align-items: center;
-    border: 1px solid transparent;
+    /* border: 1px solid transparent; */
     background-color: var(--blue-75BBFD);
     margin-top: 1rem;
     /* cursor: none; */
@@ -536,10 +563,10 @@
     color: var(--white-F6F6F6);
     font-variant-numeric: lining-nums proportional-nums;
     font-family: var(--font-raleway);
-    font-size: 1rem;
+    font-size: 14px;
     font-style: normal;
     font-weight: var(--fw-400);
-    line-height: 1.5rem;
+    line-height: 20px;
   }
 
   .button_resume_file {
