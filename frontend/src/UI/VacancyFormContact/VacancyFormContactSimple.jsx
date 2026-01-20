@@ -382,7 +382,7 @@ const VacancyFormContactSimple = ({
             </div>
           </div>
           <button
-            className={`${styles.button_vacancySimple}
+            className={`${styles['form-btn']}
               ${!isFormValid ? styles.disabled : ''}`}
             disabled={!isFormValid}
             type="submit"
