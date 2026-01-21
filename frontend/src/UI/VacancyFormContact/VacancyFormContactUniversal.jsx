@@ -1,133 +1,177 @@
-import React, { useState, useCallback } from 'react';
-import { InputMask } from '@react-input/mask';
+import React, { useCallback } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import Select from 'react-select';
-import variantStyles from './VacancyFormContactUniversal.module.css';
 import 'react-phone-number-input/style.css';
+import styles from './VacancyFormContactUniversal.module.css';
+import { phoneRegex, directionOptions, maskOptions } from './const/index.js';
+import Input from '../../Portal/ui/Input/Input.jsx';
+import MaskedInput from '../../Portal/ui/Input/MaskedInput.jsx';
 
-const Host = process.env.REACT_APP_SERVER_HOST;
-
-const directionOptions = [
-  { value: 'Другое направление', label: 'Другое направление' },
-  { value: 'Архитектура', label: 'Архитектура' },
-  { value: 'Конструктив', label: 'Конструктив' },
-  { value: 'Инженерия', label: 'Инженерия' },
-  { value: 'Научно-техническое сопровождение', label: 'Научно-техническое сопровождение' },
-  { value: 'BIM', label: 'BIM' },
-  { value: 'Аналитика', label: 'Аналитика' },
-  { value: 'Финансы', label: 'Финансы' },
-  { value: 'Дизайн', label: 'Дизайн' },
-  { value: 'IT', label: 'IT' },
-  { value: 'Администрирование', label: 'Администрирование' },
-  { value: 'Бэк офис', label: 'Бэк офис' },
-  { value: 'Стажировки', label: 'Стажировки' },
-  { value: 'Управление', label: 'Управление' },
-];
-
-const maskOptions = {
-  mask: '+7 (___) ___-__-__',
-  replacement: { _: /\d/ },
-};
+const apiBase = process.env.REACT_APP_SERVER_HOST || '';
 
 const VacancyFormContactUniversal = ({ variant: variantProp = 'full' }) => {
-  const [phone, setPhone] = useState('');
-  const [isValidPhone, setIsValidPhone] = useState(true);
-
-  const handlePhoneChange = useCallback((event) => {
-    setPhone(event.target.value);
-    setIsValidPhone(true);
-  }, []);
-
-  const handlePhoneBlur = useCallback(() => {
-    const phoneNumberRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
-    setIsValidPhone(phoneNumberRegex.test(phone));
-  }, [phone]);
-
-  const handleSubmit = useCallback(
-    (event) => {
-      event.preventDefault();
-      const phoneNumberRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
-      const valid = phoneNumberRegex.test(phone);
-      setIsValidPhone(valid);
-      if (!valid) return;
-
-      const formDataToSend = new FormData();
-      formDataToSend.append('phone', phone);
-
-      fetch(`${Host}/api-mail/portalSubmitForm`, {
-        method: 'POST',
-        body: formDataToSend,
-      }).catch((error) => {
-        console.error('Error:', error);
-      });
+  const {
+    register,
+    handleSubmit,
+    setError,
+    reset,
+    control,
+    formState: { errors, isValid },
+  } = useForm({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+    defaultValues: {
+      name: '',
+      phone: '',
+      city: '',
+      direction: null,
+      letter: '',
+      resume: '',
+      resumeFiles: [],
     },
-    [phone]
+  });
+
+  const onSubmit = useCallback(
+    async (data) => {
+      const formData = new FormData();
+
+      formData.append('name', data.name || '');
+      formData.append('phone', data.phone || '');
+      formData.append('city', data.city || '');
+      formData.append('choose', data.direction?.value || '');
+      formData.append('letter', data.letter || '');
+      formData.append('resume', data.resume || '');
+
+      if (data.resumeFiles?.length) {
+        Array.from(data.resumeFiles).forEach((file) => {
+          formData.append('resumeFiles', file);
+        });
+      }
+
+      try {
+        const response = await fetch(`${apiBase}/api-mail/portalSubmitForm/v2`, {
+          method: 'POST',
+          body: formData,
+        });
+
+        const payload = await response.json().catch(() => ({}));
+
+        if (!response.ok) {
+          if (payload?.errors) {
+            Object.entries(payload.errors).forEach(([field, message]) => {
+              setError(field, { type: 'server', message });
+            });
+          }
+          return;
+        }
+
+        reset();
+      } catch (error) {
+        console.error('Ошибка при отправке формы', error);
+      }
+    },
+    [reset, setError]
   );
 
-  const formClassName = variantProp === 'full' ? variantStyles.fullForm : variantStyles.simpleForm;
+  const formClassName = variantProp === 'full' ? styles.fullForm : styles.simpleForm;
 
   return (
-    <form className={formClassName} onSubmit={handleSubmit}>
-      <div>
-        <div>
-          <div>
-            <div>
-              <label>
-                <input type="text" name="name" placeholder="" value="" readOnly />
-              </label>
-            </div>
-            <div>
-              <label>
-                <InputMask
-                  mask={maskOptions.mask}
-                  replacement={maskOptions.replacement}
-                  showMask={true}
-                  name="phone"
-                  placeholder=""
-                  value={phone}
-                  onChange={handlePhoneChange}
-                  onBlur={handlePhoneBlur}
-                  autoComplete="off"
-                />
-                {!isValidPhone && phone.length > 0 && <span>Некорректный телефон</span>}
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="text" name="city" placeholder="" value="" readOnly />
-              </label>
-            </div>
-          </div>
-          <div>
-            <div>
-              <label>
-                <Select
-                  name="choose"
-                  isMulti={false}
-                  options={directionOptions}
-                  placeholder={'Выбрать направление'}
-                  isSearchable={false}
-                  isClearable={true}
-                />
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="text" name="letter" placeholder="" value="" readOnly />
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="text" name="resume" placeholder="" value="" readOnly />
-              </label>
-            </div>
-          </div>
-          <div>
-            <button type="submit" id="submit-button">
-              <p>Отправить</p>
-            </button>
-          </div>
-        </div>
-      </div>
+    <form className={formClassName} onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
+      <Input
+        label="Ваше имя и фамилия"
+        placeholder=" "
+        // maxLength={50}
+        {...register('name', {
+          required: 'Обязательное поле',
+          maxLength: {
+            value: 50,
+            message: 'Максимум 50 символов',
+          },
+        })}
+        error={errors.name?.message}
+      />
+
+      <Controller
+        name="phone"
+        control={control}
+        rules={{
+          required: 'Обязательное поле',
+          validate: (value) => phoneRegex.test(value) || 'Некорректный телефон',
+        }}
+        render={({ field, fieldState }) => (
+          <MaskedInput
+            {...field}
+            label="Телефон"
+            mask={maskOptions.mask}
+            replacement={maskOptions.replacement}
+            autoComplete="off"
+            error={fieldState.error?.message}
+          />
+        )}
+      />
+
+      <Input
+        label="Город"
+        placeholder=" "
+        {...register('city', {
+          maxLength: {
+            value: 25,
+            message: 'Максимум 25 символов',
+          },
+        })}
+        error={errors.city?.message}
+      />
+
+      {/* <Controller
+        name="direction"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            options={directionOptions}
+            placeholder="Выбрать направление"
+            isClearable
+            isSearchable={false}
+          />
+        )}
+      /> */}
+
+      <Input
+        label="Сопроводительное письмо"
+        placeholder=" "
+        {...register('letter', {
+          maxLength: {
+            value: 500,
+            message: 'Максимум 500 символов',
+          },
+        })}
+        error={errors.letter?.message}
+      />
+
+      <Input
+        label="Ссылка на резюме/портфолио"
+        placeholder=" "
+        {...register('resume', {
+          maxLength: {
+            value: 500,
+            message: 'Максимум 500 символов',
+          },
+        })}
+        error={errors.resume?.message}
+      />
+
+      <label>
+        <input type="file" multiple {...register('resumeFiles', { required: 'Файл обязателен' })} />
+        {errors.resumeFiles && <span>{errors.resumeFiles.message}</span>}
+      </label>
+
+      <button
+        title="Заполните обязательные поля"
+        disabled={!isValid}
+        className={`${styles['form-btn']} ${isValid ? styles.active : styles.disabled}`}
+        type="submit">
+        Отправить
+      </button>
     </form>
   );
 };

@@ -347,11 +347,8 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave }) => {
             <VacancyRequirements vacancy={vacancies[0]} variant="default" />
             <VacancyFormContactUniversal
               variant="simple"
-              handleMouseEnter={handleMouseEnter}
-              handleMouseLeave={handleMouseLeave}
-              vacancyTitle={selectedVacancy?.title}
+              vacancyTitleSimple={selectedVacancy?.title}
               buttonText={activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'}
-              inputPaddingTop={width >= 1024 && width <= 1600 ? '2rem' : undefined}
             />
           </aside>
         </section>
