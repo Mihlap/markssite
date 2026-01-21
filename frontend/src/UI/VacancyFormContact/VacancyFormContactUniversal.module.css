@@ -3,5 +3,36 @@
 }
 
 .simpleForm {
-    background-color: black;
+    /* background-color: black; */
+}
+
+.form-btn {
+    padding: 20px 32px;
+    background-color: var(--blue-75BBFD);
+
+
+    color: var(--white-F6F6F6);
+    font-family: var(--font-raleway);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+
+    @media (min-width: 2560px) {
+        padding-top: 27px;
+        padding-bottom: 27px;
+
+        font-size: 18px;
+        line-height: 26px;
+    }
+}
+
+.active {
+    background-color: var(--dark-blue-389FFF);
+    cursor: pointer;
+}
+
+.disabled {
+    background-color: var(--blue-75BBFD);
+    cursor: not-allowed;
 }
