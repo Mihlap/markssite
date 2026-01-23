@@ -1,12 +1,96 @@
-.fullForm {
-    background-color: red;
+.fileWrap {
+    position: relative;
 }
 
-.simpleForm {
-    /* background-color: black; */
+.filePreview {
+    position: absolute;
+    top: -37px;
+    left: 40px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-raleway);
+    color: var(--dark-gray-566272);
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    /* cursor: pointer; */
+
+    &:hover {
+        color: var(--blue-75BBFD);
+    }
 }
 
-.form-btn {
+.filePreview::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    flex-shrink: 0;
+    background: url('./icon/remove-black.svg') no-repeat center / contain;
+}
+
+.filePreview:hover::before {
+    background-image: url('./icon/remove-blue.svg');
+}
+
+.fileName {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.fileLabel {
+    position: relative;
+}
+
+.inputFile {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    border: 0;
+}
+
+.fileButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 13px;
+    cursor: pointer;
+    border: none;
+    border-radius: 40px;
+    color: var(--dark-gray-566272);
+    font-family: var(--font-raleway);
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 14px;
+}
+
+.fileError {
+    color: var(--crimson-E00747);
+    font-family: var(--font-raleway);
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 14px;
+}
+
+.fullForm .fileButton {
+    background: #EBECEE;
+}
+
+.simpleForm .fileButton {
+    background: linear-gradient(261deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
+}
+
+
+.formBtn {
     padding: 20px 32px;
     background-color: var(--blue-75BBFD);
 
@@ -35,4 +119,36 @@
 .disabled {
     background-color: var(--blue-75BBFD);
     cursor: not-allowed;
+}
+
+
+.fullForm {
+    background-color: rgb(255, 206, 206);
+}
+
+.simpleForm {
+    /* flex: 1; */
+    border-left: 1px solid var(--light-light-gray-EBECEE, #EBECEE);
+    background: rgba(255, 255, 255, 0.70);
+    backdrop-filter: blur(4.5px);
+    padding-top: 68px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+
+    @media (min-width: 2560px) {
+        padding-top: 135px;
+    }
+
+    label {
+        --var-padding: 40px;
+
+        position: relative;
+        padding-left: var(--var-padding);
+        padding-right: var(--var-padding);
+
+        @media (min-width: 2560px) {
+            --var-padding: 80px;
+        }
+    }
 }
