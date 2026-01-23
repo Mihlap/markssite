@@ -80,6 +80,8 @@
 } */
 
 .errorText {
+    position: absolute;
+    bottom: -20px;
     color: var(--crimson-E00747);    
     font-family: var(--font-raleway);
     font-size: 10px;
