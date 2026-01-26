@@ -1,96 +1,5 @@
-.fileWrap {
-    position: relative;
-}
-
-.filePreview {
-    position: absolute;
-    top: -37px;
-    left: 40px;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--font-raleway);
-    color: var(--dark-gray-566272);
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 16px;
-    /* cursor: pointer; */
-
-    &:hover {
-        color: var(--blue-75BBFD);
-    }
-}
-
-.filePreview::before {
-    content: "";
-    width: 8px;
-    height: 8px;
-    flex-shrink: 0;
-    background: url('./icon/remove-black.svg') no-repeat center / contain;
-}
-
-.filePreview:hover::before {
-    background-image: url('./icon/remove-blue.svg');
-}
-
-.fileName {
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.fileLabel {
-    position: relative;
-}
-
-.inputFile {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    border: 0;
-}
-
-.fileButton {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 13px;
-    cursor: pointer;
-    border: none;
-    border-radius: 40px;
-    color: var(--dark-gray-566272);
-    font-family: var(--font-raleway);
-    font-size: 10px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 14px;
-}
-
-.fileError {
-    color: var(--crimson-E00747);
-    font-family: var(--font-raleway);
-    font-size: 10px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 14px;
-}
-
-.fullForm .fileButton {
-    background: #EBECEE;
-}
-
-.simpleForm .fileButton {
-    background: linear-gradient(261deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
-}
-
-
 .formBtn {
+    width: 100%;
     padding: 20px 32px;
     background-color: var(--blue-75BBFD);
 
@@ -127,28 +36,64 @@
 }
 
 .simpleForm {
-    /* flex: 1; */
+    --var-padding: 40px;
     border-left: 1px solid var(--light-light-gray-EBECEE, #EBECEE);
     background: rgba(255, 255, 255, 0.70);
     backdrop-filter: blur(4.5px);
-    padding-top: 68px;
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
+
+    .wrap {
+        /* flex: 1; */
+        padding-top: 68px;
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+    }
+
 
     @media (min-width: 2560px) {
         padding-top: 135px;
     }
 
     label {
-        --var-padding: 40px;
-
         position: relative;
         padding-left: var(--var-padding);
         padding-right: var(--var-padding);
-
-        @media (min-width: 2560px) {
-            --var-padding: 80px;
-        }
     }
+
+    .agreement_vacancy {
+        padding-left: var(--var-padding);
+        padding-right: var(--var-padding);
+    }
+
+    @media (min-width: 2560px) {
+        --var-padding: 80px;
+    }
+}
+
+.agreement_vacancy_text {
+    color: var(--gray-959DA6);
+    font-family: var(--font-raleway);
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+}
+
+.agreement_vacancy {
+    composes: agreement_vacancy_text;
+    padding-bottom: 68px;
+}
+
+.agreement_vacancy[data-max-files="true"] {
+    padding-bottom: 50px;
+}
+
+.agreement_vacancy_link {
+    composes: agreement_vacancy_text;
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-skip-ink: none;
+    text-decoration-thickness: auto;
+    text-underline-offset: auto;
+    text-underline-position: from-font;
 }

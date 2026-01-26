@@ -1,10 +1,12 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import Select from 'react-select';
 import 'react-phone-number-input/style.css';
 import styles from './VacancyFormContactUniversal.module.css';
 import { phoneRegex, directionOptions, maskOptions } from './const/index.js';
 import Input from '../../Portal/ui/Input/Input.jsx';
+import InputFile from '../../Portal/ui/Input/InputFile/InputFile.jsx';
+import { Link } from 'react-router-dom';
 
 const apiBase = process.env.REACT_APP_SERVER_HOST || '';
 
@@ -17,6 +19,7 @@ const VacancyFormContactUniversal = ({ variant: variantProp = 'full' }) => {
     clearErrors,
     reset,
     control,
+    watch,
     formState: { errors, isValid },
   } = useForm({
     mode: 'onChange',
@@ -32,9 +35,9 @@ const VacancyFormContactUniversal = ({ variant: variantProp = 'full' }) => {
     },
   });
 
-  const onSubmit = ((data) => {
-console.log(data);
-  })
+  const onSubmit = (data) => {
+    console.log(data);
+  };
 
   // const onSubmit = useCallback(
   //   async (data) => {
@@ -79,81 +82,58 @@ console.log(data);
   // );
 
   const formClassName = variantProp === 'full' ? styles.fullForm : styles.simpleForm;
-  const [selectedFile, setSelectedFile] = useState(null);
-  const fileInputRef = useRef(null);
-  const resumeFilesRegister = register('resumeFiles', {
-    required: 'Файл обязателен',
-    validate: (files) => {
-      const file = files?.[0];
-      if (!file) return 'Файл обязателен';
-      if (files.length > 1) return 'Можно загрузить только один файл';
-      if (file.type?.startsWith('image/')) return 'Изображения не принимаются';
-      return true;
-    },
-  });
-
-  const handleFileChange = (event) => {
-    const file = event.target.files?.[0] || null;
-    setSelectedFile(file);
-  };
-
-  const handleFileRemove = () => {
-    setSelectedFile(null);
-    setValue('resumeFiles', [], { shouldDirty: true, shouldValidate: true });
-    clearErrors('resumeFiles');
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-  };
+  const resumeFiles = watch('resumeFiles');
+  console.log('resumeFiles:', resumeFiles);
 
   return (
     <form className={formClassName} onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
-      <Input
-        label="Ваше имя и фамилия"
-        placeholder=" "
-        // maxLength={50}
-        {...register('name', {
-          required: 'Заполните поле',
-          maxLength: {
-            value: 50,
-            message: 'Максимум 50 символов',
-          },
-        })}
-        error={errors.name?.message}
-      />
+      <div className={styles.wrap}>
+        <Input
+          label="Ваше имя и фамилия"
+          placeholder=" "
+          // maxLength={50}
+          {...register('name', {
+            required: 'Заполните поле',
+            maxLength: {
+              value: 50,
+              message: 'Максимум 50 символов',
+            },
+          })}
+          error={errors.name?.message}
+        />
 
-      <Controller
-        name="phone"
-        control={control}
-        // rules={{
-        //   required: 'Заполните поле',
-        //   validate: (value) => phoneRegex.test(value) || 'Некорректный телефон',
-        // }}
-        render={({ field, fieldState }) => (
-          <Input
-            {...field}
-            label="Телефон"
-            mask={maskOptions.mask}
-            replacement={maskOptions.replacement}
-            autoComplete="off"
-            error={fieldState.error?.message}
-          />
-        )}
-      />
+        <Controller
+          name="phone"
+          control={control}
+          // rules={{
+          //   required: 'Заполните поле',
+          //   validate: (value) => phoneRegex.test(value) || 'Некорректный телефон',
+          // }}
+          render={({ field, fieldState }) => (
+            <Input
+              {...field}
+              label="Телефон"
+              mask={maskOptions.mask}
+              replacement={maskOptions.replacement}
+              autoComplete="off"
+              error={fieldState.error?.message}
+            />
+          )}
+        />
+{/* 
+        <Input
+          label="Город"
+          placeholder=" "
+          {...register('city', {
+            maxLength: {
+              value: 25,
+              message: 'Максимум 25 символов',
+            },
+          })}
+          error={errors.city?.message}
+        /> */}
 
-      <Input
-        label="Город"
-        placeholder=" "
-        {...register('city', {
-          maxLength: {
-            value: 25,
-            message: 'Максимум 25 символов',
-          },
-        })}
-        error={errors.city?.message}
-      />
-
-      {/* <Controller
+        {/* <Controller
         name="direction"
         control={control}
         render={({ field }) => (
@@ -167,53 +147,44 @@ console.log(data);
         )}
       /> */}
 
-      <Input
-        label="Сопроводительное письмо"
-        placeholder=" "
-        {...register('letter', {
-          maxLength: {
-            value: 500,
-            message: 'Максимум 500 символов',
-          },
-        })}
-        error={errors.letter?.message}
+        <Input
+          label="Сопроводительное письмо"
+          placeholder=" "
+          {...register('letter', {
+            maxLength: {
+              value: 500,
+              message: 'Максимум 500 символов',
+            },
+          })}
+          error={errors.letter?.message}
+        />
+
+        <Input
+          label="Ссылка на резюме/портфолио"
+          placeholder=" "
+          {...register('resume', {
+            maxLength: {
+              value: 500,
+              message: 'Максимум 500 символов',
+            },
+          })}
+          error={errors.resume?.message}
+        />
+      </div>
+      <InputFile
+        register={register}
+        setValue={setValue}
+        clearErrors={clearErrors}
+        error={errors.resumeFiles?.message}
+        variant={variantProp}
       />
 
-      <Input
-        label="Ссылка на резюме/портфолио"
-        placeholder=" "
-        {...register('resume', {
-          maxLength: {
-            value: 500,
-            message: 'Максимум 500 символов',
-          },
-        })}
-        error={errors.resume?.message}
-      />
-      <div className={styles.fileWrap}>
-        {selectedFile && (
-          <button type="button" onClick={handleFileRemove} aria-label="Удалить файл" className={styles.filePreview}>
-            <span className={styles.fileName}>{selectedFile.name}</span>
-          </button>
-        )}
-        <label className={styles.fileLabel}>
-          <input
-            className={styles.inputFile}
-            type="file"
-            accept=".pdf,.doc,.docx,.rtf,.odt,.txt,.ppt,.pptx,.xls,.xlsx"
-            {...resumeFilesRegister}
-            onChange={(event) => {
-              resumeFilesRegister.onChange(event);
-              handleFileChange(event);
-            }}
-            ref={(node) => {
-              resumeFilesRegister.ref(node);
-              fileInputRef.current = node;
-            }}
-          />
-          <span className={styles.fileButton}>Прикрепить файл</span>
-          {errors.resumeFiles && <span className={styles.fileError}>{errors.resumeFiles.message}</span>}
-        </label>
+      <div className={styles.agreement_vacancy} data-max-files={resumeFiles?.length === 2}>
+        Нажав на кнопку, соглашаюсь на{' '}
+        <Link to="../Information" target="blank" className={styles.agreement_vacancy_link}>
+          обработку
+          <br /> персональных данных
+        </Link>
       </div>
 
       <input
