@@ -65,13 +65,13 @@ export const fetchCompanyHistory = createAsyncThunk('companyHistory/fetchAll', a
 });
 
 export const createHistoryItem = createAsyncThunk('companyHistory/create', async (payload, { rejectWithValue }) => {
-  try { 
+  try {
     if (typeof FormData !== 'undefined' && payload instanceof FormData) {
       const { data } = await api.post(`${API_BASE}/mp`, payload, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       return data;
-    }   
+    }
     const body = {
       year: Number(payload.year),
       title: String(payload.title || '').trim(),

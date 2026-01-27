@@ -101,6 +101,17 @@
     flex-shrink: 0;
 }
 
+.bottom_card {
+    .card_content {
+        order: 1;
+    }
+
+    .card_image,
+    .card_image_placeholder {
+        order: 2;
+    }
+}
+
 @media screen and (min-width: 1024px) and (max-width: 1599px) {
     .history_card {
         width: 532px;
@@ -132,6 +143,22 @@
 @media screen and (min-width: 1600px) {
     .history_card {
         width: 689px;
+    }
+
+    .card_title {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        align-self: stretch;
+        overflow: hidden;
+        color: var(--black-1D2E43, #1D2E43);
+        font-variant-numeric: lining-nums proportional-nums;
+        text-overflow: ellipsis;
+        font-family: Raleway;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 28px;
     }
 }
 

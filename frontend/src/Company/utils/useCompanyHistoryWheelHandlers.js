@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { flushSync } from 'react-dom';
 import headerStyles from '../CompanyHistory/CompanyHistoryHeader.module.scss';
 
 export function useCompanyHistoryWheelHandlers({
-    inView,
+    sectionRef,
+    // inView,
     cardsFocused,
     historyListRef,
     timelineWrapperRef,
@@ -17,6 +18,8 @@ export function useCompanyHistoryWheelHandlers({
     subtitleLine2Ref,
     backgroundRef,
     sliderRef,
+    parentStartRef,
+    onExitToParentTop,
     cardsFocusInProgressRef,
     exitToParentInProgressRef,
     hasScrollToCardsTriggered,
@@ -30,10 +33,26 @@ export function useCompanyHistoryWheelHandlers({
     exitCardsFocus,
     setCardsFocused,
 }) {
-    useEffect(() => {
-        if (!inView) return;
+    const horizontalOffsetRef = useRef(0);
 
+    const isHistoryActive = (e) => {
+        const root = sectionRef?.current;
+        if (!root) return false;
+
+        const r = root.getBoundingClientRect();
+        const visible = r.bottom > 0 && r.top < window.innerHeight;
+        if (!visible) return false;
+
+        const t = e?.target;
+        if (t && root.contains(t)) return true;
+
+        const probeY = window.innerHeight * 0.35;
+        return probeY >= r.top && probeY <= r.bottom;
+    };
+
+    useEffect(() => {
         const handleWheelUp = (e) => {
+            if (!isHistoryActive(e)) return;
             if (e.deltaY >= 0) return;
 
             const cardsEl = historyListRef.current;
@@ -43,10 +62,15 @@ export function useCompanyHistoryWheelHandlers({
             if (!cardsFocused || cardsFocusInProgressRef.current) return;
 
             const hasVerticalOverflow = cardsEl.scrollHeight > cardsEl.clientHeight + 1;
-            if (hasVerticalOverflow && cardsEl.scrollTop > 1) return;
-
-            const canScrollLeft = timelineEl && timelineEl.scrollLeft > 1;
-            if (canScrollLeft) return;
+            if (hasVerticalOverflow && cardsEl.scrollTop > 1) return;         
+            if (horizontalOffsetRef.current > 1) return;
+      
+            if (timelineEl) {
+                const rect = timelineEl.getBoundingClientRect();
+                const centerY = rect.top + rect.height / 2;
+                const inViewport = centerY > 100 && centerY < window.innerHeight - 100;
+                if (inViewport) return;
+            }
 
             e.preventDefault();
             e.stopPropagation();
@@ -56,12 +80,18 @@ export function useCompanyHistoryWheelHandlers({
 
         window.addEventListener('wheel', handleWheelUp, { passive: false });
         return () => window.removeEventListener('wheel', handleWheelUp);
-    }, [inView, cardsFocused, exitCardsFocus, historyListRef, timelineWrapperRef, cardsFocusInProgressRef]);
+    }, [
+        sectionRef,
+        cardsFocused,
+        exitCardsFocus,
+        historyListRef,
+        timelineWrapperRef,
+        cardsFocusInProgressRef,
+    ]);
 
     useEffect(() => {
-        if (!inView) return;
-
         const handleWheelDownExit = (e) => {
+            if (!isHistoryActive(e)) return;
             if (e.deltaY <= 0) return;
 
             const cardsEl = historyListRef.current;
@@ -88,14 +118,22 @@ export function useCompanyHistoryWheelHandlers({
 
         window.addEventListener('wheel', handleWheelDownExit, { passive: false });
         return () => window.removeEventListener('wheel', handleWheelDownExit);
-    }, [inView, cardsFocused, exitCardsFocus, historyListRef, timelineWrapperRef, cardsFocusInProgressRef]);
+    }, [
+        sectionRef,
+        cardsFocused,
+        exitCardsFocus,
+        historyListRef,
+        timelineWrapperRef,
+        cardsFocusInProgressRef,
+    ]);
 
     useEffect(() => {
-        if (!inView) return;
-
         const handleWheelExitUp = (e) => {
+            if (!isHistoryActive(e)) return;
+
             if (e.deltaY >= 0) return;
             if (cardsFocused || cardsFocusInProgressRef.current) return;
+
             if (exitToParentInProgressRef.current) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -115,7 +153,9 @@ export function useCompanyHistoryWheelHandlers({
 
             const isPointerInHeader = probeY >= headerRect.top && probeY <= headerRect.bottom;
             const isTriggerPointInHeader = triggerY >= headerRect.top && triggerY <= headerRect.bottom;
-            const isHeaderVisibleDuringIntro = isIntroActive && headerRect.top < window.innerHeight * 0.6 && headerRect.bottom > 0;
+            const isHeaderVisibleDuringIntro =
+                isIntroActive && headerRect.top < window.innerHeight * 0.6 && headerRect.bottom > 0;
+
             const isInHeader = isPointerInHeader || isTriggerPointInHeader || isHeaderVisibleDuringIntro;
             if (!isInHeader) return;
 
@@ -143,6 +183,7 @@ export function useCompanyHistoryWheelHandlers({
             const subtitleLine = subtitleLineRef.current;
             const descLine1 = subtitleLine1Ref.current;
             const descLine2 = subtitleLine2Ref.current;
+
             if (!marksGroup || !title) {
                 exitToParentInProgressRef.current = false;
                 hasSplitTriggered.current = false;
@@ -164,25 +205,31 @@ export function useCompanyHistoryWheelHandlers({
             });
 
             const sliderEl = sliderRef?.current;
+            const parentEl = parentStartRef?.current;
+
             let y = 0;
 
             if (sliderEl) {
                 const sliderRect = sliderEl.getBoundingClientRect();
                 const sliderAbsoluteBottom = sliderRect.bottom + window.pageYOffset;
+
                 const bottomOffset = 60;
                 y = Math.max(0, sliderAbsoluteBottom - window.innerHeight + bottomOffset);
-            } else {
-                y = 0;
+            } else if (parentEl) {
+                const r = parentEl.getBoundingClientRect();
+                y = Math.max(0, r.top + window.pageYOffset);
             }
 
-            const isDuringIntro = isIntroActive;
-            const scrollDuration = isDuringIntro ? 0.7 : 0.85;
+            const scrollDuration = isIntroActive ? 0.7 : 0.85;
             requestAnimationFrame(() => {
                 gsap.to(window, {
                     duration: scrollDuration,
                     ease: 'power2.inOut',
                     overwrite: 'auto',
                     scrollTo: { y, autoKill: false },
+                    onComplete: () => {
+                        if (typeof onExitToParentTop === 'function') onExitToParentTop();
+                    },
                 });
             });
 
@@ -206,20 +253,22 @@ export function useCompanyHistoryWheelHandlers({
                 0
             );
 
-            [title, subtitleLine, descLine1, descLine2].filter(Boolean).forEach((el) => {
-                tl.fromTo(
-                    el,
-                    { x: gsap.getProperty(el, 'x') || 0, opacity: gsap.getProperty(el, 'opacity') || 1 },
-                    { x: '100vw', opacity: 0, duration: textAnimationDuration, immediateRender: true },
-                    0
-                );
-            });
+            [title, subtitleLine, descLine1, descLine2]
+                .filter(Boolean)
+                .forEach((el) => {
+                    tl.fromTo(
+                        el,
+                        { x: gsap.getProperty(el, 'x') || 0, opacity: gsap.getProperty(el, 'opacity') || 1 },
+                        { x: '100vw', opacity: 0, duration: textAnimationDuration, immediateRender: true },
+                        0
+                    );
+                });
         };
 
         window.addEventListener('wheel', handleWheelExitUp, { passive: false });
         return () => window.removeEventListener('wheel', handleWheelExitUp);
     }, [
-        inView,
+        sectionRef,
         cardsFocused,
         historyHeaderRef,
         sliderRef,
@@ -241,9 +290,14 @@ export function useCompanyHistoryWheelHandlers({
     ]);
 
     useEffect(() => {
-        if (!inView) return;
-
         const handleWheelFromSlider = (e) => {
+            const root = sectionRef?.current;
+            if (!root) return;
+
+            const r = root.getBoundingClientRect();
+            const near = r.top < window.innerHeight * 1.2 && r.bottom > -window.innerHeight * 0.2;
+            if (!near) return;
+
             if (e.deltaY <= 0) return;
             if (!returnedToSliderRef.current) return;
             if (cardsFocused || cardsFocusInProgressRef.current) return;
@@ -254,7 +308,6 @@ export function useCompanyHistoryWheelHandlers({
             if (!sliderEl || !headerEl) return;
 
             const sliderRect = sliderEl.getBoundingClientRect();
-
             const isSliderVisible = sliderRect.top < window.innerHeight && sliderRect.bottom > 0;
             if (!isSliderVisible) return;
 
@@ -309,7 +362,7 @@ export function useCompanyHistoryWheelHandlers({
         window.addEventListener('wheel', handleWheelFromSlider, { passive: false });
         return () => window.removeEventListener('wheel', handleWheelFromSlider);
     }, [
-        inView,
+        sectionRef,
         cardsFocused,
         sliderRef,
         historyHeaderRef,
@@ -330,9 +383,10 @@ export function useCompanyHistoryWheelHandlers({
     ]);
 
     useEffect(() => {
-        if (!inView) return;
+        const snap1 = gsap.utils?.snap ? gsap.utils.snap(1) : (v) => Math.round(v);
 
         const handleWheelDown = (e) => {
+            if (!isHistoryActive(e)) return;
             if (e.deltaY <= 0) return;
 
             const headerEl = historyHeaderRef.current;
@@ -342,6 +396,7 @@ export function useCompanyHistoryWheelHandlers({
             const triggerY = window.innerHeight * 0.25;
             const headerRect = headerEl.getBoundingClientRect();
             const cardsRect = cardsEl.getBoundingClientRect();
+
             const isInHeader =
                 triggerY >= headerRect.top &&
                 triggerY <= headerRect.bottom &&
@@ -352,8 +407,14 @@ export function useCompanyHistoryWheelHandlers({
             if (hasScrollToCardsTriggered.current) return;
             if (cardsFocused || cardsFocusInProgressRef.current) return;
 
+            const winY0 = window.pageYOffset;
+
             e.preventDefault();
             e.stopPropagation();
+            if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+
+            gsap.killTweensOf(window);
+            window.scrollTo(0, winY0);
 
             hasScrollToCardsTriggered.current = true;
             hasScrollToHeaderTriggered.current = false;
@@ -368,43 +429,30 @@ export function useCompanyHistoryWheelHandlers({
             hasSplitTriggered.current = true;
             hasRestoreTriggered.current = false;
 
-            const headerTop = headerRect.top + window.pageYOffset;
+            gsap.killTweensOf([cardsEl, marksGroup, title, subtitleLine, descLine1, descLine2].filter(Boolean));
 
-            const elements = [marksGroup, title, subtitleLine, descLine1, descLine2];
-            elements.forEach((el) => {
-                if (!el) return;
+            [marksGroup, title, subtitleLine, descLine1, descLine2].filter(Boolean).forEach((el) => {
                 const x = gsap.getProperty(el, 'x');
                 const opacity = gsap.getProperty(el, 'opacity');
-                gsap.set(el, { x, opacity });
+                gsap.set(el, { x, opacity, force3D: true });
                 el.classList.remove(headerStyles.animate);
                 el.style.animation = 'none';
+                el.style.transition = 'none';
             });
 
-            if (historyTagRef.current) {
-                gsap.fromTo(
-                    historyTagRef.current,
-                    { opacity: 0, y: -20 },
-                    { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out', delay: 0.3 }
-                );
-            }
-
-            const tl = gsap.timeline();
+            const tl = gsap.timeline({ defaults: { overwrite: 'auto', force3D: true } });
 
             const backgroundEl = backgroundRef.current;
             if (backgroundEl) {
                 const rect = backgroundEl.getBoundingClientRect();
                 const shiftY = -Math.max(1, rect.height);
-                tl.to(
-                    backgroundEl,
-                    { y: shiftY, duration: 1.2, ease: 'power2.inOut', force3D: true },
-                    0
-                );
+                tl.to(backgroundEl, { y: snap1(shiftY), duration: 1.2, ease: 'power2.inOut' }, 0);
             }
 
             tl.fromTo(
                 marksGroup,
                 { x: gsap.getProperty(marksGroup, 'x') || 0, opacity: gsap.getProperty(marksGroup, 'opacity') || 1 },
-                { x: '-100vw', opacity: 0, duration: 0.8, ease: 'power2.in', force3D: true },
+                { x: '-100vw', opacity: 0, duration: 0.8, ease: 'power2.in' },
                 0
             );
 
@@ -412,85 +460,141 @@ export function useCompanyHistoryWheelHandlers({
                 tl.fromTo(
                     el,
                     { x: gsap.getProperty(el, 'x') || 0, opacity: gsap.getProperty(el, 'opacity') || 1 },
-                    { x: '100vw', opacity: 0, duration: 0.8, ease: 'power2.in', force3D: true },
+                    { x: '100vw', opacity: 0, duration: 0.8, ease: 'power2.in' },
                     0
                 );
             });
 
             const rectBefore = cardsEl.getBoundingClientRect();
             const topBefore = rectBefore.top;
+            const leftBefore = rectBefore.left;
+
+            const widthBefore = rectBefore.width;
+            const heightBefore = rectBefore.height;
+
+            const currentXBefore = Number(gsap.getProperty(cardsEl, 'x') || 0);
+            const currentYBefore = Number(gsap.getProperty(cardsEl, 'y') || 0);
 
             cardsEl.style.willChange = 'transform';
+            cardsEl.style.transition = 'none';
             cardsEl.style.transform = 'translateZ(0)';
-            cardsEl.style.opacity = '0';
-            cardsEl.style.pointerEvents = 'none';
-            cardsEl.style.visibility = 'hidden';
 
-            gsap.set(cardsEl, { y: 0, clearProps: 'transform' });
+            cardsEl.style.width = `${widthBefore}px`;
+            cardsEl.style.minWidth = `${widthBefore}px`;
+            cardsEl.style.maxWidth = `${widthBefore}px`;
+            cardsEl.style.height = `${heightBefore}px`;
+            cardsEl.style.minHeight = `${heightBefore}px`;
+            cardsEl.style.position = 'relative';
+
             cardsFocusInProgressRef.current = true;
+
+            const paddingTopAfter =
+                parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--history-tag-safe-top')) || 72;
+
+            cardsEl.style.marginTop = '0';
+            cardsEl.style.marginBottom = '0';
+            cardsEl.style.paddingTop = `${paddingTopAfter}px`;
+            cardsEl.style.paddingBottom = '24px';
+            cardsEl.style.top = '0';
+            cardsEl.style.height = '100vh';
+            cardsEl.style.display = 'block';
+            cardsEl.style.boxSizing = 'border-box';
+
+            cardsEl.style.overflowY = 'scroll';
+            cardsEl.style.overflowX = 'hidden';
+
+            cardsEl.style.overscrollBehavior = 'contain';
+            cardsEl.style.scrollbarWidth = 'none';
+
+            const rectAfterInline = cardsEl.getBoundingClientRect();
+            const inlineJumpY = rectAfterInline.top - topBefore;
+
+            let lockedX = snap1(currentXBefore);
+            let initialY = snap1(currentYBefore - inlineJumpY);
+
+            gsap.set(cardsEl, { x: lockedX, y: initialY, immediateRender: true, force3D: true });
 
             flushSync(() => {
                 setCardsFocused(true);
             });
 
-            const rectAfter = cardsEl.getBoundingClientRect();
-            const topAfter = rectAfter.top;
-            const layoutJump = topAfter - topBefore;
-
-            if (Math.abs(layoutJump) > 0.5) {
-                cardsEl.style.transform = `translateZ(0) translateY(${-layoutJump}px)`;
-                gsap.set(cardsEl, {
-                    y: -layoutJump,
-                    immediateRender: true,
-                    force3D: true,
-                });
-            }
-
-            cardsEl.style.opacity = '';
-            cardsEl.style.pointerEvents = '';
-            cardsEl.style.visibility = '';
-
             requestAnimationFrame(() => {
-                const rectFinal = cardsEl.getBoundingClientRect();
-                const cardsTopInViewport = rectFinal.top;
+                requestAnimationFrame(() => {
+                    const winY1 = window.pageYOffset;
+                    const deltaScroll = winY1 - winY0;
 
-                let targetTopInViewport = 0;
-                const tagEl = historyTagRef.current;
-                if (tagEl) {
-                    const tagRect = tagEl.getBoundingClientRect();
-                    const tagHeight = tagRect.height;
-                    const fixedTagTop = 24;
-                    const gap = 12;
-                    const cardsStyles = window.getComputedStyle(cardsEl);
-                    const paddingTop = parseFloat(cardsStyles.paddingTop) || 0;
-                    const tagBottomInFixed = fixedTagTop + tagHeight + gap;
-                    targetTopInViewport = tagBottomInFixed - paddingTop;
-                    targetTopInViewport = Math.min(targetTopInViewport, 120);
-                }
+                    if (Math.abs(deltaScroll) > 0.5) {
+                        window.scrollTo(0, winY0);
+                        const yNow = Number(gsap.getProperty(cardsEl, 'y') || 0);
+                        gsap.set(cardsEl, { y: snap1(yNow - deltaScroll), immediateRender: true, force3D: true });
+                    }
 
-                const shiftY = targetTopInViewport - cardsTopInViewport;
+                    const r = cardsEl.getBoundingClientRect();
+                    const deltaLeft = Math.round(r.left) - Math.round(leftBefore);
 
-                const currentY = gsap.getProperty(cardsEl, 'y') || 0;
-                tl.to(
-                    cardsEl,
-                    {
-                        y: currentY + shiftY,
-                        duration: 1.2,
-                        ease: 'power2.inOut',
-                        onComplete: () => {
-                            cardsFocusInProgressRef.current = false;
-                            cardsEl.style.willChange = '';
+                    if (Math.abs(deltaLeft) >= 1) {
+                        const xNow = Number(gsap.getProperty(cardsEl, 'x') || 0);
+                        lockedX = snap1(xNow - deltaLeft);
+                        gsap.set(cardsEl, { x: lockedX, immediateRender: true, force3D: true });
+                    }
+
+                    const rectStable = cardsEl.getBoundingClientRect();
+                    const topStable = rectStable.top;
+
+                    const yNow = Number(gsap.getProperty(cardsEl, 'y') || 0);
+
+                    const targetTopInViewport = 137;
+                    const shiftY = targetTopInViewport - topStable;
+                    const finalY = snap1(yNow + shiftY);
+
+                    tl.to(
+                        cardsEl,
+                        {
+                            x: lockedX,
+                            y: finalY,
+                            duration: 1.2,
+                            ease: 'power2.inOut',
+                            overwrite: 'auto',
+                            autoRound: true,
+                            onUpdate: () => {
+                                const cx = Number(gsap.getProperty(cardsEl, 'x') || 0);
+                                if (Math.abs(cx - lockedX) > 0.1) {
+                                    gsap.set(cardsEl, { x: lockedX, immediateRender: true });
+                                }
+                            },
+                            onComplete: () => {
+                                cardsEl.style.width = '';
+                                cardsEl.style.minWidth = '';
+                                cardsEl.style.maxWidth = '';
+                                cardsEl.style.height = '';
+                                cardsEl.style.minHeight = '';
+                                cardsEl.style.willChange = '';
+                                cardsEl.style.transition = '';
+
+                                if (historyTagRef.current) {
+                                    gsap.set(historyTagRef.current, { opacity: 0 });
+                                    gsap.to(historyTagRef.current, {
+                                        opacity: 1,
+                                        duration: 0.6,
+                                        ease: 'power2.out',
+                                        delay: 0.1,
+                                        overwrite: 'auto',
+                                    });
+                                }
+
+                                cardsFocusInProgressRef.current = false;
+                            },
                         },
-                    },
-                    0
-                );
+                        0
+                    );
+                });
             });
         };
 
         window.addEventListener('wheel', handleWheelDown, { passive: false });
         return () => window.removeEventListener('wheel', handleWheelDown);
     }, [
-        inView,
+        sectionRef,
         cardsFocused,
         historyHeaderRef,
         historyListRef,
@@ -510,63 +614,149 @@ export function useCompanyHistoryWheelHandlers({
         hasRestoreTriggered,
         setCardsFocused,
     ]);
-
+   
     useEffect(() => {
-        if (!timelineWrapperRef.current || !inView) return;
-
         const container = timelineWrapperRef.current;
-        let scrollTimeout = null;
+        if (!container) return;
 
-        const handleWheel = (e) => {
-            const rect = container.getBoundingClientRect();
-            const viewportHeight = window.innerHeight;
-            const viewportCenter = viewportHeight / 2;
-            const containerCenter = rect.top + rect.height / 2;
-            const isInCenter = Math.abs(containerCenter - viewportCenter) < viewportHeight * 0.4;
-            const cardsEl = historyListRef.current;
-            const hasVerticalOverflow =
-                !!cardsEl && cardsFocused && cardsEl.scrollHeight > cardsEl.clientHeight + 1;
-            if (!isInCenter) {
-                const isVerticalScroll = Math.abs(e.deltaY) > Math.abs(e.deltaX || 0);
-                if (cardsFocused && isVerticalScroll && Math.abs(e.deltaY) > 5 && !hasVerticalOverflow) {
-                    e.preventDefault();
+        const MARGIN = 50;
+   
+        const getCurrentOffset = () => horizontalOffsetRef.current;
+        const setCurrentOffset = (val) => { horizontalOffsetRef.current = val; };
+
+        const getLastCard = () => {
+            const groups = container.querySelectorAll('[data-last-cards="true"]');
+            if (!groups.length) return null;
+
+            let rightmost = null;
+            let maxRight = -Infinity;
+
+            groups.forEach(group => {
+                const cards = group.querySelectorAll('[class*="history_card_wrapper"]');
+                cards.forEach(card => {
+                    const rect = card.getBoundingClientRect();
+                    if (rect.right > maxRight) {
+                        maxRight = rect.right;
+                        rightmost = card;
+                    }
+                });
+                if (!cards.length) {
+                    const rect = group.getBoundingClientRect();
+                    if (rect.right > maxRight) {
+                        maxRight = rect.right;
+                        rightmost = group;
+                    }
                 }
-                return;
-            }
-
-            const { deltaY } = e;
-            const isVerticalScroll = Math.abs(deltaY) > Math.abs(e.deltaX || 0);
-            if (!isVerticalScroll || Math.abs(deltaY) <= 5) return;
-
-            if (hasVerticalOverflow && !e.shiftKey) return;
-
-            const maxScrollLeft = container.scrollWidth - container.clientWidth;
-            const canScrollRight = deltaY > 0 && container.scrollLeft < maxScrollLeft - 1;
-            const canScrollLeft = deltaY < 0 && container.scrollLeft > 1;
-            if (!canScrollRight && !canScrollLeft) {
-                if (cardsFocused && !hasVerticalOverflow) e.preventDefault();
-                return;
-            }
-
-            e.preventDefault();
-            e.stopPropagation();
-
-            if (scrollTimeout) clearTimeout(scrollTimeout);
-
-            container.scrollBy({
-                left: deltaY * 0.5,
-                behavior: 'smooth',
             });
 
-            scrollTimeout = setTimeout(() => {
-                scrollTimeout = null;
-            }, 150);
+            return rightmost;
+        };
+    
+        const getMaxOffset = () => {
+            const lastCard = getLastCard();
+            if (!lastCard) return 0;
+
+            const rect = lastCard.getBoundingClientRect();
+            const cardCenterX = rect.left + rect.width / 2 + getCurrentOffset();
+            const viewportCenterX = window.innerWidth / 2;
+
+            return Math.max(0, cardCenterX - viewportCenterX);
+        };
+    
+        const isLastCardCentered = () => {
+            const lastCard = getLastCard();
+            if (!lastCard) return true;
+
+            const rect = lastCard.getBoundingClientRect();
+            const cardCenterX = rect.left + rect.width / 2;
+            const viewportCenterX = window.innerWidth / 2;
+
+            return cardCenterX <= viewportCenterX + MARGIN;
         };
 
-        window.addEventListener('wheel', handleWheel, { passive: false });
-        return () => {
-            window.removeEventListener('wheel', handleWheel);
-            if (scrollTimeout) clearTimeout(scrollTimeout);
+        const applyTransform = (offset) => {
+            setCurrentOffset(offset);
+            container.style.transform = `translateX(${-offset}px)`;
         };
-    }, [inView, cardsFocused, timelineWrapperRef, historyListRef]);
+
+        const handleWheelHorizontal = (e) => {
+            if (!cardsFocused) return;
+            if (cardsFocusInProgressRef.current) return;
+
+            const dy = e.deltaY;
+            const dx = e.deltaX || 0;
+
+            const isVerticalWheel = Math.abs(dy) > Math.abs(dx);
+            if (!isVerticalWheel || Math.abs(dy) <= 2) return;
+
+            const down = dy > 0;
+            const up = dy < 0;
+
+            const maxOffset = getMaxOffset();
+            const currentOffset = getCurrentOffset();
+
+            if (down) {
+                const centered = isLastCardCentered();
+                const atMax = currentOffset >= maxOffset;
+
+                if (centered || atMax) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+                    window.scrollBy({ top: Math.abs(dy), behavior: 'auto' });
+                    return;
+                }
+
+                e.preventDefault();
+                e.stopPropagation();
+                if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+
+                const step = Math.min(Math.abs(dy) * 2, 200);
+                const newOffset = Math.min(currentOffset + step, maxOffset);
+                applyTransform(newOffset);
+                return;
+            }
+
+            if (up) {            
+                const rect = container.getBoundingClientRect();
+                const containerCenterY = rect.top + rect.height / 2;
+                const cardsInViewport = containerCenterY > 100 && containerCenterY < window.innerHeight - 100;
+           
+                if (!cardsInViewport) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+                    window.scrollBy({ top: -Math.abs(dy), behavior: 'auto' });
+                    return;
+                }
+             
+                if (currentOffset <= 0) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+                    window.scrollBy({ top: -Math.abs(dy), behavior: 'auto' });
+                    return;
+                }
+            
+                e.preventDefault();
+                e.stopPropagation();
+                if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+
+                const step = Math.min(Math.abs(dy) * 2, 200);
+                const newOffset = Math.max(0, currentOffset - step);
+                applyTransform(newOffset);
+            }
+        };
+ 
+        if (!cardsFocused) {
+            container.style.transform = '';
+            setCurrentOffset(0);
+        }
+
+        window.addEventListener('wheel', handleWheelHorizontal, { passive: false });
+        return () => {
+            window.removeEventListener('wheel', handleWheelHorizontal);
+            container.style.transform = '';
+        };
+    }, [cardsFocused, timelineWrapperRef, cardsFocusInProgressRef]);
 }

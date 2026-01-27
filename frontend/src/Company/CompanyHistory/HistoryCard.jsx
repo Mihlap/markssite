@@ -2,11 +2,11 @@ import styles from './HistoryCard.module.scss';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
-export default function HistoryCard({ item, variant = 1 }) {
+export default function HistoryCard({ item, variant = 1, isBottom = false }) {
     const hasImage = variant === 1 && item.img;
 
     return (
-        <div className={`${styles.history_card} ${hasImage ? styles.variant1 : styles.variant2}`}>
+        <div className={`${styles.history_card} ${hasImage ? styles.variant1 : styles.variant2} ${isBottom ? styles.bottom_card : ''}`}>
             {hasImage ? (
                 <div className={styles.card_image}>
                     <img
@@ -29,7 +29,7 @@ export default function HistoryCard({ item, variant = 1 }) {
                     )}
                 </div>
                 <div className={styles.card_text}>
-                    <p className={styles.card_title}>{item.title}</p>
+                    <div className={styles.card_title} dangerouslySetInnerHTML={{ __html: item.description }} />
                     <p className={styles.card_link}>Открыть хронику...</p>
                 </div>
             </div>

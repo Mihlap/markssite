@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import styles from './TableCompany.module.css';
 import tableData from './tableData';
 
 const TableCompanyMobile = () => {
   const [showTable, setShowTable] = useState(null);
+  const location = useLocation();
 
   const tdStyle = {
     paddingTop: '1rem',
@@ -25,30 +27,16 @@ const TableCompanyMobile = () => {
   };
 
   useEffect(() => {
-    const scrollToTop = () => {
-      window.scrollTo(0, 0);
-    };
-
-    const scrollToTableHeader = () => {
+    const hash = location.hash;
+    if (hash === '#table-header-anchor') {
       const element = document.getElementById('table-header-anchor');
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        window.location.replace('#table-header-anchor');
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
       }
-    };
-
-    const hash = window.location.hash;
-    if (hash === '#table-header-anchor') {
-      scrollToTableHeader();
-    } else {
-      scrollToTop();
     }
-
-    return () => {
-      window.removeEventListener('scroll', scrollToTop);
-      window.removeEventListener('scroll', scrollToTableHeader);
-    };
-  }, []);
+  }, [location.hash]);
 
   return (
     <>

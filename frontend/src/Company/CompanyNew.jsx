@@ -48,10 +48,11 @@ const VIDEO_SOURCE2 = {
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleMouseHover }) {
+  const dispatch = useDispatch();  
+
   const [countPercent, setCountPercent] = useState(0);
   const [countHuman, setCountHuman] = useState(0);
   const [countProject, setCountProject] = useState(0);
-
   // const [videoSrc, setVideoSrc] = useState(null);
   const [videoSrc2, setVideoSrc2] = useState(null);
 
@@ -60,11 +61,9 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
   // const [isLoadingSubscription] = useState(false);
   // const [modalOpenSubscription, setModalOpenSubscription] = useState(false);
 
-  const dispatch = useDispatch();
 
   const companyTopRef = useRef(null);
   const sliderWrapperRef = useRef(null);
-
   const blockSlider = useRef(null);
 
   const countDepartment = useSelector((state) => state.counter.countDepartment);
@@ -80,6 +79,15 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
   });
 
   const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth <= 767 : false);
+
+  const [startTopCounters, setStartTopCounters] = useState(false);
+  const topCountersStartedRef = useRef(false);
+
+  const armTopCounters = () => {
+     if (topCountersStartedRef.current) return;
+      topCountersStartedRef.current = true;
+       setStartTopCounters(true);
+  }
 
   useEffect(() => {
     const handleResize = () => {
@@ -110,16 +118,21 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
   }, []);
 
   useEffect(() => {
+    if (!startTopCounters) return;
+
     const timer1 = setTimeout(() => {
       if (countPercent < 1300) setCountPercent(countPercent + 20);
       if (countProject < 200) setCountProject(countProject + 5);
       if (countHuman < 19) setCountHuman(countHuman + 1);
     }, 50);
+
     return () => clearTimeout(timer1);
-  }, [countPercent, countHuman, countProject]);
+
+  }, [startTopCounters, countPercent, countHuman, countProject]);
 
   useEffect(() => {
-    if (!inView) return;
+    // if (!inView) return;
+    if (!startTopCounters) return;
 
     const t = setTimeout(() => {
       dispatch(incrementDepartment());
@@ -129,7 +142,7 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
     }, 80);
 
     return () => clearTimeout(t);
-  }, [dispatch, inView]);
+  }, [dispatch, startTopCounters]);
 
   useEffect(() => {
     const elementsRight = [blockSlider.current];
@@ -150,7 +163,6 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
       ScrollTrigger.getAll().forEach((st) => st.kill());
     };
   }, []);
-
 
   return (
     <>
@@ -225,7 +237,7 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
           <SliderHeader />
         </div>
 
-        <CompanyHistory parentStartRef={companyTopRef} sliderRef={sliderWrapperRef} />
+        <CompanyHistory parentStartRef={companyTopRef} sliderRef={sliderWrapperRef} onExitToParentTop={armTopCounters} />
 
         {/* <div id="history" className={styles.about_main}>
           <div className={styles.left_about}>
