@@ -21,7 +21,8 @@ gsap.registerPlugin(ScrollToPlugin);
 function ArticleJournalPage({ handleMouseEnter, handleMouseLeave }) {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { state } = useLocation();
+  const location = useLocation();
+  const { state } = location;
   const { journal: stateJournal, targetChapterSlug } = state || {};
   const journals = useSelector((s) => s.journal.journals);
   const loading = useSelector((s) => s.journal.loading);
@@ -51,23 +52,26 @@ function ArticleJournalPage({ handleMouseEnter, handleMouseLeave }) {
 
   const mdContent = journalToUse?.markdown_content ?? '';
 
-    useEffect(() => {
-      if (!journalToUse) return;
-      if (targetChapterSlug) {
-        const hash = `#${targetChapterSlug}`;
-        const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-        gsap.to(window, {
-          duration: 0.6,
-          ease: 'power1.out',
-          scrollTo: { y: hash, offsetY: rem * 4, autoKill: false },
-          onComplete() {
-            window.history.replaceState(null, '', hash);
-          },
-        });
-        return;
-      }
-      window.scrollTo(0, 0);
-    }, [journalToUse, targetChapterSlug]);
+  useEffect(() => {
+    if (!journalToUse) return;
+    
+    const chapterSlug = targetChapterSlug || (location.hash ? location.hash.replace('#', '') : null);
+    
+    if (chapterSlug) {
+      const hash = `#${chapterSlug}`;
+      const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+      gsap.to(window, {
+        duration: 0.6,
+        ease: 'power1.out',
+        scrollTo: { y: hash, offsetY: rem * 4, autoKill: false },
+        onComplete() {
+          window.history.replaceState(null, '', hash);
+        },
+      });
+      return;
+    }
+    window.scrollTo(0, 0);
+  }, [journalToUse, targetChapterSlug, location.hash]);
 
   if (loading || !journalToUse) {
     return <SkeletonArticle />;

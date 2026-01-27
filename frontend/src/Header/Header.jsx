@@ -62,10 +62,6 @@ const Header = React.memo(
     const imageSrc = isMobile ? nameCompany1 : nameCompany;
 
     useEffect(() => {
-      window.scrollTo(0, 0);
-    }, []);
-
-    useEffect(() => {
       const handleResize = () => {
         const screenWidth = window.innerWidth;
         if (screenWidth >= 1025) {

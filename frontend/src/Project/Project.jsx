@@ -7,8 +7,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import styles from './Project.module.css';
 import {
   setSelectedViewConstruction,
-  setSelectedCity,  
-  getFetchFormCityFilter, 
+  setSelectedCity,
+  getFetchFormCityFilter,
   getFetchForm,
 } from '../store/Slice/projectSlice';
 import CompanySlider from '../UI/Company_Slider/CompanySlider';
@@ -49,7 +49,7 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.project.projects);
   const selectedViewConstruction = useSelector((state) => state.project.selectedViewConstruction);
-  const selectedCity = useSelector((state) => state.project.selectedCity);  
+  const selectedCity = useSelector((state) => state.project.selectedCity);
   const isActive = useSelector((state) => state.toggle.isActiveForButton1);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -70,30 +70,16 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
   const projectsPerPage = 100;
 
   useEffect(() => {
-    const scrollToTop = () => {
-      window.scrollTo(0, 0);
-    };
-
-    const scrollToTableHeader = () => {
-      const element = document.getElementById('block-header-anchorr');
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        window.location.replace('#block-header-anchor');
-      }
-    };
-
-    const hash = window.location.hash;
+    const hash = location.hash;
     if (hash === '#block-header-anchor') {
-      scrollToTableHeader();
-    } else {
-      scrollToTop();
+      const element = document.getElementById('block-header-anchor');
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      }
     }
-
-    return () => {
-      window.removeEventListener('scroll', scrollToTop);
-      window.removeEventListener('scroll', scrollToTableHeader);
-    };
-  }, []);
+  }, [location.hash]);
 
   const handleResize = useCallback(() => {
     setScreenWidth(window.innerWidth);
@@ -106,13 +92,13 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
     };
   }, [handleResize]);
 
-useEffect(() => { 
-  dispatch(setSelectedViewConstruction(category || 'Все'));  
-  dispatch(getFetchForm());
-  dispatch(fetchToggleStateAsync());
-  setCurrentPage(1);
-  setLoading(false);
-}, [dispatch, category]);
+  useEffect(() => {
+    dispatch(setSelectedViewConstruction(category || 'Все'));
+    dispatch(getFetchForm());
+    dispatch(fetchToggleStateAsync());
+    setCurrentPage(1);
+    setLoading(false);
+  }, [dispatch, category]);
 
 
   useEffect(() => {
@@ -122,7 +108,7 @@ useEffect(() => {
         const city = geolocation.city || 'Москва';
         setCurLocation(city);
       })
-      .catch((error) => console.error('Ошибка при получении геопозиции:', error));   
+      .catch((error) => console.error('Ошибка при получении геопозиции:', error));
   }, []);
 
   const currentLocation = userGeolocation ? userGeolocation.city : 'Москва';
@@ -168,17 +154,17 @@ useEffect(() => {
     [dispatch, isValid, value]
   );
 
-const handleButtonClick = useCallback(
-  (viewConstruction) => {
-    dispatch(setSelectedCity(''));
-    dispatch(setSelectedViewConstruction(viewConstruction));
-    setSelectOnCompetencies(viewConstruction);
-    setCurrentPage(1);
-    setValue('');
-    setIsTyping(false);
-  },
-  [dispatch]
-);
+  const handleButtonClick = useCallback(
+    (viewConstruction) => {
+      dispatch(setSelectedCity(''));
+      dispatch(setSelectedViewConstruction(viewConstruction));
+      setSelectOnCompetencies(viewConstruction);
+      setCurrentPage(1);
+      setValue('');
+      setIsTyping(false);
+    },
+    [dispatch]
+  );
 
 
   const handleButtonCityClick = useCallback(
@@ -224,11 +210,11 @@ const handleButtonClick = useCallback(
     [dispatch, selectOnCompetencies, value]
   );
 
-   const loadMoreProjects = useCallback(async () => {
+  const loadMoreProjects = useCallback(async () => {
     setLoading(true);
     setCurrentPage((prev) => prev + 1);
-   }, []);
-  
+  }, []);
+
   const handleScroll = useCallback(() => {
     const isAtBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight;
 
@@ -290,10 +276,10 @@ const handleButtonClick = useCallback(
       });
   }, [projects, selectOnCompetencies, selectedCity, value]);
 
-  useEffect(() => { 
+  useEffect(() => {
 
-    if (!projects || projects.length === 0) return;  
-    if (selectOnCompetencies === 'Все') return;    
+    if (!projects || projects.length === 0) return;
+    if (selectOnCompetencies === 'Все') return;
     if (filteredProjects.length > 0) return;
 
     setSelectOnCompetencies('Все');
@@ -385,12 +371,11 @@ const handleButtonClick = useCallback(
                       className={`
                 ${styles.menu__button__allProject} 
                 ${isFirst ? styles.firstSlide : ''} 
-                ${
-                  !isModalProjectOpen &&
-                  (el === selectedViewConstruction || (!selectedViewConstruction && el === 'Все'))
-                    ? styles.active
-                    : ''
-                }
+                ${!isModalProjectOpen &&
+                          (el === selectedViewConstruction || (!selectedViewConstruction && el === 'Все'))
+                          ? styles.active
+                          : ''
+                        }
               `}
                       style={{ width: 'fit-content' }}>
                       <p type="button" className={styles.menu_button_items}>
@@ -419,12 +404,11 @@ const handleButtonClick = useCallback(
                       <button
                         onMouseEnter={handleMouseEnter}
                         onMouseLeave={handleMouseLeave}
-                        className={`${styles.menu__button__allProject} ${
-                          !isModalProjectOpen &&
+                        className={`${styles.menu__button__allProject} ${!isModalProjectOpen &&
                           (el === selectedViewConstruction || (index === 0 && !selectedViewConstruction))
-                            ? styles.active
-                            : ''
-                        }`}
+                          ? styles.active
+                          : ''
+                          }`}
                         onClick={() => handleButtonClick(el)}>
                         <p className={styles.menu_button_items}>{el}</p>
                       </button>

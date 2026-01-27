@@ -92,6 +92,17 @@ export default function App() {
     dispatch(fetchToggleStateForButton3Async());
   }, [dispatch]);
 
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+  }, []);
+
+  useEffect(() => { 
+    if (location.hash) return;    
+    window.scrollTo(0, 0);
+  }, [location.pathname, location.search]);
+
   const handlePageChange = (page) => {
     dispatch(setCurrentPage(page));
   };
@@ -112,9 +123,7 @@ export default function App() {
   const handleMouseLeaveFooterWhite = () => dispatch(textLeaveWhiteFooter());
 
   useEffect(() => {
-    if (videoLoaded) {
-      setIsReady(true);
-    }
+    if (videoLoaded) setIsReady(true);
   }, [videoLoaded]);
 
   useEffect(() => {

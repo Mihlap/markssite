@@ -18,13 +18,20 @@
     min-height: 100vh;
     overflow-x: hidden;
     overflow-y: visible;
+    overflow-anchor: none;
 }
 
 .history_content {
     position: relative;
     z-index: 1;
-    // max-width: 1400px;
     margin: 0 auto;
+    width: 100%;
+}
+
+@media screen and (min-width: 1600px) {
+    .history_content {
+        max-width: 1440px;
+    }
 }
 
 .history_tag {
@@ -35,22 +42,15 @@
     font-weight: var(--fw-400);
     font-size: 14px;
     line-height: 20px;
-    color: #1D2E43;
-    background: #F6F6F6;
-    border: 1px solid #1D2E43;
+    color: #1d2e43;
+    background: #f6f6f6;
+    border: 1px solid #1d2e43;
     padding: 8px 24px;
     border-radius: 34px;
-    box-shadow: none;
     opacity: 0;
     z-index: 10;
     pointer-events: none;
     white-space: nowrap;
-}
-
-@media screen and (min-width: 1600px) {
-    .history_content {
-        max-width: 1440px;
-    }
 }
 
 .history_timeline_container {
@@ -60,23 +60,15 @@
     margin-top: clamp(60px, 8vh, 120px);
     margin-bottom: 80px;
     z-index: 1;
+    width: 100%;
+    margin-left: 0;
     will-change: transform;
-    // Full-bleed: timeline should span the whole viewport width even when
-    // `.history_content` is constrained to `max-width: 1440px` on large screens.
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
+}
 
-    &::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
+@media screen and (min-width: 1600px) {
+    .history_timeline_container {
         width: 100vw;
-        height: 2px;
-        background: #A8DBF6;
-        transform: translate(-50%, -50%);
-        z-index: 1;
-        pointer-events: none;
+        margin-left: calc((1440px - 100vw) / 2);
     }
 }
 
@@ -90,6 +82,7 @@
     overflow-y: hidden;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
+    scrollbar-gutter: stable;
     scrollbar-width: thin;
     scrollbar-color: rgba(29, 46, 67, 0.3) transparent;
 
@@ -109,6 +102,7 @@
             background-color: rgba(29, 46, 67, 0.5);
         }
     }
+
 }
 
 .cards_row_top {
@@ -116,7 +110,7 @@
     display: flex;
     align-items: flex-end;
     justify-content: flex-start;
-    padding-bottom: 33px;
+    padding-bottom: calc(var(--dot-size) / 2 - var(--gap-top) - var(--h-top) - var(--label-gap-top) - var(--label-extra-top) + 33px);
     min-height: 450px;
 }
 
@@ -125,33 +119,28 @@
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
-    padding-top: 45px;
+    padding-top: calc(var(--dot-size) / 2 - 48px - 14px);
     min-height: 450px;
+
+    .year_cards_group {
+        margin-top: -30px;
+    }
 }
 
 .year_cards_group {
     display: flex;
     flex-direction: column;
     gap: 24px;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     width: 689px;
     padding: 0 clamp(80px, 10vw, 285px);
     flex-shrink: 0;
     position: relative;
-
-    &:first-child {
-        padding-left: clamp(120px, 15vw, 519px);
-    }
-
-    &:last-child {
-        padding-right: clamp(120px, 15vw, 345px);
-    }
 }
 
 .history_card_wrapper {
     opacity: 0;
-    transform: translateY(30px);
     position: relative;
     z-index: 1;
 
@@ -161,20 +150,35 @@
 }
 
 .timeline {
+    --dot-size: 22px;
+    --gap-top: 10px;
+    --gap-bottom: 10px;
+    --h-top: 121px;
+    --h-bottom: 44px;
+    --label-gap-top: 10px;
+    --label-gap-bottom: 10px;
+    --label-extra-top: 14px;
     position: relative;
     width: 100%;
     margin: 0;
-    min-height: 80px;
 }
 
 .timeline_line {
-    display: none;
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(var(--dot-size) / 2);
+    height: 2px;
+    background: #a8dbf6;
+    z-index: 1;
+    pointer-events: none;
 }
 
 .timeline_years {
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     z-index: 2;
     min-height: 80px;
 }
@@ -189,22 +193,30 @@
     padding: 0 clamp(80px, 10vw, 285px);
     flex-shrink: 0;
 
-    &:first-child {
-        padding-left: clamp(120px, 15vw, 519px);
-    }
-
-    &:last-child {
-        padding-right: clamp(120px, 15vw, 345px);
+    &::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: calc(var(--dot-size) / 2);
+        transform: translate(-50%, -50%);
+        width: calc(var(--dot-size) + 16px);
+        height: 4px;
+        background: #f6f6f6;
+        z-index: 2;
     }
 }
 
 .year_dot {
-    width: 22px;
-    height: 22px;
+    width: var(--dot-size);
+    height: var(--dot-size);
     border-radius: 50%;
-    background: #A8DBF6;
+    background: #a8dbf6;
     z-index: 3;
     flex-shrink: 0;
+    position: absolute;
+    left: 50%;
+    top: calc(var(--dot-size) / 2);
+    transform: translate(-50%, -50%);
 }
 
 .year_label {
@@ -212,18 +224,26 @@
     font-weight: var(--fw-700);
     font-size: 20px;
     line-height: 28px;
-    color: #C0C5CB;
+    color: #c0c5cb;
     white-space: nowrap;
     position: absolute;
-    top: -48px;
     left: 50%;
     transform: translateX(-50%);
+    z-index: 3;
+}
+
+.year_label_top {
+    top: calc(-1 * (var(--gap-top) + var(--h-top) + var(--label-gap-top) + var(--label-extra-top)));
+}
+
+.year_label_bottom {
+    top: calc(var(--dot-size) + var(--h-bottom) + var(--label-gap-bottom));
 }
 
 .year_connector {
     position: absolute;
     width: 2px;
-    background: #A8DBF6;
+    background: #a8dbf6;
     opacity: 1;
     z-index: 0;
     pointer-events: none;
@@ -232,13 +252,13 @@
 }
 
 .connector_top {
-    bottom: 11px;
-    height: 121px;
+    bottom: calc(var(--dot-size) / 2 + var(--gap-top));
+    height: var(--h-top);
 }
 
 .connector_bottom {
-    top: 11px;
-    height: 44px;
+    top: calc(var(--dot-size) + var(--gap-bottom));
+    height: calc(var(--h-bottom) - var(--gap-bottom));
 }
 
 .cards_focus {
@@ -247,57 +267,39 @@
         margin-top: 0;
         margin-bottom: 0;
         padding: var(--history-tag-safe-top) 0 24px;
-        top: 0;
         height: 100vh;
-        display: flex;
-        align-items: center;
+        display: block;
+        align-items: stretch;
         box-sizing: border-box;
         overflow-y: auto;
-        overflow-x: hidden;
+        overflow-x: clip; // clip вместо hidden — не создаёт scroll context, но обрезает
         overscroll-behavior: contain;
         scrollbar-gutter: stable;
-        clip-path: inset(0 round 0);
-    }
+        scrollbar-width: none;
 
-    .year_cards_group {
-        &:first-child {
-            padding-left: clamp(48px, 7vw, 120px);
-        }
-
-        &:last-child {
-            padding-right: clamp(48px, 7vw, 120px);
+        &::-webkit-scrollbar {
+            display: none;
         }
     }
 
-    .timeline_year_marker {
-        &:first-child {
-            padding-left: clamp(48px, 7vw, 120px);
-        }
-
-        &:last-child {
-            padding-right: clamp(48px, 7vw, 120px);
-        }
+    .timeline_wrapper {
+        // Добавляем padding чтобы контейнер был шире карточек
+        padding-right: 50vw;
     }
 
-    .cards_row_top {
-        margin-bottom: 0;
-        align-items: flex-end;
-    }
-
-    .cards_row_bottom {
-        margin-top: 0;
-        align-items: flex-start;
+    .timeline_line {
+        // Продлеваем линию
+        right: -50vw;
     }
 
     .timeline {
         margin: 0;
-        align-self: center;
     }
 
     .history_tag {
         position: fixed;
         left: clamp(24px, 4vw, 48px);
-        top: 24px;
+        top: 0;
         z-index: 999;
     }
 }
@@ -311,13 +313,20 @@
     color: var(--gray-959DA6);
 }
 
+.timeline_wrapper,
+.history_timeline_container {
+    box-sizing: border-box;
+}
+
 @media screen and (min-width: 1024px) and (max-width: 1599px) {
     .year_cards_group {
         width: 532px;
         padding: 0 clamp(40px, 6vw, 120px);
+        padding-left: calc(clamp(18px, 2.5vw, 40px) + 100px);
+        margin-top: 20px;
 
         &:first-child {
-            padding-left: clamp(60px, 10vw, 200px);
+            padding-left: calc(clamp(22px, 3.5vw, 60px) + 100px);
         }
 
         &:last-child {
@@ -336,39 +345,81 @@
         &:last-child {
             padding-right: clamp(60px, 10vw, 150px);
         }
+
+        &::before {
+            left: clamp(18px, 2.5vw, 40px);
+        }
+
+        &:first-child::before {
+            left: clamp(22px, 3.5vw, 60px);
+        }
+    }
+
+    .year_dot {
+        left: clamp(18px, 2.5vw, 40px);
+    }
+
+    .timeline_year_marker:first-child .year_dot {
+        left: clamp(22px, 3.5vw, 60px);
+    }
+
+    .year_label {
+        left: clamp(18px, 2.5vw, 40px);
+        font-size: 18px;
+    }
+
+    .timeline_year_marker:first-child .year_label {
+        left: clamp(22px, 3.5vw, 60px);
+    }
+
+    .year_connector {
+        left: clamp(18px, 2.5vw, 40px);
+    }
+
+    .timeline_year_marker:first-child .year_connector {
+        left: clamp(22px, 3.5vw, 60px);
+    }
+
+    .timeline {
+        --gap-top: 10px;
+        --gap-bottom: 10px;
+        --h-top: 90px;
+        --h-bottom: 40px;
+        --label-gap-top: 30px;
+        --label-gap-bottom: 10px;
+        --label-extra-top: 9px;
     }
 
     .cards_row_top {
-        padding-bottom: 25px;
+        padding-bottom: calc(var(--dot-size) / 2 - var(--gap-top) - var(--h-top) - var(--label-gap-top) - var(--label-extra-top) + 25px);
         min-height: 380px;
     }
 
     .cards_row_bottom {
-        padding-top: 35px;
+        padding-top: calc(var(--dot-size) / 2 - 42px - 9px);
         min-height: 380px;
+
+        .year_cards_group {
+            margin-top: -25px;
+        }
     }
 
-    .connector_top {
-        height: 90px;
-    }
-
-    .connector_bottom {
-        height: 35px;
-    }
-
-    .year_label {
-        font-size: 18px;
-        top: -42px;
+    .timeline_year_marker {
+        &::before {
+            width: calc(var(--dot-size) + 12px);
+        }
     }
 }
 
 @media screen and (min-width: 1600px) {
     .year_cards_group {
-        width: 689px;
+        width: 570px;
         padding: 0 clamp(80px, 10vw, 285px);
+        padding-left: calc(clamp(28px, 3.5vw, 90px) + 50px);
+        margin-bottom: 40px;
 
         &:first-child {
-            padding-left: clamp(120px, 15vw, 519px);
+            padding-left: calc(clamp(38px, 4.75vw, 150px) + 50px);
         }
 
         &:last-child {
@@ -377,7 +428,7 @@
     }
 
     .timeline_year_marker {
-        width: 689px;
+        width: 570px;
         padding: 0 clamp(80px, 10vw, 285px);
 
         &:first-child {
@@ -387,6 +438,56 @@
         &:last-child {
             padding-right: clamp(120px, 15vw, 345px);
         }
+
+        &::before {
+            left: clamp(28px, 3.5vw, 90px);
+        }
+
+        &:first-child::before {
+            left: clamp(38px, 4.75vw, 150px);
+        }
+    }
+
+    .year_dot {
+        left: clamp(28px, 3.5vw, 90px);
+    }
+
+    .timeline_year_marker:first-child .year_dot {
+        left: clamp(38px, 4.75vw, 150px);
+    }
+
+    .year_label {
+        left: clamp(28px, 3.5vw, 90px);
+    }
+
+    .timeline_year_marker:first-child .year_label {
+        left: clamp(38px, 4.75vw, 150px);
+    }
+
+    .year_connector {
+        left: clamp(28px, 3.5vw, 90px);
+    }
+
+    .timeline_year_marker:first-child .year_connector {
+        left: clamp(38px, 4.75vw, 150px);
+    }
+
+    .timeline {
+        --gap-top: 10px;
+        --gap-bottom: 10px;
+        --h-top: 121px;
+        --h-bottom: 44px;
+        --label-gap-top: 30px;
+        --label-gap-bottom: 10px;
+        --label-extra-top: 14px;
+    }
+
+    .cards_row_top {
+        padding-bottom: calc(var(--dot-size) / 2 - var(--gap-top) - var(--h-top) - var(--label-gap-top) - var(--label-extra-top) + 33px);
+    }
+
+    .history_card_wrapper {
+        max-width: 689px;
     }
 }
 
@@ -406,6 +507,17 @@
         padding: 0;
     }
 
+    .timeline {
+        --dot-size: 18px;
+        --gap-top: 10px;
+        --gap-bottom: 4px;
+        --h-top: 80px;
+        --h-bottom: 30px;
+        --label-gap-top: 10px;
+        --label-gap-bottom: 10px;
+        --label-extra-top: 11px;
+    }
+
     .year_cards_group {
         width: 440px;
         padding: 0 clamp(30px, 5vw, 80px);
@@ -430,34 +542,28 @@
         &:last-child {
             padding-right: clamp(40px, 8vw, 100px);
         }
+
+        &::before {
+            width: calc(var(--dot-size) + 10px);
+        }
     }
 
     .cards_row_top {
-        padding-bottom: 20px;
+        padding-bottom: calc(var(--dot-size) / 2 - var(--gap-top) - var(--h-top) - var(--label-gap-top) - var(--label-extra-top) + 20px);
         min-height: 320px;
     }
 
     .cards_row_bottom {
-        padding-top: 30px;
+        padding-top: calc(var(--dot-size) / 2 - 32px - 11px);
         min-height: 320px;
+
+        .year_cards_group {
+            margin-top: -20px;
+        }
     }
 
     .year_label {
         font-size: 16px;
-        top: -32px;
-    }
-
-    .year_dot {
-        width: 18px;
-        height: 18px;
-    }
-
-    .connector_top {
-        height: 80px;
-    }
-
-    .connector_bottom {
-        height: 30px;
     }
 }
 
@@ -477,6 +583,17 @@
         padding: 0;
     }
 
+    .timeline {
+        --dot-size: 16px;
+        --gap-top: 10px;
+        --gap-bottom: 4px;
+        --h-top: 60px;
+        --h-bottom: 25px;
+        --label-gap-top: 10px;
+        --label-gap-bottom: 10px;
+        --label-extra-top: 10px;
+    }
+
     .year_cards_group {
         width: calc(100vw - 2rem);
         max-width: 360px;
@@ -503,33 +620,27 @@
         &:last-child {
             padding-right: 24px;
         }
+
+        &::before {
+            width: calc(var(--dot-size) + 8px);
+        }
     }
 
     .cards_row_top {
-        padding-bottom: 15px;
+        padding-bottom: calc(var(--dot-size) / 2 - var(--gap-top) - var(--h-top) - var(--label-gap-top) - var(--label-extra-top) + 15px);
         min-height: 260px;
     }
 
     .cards_row_bottom {
-        padding-top: 25px;
+        padding-top: calc(var(--dot-size) / 2 - 28px - 10px);
         min-height: 260px;
+
+        .year_cards_group {
+            margin-top: -15px;
+        }
     }
 
     .year_label {
         font-size: 14px;
-        top: -28px;
-    }
-
-    .year_dot {
-        width: 16px;
-        height: 16px;
-    }
-
-    .connector_top {
-        height: 60px;
-    }
-
-    .connector_bottom {
-        height: 25px;
     }
 }

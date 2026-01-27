@@ -138,18 +138,19 @@ export function useCompanyHistoryHeaderIntro({
             });
 
             if (!cardsIntroTriggeredRef.current) {
-                cardsIntroTriggeredRef.current = true;
-
                 const cards = historyListRef.current?.querySelectorAll('[class*="history_card_wrapper"]');
-                if (cards) {
+                // Откладываем установку флага до тех пор, пока карточки реально не появились
+                if (cards && cards.length > 0) {
+                    cardsIntroTriggeredRef.current = true;
+
                     cards.forEach((card) => {
                         card.classList.add(styles.animate);
                     });
-                }
 
-                setTimeout(() => {
-                    setAnimationReady(true);
-                }, 800);
+                    setTimeout(() => {
+                        setAnimationReady(true);
+                    }, 800);
+                }
             }
         };
 
@@ -210,6 +211,30 @@ export function useCompanyHistoryHeaderIntro({
         textAnimationReady,
         setAnimationReady,
     ]);
+
+    // Отдельный effect для применения анимации к карточкам после загрузки данных
+    useEffect(() => {
+        if (!inView || cardsIntroTriggeredRef.current) return;
+        if (visibleItemsLength === 0) return;
+
+        // Небольшая задержка чтобы DOM обновился
+        const timer = setTimeout(() => {
+            const cards = historyListRef.current?.querySelectorAll('[class*="history_card_wrapper"]');
+            if (cards && cards.length > 0 && !cardsIntroTriggeredRef.current) {
+                cardsIntroTriggeredRef.current = true;
+
+                cards.forEach((card) => {
+                    card.classList.add(styles.animate);
+                });
+
+                setTimeout(() => {
+                    setAnimationReady(true);
+                }, 800);
+            }
+        }, 100);
+
+        return () => clearTimeout(timer);
+    }, [inView, visibleItemsLength, historyListRef, cardsIntroTriggeredRef, setAnimationReady]);
 }
 
 
