@@ -93,7 +93,9 @@ export default function InputFile({
               onClick={() => handleFileRemove(index)}
               aria-label="Удалить файл"
               className={styles.preview}>
-              <span className={styles.fileName} title={file.name}>{file.name}</span>
+              <span className={styles.fileName} title={file.name}>
+                {file.name}
+              </span>
             </button>
           ))}
         </div>
@@ -114,7 +116,7 @@ export default function InputFile({
             fileInputRef.current = node;
           }}
         />
-        <span className={`${styles.button} ${variant === 'simple' ? styles.buttonSimple : styles.buttonSimple}`}>
+        <span className={`${styles.button} ${variant === 'simple' ? styles.buttonSimple : styles.buttonFull}`}>
           {label}
         </span>
         {error && <span className={styles.error}>{error}</span>}

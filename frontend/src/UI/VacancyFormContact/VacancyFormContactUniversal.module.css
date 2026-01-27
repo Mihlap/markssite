@@ -1,3 +1,7 @@
+:root {
+    --var-padding: 40px;
+}   
+
 .formBtn {
     width: 100%;
     padding: 20px 32px;
@@ -32,15 +36,37 @@
 
 
 .fullForm {
-    background-color: rgb(255, 206, 206);
+
+    .wrap {
+        /* styles for .wrap inside .fullForm */
+        padding-top: 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+    }
+
+    label {
+        /* styles for labels inside .fullForm */
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .agreement_vacancy {
+        /* styles for .agreement_vacancy inside .fullForm */
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    @media (min-width: 2560px) {
+        /* responsive overrides for fullForm */
+    }
 }
 
 .simpleForm {
-    --var-padding: 40px;
     border-left: 1px solid var(--light-light-gray-EBECEE, #EBECEE);
     background: rgba(255, 255, 255, 0.70);
     backdrop-filter: blur(4.5px);
-
+    
     .wrap {
         /* flex: 1; */
         padding-top: 68px;
@@ -96,4 +122,123 @@
     text-decoration-thickness: auto;
     text-underline-offset: auto;
     text-underline-position: from-font;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(44, 59, 68, 0.48);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 12;
+}
+
+.modal {
+    --modal-padding-top: 62px;
+    --modal-padding-right: 153px;
+    --modal-padding-bottom: 66px;
+    --modal-padding-left: 58px;
+    --title-size: 32px;
+    --title-line: 40px;
+    --title-padding: 18px;
+    --text-family: var(--font-unbounded);
+    --text-size: 20px;
+    --text-line: 28px;
+    --text-weight: 300;
+    --button-top: 32px;
+    --button-right: 29px;
+    --button-size: 24px;
+    --cross-width: 21.5px;
+
+    position: relative;
+    background: rgba(246, 246, 246, 0.92);
+    padding: var(--modal-padding-top) var(--modal-padding-right) var(--modal-padding-bottom) var(--modal-padding-left);
+
+
+    @media (max-width: 430px) {
+        --modal-padding-top: 49px;
+        --modal-padding-right: 24px;
+        --modal-padding-bottom: 24px;
+        --modal-padding-left: 24px;
+        --text-family: var(--font-raleway);
+        --title-size: 24px;
+        --title-line: 32px;
+        --title-padding: 12px;
+        --text-size: 18px;
+        --text-line: 26px;
+        --text-weight: 400;
+        --button-top: 16px;
+        --button-right: 16px;
+        --button-size: 20px;
+        --cross-width: 21.55px;
+    }
+
+    @media (min-width: 2560px) {
+        --modal-padding-top: 68px;
+        --modal-padding-right: 153px;
+        --modal-padding-bottom: 80px;
+        --modal-padding-left: 80px;
+        --title-size: 40px;
+        --title-line: 48px;
+        --title-padding: 16px;
+        --text-size: 24px;
+        --text-line: 32px;
+        --button-top: 24px;
+        --button-right: 24px;
+        --button-size: 21.55px;
+        --cross-width: 28px;
+    }
+}
+
+.modalTitle {
+    color: var(--black-1D2E43);
+    font-family: var(--font-unbounded);
+    font-size: var(--title-size);
+    font-style: normal;
+    font-weight: 300;
+    line-height: var(--title-line);
+    padding-bottom: var(--title-padding);
+}
+
+.modalText {
+    color: var(--black-1D2E43);
+    font-family: var(--text-family);
+    font-size: var(--text-size);
+    font-style: normal;
+    font-weight: var(--text-weight);
+    line-height: var(--text-line);
+}
+
+.modalButton {
+    position: absolute;
+    top: var(--button-top);
+    right: var(--button-right);
+    width: var(--button-size);
+    height: var(--button-size);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.modalButton::before,
+.modalButton::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--cross-width);
+    height: 1px;
+    background-color: black;
+}
+
+.modalButton::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.modalButton::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
 }

@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import Select from 'react-select';
 import 'react-phone-number-input/style.css';
 import styles from './VacancyFormContactUniversal.module.css';
 import { phoneRegex, directionOptions, maskOptions } from './const/index.js';
 import Input from '../../Portal/ui/Input/Input.jsx';
 import InputFile from '../../Portal/ui/Input/InputFile/InputFile.jsx';
+import Select from '../../Portal/ui/Select/Select.jsx';
 import { Link } from 'react-router-dom';
 
 const apiBase = process.env.REACT_APP_SERVER_HOST || '';
@@ -35,166 +35,189 @@ const VacancyFormContactUniversal = ({ variant: variantProp = 'full' }) => {
     },
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
-  };
 
-  // const onSubmit = useCallback(
-  //   async (data) => {
-  //     const formData = new FormData();
+  const onSubmit = useCallback(
+    async (data) => {
+      console.log('Form data:', data);
 
-  //     formData.append('name', data.name || '');
-  //     formData.append('phone', data.phone || '');
-  //     formData.append('city', data.city || '');
-  //     formData.append('choose', data.direction?.value || '');
-  //     formData.append('letter', data.letter || '');
-  //     formData.append('resume', data.resume || '');
+      // const formData = new FormData();
 
-  //     if (data.resumeFiles?.length) {
-  //       Array.from(data.resumeFiles).forEach((file) => {
-  //         formData.append('resumeFiles', file);
-  //       });
-  //     }
+      // formData.append('name', data.name || '');
+      // formData.append('phone', data.phone || '');
+      // formData.append('city', data.city || '');
+      // formData.append('choose', data.direction?.value || '');
+      // formData.append('letter', data.letter || '');
+      // formData.append('resume', data.resume || '');
 
-  //     try {
-  //       const response = await fetch(`${apiBase}/api-mail/portalSubmitForm/v2`, {
-  //         method: 'POST',
-  //         body: formData,
-  //       });
+      // if (data.resumeFiles?.length) {
+      //   Array.from(data.resumeFiles).forEach((file) => {
+      //     formData.append('resumeFiles', file);
+      //   });
+      // }
 
-  //       const payload = await response.json().catch(() => ({}));
+      // try {
+      //   const response = await fetch(`${apiBase}/api-mail/portalSubmitForm/v2`, {
+      //     method: 'POST',
+      //     body: formData,
+      //   });
 
-  //       if (!response.ok) {
-  //         if (payload?.errors) {
-  //           Object.entries(payload.errors).forEach(([field, message]) => {
-  //             setError(field, { type: 'server', message });
-  //           });
-  //         }
-  //         return;
-  //       }
+      //   const payload = await response.json().catch(() => ({}));
 
-  //       reset();
-  //     } catch (error) {
-  //       console.error('Ошибка при отправке формы', error);
-  //     }
-  //   },
-  //   [reset, setError]
-  // );
+      //   if (!response.ok) {
+      //     if (payload?.errors) {
+      //       Object.entries(payload.errors).forEach(([field, message]) => {
+      //         setError(field, { type: 'server', message });
+      //       });
+      //     }
+      //     return;
+      //   }
+
+      //   reset();
+      //   setFormKey((prev) => prev + 1);
+      //   setShowSuccess(true);
+      //    if (window.ym) {
+      //      window.ym(95967240, 'reachGoal', 'form2_done');
+      //    } else {
+      //      console.warn('Yandex.Metrika is not available');
+      //    }
+      // } catch (error) {
+      //   console.error('Ошибка при отправке формы', error);
+      // }
+    },
+    []
+  );
 
   const formClassName = variantProp === 'full' ? styles.fullForm : styles.simpleForm;
   const resumeFiles = watch('resumeFiles');
-  console.log('resumeFiles:', resumeFiles);
+  const [formKey, setFormKey] = useState(0);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   return (
-    <form className={formClassName} onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
-      <div className={styles.wrap}>
-        <Input
-          label="Ваше имя и фамилия"
-          placeholder=" "
-          // maxLength={50}
-          {...register('name', {
-            required: 'Заполните поле',
-            maxLength: {
-              value: 50,
-              message: 'Максимум 50 символов',
-            },
-          })}
-          error={errors.name?.message}
-        />
-
-        <Controller
-          name="phone"
-          control={control}
-          // rules={{
-          //   required: 'Заполните поле',
-          //   validate: (value) => phoneRegex.test(value) || 'Некорректный телефон',
-          // }}
-          render={({ field, fieldState }) => (
-            <Input
-              {...field}
-              label="Телефон"
-              mask={maskOptions.mask}
-              replacement={maskOptions.replacement}
-              autoComplete="off"
-              error={fieldState.error?.message}
-            />
-          )}
-        />
-{/* 
-        <Input
-          label="Город"
-          placeholder=" "
-          {...register('city', {
-            maxLength: {
-              value: 25,
-              message: 'Максимум 25 символов',
-            },
-          })}
-          error={errors.city?.message}
-        /> */}
-
-        {/* <Controller
-        name="direction"
-        control={control}
-        render={({ field }) => (
-          <Select
-            {...field}
-            options={directionOptions}
-            placeholder="Выбрать направление"
-            isClearable
-            isSearchable={false}
+    <>
+      {showSuccess && (
+        <div className={styles.overlay} onClick={() => setShowSuccess(false)}>
+          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+            <p className={styles.modalTitle}>Спасибо за отклик!</p>
+            <p className={styles.modalText}>Мы изучим информацию <br/> и свяжемся с вами</p>
+            <button type="button" className={styles.modalButton} onClick={() => setShowSuccess(false)}/>
+          </div>
+        </div>
+      )}
+      <form className={formClassName} onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
+        <div className={styles.wrap}>
+          <Input
+            label="Ваше имя и фамилия"
+            placeholder=" "
+            // maxLength={50}
+            {...register('name', {
+              required: 'Заполните поле',
+              maxLength: {
+                value: 50,
+                message: 'Максимум 50 символов',
+              },
+            })}
+            error={errors.name?.message}
           />
-        )}
-      /> */}
 
-        <Input
-          label="Сопроводительное письмо"
-          placeholder=" "
-          {...register('letter', {
-            maxLength: {
-              value: 500,
-              message: 'Максимум 500 символов',
-            },
-          })}
-          error={errors.letter?.message}
+          <Controller
+            name="phone"
+            control={control}
+            // rules={{
+            //   required: 'Заполните поле',
+            //   validate: (value) => phoneRegex.test(value) || 'Некорректный телефон',
+            // }}
+            render={({ field, fieldState }) => (
+              <Input
+                {...field}
+                label="Телефон"
+                mask={maskOptions.mask}
+                replacement={maskOptions.replacement}
+                autoComplete="off"
+                error={fieldState.error?.message}
+              />
+            )}
+          />
+
+          {variantProp === 'full' && (
+            <>
+              <Input
+                label="Город"
+                placeholder=" "
+                {...register('city', {
+                  maxLength: {
+                    value: 25,
+                    message: 'Максимум 25 символов',
+                  },
+                })}
+                error={errors.city?.message}
+              />
+
+              <Controller
+                name="direction"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    options={directionOptions}
+                    placeholder="Выбрать направление"
+                    isClearable
+                    isSearchable={false}
+                  />
+                )}
+              />
+            </>
+          )}
+
+          <Input
+            label="Сопроводительное письмо"
+            placeholder=" "
+            {...register('letter', {
+              maxLength: {
+                value: 500,
+                message: 'Максимум 500 символов',
+              },
+            })}
+            error={errors.letter?.message}
+          />
+
+          <Input
+            label="Ссылка на резюме/портфолио"
+            placeholder=" "
+            {...register('resume', {
+              maxLength: {
+                value: 500,
+                message: 'Максимум 500 символов',
+              },
+            })}
+            error={errors.resume?.message}
+          />
+        </div>
+        <InputFile
+          key={formKey}
+          register={register}
+          setValue={setValue}
+          clearErrors={clearErrors}
+          error={errors.resumeFiles?.message}
+          variant={variantProp}
         />
 
-        <Input
-          label="Ссылка на резюме/портфолио"
-          placeholder=" "
-          {...register('resume', {
-            maxLength: {
-              value: 500,
-              message: 'Максимум 500 символов',
-            },
-          })}
-          error={errors.resume?.message}
+        <div className={styles.agreement_vacancy} data-max-files={resumeFiles?.length === 2}>
+          Нажав на кнопку, соглашаюсь на{' '}
+          <Link to="../Information" target="blank" className={styles.agreement_vacancy_link}>
+            обработку
+            <br /> персональных данных
+          </Link>
+        </div>
+
+        <input
+          value="Откликнутся на вакансию"
+          title="Заполните обязательные поля"
+          disabled={!isValid}
+          className={`${styles.formBtn} ${isValid ? styles.active : styles.disabled}`}
+          type="submit"
         />
-      </div>
-      <InputFile
-        register={register}
-        setValue={setValue}
-        clearErrors={clearErrors}
-        error={errors.resumeFiles?.message}
-        variant={variantProp}
-      />
-
-      <div className={styles.agreement_vacancy} data-max-files={resumeFiles?.length === 2}>
-        Нажав на кнопку, соглашаюсь на{' '}
-        <Link to="../Information" target="blank" className={styles.agreement_vacancy_link}>
-          обработку
-          <br /> персональных данных
-        </Link>
-      </div>
-
-      <input
-        value="Откликнутся на вакансию"
-        title="Заполните обязательные поля"
-        disabled={!isValid}
-        className={`${styles.formBtn} ${isValid ? styles.active : styles.disabled}`}
-        type="submit"
-      />
-    </form>
+      </form>
+    </>
   );
 };
 

@@ -1,0 +1,99 @@
+.select {
+    font-family: var(--font-raleway);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+}
+
+.select :global(.select__control) {
+    --var-margin: 20px;
+    padding: 0.5rem 0;
+    margin-left: var(--var-margin);
+    margin-right: var(--var-margin);
+    border: none;
+    border-bottom: 1px solid var(--gray-959DA6);
+    border-radius: 0;
+    background-color: transparent;
+    min-height: 48px;
+}
+
+.select :global(.select__control:hover) {
+    border-color: var(--gray-959DA6);
+}
+
+.select :global(.select__control--is-focused) {
+    border: none;
+    border-bottom: 1px solid var(--blue-75BBFD);
+    box-shadow: none;
+}
+
+.select :global(.select__placeholder) {
+    color: var(--gray-959DA6);
+}
+
+.select :global(.select__single-value) {
+    color: var(--black-1D2E43);
+    background-color: transparent;
+}
+
+.select :global(.select__value-container) {
+    padding: 0;
+}
+
+.select :global(.select__menu) {
+    color: var(--gray-959DA6);
+    background-color: var(--light-light-gray-EBECEE);
+    border-radius: 0;
+    box-shadow: none;
+    z-index: 100;
+}
+
+.select :global(.select__option) {
+    padding: 8px;
+    transition: background-color 0.2s ease, color 0,2 ease;
+}
+
+.select :global(.select__option--is-focused) {
+    background: var(--blue-A8DBF6, #75BBFD);
+    color: var(--white-F6F6F6);
+}
+
+.select :global(.select__option--is-selected) {
+    background-color: var(--blue-75BBFD);
+    color: var(--white-F6F6F6);
+}
+
+.select :global(.select__indicator-separator) {
+    display: none;
+}
+
+.select :global(.select__dropdown-indicator) {
+    color: var(--gray-959DA6);
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.select :global(.select__control--menu-is-open) :global(.select__dropdown-indicator) {
+    transform: rotate(180deg);
+    color: var(--blue-75BBFD);
+}
+
+.select :global(.select__menu-list) {
+    max-height: 160px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--white-F6F6F6) transparent;
+}
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+.select :global(.select__menu-list)::-webkit-scrollbar {
+    width: 6px;
+}
+
+.select :global(.select__menu-list)::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.select :global(.select__menu-list)::-webkit-scrollbar-thumb {
+    background-color: var(--white-F6F6F6);
+    border-radius: 3px;
+}
