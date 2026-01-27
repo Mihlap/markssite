@@ -32,6 +32,11 @@
     }
 }
 
+.previewWrap[data-variant="full"] {
+    padding-left: 0;
+    padding-right: 0;
+}
+
 .preview {
     display: inline-flex;
     align-items: center;

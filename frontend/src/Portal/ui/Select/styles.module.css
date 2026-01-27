@@ -8,14 +8,14 @@
 
 .select :global(.select__control) {
     --var-margin: 20px;
-    padding: 0.5rem 0;
+    /* padding-bottom: 0.5rem; */
     margin-left: var(--var-margin);
     margin-right: var(--var-margin);
     border: none;
     border-bottom: 1px solid var(--gray-959DA6);
     border-radius: 0;
     background-color: transparent;
-    min-height: 48px;
+    /* min-height: 48px; */
 }
 
 .select :global(.select__control:hover) {

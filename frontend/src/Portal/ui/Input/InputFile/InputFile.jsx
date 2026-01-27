@@ -83,9 +83,9 @@ export default function InputFile({
   };
 
   return (
-    <div className={styles.wrap} data-has-files={selectedFiles.length > 0}>
+    <div className={styles.wrap} data-has-files={selectedFiles.length > 0} data-variant={variant}>
       {selectedFiles.length > 0 && (
-        <div className={styles.previewWrap}>
+        <div className={styles.previewWrap} data-variant={variant}>
           {selectedFiles.map((file, index) => (
             <button
               key={`${file.name}-${file.lastModified}`}
