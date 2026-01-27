@@ -1,12 +1,14 @@
 import React, { useCallback, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import 'react-phone-number-input/style.css';
-import styles from './VacancyFormContactUniversal.module.css';
+import { Link } from 'react-router-dom';
 import { phoneRegex, directionOptions, maskOptions } from './const/index.js';
 import Input from '../../Portal/ui/Input/Input.jsx';
 import InputFile from '../../Portal/ui/Input/InputFile/InputFile.jsx';
 import Select from '../../Portal/ui/Select/Select.jsx';
-import { Link } from 'react-router-dom';
+import icon from './icon/icon_telegram.svg';
+
+import styles from './VacancyFormContactUniversal.module.css';
 
 const apiBase = process.env.REACT_APP_SERVER_HOST || '';
 
@@ -98,124 +100,222 @@ const VacancyFormContactUniversal = ({ variant: variantProp = 'full' }) => {
         <div className={styles.overlay} onClick={() => setShowSuccess(false)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <p className={styles.modalTitle}>Спасибо за отклик!</p>
-            <p className={styles.modalText}>Мы изучим информацию <br/> и свяжемся с вами</p>
-            <button type="button" className={styles.modalButton} onClick={() => setShowSuccess(false)}/>
+            <p className={styles.modalText}>
+              Мы изучим информацию <br /> и свяжемся с вами
+            </p>
+            <button type="button" className={styles.modalButton} onClick={() => setShowSuccess(false)} />
           </div>
         </div>
       )}
       <form className={formClassName} onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
-        <div className={styles.wrap}>
-          <Input
-            label="Ваше имя и фамилия"
-            placeholder=" "
-            // maxLength={50}
-            {...register('name', {
-              required: 'Заполните поле',
-              maxLength: {
-                value: 50,
-                message: 'Максимум 50 символов',
-              },
-            })}
-            error={errors.name?.message}
-          />
+        {variantProp === 'full' ? (
+          <>
+            <div className={styles.columnsWrap}>
+              <div className={styles.leftColumn}>
+                <Input
+                  label="Ваше имя и фамилия"
+                  placeholder=" "
+                  {...register('name', {
+                    required: 'Заполните поле',
+                    maxLength: {
+                      value: 50,
+                      message: 'Максимум 50 символов',
+                    },
+                  })}
+                  error={errors.name?.message}
+                />
 
-          <Controller
-            name="phone"
-            control={control}
-            // rules={{
-            //   required: 'Заполните поле',
-            //   validate: (value) => phoneRegex.test(value) || 'Некорректный телефон',
-            // }}
-            render={({ field, fieldState }) => (
-              <Input
-                {...field}
-                label="Телефон"
-                mask={maskOptions.mask}
-                replacement={maskOptions.replacement}
-                autoComplete="off"
-                error={fieldState.error?.message}
-              />
-            )}
-          />
+                <Controller
+                  name="phone"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <Input
+                      {...field}
+                      label="Телефон"
+                      mask={maskOptions.mask}
+                      replacement={maskOptions.replacement}
+                      autoComplete="off"
+                      error={fieldState.error?.message}
+                    />
+                  )}
+                />
 
-          {variantProp === 'full' && (
-            <>
+                <Input
+                  label="Город"
+                  placeholder=" "
+                  {...register('city', {
+                    maxLength: {
+                      value: 25,
+                      message: 'Максимум 25 символов',
+                    },
+                  })}
+                  error={errors.city?.message}
+                />
+              </div>
+
+              <div className={styles.rightColumn}>
+                <Controller
+                  name="direction"
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      options={directionOptions}
+                      placeholder="Указанное направление"
+                      isClearable
+                      isSearchable={false}
+                    />
+                  )}
+                />
+
+                <Input
+                  label="Сопроводительное письмо"
+                  placeholder=" "
+                  {...register('letter', {
+                    maxLength: {
+                      value: 500,
+                      message: 'Максимум 500 символов',
+                    },
+                  })}
+                  error={errors.letter?.message}
+                />
+
+                <Input
+                  label="Ссылка на резюме/портфолио"
+                  placeholder=" "
+                  {...register('resume', {
+                    maxLength: {
+                      value: 500,
+                      message: 'Максимум 500 символов',
+                    },
+                  })}
+                  error={errors.resume?.message}
+                />
+
+                <InputFile
+                  key={formKey}
+                  register={register}
+                  setValue={setValue}
+                  clearErrors={clearErrors}
+                  error={errors.resumeFiles?.message}
+                  variant={variantProp}
+                />
+              </div>
+            </div>
+            <div className={styles.formFooter}>
+              <div>
+                <div className={styles.agreement_vacancy} data-max-files={resumeFiles?.length === 2}>
+                  Нажав на кнопку, соглашаюсь на{' '}
+                  <Link to="../Information" target="blank" className={styles.agreement_vacancy_link}>
+                    обработку
+                    <br /> персональных данных
+                  </Link>
+                </div>
+
+                <input
+                  value="Откликнутся на вакансию"
+                  title="Заполните обязательные поля"
+                  disabled={!isValid}
+                  className={`${styles.formBtn} ${isValid ? styles.active : styles.disabled}`}
+                  type="submit"
+                />
+              </div>
+              <div className={styles.social}>
+                <p className={styles.socialTitle}>Для соискателей</p>
+                <div className={styles.socialContact}>
+                  <div className={styles.socialWrap}>
+                    <div className={styles.socialEmail}>hr@marksgroup.ru</div>
+                    <div className={styles.socialPhone}>+7 (495) 120-12-26</div>
+                  </div>
+                  <Link className={styles.socialIcon} to="https://t.me/marks_career">
+                    <img src={icon} alt="иконка телеграма" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className={styles.wrap}>
               <Input
-                label="Город"
+                label="Ваше имя и фамилия"
                 placeholder=" "
-                {...register('city', {
+                {...register('name', {
+                  required: 'Заполните поле',
                   maxLength: {
-                    value: 25,
-                    message: 'Максимум 25 символов',
+                    value: 50,
+                    message: 'Максимум 50 символов',
                   },
                 })}
-                error={errors.city?.message}
+                error={errors.name?.message}
               />
 
               <Controller
-                name="direction"
+                name="phone"
                 control={control}
-                render={({ field }) => (
-                  <Select
+                render={({ field, fieldState }) => (
+                  <Input
                     {...field}
-                    options={directionOptions}
-                    placeholder="Выбрать направление"
-                    isClearable
-                    isSearchable={false}
+                    label="Телефон"
+                    mask={maskOptions.mask}
+                    replacement={maskOptions.replacement}
+                    autoComplete="off"
+                    error={fieldState.error?.message}
                   />
                 )}
               />
-            </>
-          )}
 
-          <Input
-            label="Сопроводительное письмо"
-            placeholder=" "
-            {...register('letter', {
-              maxLength: {
-                value: 500,
-                message: 'Максимум 500 символов',
-              },
-            })}
-            error={errors.letter?.message}
-          />
+              <Input
+                label="Сопроводительное письмо"
+                placeholder=" "
+                {...register('letter', {
+                  maxLength: {
+                    value: 500,
+                    message: 'Максимум 500 символов',
+                  },
+                })}
+                error={errors.letter?.message}
+              />
 
-          <Input
-            label="Ссылка на резюме/портфолио"
-            placeholder=" "
-            {...register('resume', {
-              maxLength: {
-                value: 500,
-                message: 'Максимум 500 символов',
-              },
-            })}
-            error={errors.resume?.message}
-          />
-        </div>
-        <InputFile
-          key={formKey}
-          register={register}
-          setValue={setValue}
-          clearErrors={clearErrors}
-          error={errors.resumeFiles?.message}
-          variant={variantProp}
-        />
+              <Input
+                label="Ссылка на резюме/портфолио"
+                placeholder=" "
+                {...register('resume', {
+                  maxLength: {
+                    value: 500,
+                    message: 'Максимум 500 символов',
+                  },
+                })}
+                error={errors.resume?.message}
+              />
+            </div>
 
-        <div className={styles.agreement_vacancy} data-max-files={resumeFiles?.length === 2}>
-          Нажав на кнопку, соглашаюсь на{' '}
-          <Link to="../Information" target="blank" className={styles.agreement_vacancy_link}>
-            обработку
-            <br /> персональных данных
-          </Link>
-        </div>
+            <InputFile
+              key={formKey}
+              register={register}
+              setValue={setValue}
+              clearErrors={clearErrors}
+              error={errors.resumeFiles?.message}
+              variant={variantProp}
+            />
 
-        <input
-          value="Откликнутся на вакансию"
-          title="Заполните обязательные поля"
-          disabled={!isValid}
-          className={`${styles.formBtn} ${isValid ? styles.active : styles.disabled}`}
-          type="submit"
-        />
+            <div className={styles.agreement_vacancy} data-max-files={resumeFiles?.length === 2}>
+              Нажав на кнопку, соглашаюсь на{' '}
+              <Link to="../Information" target="blank" className={styles.agreement_vacancy_link}>
+                обработку
+                <br /> персональных данных
+              </Link>
+            </div>
+
+            <input
+              value="Откликнутся на вакансию"
+              title="Заполните обязательные поля"
+              disabled={!isValid}
+              className={`${styles.formBtn} ${isValid ? styles.active : styles.disabled}`}
+              type="submit"
+            />
+          </>
+        )}
       </form>
     </>
   );

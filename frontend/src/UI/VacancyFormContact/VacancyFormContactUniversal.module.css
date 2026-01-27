@@ -1,6 +1,6 @@
 :root {
-    --var-padding: 40px;
-}   
+    --var-padding: 24px;
+}
 
 .formBtn {
     width: 100%;
@@ -36,48 +36,139 @@
 
 
 .fullForm {
-
-    .wrap {
-        /* styles for .wrap inside .fullForm */
+    --var-padding: 16px;
+    .columnsWrap {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 88px;
         padding-top: 40px;
-        display: flex;
-        flex-direction: column;
-        gap: 32px;
+        padding-right: 354px;
     }
 
-    label {
-        /* styles for labels inside .fullForm */
-        padding-left: 20px;
-        padding-right: 20px;
+    .leftColumn {
+        display: flex;
+        flex-direction: column;
+        gap: 48px;
+    }
+
+    .rightColumn {
+        display: flex;
+        flex-direction: column;
+        gap: 48px;
+        min-width: 0;
+        overflow: hidden;
+    }
+
+    .rightColumn>*:last-child {
+        margin-top: -48px;
+    }
+
+    .formBtn {
+        color: var(--white-F6F6F6);
+        font-family: var(--font-raleway);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 24px;
+        border-radius: 66px;
     }
 
     .agreement_vacancy {
-        /* styles for .agreement_vacancy inside .fullForm */
-        padding-left: 20px;
-        padding-right: 20px;
+        padding-bottom: var(--var-padding);
     }
 
-    @media (min-width: 2560px) {
-        /* responsive overrides for fullForm */
+    .formFooter {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
+
+    .social {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .socialTitle {
+        color: var(--black-1D2E43);
+        font-family: var(--font-unbounded);
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 300;
+        line-height: 28px;
+    }
+
+    .socialContact {
+        display: flex;
+        align-items: center;
+        gap: 19px;
+    }
+
+    .socialWrap {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .socialEmail {
+        color: var(--black-1D2E43);
+        /* Body Regular · 18 */
+        font-family: Raleway;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 26px;
+        transition: color 0.3s;
+    }
+
+    .socialPhone {
+        color: var(--black-1D2E43);
+        font-variant-numeric: lining-nums proportional-nums;
+        font-family: var(--font-raleway);
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 26px;
+        transition: color 0.3s;
+    }
+
+    .socialEmail:hover {
+        color: var(--blue-75BBFD);
+        cursor: pointer;
+    }
+
+    .socialPhone:hover {
+        color: var(--blue-75BBFD);
+        cursor: pointer;
+    }
+
+    .socialIcon {
+        transform: scale(1);
+        transition: transform .2s;
+    }
+
+    .socialIcon:hover {
+        transform: scale(1.2);
+    }
+
 }
 
 .simpleForm {
+    --var-padding: 40px;
     border-left: 1px solid var(--light-light-gray-EBECEE, #EBECEE);
     background: rgba(255, 255, 255, 0.70);
     backdrop-filter: blur(4.5px);
-    
+
     .wrap {
-        /* flex: 1; */
         padding-top: 68px;
         display: flex;
         flex-direction: column;
         gap: 40px;
     }
 
-
     @media (min-width: 2560px) {
         padding-top: 135px;
+        --var-padding: 80px;
     }
 
     label {
@@ -89,10 +180,6 @@
     .agreement_vacancy {
         padding-left: var(--var-padding);
         padding-right: var(--var-padding);
-    }
-
-    @media (min-width: 2560px) {
-        --var-padding: 80px;
     }
 }
 
