@@ -11,7 +11,7 @@ import BenefitsGrid from '../BenefitsGrid/BenefitsGrid';
 import VacanciesInvite from '../VacanciesInvite/VacanciesInvite';
 import SocialsSwiper from '../SocialsSwiper/SocialsSwiper';
 import GalleryTabs from '../GalleryTabs/GalleryTabs';
-import VacancyFormContact from '../../../UI/VacancyFormContact/VacancyFormContact';
+import ApplicationForm from '../../ui/ApplicationForm/ApplicationForm';
 import VacanciesSectionRenderActualMain from './VacanciesSectionRenderActualMain/VacanciesSectionRenderActualMain';
 import { setActivePage } from '../../../store/Slice/activePageSlice';
 import styles from './VacanciesMain3.module.scss';
@@ -19,7 +19,6 @@ import styles from './VacanciesMain3.module.scss';
 const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave }) => {
   const dispatch = useDispatch();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const activePage = (state) => state.activePage.page;
 
   useEffect(() => {
     dispatch(setActivePage('vacancies'));
@@ -36,7 +35,7 @@ const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave }) => {
   }, []);
 
   return (
-    <main style={{overflowX:'clip'}}>
+    <main style={{ overflowX: 'clip' }}>
       <Intro />
       <TextCenter />
       <RatingSwiper />
@@ -53,11 +52,7 @@ const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave }) => {
       </div>
       <div className={styles.textUnderForm}>Оставьте ваши контакты, мы всегда в поиске талантливых профессионалов</div>
       <div className={styles.vacancyFormWrapper}>
-        <VacancyFormContact
-          handleMouseEnter={handleMouseEnter}
-          handleMouseLeave={handleMouseLeave}
-          buttonText={activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'}
-        />
+        <ApplicationForm variant="full" />
       </div>
     </main>
   );

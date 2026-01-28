@@ -7,13 +7,12 @@ import { getFetchForm, getVacanciesByDirection } from '../../store/Slice/vacanci
 import { setPreviousPage } from '../../store/Slice/previousPageSlice';
 import { setActivePage } from '../../store/Slice/activePageSlice';
 import VacanciesSectionRender from '../Vacancies/VacanciesMain/VacanciesSectionRender/VacanciesSectionRender';
-import VacancyFormContact from '../../UI/VacancyFormContact/VacancyFormContact';
+import ApplicationForm from '../ui/ApplicationForm/ApplicationForm';
 import RocketComponents from '../../UI/Rocket/RocketComponents';
 
 const Internships = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, hideVacancies }) => {
   const dispatch = useDispatch();
   const { vacancies, loading } = useSelector((state) => state.vacancies);
-  const activePage = useSelector((state) => state.activePage.page);
   const [showManyVacancies, setShowManyVacancies] = useState(false);
   const [totalDisplayedVacancies] = useState(6);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -101,14 +100,7 @@ const Internships = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, hid
           </div>
           <div className={styles.textUnderForm}>Присылай резюме, обсудим!</div>
           <div className={styles.vacancyFormWrapper}>
-            <VacancyFormContact
-              handleMouseEnter={handleMouseEnter}
-              handleMouseLeave={handleMouseLeave}
-              handleMouseHover={handleMouseHover}
-              centerButton={true}
-              isInternship={true}
-              buttonText={activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'}
-            />
+            <ApplicationForm variant="full" />
           </div>
         </div>
       )}
