@@ -1,10 +1,6 @@
-:root {
-    --var-padding: 24px;
-}
-
 .formBtn {
     width: 100%;
-    padding: 20px 32px;
+    padding: 16px 32px;
     background-color: var(--blue-75BBFD);
 
 
@@ -41,8 +37,13 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 88px;
-        padding-top: 40px;
         padding-right: 354px;
+
+        @media (max-width: 1024px) {
+            grid-template-columns: 1fr;
+            gap: 48px;
+            padding-right: 0;
+        }
     }
 
     .leftColumn {
@@ -81,12 +82,17 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        padding-top: 32px;
     }
 
     .social {
         display: flex;
         flex-direction: column;
         gap: 16px;
+
+        @media (max-width: 1024px) {
+                display:none
+            }
     }
 
     .socialTitle {
@@ -112,8 +118,7 @@
 
     .socialEmail {
         color: var(--black-1D2E43);
-        /* Body Regular · 18 */
-        font-family: Raleway;
+        font-family: var(--font-raleway);
         font-size: 18px;
         font-style: normal;
         font-weight: 400;
