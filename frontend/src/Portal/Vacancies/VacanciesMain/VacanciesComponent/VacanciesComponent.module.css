@@ -434,7 +434,7 @@ font-family: var(--font-raleway);
 }
 
 .vacancyFormWrapper {
-  padding: 0 0rem 5rem 7rem;
+  padding: 3.5rem 7.125rem 6.25rem 7.125rem;
 }
 
 .menu_button_group_vacancy_wrapper_main_swiper {
@@ -491,7 +491,7 @@ font-family: var(--font-raleway);
   }
 
   .vacancyFormWrapper {
-    padding: 0rem 0rem 6rem 4rem;
+    padding: 2.75rem 4rem 6rem 4rem;
   }
 
   .modal_wrapper_vacancy {
@@ -693,7 +693,7 @@ font-family: var(--font-raleway);
   }
 
   .vacancyFormWrapper {
-    padding: 0 10.8rem 7rem 10.8rem;
+    padding: 2.75rem 10.8rem 5rem 10.8rem;
   }
 
   .modal_wrapper_vacancy {
@@ -957,7 +957,7 @@ font-family: var(--font-raleway);
   }
 
   .vacancyFormWrapper {
-    padding: 0rem 1rem 8.31rem 1rem;
+    padding: 2.375rem 1rem 3.75rem 1rem;
   }
 
   .modal_wrapper_vacancy {
