@@ -12,11 +12,11 @@
     line-height: 20px;
 
     @media (min-width: 2560px) {
-        padding-top: 27px;
+        /* padding-top: 27px;
         padding-bottom: 27px;
 
         font-size: 18px;
-        line-height: 26px;
+        line-height: 26px; */
     }
 }
 

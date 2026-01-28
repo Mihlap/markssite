@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { useIsInternship } from './hooks/useIsInternship';
@@ -10,7 +10,13 @@ import telegramIcon from './icons/telegram.svg';
 
 import styles from './styles.module.css';
 
-const ApplicationForm = ({ variant: variantProp = 'full' }) => {
+const ApplicationForm = ({ variant: variantProp = 'full', initialDirection }) => {
+  console.log(initialDirection);
+  const defaultDirection = useMemo(
+    () => directionOptions.find((opt) => opt.value === initialDirection) || null,
+    [initialDirection]
+  );
+
   const {
     register,
     handleSubmit,
@@ -28,7 +34,7 @@ const ApplicationForm = ({ variant: variantProp = 'full' }) => {
       name: '',
       phone: '',
       city: '',
-      direction: null,
+      direction: defaultDirection,
       letter: '',
       resume: '',
       resumeFiles: [],
@@ -37,6 +43,15 @@ const ApplicationForm = ({ variant: variantProp = 'full' }) => {
 
   const isInternship = useIsInternship();
   const submitButtonText = isInternship ? 'Откликнутся на стажировку' : 'Откликнутся на вакансию';
+
+  useEffect(() => {
+    if (initialDirection) {
+      const option = directionOptions.find((opt) => opt.value === initialDirection);
+      if (option) {
+        setValue('direction', option);
+      }
+    }
+  }, [initialDirection, setValue]);
 
   const onSubmit = useCallback(
     async (data) => {
