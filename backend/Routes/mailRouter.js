@@ -137,6 +137,7 @@ const transportPortal = nodemailer.createTransport({
   connectionTimeout: 500,
 });
 
+// будет удален /portalSubmitForm
 mailRouter.post('/portalSubmitForm', upload.array('resumeFiles', 2), (req, res) => {
 
   const formData = req.body;

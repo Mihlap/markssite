@@ -17,7 +17,7 @@ import { setPreviousPage } from '../../../../store/Slice/previousPageSlice';
 import { setActivePage } from '../../../../store/Slice/activePageSlice';
 import VacanciesSectionRender from '../VacanciesSectionRender/VacanciesSectionRender';
 import FilterModalVacancies from '../../FilterModalVacancies/FilterModalVacancies';
-import VacancyFormContact from '../../../../UI/VacancyFormContact/VacancyFormContact';
+import ApplicationForm from '../../../ui/ApplicationForm/ApplicationForm';
 import RocketComponent from '../../../../UI/Rocket/RocketComponents';
 
 import iconFilter from '../../icons/filter.svg';
@@ -29,7 +29,6 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
   const dispatch = useDispatch();
   const { vacancies, loading, filteredVacancies, activeFilters } = useSelector((state) => state.vacancies);
   const selectedFilter = useSelector((state) => state.vacancies.selectedFilter);
-  const activePage = useSelector((state) => state.activePage.page);
 
   const filterKeyForSpecialty = 'direction';
 
@@ -410,14 +409,7 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
             Оставьте ваши контакты, мы всегда в поиске талантливых профессионалов
           </div>
           <div className={styles.vacancyFormWrapper}>
-            <VacancyFormContact
-              handleMouseEnter={handleMouseEnter}
-              handleMouseLeave={handleMouseLeave}
-              handleMouseHover={handleMouseHover}
-              centerButton={true}
-              buttonText={activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'}
-              isInternship={false}
-            />
+            <ApplicationForm variant="full" />
           </div>
         </div>
       )}

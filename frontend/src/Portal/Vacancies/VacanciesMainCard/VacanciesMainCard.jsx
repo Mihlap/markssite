@@ -10,7 +10,7 @@ import styles from './VacanciesMainCard.module.scss';
 import VacancySlider from '../VacancySlider/VacancySlider';
 import RenderVacancySections from '../RenderVacancySections/RenderVacancySections';
 import { fetchEmployees } from '../../../store/Slice/vacanciesSlice';
-import VacancyFormContactUniversal from '../../../UI/VacancyFormContact/VacancyFormContactUniversal';
+import ApplicationForm from '../../ui/ApplicationForm/ApplicationForm';
 
 import star1 from '../icons/star-header-1.png';
 import star2 from '../icons/star-header-2.png';
@@ -345,7 +345,7 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave }) => {
           </div>
           <aside className={styles['section-top__aside']}>
             <VacancyRequirements vacancy={vacancies[0]} variant="default" />
-            <VacancyFormContactUniversal
+            <ApplicationForm
               variant="simple"
               vacancyTitleSimple={selectedVacancy?.title}
               buttonText={activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'}
@@ -457,7 +457,7 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave }) => {
           Оставьте ваши контакты, мы всегда&nbsp;в&nbsp;поиске талантливых профессионалов
         </div>
         <div className={styles.main_vacancyWrapper__vacancyFormWrapper} ref={formRef}>
-          <VacancyFormContactUniversal
+          <ApplicationForm
             variant="full"
             initialDirection={selectedVacancy?.direction}
             handleMouseEnter={handleMouseEnter}
