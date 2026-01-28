@@ -8,14 +8,20 @@
 
 .select :global(.select__control) {
     --var-margin: 20px;
-    /* padding-bottom: 0.5rem; */
+    height: 31.5px;
     margin-left: var(--var-margin);
     margin-right: var(--var-margin);
     border: none;
     border-bottom: 1px solid var(--gray-959DA6);
     border-radius: 0;
     background-color: transparent;
-    /* min-height: 48px; */
+    min-height: auto;
+    align-items: flex-start;
+}
+
+.select[data-variant="full"] :global(.select__control) {
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .select :global(.select__control:hover) {
@@ -51,7 +57,7 @@
 
 .select :global(.select__option) {
     padding: 8px;
-    transition: background-color 0.2s ease, color 0,2 ease;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .select :global(.select__option--is-focused) {
@@ -68,13 +74,18 @@
     display: none;
 }
 
+.select :global(.select__clear-indicator) {
+    transform: translateY(-9px);
+}
+
 .select :global(.select__dropdown-indicator) {
     color: var(--gray-959DA6);
     transition: transform 0.2s ease, color 0.2s ease;
+    transform: translateY(-9px);
 }
 
 .select :global(.select__control--menu-is-open) :global(.select__dropdown-indicator) {
-    transform: rotate(180deg);
+    transform: translateY(-9px) rotate(180deg);
     color: var(--blue-75BBFD);
 }
 

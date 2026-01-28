@@ -46,12 +46,6 @@
     border-bottom: 1px solid var(--blue-75BBFD);
 }
 
-.input:focus +.label {
-    /* top: -20px; */
-    transform: translateY(-20px);
-    font-size: 12px;
-}
-
 .input:focus+.label,
 .input:not(:placeholder-shown)+.label {
     transform: translateY(-20px);
@@ -74,10 +68,6 @@
     color: var(--crimson-E00747);
     opacity: 1;
 }
-
-/* .inputError+.label {
-    color: var(--crimson-E00747);
-} */
 
 .errorText {
     position: absolute;

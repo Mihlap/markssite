@@ -100,27 +100,29 @@ export default function InputFile({
           ))}
         </div>
       )}
-      <label className={styles.label}>
-        <input
-          className={styles.input}
-          type="file"
-          multiple={multiple}
-          accept={accept}
-          {...resumeFilesRegister}
-          onChange={(event) => {
-            resumeFilesRegister.onChange(event);
-            handleFileChange(event);
-          }}
-          ref={(node) => {
-            resumeFilesRegister.ref(node);
-            fileInputRef.current = node;
-          }}
-        />
-        <span className={`${styles.button} ${variant === 'simple' ? styles.buttonSimple : styles.buttonFull}`}>
-          {label}
-        </span>
-        {error && <span className={styles.error}>{error}</span>}
-      </label>
+      {selectedFiles.length !== 2 && (
+        <label className={styles.label}>
+          <input
+            className={styles.input}
+            type="file"
+            multiple={multiple}
+            accept={accept}
+            {...resumeFilesRegister}
+            onChange={(event) => {
+              resumeFilesRegister.onChange(event);
+              handleFileChange(event);
+            }}
+            ref={(node) => {
+              resumeFilesRegister.ref(node);
+              fileInputRef.current = node;
+            }}
+          />
+          <span className={`${styles.button} ${variant === 'simple' ? styles.buttonSimple : styles.buttonFull}`}>
+            {label}
+          </span>
+          {error && <span className={styles.error}>{error}</span>}
+        </label>
+      )}
     </div>
   );
 }

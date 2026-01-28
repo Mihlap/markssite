@@ -6,6 +6,7 @@ export default function Select({
   options,
   value,
   onChange,
+  variant = 'simple',
   placeholder = 'Выберите...',
   isDisabled = false,
   isSearchable = true,
@@ -13,17 +14,17 @@ export default function Select({
   ...rest
 }) {
   return (
-    <ReactSelect
-      // menuIsOpen={true} // keeps menu always open
-      options={options}
-      value={value}
-      onChange={onChange}
-      placeholder={placeholder}
-      isDisabled={isDisabled}
-      isSearchable={isSearchable}
-      className={clsx(styles.select, className)}
-      classNamePrefix="select"
-      {...rest}
-    />
+    <div className={clsx(styles.select, className)} data-variant={variant}>
+      <ReactSelect
+        options={options}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        isDisabled={isDisabled}
+        isSearchable={isSearchable}
+        classNamePrefix="select"
+        {...rest}
+      />
+    </div>
   );
 }

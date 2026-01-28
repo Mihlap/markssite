@@ -1,16 +1,13 @@
 import React, { useCallback, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import 'react-phone-number-input/style.css';
 import { Link } from 'react-router-dom';
-import { phoneRegex, directionOptions, maskOptions } from './const/index.js';
+import { directionOptions, maskOptions } from './const/index.js';
 import Input from '../../Portal/ui/Input/Input.jsx';
 import InputFile from '../../Portal/ui/Input/InputFile/InputFile.jsx';
 import Select from '../../Portal/ui/Select/Select.jsx';
 import icon from './icon/icon_telegram.svg';
 
 import styles from './VacancyFormContactUniversal.module.css';
-
-const apiBase = process.env.REACT_APP_SERVER_HOST || '';
 
 const VacancyFormContactUniversal = ({ variant: variantProp = 'full' }) => {
   const {
@@ -42,51 +39,51 @@ const VacancyFormContactUniversal = ({ variant: variantProp = 'full' }) => {
     async (data) => {
       console.log('Form data:', data);
 
-      // const formData = new FormData();
+      const formData = new FormData();
 
-      // formData.append('name', data.name || '');
-      // formData.append('phone', data.phone || '');
-      // formData.append('city', data.city || '');
-      // formData.append('choose', data.direction?.value || '');
-      // formData.append('letter', data.letter || '');
-      // formData.append('resume', data.resume || '');
+      formData.append('name', data.name || '');
+      formData.append('phone', data.phone || '');
+      formData.append('city', data.city || '');
+      formData.append('choose', data.direction?.value || '');
+      formData.append('letter', data.letter || '');
+      formData.append('resume', data.resume || '');
 
-      // if (data.resumeFiles?.length) {
-      //   Array.from(data.resumeFiles).forEach((file) => {
-      //     formData.append('resumeFiles', file);
-      //   });
-      // }
+      if (data.resumeFiles?.length) {
+        Array.from(data.resumeFiles).forEach((file) => {
+          formData.append('resumeFiles', file);
+        });
+      }
 
-      // try {
-      //   const response = await fetch(`${apiBase}/api-mail/portalSubmitForm/v2`, {
-      //     method: 'POST',
-      //     body: formData,
-      //   });
+      try {
+        const response = await fetch(`${process.env.REACT_APP_SERVER_HOST}/api-mail/portalSubmitForm/v2`, {
+          method: 'POST',
+          body: formData,
+        });
 
-      //   const payload = await response.json().catch(() => ({}));
+        const payload = await response.json().catch(() => ({}));
 
-      //   if (!response.ok) {
-      //     if (payload?.errors) {
-      //       Object.entries(payload.errors).forEach(([field, message]) => {
-      //         setError(field, { type: 'server', message });
-      //       });
-      //     }
-      //     return;
-      //   }
+        if (!response.ok) {
+          if (payload?.errors) {
+            Object.entries(payload.errors).forEach(([field, message]) => {
+              setError(field, { type: 'server', message });
+            });
+          }
+          return;
+        }
 
-      //   reset();
-      //   setFormKey((prev) => prev + 1);
-      //   setShowSuccess(true);
-      //    if (window.ym) {
-      //      window.ym(95967240, 'reachGoal', 'form2_done');
-      //    } else {
-      //      console.warn('Yandex.Metrika is not available');
-      //    }
-      // } catch (error) {
-      //   console.error('Ошибка при отправке формы', error);
-      // }
+        reset();
+        setFormKey((prev) => prev + 1);
+        setShowSuccess(true);
+         if (window.ym) {
+           window.ym(95967240, 'reachGoal', 'form2_done');
+         } else {
+           console.warn('Yandex.Metrika is not available');
+         }
+      } catch (error) {
+        console.error('Ошибка при отправке формы', error);
+      }
     },
-    []
+    [reset, setError]
   );
 
   const formClassName = variantProp === 'full' ? styles.fullForm : styles.simpleForm;
@@ -164,6 +161,7 @@ const VacancyFormContactUniversal = ({ variant: variantProp = 'full' }) => {
                       placeholder="Указанное направление"
                       isClearable
                       isSearchable={false}
+                      variant={variantProp}
                     />
                   )}
                 />
@@ -191,7 +189,6 @@ const VacancyFormContactUniversal = ({ variant: variantProp = 'full' }) => {
                   })}
                   error={errors.resume?.message}
                 />
-
                 <InputFile
                   key={formKey}
                   register={register}
@@ -224,8 +221,12 @@ const VacancyFormContactUniversal = ({ variant: variantProp = 'full' }) => {
                 <p className={styles.socialTitle}>Для соискателей</p>
                 <div className={styles.socialContact}>
                   <div className={styles.socialWrap}>
-                    <div className={styles.socialEmail}>hr@marksgroup.ru</div>
-                    <div className={styles.socialPhone}>+7 (495) 120-12-26</div>
+                    <a href="mailto:hr@marksgroup.ru" className={styles.socialEmail}>
+                      hr@marksgroup.ru
+                    </a>
+                    <a href="tel:+74951201226" className={styles.socialPhone}>
+                      +7 (495) 120-12-26
+                    </a>
                   </div>
                   <Link className={styles.socialIcon} to="https://t.me/marks_career">
                     <img src={icon} alt="иконка телеграма" />
