@@ -7,13 +7,12 @@ import { getFetchForm, getVacanciesByDirection } from '../../store/Slice/vacanci
 import { setPreviousPage } from '../../store/Slice/previousPageSlice';
 import { setActivePage } from '../../store/Slice/activePageSlice';
 import VacanciesSectionRender from '../Vacancies/VacanciesMain/VacanciesSectionRender/VacanciesSectionRender';
-import VacancyFormContact from '../../UI/VacancyFormContact/VacancyFormContact';
+import ApplicationForm from '../ui/ApplicationForm/ApplicationForm';
 import RocketComponents from '../../UI/Rocket/RocketComponents';
 
 const Internships = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, hideVacancies }) => {
   const dispatch = useDispatch();
   const { vacancies, loading } = useSelector((state) => state.vacancies);
-  const activePage = useSelector((state) => state.activePage.page);
   const [showManyVacancies, setShowManyVacancies] = useState(false);
   const [totalDisplayedVacancies] = useState(6);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -95,20 +94,13 @@ const Internships = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, hid
             isInternship={true}
           />
 
-          <div className={`${styles.temporaryText} ${styles.temporaryText_intership}`}>
+          <div id="form" className={`${styles.temporaryText} ${styles.temporaryText_intership}`}>
             {/* {windowWidth > 1024 ? 'Не нашли подходящую вакансию?' : 'Мы ищем именно тебя!'} */}
             Хочешь пройти у&nbsp;нас&nbsp;стажировку, но&nbsp;не&nbsp;нашел подходящую?
           </div>
           <div className={styles.textUnderForm}>Присылай резюме, обсудим!</div>
           <div className={styles.vacancyFormWrapper}>
-            <VacancyFormContact
-              handleMouseEnter={handleMouseEnter}
-              handleMouseLeave={handleMouseLeave}
-              handleMouseHover={handleMouseHover}
-              centerButton={true}
-              isInternship={true}
-              buttonText={activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'}
-            />
+            <ApplicationForm variant="full" />
           </div>
         </div>
       )}

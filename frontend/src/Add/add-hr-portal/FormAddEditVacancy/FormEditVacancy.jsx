@@ -27,12 +27,13 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
     title: '',
     textBlock1: '',
     textBlock2: '',
-    textBlock3: '',
-    department: '',
-    experience: '',
-    location: '',
-    busyness: '',
-    workMode: '',
+    textBlock3: '',  
+    department: [],
+    direction: [],
+    experience: [],
+    location: [],
+    busyness: [],
+    workMode: [],
     skills: [],
     benefits: [],
     type: type,
@@ -44,6 +45,7 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
     textBlock2: false,
     textBlock3: false,
     department: false,
+    direction: false,
     experience: false,
     location: false,
     busyness: false,
@@ -57,6 +59,7 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
   const quillRef3 = useRef(null);
 
   const quillRefs = useMemo(() => [quillRef1, quillRef2, quillRef3], []);
+
   const applyStylesToQuillEditor = useCallback((quillRef) => {
     if (quillRef && quillRef.current) {
       const editor = quillRef.current.getEditor();
@@ -70,83 +73,92 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
     }
   }, []);
 
-   const openExitConfirm = useCallback(() => setShowExitConfirm(true), []);
-  
-   useInterceptExternalClose(`.${adminStyles.card_components_admin__close_button}`, openExitConfirm);
+  const openExitConfirm = useCallback(() => setShowExitConfirm(true), []);
+  useInterceptExternalClose(`.${adminStyles.card_components_admin__close_button}`, openExitConfirm);
 
   useEffect(() => {
     quillRefs.forEach((quillRef) => applyStylesToQuillEditor(quillRef));
   }, [applyStylesToQuillEditor, quillRefs]);
+ 
+  const attachSpaceBinding = useCallback((quillRef) => {
+    const quill = quillRef.current?.getEditor?.();
+    if (!quill) return;
 
-  useEffect(() => {
-    const quill = quillRef1.current.getEditor();
+    if (quill.__spaceFixApplied) return;
+    quill.__spaceFixApplied = true;
 
-    quill.on('text-change', () => {
-      const plainText = quill.getText();
+    quill.keyboard.addBinding({ key: 32 }, (range) => {
+      if (!range) return true;
+    
+      if (range.length) quill.deleteText(range.index, range.length, 'user');
+      quill.insertText(range.index, ' ', 'user');
+      quill.setSelection(range.index + 1, 0, 'silent');
 
-      if (plainText.length > 300) {
-        const excessLength = plainText.length - 301;
-        quill.deleteText(quill.getLength() - 1 - excessLength, quill.getLength() - 1, 'silent');
-      }
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        textBlock1: quill.root.innerHTML,
-      }));
+      return false;
     });
-  }, [setFormData]);
+  }, []);
 
   useEffect(() => {
-    if (editVacancyData) {
-      // Функция, которая пытается объединить соседние части, если их комбинация соответствует одному из валидных значений
-      const combineSplitValues = (str, validOptions) => {
-        if (!str) return [];
-        const parts = str.split(',').map((s) => s.trim());
-        let result = [];
-        for (let i = 0; i < parts.length; i++) {     
-          if (validOptions.includes(parts[i])) {
-            result.push(parts[i]);
-          } else if (i < parts.length - 1) {     
-            const combined = parts[i] + ', ' + parts[i + 1];
-            if (validOptions.includes(combined)) {
-              result.push(combined);
-              i++;
-            } else {
-              result.push(parts[i]);
-            }
+    attachSpaceBinding(quillRef1);
+    attachSpaceBinding(quillRef2);
+    attachSpaceBinding(quillRef3);
+  }, [attachSpaceBinding]);
+
+  useEffect(() => {
+    if (!editVacancyData) return;
+
+    const combineSplitValues = (str, validOptions) => {
+      if (!str) return [];
+      const parts = str.split(',').map((s) => s.trim());
+      let result = [];
+      for (let i = 0; i < parts.length; i++) {
+        if (validOptions.includes(parts[i])) {
+          result.push(parts[i]);
+        } else if (i < parts.length - 1) {
+          const combined = parts[i] + ', ' + parts[i + 1];
+          if (validOptions.includes(combined)) {
+            result.push(combined);
+            i++;
           } else {
             result.push(parts[i]);
           }
+        } else {
+          result.push(parts[i]);
         }
-        return result;
-      };
- 
-      const benefitsOptions = selectBlocks.find((b) => b.name === 'benefits')?.options.map((o) => o.value) || [];     
-      const skillsOptions = selectBlocks.find((b) => b.name === 'skills')?.options.map((o) => o.value) || [];
-      const directionOptions = selectBlocks.find((b) => b.name === 'direction')?.options.map((o) => o.value) || [];
-      const experienceOptions = selectBlocks.find((b) => b.name === 'experience')?.options.map((o) => o.value) || [];
-      const locationOptions = selectBlocks.find((b) => b.name === 'location')?.options.map((o) => o.value) || [];
-      const busynessOptions = selectBlocks.find((b) => b.name === 'busyness')?.options.map((o) => o.value) || [];
-      const workModeOptions = selectBlocks.find((b) => b.name === 'workMode')?.options.map((o) => o.value) || [];
+      }
+      return result;
+    };
 
-      setFormData((prev) => ({
-        ...prev,
-        title: editVacancyData.title || '',
-        textBlock1: editVacancyData.searchStaff || '',
-        textBlock2: editVacancyData.haveToWork || '',
-        textBlock3: editVacancyData.requirements || '',
-        direction: editVacancyData.direction ? combineSplitValues(editVacancyData.direction, directionOptions) : [],
-        experience: editVacancyData.experience ? combineSplitValues(editVacancyData.experience, experienceOptions) : [],
-        location: editVacancyData.locationStaff
-          ? combineSplitValues(editVacancyData.locationStaff, locationOptions)
-          : [],
-        busyness: editVacancyData.busyness ? combineSplitValues(editVacancyData.busyness, busynessOptions) : [],
-        workMode: editVacancyData.modeOperating
-          ? combineSplitValues(editVacancyData.modeOperating, workModeOptions)
-          : [],
-        skills: editVacancyData.skills ? combineSplitValues(editVacancyData.skills, skillsOptions) : [],
-        benefits: editVacancyData.advantages ? combineSplitValues(editVacancyData.advantages, benefitsOptions) : [],
-      }));
-    }
+    const getOpts = (name) =>
+      selectBlocks.find((b) => b.name === name)?.options.map((o) => o.value) || [];
+
+    const benefitsOptions = getOpts('benefits');
+    const skillsOptions = getOpts('skills');
+    const directionOptions = getOpts('direction') || getOpts('department');
+    const experienceOptions = getOpts('experience');
+    const locationOptions = getOpts('location');
+    const busynessOptions = getOpts('busyness');
+    const workModeOptions = getOpts('workMode');
+
+    setFormData((prev) => ({
+      ...prev,
+      title: editVacancyData.title || '',
+      textBlock1: editVacancyData.searchStaff || '',
+      textBlock2: editVacancyData.haveToWork || '',
+      textBlock3: editVacancyData.requirements || '',
+      direction: editVacancyData.direction ? combineSplitValues(editVacancyData.direction, directionOptions) : [],
+      department: editVacancyData.direction ? combineSplitValues(editVacancyData.direction, directionOptions) : [],
+      experience: editVacancyData.experience ? combineSplitValues(editVacancyData.experience, experienceOptions) : [],
+      location: editVacancyData.locationStaff
+        ? combineSplitValues(editVacancyData.locationStaff, locationOptions)
+        : [],
+      busyness: editVacancyData.busyness ? combineSplitValues(editVacancyData.busyness, busynessOptions) : [],
+      workMode: editVacancyData.modeOperating
+        ? combineSplitValues(editVacancyData.modeOperating, workModeOptions)
+        : [],
+      skills: editVacancyData.skills ? combineSplitValues(editVacancyData.skills, skillsOptions) : [],
+      benefits: editVacancyData.advantages ? combineSplitValues(editVacancyData.advantages, benefitsOptions) : [],
+    }));
   }, [editVacancyData]);
 
   const handleSubmit = useCallback(
@@ -161,6 +173,7 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
           textBlock2: '',
           textBlock3: '',
           department: [],
+          direction: [],
           experience: [],
           location: [],
           busyness: [],
@@ -176,7 +189,7 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
         setLoading(false);
       }
     },
-    [dispatch, editVacancyData.id, formData, setIsModalOpen, type]
+    [dispatch, editVacancyData?.id, formData, setIsModalOpen, type]
   );
 
   const handleBlur = useCallback((event) => {
@@ -203,7 +216,32 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
       [name]: selectedValues,
     }));
   }, []);
+ 
+  const onChangeTextBlock1 = useCallback((content, delta, source, editor) => {
+    if (source !== 'user') return;
 
+    const plain = editor.getText();
+    if (plain.length > 301) {
+      const quill = quillRef1.current?.getEditor?.();
+      if (!quill) return;
+
+      const excess = plain.length - 301;
+      quill.deleteText(quill.getLength() - 1 - excess, excess, 'user');
+      return;
+    }
+
+    setFormData((prev) => (prev.textBlock1 === content ? prev : { ...prev, textBlock1: content }));
+  }, []);
+
+  const onChangeTextBlock2 = useCallback((content, delta, source) => {
+    if (source !== 'user') return;
+    setFormData((prev) => (prev.textBlock2 === content ? prev : { ...prev, textBlock2: content }));
+  }, []);
+
+  const onChangeTextBlock3 = useCallback((content, delta, source) => {
+    if (source !== 'user') return;
+    setFormData((prev) => (prev.textBlock3 === content ? prev : { ...prev, textBlock3: content }));
+  }, []);
 
   return (
     <div className={styles.form_container}>
@@ -212,9 +250,11 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
           Заполните предыдущий блок или дождитесь загрузки изображений❗
         </div>
       )}
+
       <div className={styles.form_container__title}>
         Редактирование {selectedFilter === 'Вакансии' ? 'вакансии' : 'стажировки'}
       </div>
+
       <div className={styles.form_container__block_form}>
         <form className={styles.form_container__form} onSubmit={handleSubmit}>
           <div className={styles.form_container__block_gray_one}>
@@ -228,10 +268,7 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
                 value={formData.title}
                 onChange={(event) => {
                   const { name, value } = event.target;
-                  setFormData((prevFormData) => ({
-                    ...prevFormData,
-                    [name]: value,
-                  }));
+                  setFormData((prev) => ({ ...prev, [name]: value }));
                 }}
                 required
               />
@@ -239,12 +276,15 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
                 Название вакансии
               </label>
             </div>
+
             {selectBlocks.map((block, index) => (
               <div key={`${block.id}_${block.name}_${index}`} className={`${styles.group} some-unique-class`}>
                 <label
-                  className={`${styles.label1} ${
-                    isFocused[block.name] || formData[block.name] ? styles.focused1 : ''
-                  }`}>
+                  className={`${styles.label1} ${isFocused[block.name] || (Array.isArray(formData[block.name]) ? formData[block.name].length : !!formData[block.name])
+                      ? styles.focused1
+                      : ''
+                    }`}
+                >
                   <Select
                     className={`${styles.form__group} ${styles.field}`}
                     id={`${block.name}-input`}
@@ -256,10 +296,7 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
                     options={block.options}
                     value={
                       Array.isArray(formData[block.name])
-                        ? formData[block.name].map((value) => ({
-                            label: value,
-                            value: value,
-                          }))
+                        ? formData[block.name].map((value) => ({ label: value, value }))
                         : []
                     }
                     placeholder={block.label}
@@ -273,19 +310,19 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
               </div>
             ))}
           </div>
+
           <div className={styles.form_container__block_gray_one}>
             <div className={styles.heading_textarea}>
               <div className={styles.form_container__description_text}>
                 <div className={styles.form_container__textarea_length}>
                   {`${quillRef1.current ? quillRef1.current.getEditor().getText().length - 1 : 0}/300`}
                 </div>
+
                 <ReactQuill
                   ref={quillRef1}
                   modules={{
                     toolbar: [['bold', 'underline', { list: 'bullet' }]],
-                    clipboard: {
-                      matchVisual: false,
-                    },
+                    clipboard: { matchVisual: false },
                   }}
                   formats={['bold', 'underline', 'list']}
                   className={styles.form_container__textarea}
@@ -307,20 +344,17 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
                   name="textBlock1"
                   id="textBlock1"
                   value={formData.textBlock1}
-                  onChange={(value) => {
-                    setFormData((prevFormData) => ({
-                      ...prevFormData,
-                      textBlock1: value,
-                    }));
-                  }}
+                  onChange={onChangeTextBlock1}
                   placeholder="Не более 300 символов"
                 />
+
                 <label htmlFor="textBlock1" className={styles.form_container__textarea_label_constructor}>
                   Мы ищем
                 </label>
               </div>
             </div>
           </div>
+
           <div className={styles.form_container__block_gray_one}>
             <div className={styles.heading_textarea}>
               <div className={styles.form_container__description_text}>
@@ -328,9 +362,7 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
                   ref={quillRef2}
                   modules={{
                     toolbar: [['bold', 'underline', { list: 'bullet' }]],
-                    clipboard: {
-                      matchVisual: false,
-                    },
+                    clipboard: { matchVisual: false },
                   }}
                   formats={['bold', 'underline', 'list']}
                   className={styles.form_container__textarea}
@@ -352,20 +384,17 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
                   name="textBlock2"
                   id="textBlock2"
                   value={formData.textBlock2}
-                  onChange={(value) => {
-                    setFormData((prevFormData) => ({
-                      ...prevFormData,
-                      textBlock2: value,
-                    }));
-                  }}
+                  onChange={onChangeTextBlock2}
                   placeholder="нет ограничений по символам"
                 />
+
                 <label htmlFor="textBlock2" className={styles.form_container__textarea_label_constructor}>
                   Вам предстоит
                 </label>
               </div>
             </div>
           </div>
+
           <div className={styles.form_container__block_gray_one}>
             <div className={styles.heading_textarea}>
               <div className={styles.form_container__description_text}>
@@ -373,9 +402,7 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
                   ref={quillRef3}
                   modules={{
                     toolbar: [['bold', 'underline', { list: 'bullet' }]],
-                    clipboard: {
-                      matchVisual: false,
-                    },
+                    clipboard: { matchVisual: false },
                   }}
                   formats={['bold', 'underline', 'list']}
                   className={styles.form_container__textarea}
@@ -397,20 +424,17 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
                   name="textBlock3"
                   id="textBlock3"
                   value={formData.textBlock3}
-                  onChange={(value) => {
-                    setFormData((prevFormData) => ({
-                      ...prevFormData,
-                      textBlock3: value,
-                    }));
-                  }}
+                  onChange={onChangeTextBlock3}
                   placeholder="нет ограничений по символам"
                 />
+
                 <label htmlFor="textBlock3" className={styles.form_container__textarea_label_constructor}>
                   Требования
                 </label>
               </div>
             </div>
           </div>
+
           <SubmitButtons
             classNames={{
               wrapper: styles.form_container__button_block,
