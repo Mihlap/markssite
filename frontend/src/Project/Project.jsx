@@ -7,8 +7,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import styles from './Project.module.css';
 import {
   setSelectedViewConstruction,
-  setSelectedCity,  
-  getFetchFormCityFilter, 
+  setSelectedCity,
+  getFetchFormCityFilter,
   getFetchForm,
 } from '../store/Slice/projectSlice';
 import CompanySlider from '../UI/Company_Slider/CompanySlider';
@@ -49,7 +49,7 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.project.projects);
   const selectedViewConstruction = useSelector((state) => state.project.selectedViewConstruction);
-  const selectedCity = useSelector((state) => state.project.selectedCity);  
+  const selectedCity = useSelector((state) => state.project.selectedCity);
   const isActive = useSelector((state) => state.toggle.isActiveForButton1);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -106,13 +106,13 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
     };
   }, [handleResize]);
 
-useEffect(() => { 
-  dispatch(setSelectedViewConstruction(category || 'Все'));  
-  dispatch(getFetchForm());
-  dispatch(fetchToggleStateAsync());
-  setCurrentPage(1);
-  setLoading(false);
-}, [dispatch, category]);
+  useEffect(() => {
+    dispatch(setSelectedViewConstruction(category || 'Все'));
+    dispatch(getFetchForm());
+    dispatch(fetchToggleStateAsync());
+    setCurrentPage(1);
+    setLoading(false);
+  }, [dispatch, category]);
 
 
   useEffect(() => {
@@ -122,7 +122,7 @@ useEffect(() => {
         const city = geolocation.city || 'Москва';
         setCurLocation(city);
       })
-      .catch((error) => console.error('Ошибка при получении геопозиции:', error));   
+      .catch((error) => console.error('Ошибка при получении геопозиции:', error));
   }, []);
 
   const currentLocation = userGeolocation ? userGeolocation.city : 'Москва';
@@ -133,12 +133,15 @@ useEffect(() => {
 
   const handleChange = useCallback(
     (event) => {
-      const address = event.target.value.toLowerCase();
+      const address = event.target.value;
       setValue(address);
-      setIsValid(address === '');
+      setIsValid(address.trim() === '');
       setIsTyping(true);
       setSelectOnCompetencies('');
-      if (!address) {
+      
+      if (address.trim()) {
+        dispatch(setSelectedCity(''));
+      } else {
         dispatch(setSelectedCity(''));
         setSelectOnCompetencies('Все');
       }
@@ -150,35 +153,51 @@ useEffect(() => {
     event.preventDefault();
   };
 
+  const handleKeyDown = useCallback(
+    (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        const address = event.target.value.trim();
+        setIsFocusedProject(false);
+        setValue(address);
+        setIsValid(address === '');   
+        dispatch(setSelectedCity(''));
+        setSelectOnCompetencies('');
+        if (address === '') {
+          setSelectOnCompetencies('Все');
+        }      
+        event.target.blur();
+      }
+    },
+    [dispatch]
+  );
+
   const handleBlur = useCallback(
     (event) => {
-      const address = event.target.value;
+      const address = event.target.value.trim();
       setIsFocusedProject(false);
-      if (!address) {
-        dispatch(setSelectedCity(''));
-      }
       setValue(address);
-      setIsValid(isValid);
-      dispatch(setSelectedCity(''));
-      setSelectOnCompetencies('');
-      if (value.trim() === '') {
+      setIsValid(address === '');
+
+      if (address === '') {
+        dispatch(setSelectedCity(''));
         setSelectOnCompetencies('Все');
       }
     },
-    [dispatch, isValid, value]
+    [dispatch]
   );
 
-const handleButtonClick = useCallback(
-  (viewConstruction) => {
-    dispatch(setSelectedCity(''));
-    dispatch(setSelectedViewConstruction(viewConstruction));
-    setSelectOnCompetencies(viewConstruction);
-    setCurrentPage(1);
-    setValue('');
-    setIsTyping(false);
-  },
-  [dispatch]
-);
+  const handleButtonClick = useCallback(
+    (viewConstruction) => {
+      dispatch(setSelectedCity(''));
+      dispatch(setSelectedViewConstruction(viewConstruction));
+      setSelectOnCompetencies(viewConstruction);
+      setCurrentPage(1);
+      setValue('');
+      setIsTyping(false);
+    },
+    [dispatch]
+  );
 
 
   const handleButtonCityClick = useCallback(
@@ -191,6 +210,8 @@ const handleButtonClick = useCallback(
       dispatch(getFetchFormCityFilter(currentPage, projectsPerPage, countryCity));
       setCurrentPage(1);
       setSelectOnCompetencies('');
+      setValue('');
+      setIsValid(true);
     },
     [dispatch, currentPage, projectsPerPage, isTyping]
   );
@@ -224,11 +245,11 @@ const handleButtonClick = useCallback(
     [dispatch, selectOnCompetencies, value]
   );
 
-   const loadMoreProjects = useCallback(async () => {
+  const loadMoreProjects = useCallback(async () => {
     setLoading(true);
     setCurrentPage((prev) => prev + 1);
-   }, []);
-  
+  }, []);
+
   const handleScroll = useCallback(() => {
     const isAtBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight;
 
@@ -246,6 +267,10 @@ const handleButtonClick = useCallback(
 
   const categoriesSet = useMemo(() => {
     const set = new Set();
+
+    if (!Array.isArray(projects)) {
+      return set;
+    }
 
     const searchValue = (value || '').toLowerCase();
     const selectedCityLower = (selectedCity || '').toLowerCase();
@@ -272,28 +297,40 @@ const handleButtonClick = useCallback(
   }, [projects, selectedCity, value]);
 
   const filteredProjects = useMemo(() => {
+    if (!Array.isArray(projects)) {
+      return [];
+    }
+
     return projects
       .filter((project) =>
         selectOnCompetencies === 'Все' ? true : project.viewConstruction?.includes(selectOnCompetencies)
       )
       .filter((project) => {
         const projectCity = extractCityFromCountryCity(project.countryCity);
-        return selectedCity === '' ? true : projectCity === selectedCity;
-      })
-      .filter((project) => {
-        const searchValue = value?.toLowerCase();
-        const projectLocation = project.location?.toLowerCase();
-        const projectCity = extractCityFromCountryCity(project.countryCity)?.toLowerCase();
-        return (
-          projectLocation?.includes(searchValue) && (selectedCity === '' || projectCity === selectedCity?.toLowerCase())
-        );
+        const searchValue = (value || '').trim().toLowerCase();
+        const projectLocation = (project.location || '').toLowerCase();
+        const projectCityLower = projectCity?.toLowerCase();
+   
+        if (selectedCity) {
+          const matchesCity = projectCity === selectedCity;         
+          if (searchValue) {
+            return matchesCity && projectLocation.includes(searchValue);
+          }
+          return matchesCity;
+        }
+  
+        if (searchValue) {
+          return projectLocation.includes(searchValue);
+        }
+
+        return true;
       });
   }, [projects, selectOnCompetencies, selectedCity, value]);
 
-  useEffect(() => { 
+  useEffect(() => {
 
-    if (!projects || projects.length === 0) return;  
-    if (selectOnCompetencies === 'Все') return;    
+    if (!projects || projects.length === 0) return;
+    if (selectOnCompetencies === 'Все') return;
     if (filteredProjects.length > 0) return;
 
     setSelectOnCompetencies('Все');
@@ -326,6 +363,7 @@ const handleButtonClick = useCallback(
                   onFocus={handleFocus}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  onKeyDown={handleKeyDown}
                   maxLength="50"
                   size="60"
                   required
@@ -385,12 +423,11 @@ const handleButtonClick = useCallback(
                       className={`
                 ${styles.menu__button__allProject} 
                 ${isFirst ? styles.firstSlide : ''} 
-                ${
-                  !isModalProjectOpen &&
-                  (el === selectedViewConstruction || (!selectedViewConstruction && el === 'Все'))
-                    ? styles.active
-                    : ''
-                }
+                ${!isModalProjectOpen &&
+                          (el === selectedViewConstruction || (!selectedViewConstruction && el === 'Все'))
+                          ? styles.active
+                          : ''
+                        }
               `}
                       style={{ width: 'fit-content' }}>
                       <p type="button" className={styles.menu_button_items}>
@@ -419,12 +456,11 @@ const handleButtonClick = useCallback(
                       <button
                         onMouseEnter={handleMouseEnter}
                         onMouseLeave={handleMouseLeave}
-                        className={`${styles.menu__button__allProject} ${
-                          !isModalProjectOpen &&
+                        className={`${styles.menu__button__allProject} ${!isModalProjectOpen &&
                           (el === selectedViewConstruction || (index === 0 && !selectedViewConstruction))
-                            ? styles.active
-                            : ''
-                        }`}
+                          ? styles.active
+                          : ''
+                          }`}
                         onClick={() => handleButtonClick(el)}>
                         <p className={styles.menu_button_items}>{el}</p>
                       </button>
@@ -523,6 +559,7 @@ const handleButtonClick = useCallback(
                   onFocus={handleFocus}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  onKeyDown={handleKeyDown}
                   maxLength="50"
                   size="60"
                   required

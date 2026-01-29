@@ -29,8 +29,8 @@ import PageFade from './UI/PageFade/PageFade';
 import ButtonAdmin from './UI/ButtonAdmin/ButtonAdmin';
 import CustomCursor from './UI/CustomCursor/CustomCursor';
 import CookieComponent from './UI/CookieComponent/CookieComponent';
-// import Loading from './Loading/LoadingNew';
-import Loading from './UI/Loading/christmas/Loading';
+import Loading from './Loading/LoadingNew';
+// import Loading from './UI/Loading/christmas/Loading';
 
 const Header = lazy(() => import('./Header/Header'));
 const Contacts = lazy(() => import('./Contacts/Contacts'));
@@ -67,7 +67,6 @@ const AddHRPortal = lazy(() => import('./Add/add-hr-portal/AddHRPortal'));
 const AddCompany = lazy(() => import('./Add/add-about-the-company/AddCompany'));
 const Applications = lazy(() => import('./Add/applications/Applications'));
 
-const LoadingModal = lazy(() => import('./Add/add-project/loading/LoadingModal'));
 const NotFound = lazy(() => import('./NotFound/NotFound'));
 
 export default function App() {
@@ -367,15 +366,6 @@ export default function App() {
                 element={
                   <PageFade>
                     <Login />
-                  </PageFade>
-                }
-              />
-
-              <Route
-                path="/test"
-                element={
-                  <PageFade>
-                    <LoadingModal />
                   </PageFade>
                 }
               />
