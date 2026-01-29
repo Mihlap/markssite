@@ -266,40 +266,51 @@
         --history-tag-safe-top: clamp(72px, 10vh, 120px);
         margin-top: 0;
         margin-bottom: 0;
-        padding: var(--history-tag-safe-top) 0 24px;
+        padding: 0;
         height: 100vh;
         display: block;
-        align-items: stretch;
         box-sizing: border-box;
-        overflow-y: auto;
-        overflow-x: clip; // clip вместо hidden — не создаёт scroll context, но обрезает
+        overflow: visible;
         overscroll-behavior: contain;
-        scrollbar-gutter: stable;
-        scrollbar-width: none;
-
-        &::-webkit-scrollbar {
-            display: none;
-        }
     }
 
     .timeline_wrapper {
-        // Добавляем padding чтобы контейнер был шире карточек
+        display: grid;
+        grid-template-rows: 1fr auto 1fr;
+        grid-template-columns: 1fr;
+        min-width: max-content;
+        height: 100vh;
         padding-right: 50vw;
+        overflow: visible;
     }
 
-    .timeline_line {
-        // Продлеваем линию
-        right: -50vw;
+    .cards_row_top {
+        grid-row: 1;
+        align-self: end;
+        overflow: visible;
     }
 
     .timeline {
+        grid-row: 2;
+        align-self: center;
         margin: 0;
     }
 
+    .cards_row_bottom {
+        grid-row: 3;
+        align-self: start;
+        overflow: visible;
+    }
+
+    .timeline_line {
+        right: -50vw;
+    }
+
+    // Тег уезжает за экран если не влезает
     .history_tag {
-        position: fixed;
+        position: absolute;
         left: clamp(24px, 4vw, 48px);
-        top: 0;
+        top: -40px;
         z-index: 999;
     }
 }

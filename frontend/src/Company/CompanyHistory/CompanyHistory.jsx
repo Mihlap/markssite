@@ -172,6 +172,7 @@ export default function CompanyHistory({
         subtitleLine1Ref,
         subtitleLine2Ref,
         backgroundRef,
+        sectionRef,
         cardsFocusInProgressRef,
         hasScrollToHeaderTriggered,
         hasScrollToCardsTriggered,
