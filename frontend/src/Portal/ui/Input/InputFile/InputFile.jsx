@@ -4,7 +4,7 @@ import styles from './styles.module.css';
 const buildDefaultValidator = (maxFiles, requiredMessage, maxFilesMessage, invalidMessage) => {
   return (files) => {
     const list = Array.from(files || []);
-    if (list.length === 0) return requiredMessage;
+    if (list.length === 0) return requiredMessage || true;
     if (maxFiles && list.length > maxFiles) return maxFilesMessage;
     const allowedExtensions = ['.pdf', '.doc', '.docx'];
     const isAllowed = (file) => {
@@ -33,6 +33,7 @@ export default function InputFile({
   name = 'resumeFiles',
   setValue,
   clearErrors,
+  trigger,
   error,
   accept = '.pdf,.doc,.docx,image/*',
   multiple = true,
@@ -40,17 +41,19 @@ export default function InputFile({
   label = 'Прикрепить файл',
   variant = 'full',
   validate,
+  required = false,
   requiredMessage = 'Файл обязателен',
   maxFilesMessage = 'Можно загрузить только два файла',
   invalidMessage = 'Можно загрузить только PDF, DOC, DOCX или картинки',
+  hasInputError = false,
 }) {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const fileInputRef = useRef(null);
 
   const resumeFilesRegister = register(name, {
-    required: requiredMessage,
+    required: required ? requiredMessage : false,
     validate:
-      validate || buildDefaultValidator(maxFiles, requiredMessage, maxFilesMessage, invalidMessage),
+      validate || buildDefaultValidator(maxFiles, required ? requiredMessage : false, maxFilesMessage, invalidMessage),
   });
 
   const applyFilesToInput = (files) => {
@@ -68,6 +71,9 @@ export default function InputFile({
     if (files.length !== nextFiles.length) {
       applyFilesToInput(nextFiles);
     }
+    if (trigger) {
+      trigger('resume');
+    }
   };
 
   const handleFileRemove = (index) => {
@@ -80,10 +86,13 @@ export default function InputFile({
       clearErrors(name);
     }
     applyFilesToInput(nextFiles);
+    if (trigger) {
+      trigger('resume');
+    }
   };
 
   return (
-    <div className={styles.wrap} data-has-files={selectedFiles.length > 0} data-variant={variant}>
+    <div className={styles.wrap} data-has-files={selectedFiles.length > 0} data-variant={variant} data-has-input-error={hasInputError}>
       {selectedFiles.length > 0 && (
         <div className={styles.previewWrap} data-variant={variant}>
           {selectedFiles.map((file, index) => (
