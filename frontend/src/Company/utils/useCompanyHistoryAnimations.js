@@ -12,6 +12,7 @@ export function useCompanyHistoryAnimations({
     subtitleLine1Ref,
     subtitleLine2Ref,
     backgroundRef,
+    sectionRef,
     cardsFocusInProgressRef,
     hasScrollToHeaderTriggered,
     hasScrollToCardsTriggered,
@@ -37,9 +38,15 @@ export function useCompanyHistoryAnimations({
             const rectBeforeAnimation = cardsEl.getBoundingClientRect();
             const widthBeforeAnimation = rectBeforeAnimation.width;
             const heightBeforeAnimation = rectBeforeAnimation.height;
+            const topBeforeAnimation = rectBeforeAnimation.top;
             const currentY = gsap.getProperty(cardsEl, 'y') || 0;
             const currentX = gsap.getProperty(cardsEl, 'x') || 0;
 
+            // Вычисляем куда карточки должны "уехать" (вниз за viewport)
+            // Карточки сейчас занимают весь viewport (height: 100vh, top: 0)
+            // После сброса класса они будут ниже header
+            // Анимируем их вниз на высоту viewport чтобы создать эффект "ухода"
+            const targetY = window.innerHeight - topBeforeAnimation;
 
             cardsEl.style.willChange = 'transform';
             cardsEl.style.transform = 'translateZ(0)';
@@ -97,6 +104,15 @@ export function useCompanyHistoryAnimations({
 
                             requestAnimationFrame(() => {
                                 requestAnimationFrame(() => {
+                                    // Сброс ВСЕХ inline стилей из activateCardsFocus
+                                    cardsEl.style.marginTop = '';
+                                    cardsEl.style.marginBottom = '';
+                                    cardsEl.style.padding = '';
+                                    cardsEl.style.top = '';
+                                    cardsEl.style.display = '';
+                                    cardsEl.style.boxSizing = '';
+                                    cardsEl.style.overflow = '';
+                                    cardsEl.style.overscrollBehavior = '';
                                     cardsEl.style.width = '';
                                     cardsEl.style.minWidth = '';
                                     cardsEl.style.maxWidth = '';
@@ -135,11 +151,21 @@ export function useCompanyHistoryAnimations({
                         gsap.set(el, { clearProps: 'all' });
                         el.style.animation = '';
                         el.style.opacity = '';
-                        el.style.transform = 'none';
+                        el.style.transform = '';
                         el.classList.remove(headerStyles.animate);
                     });
 
+                    // Скроллим к началу секции чтобы header был видим
                     requestAnimationFrame(() => {
+                        const sectionEl = sectionRef?.current;
+                        if (sectionEl) {
+                            const sectionRect = sectionEl.getBoundingClientRect();
+                            const targetScroll = window.pageYOffset + sectionRect.top;
+                            window.scrollTo({
+                                top: targetScroll,
+                                behavior: 'smooth'
+                            });
+                        }
                         window.dispatchEvent(new Event('scroll'));
                     });
                 },
@@ -154,7 +180,7 @@ export function useCompanyHistoryAnimations({
                 { x: currentX, y: currentY },
                 {
                     x: currentX,
-                    y: 0,
+                    y: targetY,  // Карточки уезжают вниз
                     duration: returnDuration,
                     ease: returnEase,
                     onUpdate: () => {
@@ -171,6 +197,7 @@ export function useCompanyHistoryAnimations({
             animationReady,
             historyTagRef,
             backgroundRef,
+            sectionRef,
             marksGroupRef,
             titleRef,
             subtitleLineRef,

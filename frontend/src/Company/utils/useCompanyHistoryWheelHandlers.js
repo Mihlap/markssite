@@ -34,6 +34,49 @@ export function useCompanyHistoryWheelHandlers({
     setCardsFocused,
 }) {
     const horizontalOffsetRef = useRef(0);
+    const recentlyExitedCardsRef = useRef(false);  // Блокирует повторный snap после выхода из карточек
+
+    // Утилита для получения последней карточки
+    const getLastCard = (container) => {
+        if (!container) return null;
+        const groups = container.querySelectorAll('[data-last-cards="true"]');
+        if (!groups.length) return null;
+
+        let rightmost = null;
+        let maxRight = -Infinity;
+
+        groups.forEach(group => {
+            const cards = group.querySelectorAll('[class*="history_card_wrapper"]');
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                if (rect.right > maxRight) {
+                    maxRight = rect.right;
+                    rightmost = card;
+                }
+            });
+            if (!cards.length) {
+                const rect = group.getBoundingClientRect();
+                if (rect.right > maxRight) {
+                    maxRight = rect.right;
+                    rightmost = group;
+                }
+            }
+        });
+
+        return rightmost;
+    };
+
+    // Утилита для расчёта максимального горизонтального offset
+    const getMaxHorizontalOffset = (container) => {
+        const lastCard = getLastCard(container);
+        if (!lastCard) return 0;
+
+        const rect = lastCard.getBoundingClientRect();
+        const cardCenterX = rect.left + rect.width / 2 + horizontalOffsetRef.current;
+        const viewportCenterX = window.innerWidth / 2;
+
+        return Math.max(0, cardCenterX - viewportCenterX);
+    };
 
     const isHistoryActive = (e) => {
         const root = sectionRef?.current;
@@ -62,9 +105,9 @@ export function useCompanyHistoryWheelHandlers({
             if (!cardsFocused || cardsFocusInProgressRef.current) return;
 
             const hasVerticalOverflow = cardsEl.scrollHeight > cardsEl.clientHeight + 1;
-            if (hasVerticalOverflow && cardsEl.scrollTop > 1) return;         
+            if (hasVerticalOverflow && cardsEl.scrollTop > 1) return;
             if (horizontalOffsetRef.current > 1) return;
-      
+
             if (timelineEl) {
                 const rect = timelineEl.getBoundingClientRect();
                 const centerY = rect.top + rect.height / 2;
@@ -74,6 +117,12 @@ export function useCompanyHistoryWheelHandlers({
 
             e.preventDefault();
             e.stopPropagation();
+
+            // Блокируем повторный snap на 2 секунды после выхода
+            recentlyExitedCardsRef.current = true;
+            setTimeout(() => {
+                recentlyExitedCardsRef.current = false;
+            }, 2000);
 
             exitCardsFocus(cardsEl);
         };
@@ -89,42 +138,191 @@ export function useCompanyHistoryWheelHandlers({
         cardsFocusInProgressRef,
     ]);
 
+    // handleWheelDownExit убран - когда последняя карточка видима,
+    // handleWheelHorizontal просто не блокирует event и страница скроллится вниз
+
+    // Snap к карточкам истории - обязательная остановка когда линия приближается к центру
     useEffect(() => {
-        const handleWheelDownExit = (e) => {
-            if (!isHistoryActive(e)) return;
-            if (e.deltaY <= 0) return;
+        const activateCardsFocus = (timelineEl, cardsEl, sectionEl, isFromBottom) => {
+            cardsFocusInProgressRef.current = true;
 
-            const cardsEl = historyListRef.current;
-            const timelineEl = timelineWrapperRef.current;
-            if (!cardsEl) return;
-            if (!cardsFocused || cardsFocusInProgressRef.current) return;
-
-            const hasVerticalOverflow = cardsEl.scrollHeight > cardsEl.clientHeight + 1;
-            if (hasVerticalOverflow) {
-                const maxScrollTop = cardsEl.scrollHeight - cardsEl.clientHeight;
-                if (cardsEl.scrollTop < maxScrollTop - 1) return;
+            // Устанавливаем offset
+            if (isFromBottom) {
+                const maxOffset = getMaxHorizontalOffset(timelineEl);
+                horizontalOffsetRef.current = maxOffset;
+                timelineEl.style.transform = `translateX(${-maxOffset}px)`;
+            } else {
+                horizontalOffsetRef.current = 0;
+                timelineEl.style.transform = 'translateX(0px)';
             }
 
-            if (timelineEl) {
-                const maxScrollLeft = timelineEl.scrollWidth - timelineEl.clientWidth;
-                if (timelineEl.scrollLeft < maxScrollLeft - 1) return;
-            }
+            // Применяем inline стили
+            cardsEl.style.marginTop = '0';
+            cardsEl.style.marginBottom = '0';
+            cardsEl.style.padding = '0';
+            cardsEl.style.top = '0';
+            cardsEl.style.height = '100vh';
+            cardsEl.style.display = 'block';
+            cardsEl.style.boxSizing = 'border-box';
+            cardsEl.style.overflow = 'visible';
+            cardsEl.style.overscrollBehavior = 'contain';
 
-            e.preventDefault();
-            e.stopPropagation();
+            flushSync(() => {
+                setCardsFocused(true);
+            });
 
-            exitCardsFocus(cardsEl);
+            // После применения стилей вычисляем точную позицию и скроллим
+            requestAnimationFrame(() => {
+                // cardsEl теперь имеет height: 100vh и grid центрирует линию на 50vh
+                // Нужно скроллить так, чтобы верх cardsEl был на уровне 0 viewport
+                const cardsAbsoluteTop = cardsEl.getBoundingClientRect().top + window.pageYOffset;
+                const targetScrollY = cardsAbsoluteTop;
+
+                window.scrollTo({
+                    top: targetScrollY,
+                    behavior: 'auto'
+                });
+
+                // Корректировка: убедиться что линия точно по центру
+                requestAnimationFrame(() => {
+                    const lineEl = timelineEl.querySelector('[class*="timeline_line"]');
+                    if (lineEl) {
+                        const lineRect = lineEl.getBoundingClientRect();
+                        const lineCenter = lineRect.top + lineRect.height / 2;
+                        const viewportCenter = window.innerHeight / 2;
+                        const offset = lineCenter - viewportCenter;
+
+                        // Если линия не по центру - корректируем скролл
+                        if (Math.abs(offset) > 5) {
+                            window.scrollBy({
+                                top: offset,
+                                behavior: 'auto'
+                            });
+                        }
+                    }
+
+                    cardsFocusInProgressRef.current = false;
+                });
+            });
         };
 
-        window.addEventListener('wheel', handleWheelDownExit, { passive: false });
-        return () => window.removeEventListener('wheel', handleWheelDownExit);
+        const handleWheelSnapToCards = (e) => {
+            // Только когда cardsFocused = false (ещё не вошли в режим карточек)
+            if (cardsFocused || cardsFocusInProgressRef.current) return;
+            // Не снэпать если выходим к родителю или уже вышли
+            if (exitToParentInProgressRef.current || returnedToSliderRef.current) return;
+            // Не снэпать сразу после выхода из карточек
+            if (recentlyExitedCardsRef.current) return;
+
+            const timelineEl = timelineWrapperRef.current;
+            const cardsEl = historyListRef.current;
+            const sectionEl = sectionRef.current;
+            if (!timelineEl || !cardsEl || !sectionEl) return;
+
+            const sectionRect = sectionEl.getBoundingClientRect();
+            // Секция должна быть видима
+            if (sectionRect.bottom < 0 || sectionRect.top > window.innerHeight) return;
+
+            // Позиция линии относительно viewport
+            // При обычном режиме линия в timeline_wrapper
+            const timelineRect = timelineEl.getBoundingClientRect();
+            const lineY = timelineRect.top + timelineRect.height / 2;
+            const centerY = window.innerHeight / 2;
+            const threshold = 200; // Порог приближения к центру
+
+            const dy = e.deltaY;
+            const down = dy > 0;
+            const up = dy < 0;
+
+            // Скролл вниз - линия приближается к центру сверху
+            if (down && lineY > centerY - threshold && lineY < centerY + threshold * 2) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+
+                activateCardsFocus(timelineEl, cardsEl, sectionEl, false);
+                return;
+            }
+
+            // Скролл вверх - линия приближается к центру снизу
+            if (up && lineY > centerY - threshold * 2 && lineY < centerY + threshold) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+
+                activateCardsFocus(timelineEl, cardsEl, sectionEl, true);
+                return;
+            }
+        };
+
+        // Дополнительный scroll listener для отлова быстрого скролла
+        let lastLineY = null;
+        let scrollSnapPending = false;
+
+        const handleScrollSnap = () => {
+            if (cardsFocused || cardsFocusInProgressRef.current || scrollSnapPending) return;
+            // Не снэпать если выходим к родителю или уже вышли
+            if (exitToParentInProgressRef.current || returnedToSliderRef.current) return;
+            // Не снэпать сразу после выхода из карточек
+            if (recentlyExitedCardsRef.current) return;
+
+            const timelineEl = timelineWrapperRef.current;
+            const cardsEl = historyListRef.current;
+            const sectionEl = sectionRef.current;
+            if (!timelineEl || !cardsEl || !sectionEl) return;
+
+            const sectionRect = sectionEl.getBoundingClientRect();
+            if (sectionRect.bottom < 0 || sectionRect.top > window.innerHeight) {
+                lastLineY = null;
+                return;
+            }
+
+            const timelineRect = timelineEl.getBoundingClientRect();
+            const lineY = timelineRect.top + timelineRect.height / 2;
+            const centerY = window.innerHeight / 2;
+            const snapZone = 150; // Зона snap вокруг центра
+
+            // Определяем направление скролла
+            const wasAbove = lastLineY !== null && lastLineY > centerY;
+            const wasBelow = lastLineY !== null && lastLineY < centerY;
+            const isNearCenter = lineY > centerY - snapZone && lineY < centerY + snapZone;
+
+            // Если линия пересекла центр или находится в зоне snap
+            if (isNearCenter) {
+                const crossedDown = wasAbove && lineY <= centerY;
+                const crossedUp = wasBelow && lineY >= centerY;
+
+                if (crossedDown || crossedUp || Math.abs(lineY - centerY) < 50) {
+                    scrollSnapPending = true;
+
+                    // Определяем направление входа
+                    const isFromBottom = wasBelow || lineY > centerY;
+
+                    requestAnimationFrame(() => {
+                        activateCardsFocus(timelineEl, cardsEl, sectionEl, isFromBottom);
+                        scrollSnapPending = false;
+                    });
+                }
+            }
+
+            lastLineY = lineY;
+        };
+
+        window.addEventListener('wheel', handleWheelSnapToCards, { passive: false });
+        window.addEventListener('scroll', handleScrollSnap, { passive: true });
+        return () => {
+            window.removeEventListener('wheel', handleWheelSnapToCards);
+            window.removeEventListener('scroll', handleScrollSnap);
+        };
     }, [
         sectionRef,
         cardsFocused,
-        exitCardsFocus,
         historyListRef,
         timelineWrapperRef,
         cardsFocusInProgressRef,
+        exitToParentInProgressRef,
+        returnedToSliderRef,
+        setCardsFocused,
     ]);
 
     useEffect(() => {
@@ -157,7 +355,35 @@ export function useCompanyHistoryWheelHandlers({
                 isIntroActive && headerRect.top < window.innerHeight * 0.6 && headerRect.bottom > 0;
 
             const isInHeader = isPointerInHeader || isTriggerPointInHeader || isHeaderVisibleDuringIntro;
-            if (!isInHeader) return;
+
+            console.log('[EXIT_UP]', {
+                isInHeader,
+                isIntroActive,
+                exitToParentInProgress: exitToParentInProgressRef.current,
+                cardsFocused,
+                headerTop: headerRect.top,
+                headerBottom: headerRect.bottom
+            });
+
+            // Если header не виден и он выше viewport - скроллим к нему
+            if (!isInHeader) {
+                if (headerRect.top < 0) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+
+                    const sectionEl = sectionRef.current;
+                    if (sectionEl) {
+                        const sectionRect = sectionEl.getBoundingClientRect();
+                        const targetScroll = window.pageYOffset + sectionRect.top;
+                        window.scrollTo({
+                            top: targetScroll,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+                return;
+            }
 
             if (isIntroActive) {
                 headerIntroInProgressRef.current = false;
@@ -388,6 +614,8 @@ export function useCompanyHistoryWheelHandlers({
         const handleWheelDown = (e) => {
             if (!isHistoryActive(e)) return;
             if (e.deltaY <= 0) return;
+            // Не входить в карточки сразу после выхода из них
+            if (recentlyExitedCardsRef.current) return;
 
             const headerEl = historyHeaderRef.current;
             const cardsEl = historyListRef.current;
@@ -401,6 +629,17 @@ export function useCompanyHistoryWheelHandlers({
                 triggerY >= headerRect.top &&
                 triggerY <= headerRect.bottom &&
                 !(triggerY >= cardsRect.top && triggerY <= cardsRect.bottom);
+
+            console.log('[DOWN]', {
+                isInHeader,
+                textAnimationReady: textAnimationReady.current,
+                headerIntroInProgress: headerIntroInProgressRef.current,
+                hasScrollToCardsTriggered: hasScrollToCardsTriggered.current,
+                cardsFocused,
+                triggerY,
+                headerTop: headerRect.top,
+                headerBottom: headerRect.bottom
+            });
 
             if (!isInHeader) return;
             if (!textAnimationReady.current || headerIntroInProgressRef.current) return;
@@ -493,18 +732,15 @@ export function useCompanyHistoryWheelHandlers({
 
             cardsEl.style.marginTop = '0';
             cardsEl.style.marginBottom = '0';
-            cardsEl.style.paddingTop = `${paddingTopAfter}px`;
-            cardsEl.style.paddingBottom = '24px';
+            cardsEl.style.padding = '0';
             cardsEl.style.top = '0';
             cardsEl.style.height = '100vh';
             cardsEl.style.display = 'block';
             cardsEl.style.boxSizing = 'border-box';
 
-            cardsEl.style.overflowY = 'scroll';
-            cardsEl.style.overflowX = 'hidden';
-
+            // overflow: visible для карточек (центрирование через CSS Grid)
+            cardsEl.style.overflow = 'visible';
             cardsEl.style.overscrollBehavior = 'contain';
-            cardsEl.style.scrollbarWidth = 'none';
 
             const rectAfterInline = cardsEl.getBoundingClientRect();
             const inlineJumpY = rectAfterInline.top - topBefore;
@@ -543,7 +779,8 @@ export function useCompanyHistoryWheelHandlers({
 
                     const yNow = Number(gsap.getProperty(cardsEl, 'y') || 0);
 
-                    const targetTopInViewport = 137;
+                    // Линия центрируется через CSS Grid (50vh), контейнер должен быть вверху
+                    const targetTopInViewport = 0;
                     const shiftY = targetTopInViewport - topStable;
                     const finalY = snap1(yNow + shiftY);
 
@@ -614,13 +851,13 @@ export function useCompanyHistoryWheelHandlers({
         hasRestoreTriggered,
         setCardsFocused,
     ]);
-   
+
     useEffect(() => {
         const container = timelineWrapperRef.current;
         if (!container) return;
 
         const MARGIN = 50;
-   
+
         const getCurrentOffset = () => horizontalOffsetRef.current;
         const setCurrentOffset = (val) => { horizontalOffsetRef.current = val; };
 
@@ -651,27 +888,27 @@ export function useCompanyHistoryWheelHandlers({
 
             return rightmost;
         };
-    
+
+        // Вычисляем offset при котором последняя карточка станет полностью видима
         const getMaxOffset = () => {
             const lastCard = getLastCard();
             if (!lastCard) return 0;
 
             const rect = lastCard.getBoundingClientRect();
-            const cardCenterX = rect.left + rect.width / 2 + getCurrentOffset();
-            const viewportCenterX = window.innerWidth / 2;
-
-            return Math.max(0, cardCenterX - viewportCenterX);
+            // Правый край карточки + текущий offset = абсолютная позиция
+            const cardRightX = rect.right + getCurrentOffset();
+            // Offset при котором правый край будет у правого края экрана (с отступом)
+            return Math.max(0, cardRightX - window.innerWidth + MARGIN);
         };
-    
-        const isLastCardCentered = () => {
+
+        // Проверяем что последняя карточка полностью видима на экране
+        const isLastCardFullyVisible = () => {
             const lastCard = getLastCard();
             if (!lastCard) return true;
 
             const rect = lastCard.getBoundingClientRect();
-            const cardCenterX = rect.left + rect.width / 2;
-            const viewportCenterX = window.innerWidth / 2;
-
-            return cardCenterX <= viewportCenterX + MARGIN;
+            // Правый край карточки должен быть внутри viewport (с небольшим отступом)
+            return rect.right <= window.innerWidth - MARGIN;
         };
 
         const applyTransform = (offset) => {
@@ -696,14 +933,11 @@ export function useCompanyHistoryWheelHandlers({
             const currentOffset = getCurrentOffset();
 
             if (down) {
-                const centered = isLastCardCentered();
-                const atMax = currentOffset >= maxOffset;
+                const fullyVisible = isLastCardFullyVisible();
 
-                if (centered || atMax) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
-                    window.scrollBy({ top: Math.abs(dy), behavior: 'auto' });
+                // Когда последняя карточка полностью видима - продолжаем вертикальный скролл
+                if (fullyVisible) {
+                    // Не блокируем event - позволяем странице скроллиться
                     return;
                 }
 
@@ -717,11 +951,11 @@ export function useCompanyHistoryWheelHandlers({
                 return;
             }
 
-            if (up) {            
+            if (up) {
                 const rect = container.getBoundingClientRect();
                 const containerCenterY = rect.top + rect.height / 2;
                 const cardsInViewport = containerCenterY > 100 && containerCenterY < window.innerHeight - 100;
-           
+
                 if (!cardsInViewport) {
                     e.preventDefault();
                     e.stopPropagation();
@@ -729,15 +963,26 @@ export function useCompanyHistoryWheelHandlers({
                     window.scrollBy({ top: -Math.abs(dy), behavior: 'auto' });
                     return;
                 }
-             
+
+                // Когда offset = 0 - вызываем exitCardsFocus (карточки опускаются, появляется текст)
                 if (currentOffset <= 0) {
                     e.preventDefault();
                     e.stopPropagation();
                     if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
-                    window.scrollBy({ top: -Math.abs(dy), behavior: 'auto' });
+
+                    const cardsEl = historyListRef.current;
+                    if (cardsEl) {
+                        // Блокируем повторный snap на 2 секунды после выхода
+                        recentlyExitedCardsRef.current = true;
+                        setTimeout(() => {
+                            recentlyExitedCardsRef.current = false;
+                        }, 2000);
+
+                        exitCardsFocus(cardsEl);
+                    }
                     return;
                 }
-            
+
                 e.preventDefault();
                 e.stopPropagation();
                 if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
@@ -747,7 +992,7 @@ export function useCompanyHistoryWheelHandlers({
                 applyTransform(newOffset);
             }
         };
- 
+
         if (!cardsFocused) {
             container.style.transform = '';
             setCurrentOffset(0);
@@ -758,5 +1003,5 @@ export function useCompanyHistoryWheelHandlers({
             window.removeEventListener('wheel', handleWheelHorizontal);
             container.style.transform = '';
         };
-    }, [cardsFocused, timelineWrapperRef, cardsFocusInProgressRef]);
+    }, [cardsFocused, timelineWrapperRef, cardsFocusInProgressRef, historyListRef, exitCardsFocus]);
 }
