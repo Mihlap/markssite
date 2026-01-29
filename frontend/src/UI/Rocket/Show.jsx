@@ -60,7 +60,7 @@ const Show = React.memo(() => {
     if (RotationRef.current) {
       RotationRef.current.rotation.z += rotationSpeedRef.current * delta * 60;
     }
-  });  
+  });
 
   return (
     <group rotation={[-0.5, -0.95, 0]} position={[posX, -5.5, 16]}>

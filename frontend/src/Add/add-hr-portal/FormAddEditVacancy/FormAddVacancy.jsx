@@ -58,6 +58,7 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
   const quillRef3 = useRef(null);
 
   const quillRefs = useMemo(() => [quillRef1, quillRef2, quillRef3], []);
+
   const applyStylesToQuillEditor = useCallback((quillRef) => {
     if (quillRef && quillRef.current) {
       const editor = quillRef.current.getEditor();
@@ -72,29 +73,61 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
   }, []);
 
   const openExitConfirm = useCallback(() => setShowExitConfirm(true), []);
-
   useInterceptExternalClose(`.${adminStyles.card_components_admin__close_button}`, openExitConfirm);
 
   useEffect(() => {
     quillRefs.forEach((quillRef) => applyStylesToQuillEditor(quillRef));
   }, [applyStylesToQuillEditor, quillRefs]);
 
-  useEffect(() => {
-    const quill = quillRef1.current.getEditor();
+  const attachSpaceBinding = useCallback((quillRef) => {
+    const quill = quillRef.current?.getEditor?.();
+    if (!quill) return;
 
-    quill.on('text-change', () => {
-      const plainText = quill.getText();
+    if (quill.__spaceFixApplied) return;
+    quill.__spaceFixApplied = true;
 
-      if (plainText.length > 300) {
-        const excessLength = plainText.length - 301;
-        quill.deleteText(quill.getLength() - 1 - excessLength, quill.getLength() - 1, 'silent');
-      }
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        textBlock1: quill.root.innerHTML,
-      }));
+    quill.keyboard.addBinding({ key: 32 }, (range) => {
+      if (!range) return true;
+
+      if (range.length) quill.deleteText(range.index, range.length, 'user');
+      quill.insertText(range.index, ' ', 'user');
+      quill.setSelection(range.index + 1, 0, 'silent');
+
+      return false;
     });
-  }, [setFormData]);
+  }, []);
+
+  useEffect(() => {
+    attachSpaceBinding(quillRef1);
+    attachSpaceBinding(quillRef2);
+    attachSpaceBinding(quillRef3);
+  }, [attachSpaceBinding]);
+
+  const onChangeTextBlock1 = useCallback((content, delta, source, editor) => {
+    if (source !== 'user') return;
+
+    const plain = editor.getText();
+    if (plain.length > 301) {
+      const quill = quillRef1.current?.getEditor?.();
+      if (!quill) return;
+
+      const excess = plain.length - 301;
+      quill.deleteText(quill.getLength() - 1 - excess, excess, 'user');
+      return;
+    }
+
+    setFormData((prev) => (prev.textBlock1 === content ? prev : { ...prev, textBlock1: content }));
+  }, []);
+
+  const onChangeTextBlock2 = useCallback((content, delta, source) => {
+    if (source !== 'user') return;
+    setFormData((prev) => (prev.textBlock2 === content ? prev : { ...prev, textBlock2: content }));
+  }, []);
+
+  const onChangeTextBlock3 = useCallback((content, delta, source) => {
+    if (source !== 'user') return;
+    setFormData((prev) => (prev.textBlock3 === content ? prev : { ...prev, textBlock3: content }));
+  }, []);
 
   const handleSubmit = useCallback(
     async (event) => {
@@ -114,6 +147,7 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
           workMode: '',
           skills: [],
           benefits: [],
+          type: type,
         });
         setIsModalOpen(false);
       } catch (err) {
@@ -122,7 +156,7 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
         setLoading(false);
       }
     },
-    [dispatch, formData, setIsModalOpen]
+    [dispatch, formData, setIsModalOpen, type]
   );
 
   const handleBlur = useCallback((event) => {
@@ -160,9 +194,11 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
           Заполните предыдущий блок или дождитесь загрузки изображений❗
         </div>
       )}
+
       <div className={styles.form_container__title}>
         Новая {selectedFilter === 'Вакансии' ? 'вакансия' : 'стажировка'}
       </div>
+
       <div className={styles.form_container__block_form}>
         <form className={styles.form_container__form} onSubmit={handleSubmit}>
           <div className={styles.form_container__block_gray_one}>
@@ -176,10 +212,7 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                 value={formData.title}
                 onChange={(event) => {
                   const { name, value } = event.target;
-                  setFormData((prevFormData) => ({
-                    ...prevFormData,
-                    [name]: value,
-                  }));
+                  setFormData((prev) => ({ ...prev, [name]: value }));
                 }}
                 required
               />
@@ -187,11 +220,13 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                 Название вакансии
               </label>
             </div>
+
             {selectBlocks.map((block, index) => (
               <div key={`${block.name}_${index}`} className={`${styles.group} some-unique-class`}>
                 <label
                   className={`${styles.label1} ${isFocused[block.name] || formData[block.name] ? styles.focused1 : ''
-                    }`}>
+                    }`}
+                >
                   <Select
                     className={`${styles.form__group} ${styles.field}`}
                     id={`${block.name}-input`}
@@ -213,19 +248,19 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
               </div>
             ))}
           </div>
+
           <div className={styles.form_container__block_gray_one}>
             <div className={styles.heading_textarea}>
               <div className={styles.form_container__description_text}>
                 <div className={styles.form_container__textarea_length}>
                   {`${quillRef1.current ? quillRef1.current.getEditor().getText().length - 1 : 0}/300`}
                 </div>
+
                 <ReactQuill
                   ref={quillRef1}
                   modules={{
                     toolbar: [['bold', 'underline', { list: 'bullet' }]],
-                    clipboard: {
-                      matchVisual: false,
-                    },
+                    clipboard: { matchVisual: false },
                   }}
                   formats={['bold', 'underline', 'list']}
                   className={styles.form_container__textarea}
@@ -237,6 +272,7 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                     fontSize: '16px',
                     fontStyle: 'normal',
                     fontWeight: 'var(--fw-400)',
+                    lineHeight: '16px',
                     color: 'var(---black-1D2E43)',
                     boxSizing: 'border-box',
                     paddingBottom: '2.5rem',
@@ -245,20 +281,17 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                   name="textBlock1"
                   id="textBlock1"
                   value={formData.textBlock1}
-                  onChange={(value) => {
-                    setFormData((prevFormData) => ({
-                      ...prevFormData,
-                      textBlock1: value,
-                    }));
-                  }}
+                  onChange={onChangeTextBlock1}
                   placeholder="Не более 300 символов"
                 />
+
                 <label htmlFor="textBlock1" className={styles.form_container__textarea_label_constructor}>
                   Мы ищем
                 </label>
               </div>
             </div>
           </div>
+
           <div className={styles.form_container__block_gray_one}>
             <div className={styles.heading_textarea}>
               <div className={styles.form_container__description_text}>
@@ -266,9 +299,7 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                   ref={quillRef2}
                   modules={{
                     toolbar: [['bold', 'underline', { list: 'bullet' }]],
-                    clipboard: {
-                      matchVisual: false,
-                    },
+                    clipboard: { matchVisual: false },
                   }}
                   formats={['bold', 'underline', 'list']}
                   className={styles.form_container__textarea}
@@ -289,20 +320,17 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                   name="textBlock2"
                   id="textBlock2"
                   value={formData.textBlock2}
-                  onChange={(value) => {
-                    setFormData((prevFormData) => ({
-                      ...prevFormData,
-                      textBlock2: value,
-                    }));
-                  }}
+                  onChange={onChangeTextBlock2}
                   placeholder="нет ограничений по символам"
                 />
+
                 <label htmlFor="textBlock2" className={styles.form_container__textarea_label_constructor}>
                   Вам предстоит
                 </label>
               </div>
             </div>
           </div>
+
           <div className={styles.form_container__block_gray_one}>
             <div className={styles.heading_textarea}>
               <div className={styles.form_container__description_text}>
@@ -310,9 +338,7 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                   ref={quillRef3}
                   modules={{
                     toolbar: [['bold', 'underline', { list: 'bullet' }]],
-                    clipboard: {
-                      matchVisual: false,
-                    },
+                    clipboard: { matchVisual: false },
                   }}
                   formats={['bold', 'underline', 'list']}
                   className={styles.form_container__textarea}
@@ -333,20 +359,17 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                   name="textBlock3"
                   id="textBlock3"
                   value={formData.textBlock3}
-                  onChange={(value) => {
-                    setFormData((prevFormData) => ({
-                      ...prevFormData,
-                      textBlock3: value,
-                    }));
-                  }}
+                  onChange={onChangeTextBlock3}
                   placeholder="нет ограничений по символам"
                 />
+
                 <label htmlFor="textBlock3" className={styles.form_container__textarea_label_constructor}>
                   Требования
                 </label>
               </div>
             </div>
           </div>
+
           <SubmitButtons
             classNames={{
               wrapper: styles.form_container__button_block,
