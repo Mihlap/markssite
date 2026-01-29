@@ -86,7 +86,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding-top: 32px;
+        padding-top: 24px;
     }
 
     .social {
@@ -206,9 +206,9 @@
     padding-bottom: 68px;
 }
 
-.agreement_vacancy[data-max-files="true"] {
+/* .agreement_vacancy[data-max-files="true"] {
     padding-bottom: 50px;
-}
+} */
 
 .agreement_vacancy_link {
     composes: agreement_vacancy_text;

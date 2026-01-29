@@ -29,8 +29,8 @@ import PageFade from './UI/PageFade/PageFade';
 import ButtonAdmin from './UI/ButtonAdmin/ButtonAdmin';
 import CustomCursor from './UI/CustomCursor/CustomCursor';
 import CookieComponent from './UI/CookieComponent/CookieComponent';
-// import Loading from './Loading/LoadingNew';
-import Loading from './UI/Loading/christmas/Loading';
+import Loading from './Loading/LoadingNew';
+// import Loading from './UI/Loading/christmas/Loading';
 
 const Header = lazy(() => import('./Header/Header'));
 const Contacts = lazy(() => import('./Contacts/Contacts'));

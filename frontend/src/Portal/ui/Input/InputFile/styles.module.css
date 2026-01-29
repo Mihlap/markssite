@@ -11,6 +11,10 @@
     padding-top: 0;
 }
 
+.wrap[data-variant="full"] {
+    padding-bottom: 0;
+}
+
 .previewWrap {
     --var-padding: 40px;
     display: flex;
