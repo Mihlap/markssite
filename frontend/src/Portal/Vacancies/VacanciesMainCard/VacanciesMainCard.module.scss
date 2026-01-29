@@ -177,20 +177,21 @@
     padding: 155px 561px 160px 112px;
 
     @media (max-width: 1730px) {
-      padding: 89px 205px 98px 62px;
+      padding: calc(60px +  89px) 205px 98px 62px;
     }
 
     @media (max-width: 1440px) {
       @include flex(32px, column);
-      padding: 89px 205px 24px 62px;
+      padding: calc(60px + 89px) 205px 24px 62px;
     }
 
     @media (max-width: 1024px) {
       margin-right: auto;
+      padding: calc(60px + 89px) 177px 60px 55px;
     }
 
-    @media (max-width: 425px) {
-      padding: 88px 60px 24px 16px;
+    @media (max-width: 430px) {
+      padding: calc(60px + 88px) 16px 24px 16px;
       gap: 24px;
     }
 
