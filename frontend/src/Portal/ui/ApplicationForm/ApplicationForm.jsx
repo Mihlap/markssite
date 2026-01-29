@@ -11,7 +11,6 @@ import telegramIcon from './icons/telegram.svg';
 import styles from './styles.module.css';
 
 const ApplicationForm = ({ variant: variantProp = 'full', initialDirection }) => {
-  console.log(initialDirection);
   const defaultDirection = useMemo(
     () => directionOptions.find((opt) => opt.value === initialDirection) || null,
     [initialDirection]
@@ -26,6 +25,7 @@ const ApplicationForm = ({ variant: variantProp = 'full', initialDirection }) =>
     reset,
     control,
     watch,
+    trigger,
     formState: { errors, isValid },
   } = useForm({
     mode: 'onChange',
@@ -202,6 +202,13 @@ const ApplicationForm = ({ variant: variantProp = 'full', initialDirection }) =>
                       value: 500,
                       message: 'Максимум 500 символов',
                     },
+                    validate: (value, formValues) => {
+                      const files = formValues.resumeFiles;
+                      if (!value && (!files || files.length === 0)) {
+                        return 'Добавьте ссылку или прикрепите файл';
+                      }
+                      return true;
+                    },
                   })}
                   error={errors.resume?.message}
                 />
@@ -212,6 +219,8 @@ const ApplicationForm = ({ variant: variantProp = 'full', initialDirection }) =>
                   clearErrors={clearErrors}
                   error={errors.resumeFiles?.message}
                   variant={variantProp}
+                  trigger={trigger}
+                  hasInputError={!!errors.resume}
                 />
               </div>
             </div>
@@ -302,6 +311,13 @@ const ApplicationForm = ({ variant: variantProp = 'full', initialDirection }) =>
                     value: 500,
                     message: 'Максимум 500 символов',
                   },
+                  validate: (value, formValues) => {
+                    const files = formValues.resumeFiles;
+                    if (!value && (!files || files.length === 0)) {
+                      return 'Добавьте ссылку или прикрепите файл';
+                    }
+                    return true;
+                  },
                 })}
                 error={errors.resume?.message}
               />
@@ -314,6 +330,8 @@ const ApplicationForm = ({ variant: variantProp = 'full', initialDirection }) =>
               clearErrors={clearErrors}
               error={errors.resumeFiles?.message}
               variant={variantProp}
+              trigger={trigger}
+              hasInputError={!!errors.resume}
             />
 
             <div className={styles.agreement_vacancy} data-max-files={resumeFiles?.length === 2}>
