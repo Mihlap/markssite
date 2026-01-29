@@ -8,7 +8,7 @@ import { addVacancy } from '../../../store/Slice/vacanciesSlice.js';
 import { selectBlocks } from '../utils.js';
 import useInterceptExternalClose from '../../hooks/useInterceptExternalClose.js';
 
-import customStyle  from './customStyle.js';
+import customStyle from './customStyle.js';
 import styles from './FormAddVacancy.module.scss';
 import adminStyles from '../../style/style-card.module.scss';
 
@@ -190,9 +190,8 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
             {selectBlocks.map((block, index) => (
               <div key={`${block.name}_${index}`} className={`${styles.group} some-unique-class`}>
                 <label
-                  className={`${styles.label1} ${
-                    isFocused[block.name] || formData[block.name] ? styles.focused1 : ''
-                  }`}>
+                  className={`${styles.label1} ${isFocused[block.name] || formData[block.name] ? styles.focused1 : ''
+                    }`}>
                   <Select
                     className={`${styles.form__group} ${styles.field}`}
                     id={`${block.name}-input`}

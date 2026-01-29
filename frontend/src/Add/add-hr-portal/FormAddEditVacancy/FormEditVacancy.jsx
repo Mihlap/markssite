@@ -70,9 +70,9 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
     }
   }, []);
 
-   const openExitConfirm = useCallback(() => setShowExitConfirm(true), []);
-  
-   useInterceptExternalClose(`.${adminStyles.card_components_admin__close_button}`, openExitConfirm);
+  const openExitConfirm = useCallback(() => setShowExitConfirm(true), []);
+
+  useInterceptExternalClose(`.${adminStyles.card_components_admin__close_button}`, openExitConfirm);
 
   useEffect(() => {
     quillRefs.forEach((quillRef) => applyStylesToQuillEditor(quillRef));
@@ -102,10 +102,10 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
         if (!str) return [];
         const parts = str.split(',').map((s) => s.trim());
         let result = [];
-        for (let i = 0; i < parts.length; i++) {     
+        for (let i = 0; i < parts.length; i++) {
           if (validOptions.includes(parts[i])) {
             result.push(parts[i]);
-          } else if (i < parts.length - 1) {     
+          } else if (i < parts.length - 1) {
             const combined = parts[i] + ', ' + parts[i + 1];
             if (validOptions.includes(combined)) {
               result.push(combined);
@@ -119,8 +119,8 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
         }
         return result;
       };
- 
-      const benefitsOptions = selectBlocks.find((b) => b.name === 'benefits')?.options.map((o) => o.value) || [];     
+
+      const benefitsOptions = selectBlocks.find((b) => b.name === 'benefits')?.options.map((o) => o.value) || [];
       const skillsOptions = selectBlocks.find((b) => b.name === 'skills')?.options.map((o) => o.value) || [];
       const directionOptions = selectBlocks.find((b) => b.name === 'direction')?.options.map((o) => o.value) || [];
       const experienceOptions = selectBlocks.find((b) => b.name === 'experience')?.options.map((o) => o.value) || [];
@@ -242,9 +242,8 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
             {selectBlocks.map((block, index) => (
               <div key={`${block.id}_${block.name}_${index}`} className={`${styles.group} some-unique-class`}>
                 <label
-                  className={`${styles.label1} ${
-                    isFocused[block.name] || formData[block.name] ? styles.focused1 : ''
-                  }`}>
+                  className={`${styles.label1} ${isFocused[block.name] || formData[block.name] ? styles.focused1 : ''
+                    }`}>
                   <Select
                     className={`${styles.form__group} ${styles.field}`}
                     id={`${block.name}-input`}
@@ -257,9 +256,9 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
                     value={
                       Array.isArray(formData[block.name])
                         ? formData[block.name].map((value) => ({
-                            label: value,
-                            value: value,
-                          }))
+                          label: value,
+                          value: value,
+                        }))
                         : []
                     }
                     placeholder={block.label}
