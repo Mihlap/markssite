@@ -15,6 +15,10 @@
     padding-bottom: 0;
 }
 
+.wrap[data-has-input-error="true"] {
+    padding-top: 30px;
+}
+
 .previewWrap {
     --var-padding: 40px;
     display: flex;

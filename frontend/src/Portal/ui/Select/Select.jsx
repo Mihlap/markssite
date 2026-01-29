@@ -1,21 +1,26 @@
+import { forwardRef } from 'react';
 import clsx from 'clsx';
 import ReactSelect from 'react-select';
 import styles from './styles.module.css';
 
-export default function Select({
-  options,
-  value,
-  onChange,
-  variant = 'simple',
-  placeholder = 'Выберите...',
-  isDisabled = false,
-  isSearchable = true,
-  className,
-  ...rest
-}) {
+const Select = forwardRef(function Select(
+  {
+    options,
+    value,
+    onChange,
+    variant = 'simple',
+    placeholder = 'Выберите...',
+    isDisabled = false,
+    isSearchable = true,
+    className,
+    ...rest
+  },
+  ref
+) {
   return (
     <div className={clsx(styles.select, className)} data-variant={variant}>
       <ReactSelect
+        ref={ref}
         options={options}
         value={value}
         onChange={onChange}
@@ -27,4 +32,6 @@ export default function Select({
       />
     </div>
   );
-}
+});
+
+export default Select;
