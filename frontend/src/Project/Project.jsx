@@ -133,12 +133,15 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
 
   const handleChange = useCallback(
     (event) => {
-      const address = event.target.value.toLowerCase();
+      const address = event.target.value;
       setValue(address);
-      setIsValid(address === '');
+      setIsValid(address.trim() === '');
       setIsTyping(true);
       setSelectOnCompetencies('');
-      if (!address) {
+      
+      if (address.trim()) {
+        dispatch(setSelectedCity(''));
+      } else {
         dispatch(setSelectedCity(''));
         setSelectOnCompetencies('Все');
       }
@@ -154,18 +157,15 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
     (event) => {
       if (event.key === 'Enter') {
         event.preventDefault();
-        const address = event.target.value;
+        const address = event.target.value.trim();
         setIsFocusedProject(false);
-        if (!address) {
-          dispatch(setSelectedCity(''));
-        }
         setValue(address);
-        setIsValid(address === '');
+        setIsValid(address === '');   
         dispatch(setSelectedCity(''));
         setSelectOnCompetencies('');
-        if (address.trim() === '') {
+        if (address === '') {
           setSelectOnCompetencies('Все');
-        }
+        }      
         event.target.blur();
       }
     },
@@ -174,20 +174,17 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
 
   const handleBlur = useCallback(
     (event) => {
-      const address = event.target.value;
+      const address = event.target.value.trim();
       setIsFocusedProject(false);
-      if (!address) {
-        dispatch(setSelectedCity(''));
-      }
       setValue(address);
-      setIsValid(isValid);
-      dispatch(setSelectedCity(''));
-      setSelectOnCompetencies('');
-      if (value.trim() === '') {
+      setIsValid(address === '');
+
+      if (address === '') {
+        dispatch(setSelectedCity(''));
         setSelectOnCompetencies('Все');
       }
     },
-    [dispatch, isValid, value]
+    [dispatch]
   );
 
   const handleButtonClick = useCallback(
@@ -213,6 +210,8 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
       dispatch(getFetchFormCityFilter(currentPage, projectsPerPage, countryCity));
       setCurrentPage(1);
       setSelectOnCompetencies('');
+      setValue('');
+      setIsValid(true);
     },
     [dispatch, currentPage, projectsPerPage, isTyping]
   );
@@ -308,15 +307,23 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
       )
       .filter((project) => {
         const projectCity = extractCityFromCountryCity(project.countryCity);
-        return selectedCity === '' ? true : projectCity === selectedCity;
-      })
-      .filter((project) => {
-        const searchValue = value?.toLowerCase();
-        const projectLocation = project.location?.toLowerCase();
-        const projectCity = extractCityFromCountryCity(project.countryCity)?.toLowerCase();
-        return (
-          projectLocation?.includes(searchValue) && (selectedCity === '' || projectCity === selectedCity?.toLowerCase())
-        );
+        const searchValue = (value || '').trim().toLowerCase();
+        const projectLocation = (project.location || '').toLowerCase();
+        const projectCityLower = projectCity?.toLowerCase();
+   
+        if (selectedCity) {
+          const matchesCity = projectCity === selectedCity;         
+          if (searchValue) {
+            return matchesCity && projectLocation.includes(searchValue);
+          }
+          return matchesCity;
+        }
+  
+        if (searchValue) {
+          return projectLocation.includes(searchValue);
+        }
+
+        return true;
       });
   }, [projects, selectOnCompetencies, selectedCity, value]);
 
@@ -450,9 +457,9 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
                         onMouseEnter={handleMouseEnter}
                         onMouseLeave={handleMouseLeave}
                         className={`${styles.menu__button__allProject} ${!isModalProjectOpen &&
-                            (el === selectedViewConstruction || (index === 0 && !selectedViewConstruction))
-                            ? styles.active
-                            : ''
+                          (el === selectedViewConstruction || (index === 0 && !selectedViewConstruction))
+                          ? styles.active
+                          : ''
                           }`}
                         onClick={() => handleButtonClick(el)}>
                         <p className={styles.menu_button_items}>{el}</p>
