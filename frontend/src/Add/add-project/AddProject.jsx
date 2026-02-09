@@ -11,6 +11,7 @@ import { fetchToggleStateAsync, updateToggleStateAsync } from '../../store/Slice
 // import Loading from "./loading/Loading";
 import LoadingModal from './loading/LoadingModal';
 import Edit from '../icon/Edit.svg';
+import { UiMarksDialog } from '../ui';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
@@ -26,6 +27,7 @@ export default function AddProject({ user }) {
   const [deleteModalState, setDeleteModalState] = useState({});
   const [modalBlockHeight, setModalBlockHeight] = useState('auto');
   const [editProjectData, setEditProjectData] = useState(null);
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const isMountedRef = useRef(true);
   const updateModalBlockHeight = useCallback(() => {
@@ -145,31 +147,33 @@ export default function AddProject({ user }) {
             </div>
           </div>
         </div>
-        <div className={styles.card_components_admin__button_block} onClick={handleOpenModal}>
-          <button className={styles.card_components_admin__button}>
-            <div>
-              <svg
-                className={styles.card_components_admin__icon}
-                width="41"
-                height="40"
-                viewBox="0 0 41 40"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <g id="icon">
-                  <circle id="Ellipse 4" cx="20.5" cy="20" r="20" fill="#F6F6F6" />
-                  <path
-                    id="Vector 10"
-                    d="M10.5 20H20.5M30.5 20H20.5M20.5 20V10M20.5 20V30"
-                    stroke="#75BBFD"
-                    strokeWidth="2"
-                    strokeLinecap="square"
-                  />
-                </g>
-              </svg>
-            </div>
-            <div className={styles.card_components_admin__button_text}>Добавить новый проект</div>
-          </button>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <div className={styles.card_components_admin__button_block} onClick={handleOpenModal}>
+            <button className={styles.card_components_admin__button}>
+              <div>
+                <svg
+                  className={styles.card_components_admin__icon}
+                  width="41"
+                  height="40"
+                  viewBox="0 0 41 40"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <g id="icon">
+                    <circle id="Ellipse 4" cx="20.5" cy="20" r="20" fill="#F6F6F6" />
+                    <path
+                      id="Vector 10"
+                      d="M10.5 20H20.5M30.5 20H20.5M20.5 20V10M20.5 20V30"
+                      stroke="#75BBFD"
+                      strokeWidth="2"
+                      strokeLinecap="square"
+                    />
+                  </g>
+                </svg>
+              </div>
+              <div className={styles.card_components_admin__button_text}>Добавить новый проект</div>
+            </button>
+          </div>
+          <button onClick={() => setIsOpen(true)}>New Form</button>
         </div>
         {isModalOpen && (
           <div className={styles.card_components_admin__modal_container}>
@@ -207,10 +211,11 @@ export default function AddProject({ user }) {
                     {sortedProjects?.map((el) => {
                       const defaultPhoto = cat;
                       const photoName = el?.imageProject;
-                      const photoSrc = photoName && photoName.includes('https')
-                        ? photoName
-                        : `${bucket_url}/images/imageAdd/${photoName || defaultPhoto}`;                                      
-                 
+                      const photoSrc =
+                        photoName && photoName.includes('https')
+                          ? photoName
+                          : `${bucket_url}/images/imageAdd/${photoName || defaultPhoto}`;
+
                       return (
                         <React.Fragment key={el.id}>
                           <div key={el.id} className={styles.cart_project_container}>
@@ -266,8 +271,7 @@ export default function AddProject({ user }) {
                               )}
                               <button
                                 className={styles.cart_project_container__copyButton}
-                                onClick={() => handleCopyClick(el.id)}
-                              >
+                                onClick={() => handleCopyClick(el.id)}>
                                 <div className={styles.cart_project_container__copyButton_img_copu_ok} />
                               </button>
                             </div>
@@ -294,8 +298,7 @@ export default function AddProject({ user }) {
 
                                 <button
                                   className={styles.delete_modal_block__close_button}
-                                  onClick={() => handleDeleteModalClose(el.id)}
-                                ></button>
+                                  onClick={() => handleDeleteModalClose(el.id)}></button>
                               </div>
                             </div>
                           )}
@@ -309,6 +312,7 @@ export default function AddProject({ user }) {
           )}
         </div>
       </div>
+      <UiMarksDialog isOpen={isOpen} onClose={() => setIsOpen(false)} title="Новый проект" />
     </section>
   );
 }

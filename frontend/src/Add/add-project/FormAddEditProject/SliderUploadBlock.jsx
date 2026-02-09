@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { UiMarksInput } from "../../ui/";
 function SliderUploadBlock({
   styles,
   inputData,
@@ -35,14 +36,33 @@ function SliderUploadBlock({
   return (
     <div className={`${styles.image_four} ${styles.flex_block_gap}`}>
       <div className={`${styles.slider_container} ${styles.flex_block_gap}`}>
-        <div className={styles.form_container__checkbox_block}>
-          <div>
-            Слайдер
-            <span> *допускается загрузка 4х изображений</span>
-          </div>
-        </div>
         <div style={{ display: isDropPhotoVisible ? 'inline-block' : 'none' }}>
-          <label className={styles.slider_container__customFileUpload}>
+          <UiMarksInput
+            type="file"
+            name="dropPhoto"
+            label="Слайдер *допускается загрузка 4х&nbsp;изображений"
+            onChange={(event) =>
+              changeHandler(
+                event,
+                inputData,
+                setInputData,
+                setPreviewPhotos,
+                setIsDropPhotoVisible,
+                setPreviewPhotoAva,
+                setIsPhotoAvaVisible,
+                setPreviewPhotoOpen,
+                setIsPhotoOpenVisible,
+                setPreviewPhotoClose,
+                setIsPhotoCloseVisible,
+                setIsLoading,
+                setIsLoadingDropPhoto,
+                setIsLoadingOpenImage,
+                setIsLoadingCloseImage
+              )
+            }
+            color="grey"
+          />
+          {/* <label className={styles.slider_container__customFileUpload}>
             <input
               type="file"
               name="dropPhoto"
@@ -80,7 +100,7 @@ function SliderUploadBlock({
               </g>
             </svg>
             <div className={styles.slider_container__uploadTextForm}>Загрузить изображения</div>
-          </label>
+          </label> */}
           {isLoadingDropPhoto && <div className={styles.preview_photos_container__loading}>Загрузка . . .</div>}
         </div>
       </div>

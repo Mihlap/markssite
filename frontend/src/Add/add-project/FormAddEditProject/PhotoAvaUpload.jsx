@@ -1,4 +1,6 @@
 import { memo } from "react";
+import { UiMarksInput } from "../../ui";
+
 function PhotoAvaUpload({
   styles,
   inputData,
@@ -27,15 +29,34 @@ function PhotoAvaUpload({
 
   return (
     <div className={`${styles.photo_orientation_selector} ${styles.flex_block_gap}`}>
-      <div className={styles.form_container__checkbox_block}>
-        <div>
-          Выберете фото
-          <span> для отображения на странице “Проекты”</span>
-        </div>
-      </div>
       {!existingPhoto && (
         <div style={{ display: isPhotoAvaVisible ? 'inline-block' : 'none' }}>
-          <label className={styles.slider_container__customFileUpload}>
+          <UiMarksInput
+            type="file"
+            name="photoAva"
+            label="Загрузите фото превью *для отображения на&nbsp;странице &laquo;Проекты&raquo;"
+            onChange={(event) =>
+              changeHandler(
+                event,
+                inputData,
+                setInputData,
+                setPreviewPhotos,
+                setIsDropPhotoVisible,
+                setPreviewPhotoAva,
+                setIsPhotoAvaVisible,
+                setPreviewPhotoOpen,
+                setIsPhotoOpenVisible,
+                setPreviewPhotoClose,
+                setIsPhotoCloseVisible,
+                setIsLoading,
+                setIsLoadingDropPhoto,
+                setIsLoadingOpenImage,
+                setIsLoadingCloseImage
+              )
+            }
+            color="grey"
+          />
+          {/* <label className={styles.slider_container__customFileUpload}>
             <input
               type="file"
               name="photoAva"
@@ -73,7 +94,7 @@ function PhotoAvaUpload({
             </svg>
 
             <div className={styles.slider_container__uploadTextForm}>Загрузить изображения</div>
-          </label>
+          </label> */}
           {isLoading && <div className={styles.preview_photos_container__loading}>Загрузка . . .</div>}
         </div>
       )}

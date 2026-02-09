@@ -1,4 +1,6 @@
 import { memo } from "react";
+import { UiMarksInput } from "../../ui/index.js";
+
 function CloseImageBlock({
   styles,
   inputData,
@@ -32,7 +34,32 @@ function CloseImageBlock({
       </div>
       {!existingClose && (
         <div style={{ display: isPhotoCloseVisible ? 'block' : 'none' }}>
-          <label className={styles.slider_container__customFileUpload}>
+          <UiMarksInput
+            type="file"
+            name="photo"
+            label="Изображение"
+            onChange={(event) =>
+              changeHandler(
+                event,
+                inputData,
+                setInputData,
+                setPreviewPhotos,
+                setIsDropPhotoVisible,
+                setPreviewPhotoAva,
+                setIsPhotoAvaVisible,
+                setPreviewPhotoOpen,
+                setIsPhotoOpenVisible,
+                setPreviewPhotoClose,
+                setIsPhotoCloseVisible,
+                setIsLoading,
+                setIsLoadingDropPhoto,
+                setIsLoadingOpenImage,
+                setIsLoadingCloseImage
+              )
+            }
+            color="grey"
+          />
+          {/* <label className={styles.slider_container__customFileUpload}>
             <input
               type="file"
               name="imageClose"
@@ -69,7 +96,8 @@ function CloseImageBlock({
               </g>
             </svg>
             <div className={styles.slider_container__uploadTextForm}>Загрузить изображения</div>
-          </label>
+          </label> */}
+
           {isLoadingCloseImage && <div className={styles.preview_photos_container__loading}>Загрузка . . .</div>}
         </div>
       )}
