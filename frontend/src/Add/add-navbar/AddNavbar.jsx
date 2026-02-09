@@ -12,6 +12,7 @@ import pencilIcon from './icon/pencil.svg';
 import projectorIcon from './icon/projector.svg';
 import settingIcon from './icon/setting.svg';
 import exit from './icon/exit.svg';
+import ButtonAdm from '../ui/button/ButtonAdm';
 // import ChristmasTree from './icon/ChristmastreewithbulbandsnowPNGImage.png';
 
 export default function AddNavbar({ user, handleReturn }) {
@@ -191,9 +192,7 @@ export default function AddNavbar({ user, handleReturn }) {
       </nav>
       <div className={styles.button_position}>
         <div className={styles.button_container}>
-          <Link className={styles.button_xren} to="/" onClick={handleReturn}>
-            <span className={styles.button_xren__text}>Предпросмотр</span>
-          </Link>
+          <ButtonAdm className={styles.return_button} onClick={handleReturn}>Предпросмотр</ButtonAdm>
         </div>
       </div>
     </>

@@ -1,0 +1,12 @@
+# Figma Code Connect
+.env.figma.local
+.env.figma
+!.env.figma.example
+
+# Figma cache
+.figma/
+figma-cache/
+
+# Generated files
+*.figma.generated.*
+code-connect-*.json

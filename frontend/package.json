@@ -64,7 +64,9 @@
     "build": "cross-env GENERATE_SOURCEMAP=false react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "figma:publish": "figma-connect publish --documentUrl https://www.figma.com/design/yJRiwzNoy1JZChUCpZt9fy/%D0%A1%D0%B0%D0%B9%D1%82-MARKSGROUP",
+    "figma:parse": "figma-connect parse"
   },
   "overrides": {
     "postcss": "8.4.31",
@@ -117,6 +119,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@figma/code-connect": "^1.1.0",
     "autoprefixer": "^10.4.20",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "cross-env": "^10.1.0",

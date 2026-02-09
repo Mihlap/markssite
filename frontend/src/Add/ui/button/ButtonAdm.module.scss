@@ -1,0 +1,41 @@
+@import '../../../_variables.scss';
+
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: rem(16) rem(32);
+    width: rem(231);
+    border-radius: rem(66);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    overflow: hidden;
+
+    font-family: var(--font-raleway);
+    font-size: rem(16);
+    font-weight: var(--fw-400);
+    line-height: rem(24);
+    color: var(--white-F6F6F6);
+
+    &.normal {
+        background-color: var(--blue-75BBFD);
+
+        &:hover {
+            background-color: var(--dark-blue-389FFF);
+        }
+    }
+
+    &.hover {
+        background-color: var(--dark-blue-389FFF);
+    }
+
+    &.disable {
+        background-color: var(--light-blue-D4EDFB);
+        cursor: not-allowed;
+
+        &:hover {
+            background-color: var(--light-blue-D4EDFB);
+        }
+    }
+}
