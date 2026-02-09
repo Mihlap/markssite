@@ -1,10 +1,7 @@
 import { memo } from 'react';
 import Select from 'react-select';
-import { 
-  AnotherDropdownIndicator,
-  AnotherValueContainer,
-  AnotherStagesProject,
-} from './utils/CustomSelectComponents';
+import { AnotherDropdownIndicator, AnotherValueContainer, AnotherStagesProject } from './utils/CustomSelectComponents';
+import { UiMarksInput } from '../../ui/index.js';
 
 function LocationStagesBlock({
   styles,
@@ -12,7 +9,7 @@ function LocationStagesBlock({
   setInputData,
   customStyles,
   setIsFocused,
-  changeHandler,  
+  changeHandler,
   selectedDegreeParticipation,
   setSelectedDegreeParticipation,
   selectStatusObject,
@@ -23,21 +20,12 @@ function LocationStagesBlock({
   return (
     <div className={styles.measure_location_container}>
       <div className={`${styles.form_container__block_gray_one} ${styles.form_container__three_grey_block}`}>
-        <div className={`${styles.form__group} ${styles.field}`}>
-          <input
-            type="input"
-            className={styles.form__field}
-            placeholder="location"
-            name="location"
-            autoComplete="off"
-            id="location"
-            value={inputData.location ?? ''}
-            onChange={(event) => changeHandler(event, inputData, setInputData)}
-          />
-          <label htmlFor="location" className={styles.form__label}>
-            Расположение: Город, улица, номер дома
-          </label>
-        </div>
+        <UiMarksInput
+          name="location"
+          label="Расположение: Город, улица, номер дома"
+          value={inputData.location}
+          onChange={(event) => changeHandler(event, inputData, setInputData)}
+        />
         <div className={`${styles.form__group} ${styles.field}`}>
           <Select
             styles={customStyles}
@@ -95,86 +83,41 @@ function LocationStagesBlock({
             onBlur={() => setIsFocused(false)}
           />
         </div>
-        <div className={`${styles.form__group} ${styles.field}`}>
-          <input
-            type="input"
-            className={styles.form__field}
-            placeholder="customer"
-            name="customer"
-            autoComplete="off"
-            id="customer"
-            value={inputData.customer ?? ''}
-            onChange={(event) => changeHandler(event, inputData, setInputData)}
-          />
-          <label htmlFor="customer" className={styles.form__label}>
-            Заказчик
-          </label>
-        </div>
+        <UiMarksInput
+          name="customer"
+          label="Заказчик"
+          value={inputData.customer}
+          onChange={(event) => changeHandler(event, inputData, setInputData)}
+        />
 
         <div className={styles.form_container__block_gray_flex}>
           <div className={styles.form_container__block_public}>
-            <div className={`${styles.form__group} ${styles.field}`}>
-              <input
-                type="input"
-                className={styles.form__field}
-                placeholder="publication"
-                name="publication"
-                autoComplete="off"
-                id="publication"
-                value={inputData.publication ?? ''}
-                onChange={(event) => changeHandler(event, inputData, setInputData)}
-              />
-              <label htmlFor="publication" className={styles.form__label}>
-                Публикация
-              </label>
-            </div>
-            <div className={`${styles.form__group} ${styles.field}`}>
-              <input
-                type="input"
-                className={styles.form__field}
-                placeholder="publicationTwo"
-                name="publicationTwo"
-                id="publicationTwo"
-                autoComplete="off"
-                value={inputData.publicationTwo ?? ''}
-                onChange={(event) => changeHandler(event, inputData, setInputData)}
-              />
-              <label htmlFor="publicationTwo" className={styles.form__label}>
-                Публикация
-              </label>
-            </div>
+            <UiMarksInput
+              name="publication"
+              label="Публикация"
+              value={inputData.publication}
+              onChange={(event) => changeHandler(event, inputData, setInputData)}
+            />
+            <UiMarksInput
+              name="publicationTwo"
+              label="Публикация"
+              value={inputData.publicationTwo}
+              onChange={(event) => changeHandler(event, inputData, setInputData)}
+            />
           </div>
           <div className={styles.form_container__block_public_link}>
-            <div className={`${styles.form__group} ${styles.field}`}>
-              <input
-                type="input"
-                className={styles.form__field}
-                placeholder="linkToPublication"
-                name="linkToPublication"
-                id="linkToPublication"
-                autoComplete="off"
-                value={inputData.linkToPublication ?? ''}
-                onChange={(event) => changeHandler(event, inputData, setInputData)}
-              />
-              <label htmlFor="linkToPublication" className={styles.form__label}>
-                Ссылк на статью
-              </label>
-            </div>
-            <div className={`${styles.form__group} ${styles.field}`}>
-              <input
-                type="input"
-                className={styles.form__field}
-                placeholder="linkToPublicationTwo"
-                name="linkToPublicationTwo"
-                id="linkToPublicationTwo"
-                autoComplete="off"
-                value={inputData.linkToPublicationTwo ?? ''}
-                onChange={(event) => changeHandler(event, inputData, setInputData)}
-              />
-              <label htmlFor="linkToPublicationTwo" className={styles.form__label}>
-                Ссылк на статью
-              </label>
-            </div>
+            <UiMarksInput
+              name="linkToPublication"
+              label="Ссылк на статью"
+              value={inputData.linkToPublication}
+              onChange={(event) => changeHandler(event, inputData, setInputData)}
+            />
+            <UiMarksInput
+              name="linkToPublicationTwo"
+              label="Ссылк на статью"
+              value={inputData.linkToPublicationTwo}
+              onChange={(event) => changeHandler(event, inputData, setInputData)}
+            />
           </div>
         </div>
         <div className={`${styles.form__group} ${styles.field}`}>

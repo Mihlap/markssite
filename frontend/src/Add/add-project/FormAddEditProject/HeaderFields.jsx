@@ -11,6 +11,7 @@ import {
   YearValueContainer,
 } from './utils/CustomSelectComponents';
 import { monthOptions, yearOptions } from './utils/Time';
+import { UiMarksInput } from '../../ui/index.js';
 
 function HeaderFields({
   styles,
@@ -32,22 +33,13 @@ function HeaderFields({
 }) {
   return (
     <div className={styles.form_container__block_gray_one}>
-      <div className={`${styles.form__group} ${styles.field}`}>
-        <input
-          type="input"
-          className={styles.form__field}
-          placeholder="title"
-          name="title"
-          id="title"
-          value={inputData.title}
-          onChange={(event) => changeHandler(event, inputData, setInputData)}
-          autoComplete="off"
-          required
-        />
-        <label htmlFor="title" className={styles.form__label}>
-          Название проекта
-        </label>
-      </div>
+      <UiMarksInput
+        name="title"
+        label="Название проекта"
+        value={inputData.title}
+        onChange={(event) => changeHandler(event, inputData, setInputData)}
+        required
+      />
       <div className={`${styles.form__group} ${styles.field}`}>
         <Select
           styles={customStyles}
@@ -69,22 +61,13 @@ function HeaderFields({
           onBlur={() => setIsFocused(false)}
         />
       </div>
-      <div className={`${styles.form__group} ${styles.field}`}>
-        <input
-          type="input"
-          className={styles.form__field}
-          placeholder="countryCity"
-          name="countryCity"
-          id="countryCity"
-          value={inputData.countryCity}
-          onChange={(event) => changeHandler(event, inputData, setInputData)}
-          autoComplete="off"
-          required
-        />
-        <label htmlFor="countryCity" className={styles.form__label}>
-          Страна, город
-        </label>
-      </div>
+      <UiMarksInput
+        name="countryCity"
+        label="Страна, город"
+        value={inputData.countryCity}
+        onChange={(event) => changeHandler(event, inputData, setInputData)}
+        required
+      />
       <div className={styles.form_container__time_block}>
         <div className={`${styles.form__group} ${styles.form_container__month_block}`}>
           <label htmlFor="month" className={styles.form__label}>

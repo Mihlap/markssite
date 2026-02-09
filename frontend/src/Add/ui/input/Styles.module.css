@@ -1,0 +1,117 @@
+/* Floating label input */
+.input {
+  position: relative;
+  padding: 15px 0 0;
+  margin-top: 10px;
+}
+
+/* Base field — bottom border only */
+.input__field {
+  font-family: var(--font-raleway);
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--gray-959DA6);
+  outline: 0;
+  font-size: 1rem;
+  color: var(--black-1D2E43);
+  padding: 7px 0;
+  background: transparent;
+  transition: border-color 0.2s;
+  position: relative;
+  caret-color: var(--salmon-FF7F6A);
+}
+
+.input__field:focus {
+  border-color: var(--salmon-FF7F6A);
+}
+
+.input__field::placeholder {
+  color: transparent;
+}
+
+.input__field_disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Bordered variant (for fields with maxLength counter) */
+.input__field_bordered {
+  border: 1px solid var(--blue-75BBFD);
+  border-radius: 6px;
+  padding: 1rem 4.5rem 1rem 1rem;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.input__field_bordered::placeholder {
+  color: var(--gray-959DA6);
+  font-family: var(--font-raleway);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+/* Floating label */
+.input__label {
+  position: absolute;
+  top: 20px;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: var(--gray-959DA6);
+}
+
+.input__field:not(:placeholder-shown) ~ .input__label {
+  font-size: 0.8rem;
+  cursor: text;
+  top: 5px;
+  font-weight: var(--fw-400);
+  color: var(--light-gray-C0C5CB);
+}
+
+/* Label for bordered variant — always on top */
+.input__label_top {
+  position: static;
+  font-size: 12px;
+  color: var(--light-gray-C0C5CB);
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  margin-bottom: 4px;
+  order: -1;
+}
+
+.input__label_disabled {
+  color: var(--light-gray-C0C5CB);
+}
+
+/* Measurement unit indicator */
+.input__measurement {
+  position: absolute;
+  right: 10px;
+  top: 65%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-family: Raleway;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  color: var(--gray-959DA6);
+}
+
+/* Character counter */
+.input__counter {
+  position: absolute;
+  right: 7px;
+  bottom: 25%;
+  color: var(--gray-959DA6);
+  font-family: var(--font-raleway);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+}
