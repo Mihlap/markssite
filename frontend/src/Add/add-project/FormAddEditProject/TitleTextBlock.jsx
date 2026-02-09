@@ -1,32 +1,24 @@
-import { memo } from "react";
+import { memo } from 'react';
+import { UiMarksInput } from '../../ui/index.js';
+
+
 function TitleTextBlock({ styles, inputData, setInputData }) {
   return (
     <div className={styles.form_container__block_gray_one}>
-      <div className={styles.form_container__heading_block}>
-        <input
-          type="input"
-          className={styles.form_container__heading_block_input}
-          placeholder="Не более 56 символов"
-          name="titleTextBlock"
-          id="titleTextBlock"
-          maxLength="56"
-          value={inputData.titleTextBlock}
-          onChange={(event) => {
-            const value = event.target.value;
-            if (value.length <= 56) {
-              setInputData({ ...inputData, titleTextBlock: value });
-            }
-          }}
-          autoComplete="off"
-          required
-        />
-        <label htmlFor="titleTextBlock" className={styles.form_container__heading_block_label}>
-          Заголовок текстового блока
-        </label>
-        <div className={styles.form_container__heading_block_input_length}>
-          {`${inputData.titleTextBlock.length}/56`}
-        </div>
-      </div>
+      <UiMarksInput
+        name="titleTextBlock"
+        label="Заголовок текстового блока"
+        placeholder="Не более 56 символов"
+        value={inputData.titleTextBlock}
+        onChange={(event) => {
+          const value = event.target.value;
+          if (value.length <= 56) {
+            setInputData({ ...inputData, titleTextBlock: value });
+          }
+        }}
+        maxLength={56}
+        required
+      />
       {/* блок Описание проекта */}
       <div className={styles.form_container__description_text}>
         <div className={styles.form_container__textarea_length}>{`${inputData.descriptionProject.length}/260`}</div>

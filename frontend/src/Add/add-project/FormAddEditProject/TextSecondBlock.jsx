@@ -1,34 +1,25 @@
 import { memo } from 'react';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
+import { UiMarksInput } from '../../ui/index.js';
+
 function TextSecondBlock({ styles, inputData, setInputData, quillRef1 }) {
   return (
     <div className={styles.form_container__block_gray_one}>
       <div className={styles.container__heading_block}>
-        <div className={styles.form_container__heading_block}>
-          <input
-            type="input"
-            className={styles.form_container__heading_block_input}
-            placeholder="Не более 56 символов"
-            autoComplete="off"
-            name="headingTextBlock"
-            id="headingTextBlock"
-            maxLength="56"
-            value={inputData.headingTextBlock}
-            onChange={(event) => {
-              const value = event.target.value;
-              if (value.length <= 56) {
-                setInputData({ ...inputData, headingTextBlock: value });
-              }
-            }}
-          />
-          <label htmlFor="headingTextBlock" className={styles.form_container__heading_block_label}>
-            Заголовок текстового блока
-          </label>
-          <div className={styles.form_container__heading_block_input_length}>
-            {`${inputData.headingTextBlock.length}/56`}
-          </div>
-        </div>
+        <UiMarksInput
+          name="headingTextBlock"
+          label="Заголовок текстового блока"
+          placeholder="Не более 56 символов"
+          value={inputData.headingTextBlock}
+          onChange={(event) => {
+            const value = event.target.value;
+            if (value.length <= 56) {
+              setInputData({ ...inputData, headingTextBlock: value });
+            }
+          }}
+          maxLength={56}
+        />
       </div>
       <div className={styles.heading_textarea}>
         <div className={styles.form_container__description_text}>

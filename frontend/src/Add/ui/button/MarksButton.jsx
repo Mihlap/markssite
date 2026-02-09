@@ -1,7 +1,7 @@
 import React from 'react';
-import styles from './ButtonAdm.module.scss';
+import styles from './Styles.module.scss';
 
-export default function ButtonAdm({ className, property1 = 'normal', disabled = false, onClick, children = 'Сохранить' }) {
+export default function MarksButton({ className, property1 = 'normal', disabled = false, onClick, children = 'Сохранить' }) {
   const stateClass = disabled ? 'disable' : property1;
 
   return (
