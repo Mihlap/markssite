@@ -139,7 +139,6 @@ export function useCompanyHistoryHeaderIntro({
 
             if (!cardsIntroTriggeredRef.current) {
                 const cards = historyListRef.current?.querySelectorAll('[class*="history_card_wrapper"]');
-                // Откладываем установку флага до тех пор, пока карточки реально не появились
                 if (cards && cards.length > 0) {
                     cardsIntroTriggeredRef.current = true;
 
@@ -173,7 +172,6 @@ export function useCompanyHistoryHeaderIntro({
             const isHeaderVisible = headerVisible && cardsNotOverlapping;
 
             const shouldRestoreAnimation = !hasScrollToHeaderTriggered.current && headerIntroArmedRef.current && isHeaderVisible && !headerIntroInProgressRef.current;
-
             if (!isInHeader && !shouldRestoreAnimation) {
                 headerIntroArmedRef.current = true;
                 return;
@@ -211,13 +209,11 @@ export function useCompanyHistoryHeaderIntro({
         textAnimationReady,
         setAnimationReady,
     ]);
-
-    // Отдельный effect для применения анимации к карточкам после загрузки данных
+   
     useEffect(() => {
         if (!inView || cardsIntroTriggeredRef.current) return;
         if (visibleItemsLength === 0) return;
-
-        // Небольшая задержка чтобы DOM обновился
+    
         const timer = setTimeout(() => {
             const cards = historyListRef.current?.querySelectorAll('[class*="history_card_wrapper"]');
             if (cards && cards.length > 0 && !cardsIntroTriggeredRef.current) {

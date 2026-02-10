@@ -24,7 +24,8 @@ const normalizeLegendItem = (it) => ({
   order: typeof it.order === 'number' ? it.order : 0,
   dynamicBlocks: pickLegendBlocks(it),
   previewText: it.previewText || it.description || '',
-  previewImageUrl: it.previewImageUrl || it.img || '',
+  previewImageUrl: it.previewImageUrl || it.previewImageUrl === '' ? it.previewImageUrl : it.img || '',
+  avatarUrl: it.avatarUrl || it.avatarUrl === '' ? it.avatarUrl : it.avatar || '',
 });
 
 export const uploadHistoryMarkdownFile = createAsyncThunk(

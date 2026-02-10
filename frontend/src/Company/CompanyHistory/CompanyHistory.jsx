@@ -1,16 +1,20 @@
-import { useEffect, useMemo, useRef, useState, useLayoutEffect } from 'react';
+import { useEffect, useMemo, useRef, useState, useLayoutEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useInView } from 'react-intersection-observer';
 import gsap from 'gsap';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
-import styles from './CompanyHistory.module.scss';
-import { fetchCompanyHistory } from '../../store/Slice/companyHistorySlice';
-import cityVector from '../icons/cityVector.svg';
+
 import HistoryCard from './HistoryCard';
 import CompanyHistoryHeader from './CompanyHistoryHeader';
+import HistoryYearsScale from './HistoryYearsScale';
+
 import { useCompanyHistoryHeaderIntro } from '../utils/useCompanyHistoryHeaderIntro';
-import { useCompanyHistoryWheelHandlers } from '../utils/useCompanyHistoryWheelHandlers';
+import { useCompanyHistoryWheelHandlers } from '../utils/historyWheel/useCompanyHistoryWheelHandlers';
 import { useCompanyHistoryAnimations } from '../utils/useCompanyHistoryAnimations';
+
+import { fetchCompanyHistory } from '../../store/Slice/companyHistorySlice';
+import styles from './CompanyHistory.module.scss';
+import cityVector from '../icons/cityVector.svg';
 
 gsap.registerPlugin(ScrollToPlugin);
 
@@ -25,7 +29,6 @@ export default function CompanyHistory({
     const loading = useSelector((state) => state.companyHistory.loading);
 
     const sectionRef = useRef(null);
-
     const titleRef = useRef(null);
     const subtitleRef = useRef(null);
     const subtitleLineRef = useRef(null);
@@ -33,10 +36,11 @@ export default function CompanyHistory({
     const subtitleLine1Ref = useRef(null);
     const subtitleLine2Ref = useRef(null);
     const backgroundRef = useRef(null);
+
     const historyListRef = useRef(null);
     const timelineWrapperRef = useRef(null);
-    const historyTagRef = useRef(null);
 
+    const historyTagRef = useRef(null);
     const internalHistoryHeaderRef = useRef(null);
     const historyHeaderRef = externalHistoryHeaderRef ?? internalHistoryHeaderRef;
 
@@ -45,23 +49,30 @@ export default function CompanyHistory({
     const hasScrollToCardsTriggered = useRef(false);
     const hasScrollToHeaderTriggered = useRef(false);
     const textAnimationReady = useRef(false);
+
     const headerIntroArmedRef = useRef(true);
     const headerIntroInProgressRef = useRef(false);
+
     const cardsIntroTriggeredRef = useRef(false);
     const returnedToSliderRef = useRef(false);
-
-    const [animationReady, setAnimationReady] = useState(false);
-    const [cardsFocused, setCardsFocused] = useState(false);
 
     const cardsFocusInProgressRef = useRef(false);
     const exitToParentInProgressRef = useRef(false);
 
-    const [ref, inView] = useInView({
-        threshold: 0.2,
-        triggerOnce: true,
+    const cardsTopRowRef = useRef(null);
+    const yearsScaleRef = useRef(null);
+
+    const horizontalOffsetRef = useRef(0);
+
+    const [animationReady, setAnimationReady] = useState(false);
+    const [cardsFocused, setCardsFocused] = useState(false);
+    const [yearsScaleGate, setYearsScaleGate] = useState(true);
+    const [viewRef, inView] = useInView({ threshold: 0.2, triggerOnce: true }); 
+    const [timelineVisRef, timelineInView] = useInView({
+        threshold: 0.15,
+        triggerOnce: false,
     });
 
-    // Сброс состояний при размонтировании для корректной работы при повторном переходе
     useEffect(() => {
         return () => {
             hasSplitTriggered.current = false;
@@ -75,6 +86,8 @@ export default function CompanyHistory({
             returnedToSliderRef.current = false;
             cardsFocusInProgressRef.current = false;
             exitToParentInProgressRef.current = false;
+
+            if (sectionRef.current) sectionRef.current.removeAttribute('data-focus-layout');
         };
     }, []);
 
@@ -92,53 +105,67 @@ export default function CompanyHistory({
         return () => window.removeEventListener('resize', apply);
     }, []);
 
-    const visibleItems = useMemo(
-        () =>
-            [...historyItems]
-                .filter((item) => !item.hidden)
-                .sort((a, b) => {
-                    const ao = a.order ?? 0;
-                    const bo = b.order ?? 0;
-                    if (ao !== bo) return ao - bo;
-                    return (b.year ?? 0) - (a.year ?? 0);
-                }),
-        [historyItems]
-    );
+    useEffect(() => {
+        const root = sectionRef.current;
+        if (!root) return;
+        if (!cardsFocused) root.removeAttribute('data-focus-layout');
+    }, [cardsFocused]);
 
-    const { timelineItems, cardsByYear } = useMemo(() => {
-        const uniqueYears = [];
-        const seenYears = new Set();
+    const visibleItems = useMemo(() => {
+        return [...historyItems]
+            .filter((item) => !item.hidden)
+            .sort((a, b) => {
+                const ao = a.order ?? 0;
+                const bo = b.order ?? 0;
+                if (ao !== bo) return ao - bo;
+               
+                const at = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+                const bt = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+                if (at !== bt) return at - bt;
+              
+                return String(a.id ?? '').localeCompare(String(b.id ?? ''));
+            });
+    }, [historyItems]);
+
+
+    const { timelineItemsAdmin, cardsByYear, scaleYearsAsc } = useMemo(() => {   
+        const yearsAdmin = [];
+        const seen = new Set();
+
         for (const item of visibleItems) {
-            if (!seenYears.has(item.year)) {
-                seenYears.add(item.year);
-                uniqueYears.push(item.year);
+            if (item.year == null) continue;
+            const ys = String(item.year);
+            if (!seen.has(ys)) {
+                seen.add(ys);
+                yearsAdmin.push(ys);
             }
         }
-
+    
         const grouped = {};
-        uniqueYears.forEach((year) => {
-            grouped[year] = { top: [], bottom: [] };
-        });
-
-        const itemsByYear = {};
-        visibleItems.forEach((item) => {
-            const year = item.year;
-            if (!itemsByYear[year]) itemsByYear[year] = [];
-            itemsByYear[year].push(item);
-        });
+        for (const y of yearsAdmin) grouped[y] = { top: [], bottom: [] };
 
         let globalIndex = 0;
-        uniqueYears.forEach((year) => {
-            const yearItems = itemsByYear[year] || [];
-            yearItems.forEach((item) => {
-                if (globalIndex % 2 === 0) grouped[year].top.push(item);
-                else grouped[year].bottom.push(item);
-                globalIndex++;
-            });
-        });
+        for (const item of visibleItems) {
+            if (item.year == null) continue;
+            const y = String(item.year);
+      
+            if (!grouped[y]) grouped[y] = { top: [], bottom: [] };
 
-        return { timelineItems: uniqueYears, cardsByYear: grouped };
+            if (globalIndex % 2 === 0) grouped[y].top.push(item);
+            else grouped[y].bottom.push(item);
+
+            globalIndex += 1;
+        }
+        
+        const yearsAsc = [...yearsAdmin].sort((a, b) => (Number(a) || 0) - (Number(b) || 0));
+
+        return {
+            timelineItemsAdmin: yearsAdmin,
+            cardsByYear: grouped,
+            scaleYearsAsc: yearsAsc,
+        };
     }, [visibleItems]);
+
 
     useEffect(() => {
         dispatch(fetchCompanyHistory());
@@ -163,7 +190,14 @@ export default function CompanyHistory({
         setAnimationReady,
     });
 
-    const { exitCardsFocus } = useCompanyHistoryAnimations({
+    const {
+        exitCardsFocus,
+        showAndPlaceHistoryTag,
+        hideHistoryTag,
+        showYearsScale,
+        hideYearsScale,
+    } = useCompanyHistoryAnimations({
+        historyHeaderRef,
         animationReady,
         historyTagRef,
         marksGroupRef,
@@ -173,18 +207,42 @@ export default function CompanyHistory({
         subtitleLine2Ref,
         backgroundRef,
         sectionRef,
+        cardsTopRowRef,
         cardsFocusInProgressRef,
         hasScrollToHeaderTriggered,
         hasScrollToCardsTriggered,
         hasRestoreTriggered,
         hasSplitTriggered,
         headerIntroArmedRef,
+        yearsScaleRef,
         setCardsFocused,
     });
 
+    useEffect(() => {
+        if (!cardsFocused) return;
+   
+        if (timelineInView) {
+            setYearsScaleGate(true);
+         
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    showYearsScale?.(false, { duration: 0.25, ease: 'power2.out' });
+                });
+            });
+        }
+    }, [cardsFocused, timelineInView, showYearsScale]);
+
+  
+    useEffect(() => {
+        if (!cardsFocused) return;
+        if (timelineInView) return;
+      
+        hideYearsScale?.(false, { duration: 0.2, ease: 'power2.out', y: 40 });
+
+    }, [cardsFocused, timelineInView, hideYearsScale]);
+
     useCompanyHistoryWheelHandlers({
         sectionRef,
-        inView,
         cardsFocused,
         historyListRef,
         timelineWrapperRef,
@@ -209,15 +267,80 @@ export default function CompanyHistory({
         headerIntroInProgressRef,
         returnedToSliderRef,
         headerIntroArmedRef,
+        showYearsScale,
+        hideYearsScale,
+        hideHistoryTag,
         exitCardsFocus,
         setCardsFocused,
+        showAndPlaceHistoryTag,
+        horizontalOffsetRef,
     });
+
+    useEffect(() => {
+        if (!cardsFocused) return;
+
+        const onResize = () => {
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => showAndPlaceHistoryTag?.());
+            });
+        };
+
+        window.addEventListener('resize', onResize);
+        return () => window.removeEventListener('resize', onResize);
+    }, [cardsFocused, showAndPlaceHistoryTag]);
+
+    const skipHorizontal = useCallback(
+        (e) => {
+            e?.preventDefault?.();
+            e?.stopPropagation?.();
+
+            setYearsScaleGate(false);
+
+            gsap.killTweensOf(window);
+            gsap.killTweensOf(document.documentElement);
+            gsap.killTweensOf(document.body);
+
+            const container = timelineWrapperRef.current;
+            if (container) {
+                gsap.killTweensOf(container);
+                gsap.set(container, { x: 0, clearProps: 'transform' });
+            }
+            horizontalOffsetRef.current = 0;
+
+            hideYearsScale?.(true, { y: 40 });
+
+            const root = sectionRef.current;
+            if (!root) return;
+
+            const next = root.nextElementSibling;
+
+            let targetY;
+            if (next) {
+                const r = next.getBoundingClientRect();
+                targetY = r.top + window.pageYOffset;
+            } else {
+                const r = root.getBoundingClientRect();
+                targetY = r.bottom + window.pageYOffset;
+            }
+
+            const PAD = 20;
+            gsap.to(window, {
+                duration: 0.9,
+                ease: 'power2.inOut',
+                overwrite: 'auto',
+                scrollTo: { y: Math.max(0, targetY - PAD), autoKill: false },
+            });
+        },
+        [hideYearsScale]
+    );
+
+    const yearsScaleVisible = cardsFocused && yearsScaleGate && timelineInView && scaleYearsAsc.length > 0;
 
     return (
         <div
             id="history"
             ref={(node) => {
-                ref(node);
+                viewRef(node);
                 sectionRef.current = node;
             }}
             className={`${styles.history_section} ${cardsFocused ? styles.cards_focus : ''}`}
@@ -238,15 +361,21 @@ export default function CompanyHistory({
                 {loading ? (
                     <div className={styles.loading}>Загрузка...</div>
                 ) : visibleItems.length > 0 ? (
-                    <div ref={historyListRef} className={styles.history_timeline_container}>
+                    <div
+                        ref={(node) => {
+                            historyListRef.current = node;
+                            timelineVisRef(node);
+                        }}
+                        className={styles.history_timeline_container}
+                    >
                         <div ref={historyTagRef} className={styles.history_tag}>
                             История MARKS GROUP
                         </div>
 
                         <div ref={timelineWrapperRef} className={styles.timeline_wrapper}>
-                            <div className={styles.cards_row_top}>
-                                {timelineItems.map((year, idx) => {
-                                    const isLast = idx === timelineItems.length - 1;
+                            <div ref={cardsTopRowRef} className={styles.cards_row_top}>
+                                {timelineItemsAdmin.map((year, idx) => {
+                                    const isLast = idx === timelineItemsAdmin.length - 1;
                                     return (
                                         <div
                                             key={`top-${year}`}
@@ -265,11 +394,11 @@ export default function CompanyHistory({
                             </div>
 
                             <div className={styles.timeline}>
-                                <div className={styles.timeline_line}></div>
+                                <div className={styles.timeline_line} />
 
                                 <div className={styles.timeline_years}>
-                                    {timelineItems.map((year, idx) => {
-                                        const isLast = idx === timelineItems.length - 1;
+                                    {timelineItemsAdmin.map((year, idx) => {
+                                        const isLast = idx === timelineItemsAdmin.length - 1;
 
                                         const hasBottomCards = (cardsByYear[year]?.bottom?.length || 0) > 0;
                                         const hasTopCards = (cardsByYear[year]?.top?.length || 0) > 0;
@@ -283,16 +412,15 @@ export default function CompanyHistory({
                                                 key={year}
                                                 className={styles.timeline_year_marker}
                                                 data-year={year}
+                                                data-year-marker="true"
                                                 data-last-year={isLast ? 'true' : 'false'}
                                             >
-                                                <div className={styles.year_dot}></div>
+                                                <div className={styles.year_dot} />
                                                 <div className={`${styles.year_label} ${yearLabelClass}`}>{year}</div>
 
-                                                {hasTopCards && (
-                                                    <div className={`${styles.year_connector} ${styles.connector_top}`}></div>
-                                                )}
+                                                {hasTopCards && <div className={`${styles.year_connector} ${styles.connector_top}`} />}
                                                 {hasBottomCards && (
-                                                    <div className={`${styles.year_connector} ${styles.connector_bottom}`}></div>
+                                                    <div className={`${styles.year_connector} ${styles.connector_bottom}`} />
                                                 )}
                                             </div>
                                         );
@@ -301,8 +429,8 @@ export default function CompanyHistory({
                             </div>
 
                             <div className={styles.cards_row_bottom}>
-                                {timelineItems.map((year, idx) => {
-                                    const isLast = idx === timelineItems.length - 1;
+                                {timelineItemsAdmin.map((year, idx) => {
+                                    const isLast = idx === timelineItemsAdmin.length - 1;
                                     return (
                                         <div
                                             key={`bottom-${year}`}
@@ -325,6 +453,15 @@ export default function CompanyHistory({
                     <div className={styles.empty_history}>История компании обновляется</div>
                 )}
             </div>
+
+            <HistoryYearsScale
+                ref={yearsScaleRef}
+                years={scaleYearsAsc}
+                timelineWrapperRef={timelineWrapperRef}
+                horizontalOffsetRef={horizontalOffsetRef}
+                visible={yearsScaleVisible}
+                onSkip={skipHorizontal}
+            />
         </div>
     );
 }
