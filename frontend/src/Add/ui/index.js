@@ -4,3 +4,4 @@ export { default as UiMarksDialog } from "./dialog/MarksDialog";
 
 // --- ICON ---
 export { default as ClipIcon } from "./icon/ClipIcon";
+export { default as Icon0 } from './icon/Icon0';

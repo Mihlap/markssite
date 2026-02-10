@@ -1,16 +1,18 @@
 import React from 'react';
+import {Icon0} from '../index.js';
 import styles from './Styles.module.scss';
 
-export default function MarksButton({ className, property1 = 'normal', disabled = false, onClick, children = 'Сохранить' }) {
-  const stateClass = disabled ? 'disable' : property1;
+export default function MarksButton({ className, defaultStyle = 'blue', icon = false, size = 'normal', disabled = false, onClick, children }) {
+  const colorClass = disabled ? `${defaultStyle}-disabled` : defaultStyle;
+  const sizeClass = size !== 'normal' ? styles[size] : '';
 
   return (
     <button
-      className={`${styles.button} ${styles[stateClass]} ${className || ''}`}
+      className={`${styles.button} ${styles[colorClass]} ${sizeClass} ${className || ''}`}
       disabled={disabled}
       onClick={onClick}
-      data-node-id="2439-11994"
     >
+      {icon && <Icon0 />}
       {children}
     </button>
   );
