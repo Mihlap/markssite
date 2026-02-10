@@ -5,7 +5,7 @@
     align-items: center;
     justify-content: center;
     padding: rem(16) rem(32);
-    width: rem(231);
+    width: -webkit-fill-available;
     border-radius: rem(66);
     border: none;
     cursor: pointer;
@@ -18,24 +18,63 @@
     line-height: rem(24);
     color: var(--white-F6F6F6);
 
-    &.normal {
+    // --- Color variants ---
+
+    &.blue {
         background-color: var(--blue-75BBFD);
 
         &:hover {
             background-color: var(--dark-blue-389FFF);
         }
+
+        &-disabled {
+            background-color: var(--light-blue-D4EDFB);
+            cursor: not-allowed;
+        }
     }
 
-    &.hover {
-        background-color: var(--dark-blue-389FFF);
-    }
-
-    &.disable {
-        background-color: var(--light-blue-D4EDFB);
-        cursor: not-allowed;
+    &.gray {
+        background-color: var(--light-light-gray-EBECEE);
+        color: var(--black-1D2E43);
 
         &:hover {
-            background-color: var(--light-blue-D4EDFB);
+            background-color: var(--light-gray-C0C5CB);
         }
+
+        &-disabled {
+            background-color: var(--white-F6F6F6);
+            color: var(--black-1D2E43);
+            cursor: not-allowed;
+        }
+    }
+
+    &.los {
+        background-color: var(--salmon-light-FFBFB5);
+
+        &:hover {
+            background-color: var(--salmon-FF7F6A);
+        }
+
+        &-disabled {
+            background-color: var(--salmon-light-FFBFB5);
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    }
+
+    // --- Size variants ---
+
+    &.large {
+        flex-direction: column;
+        gap: rem(16);
+        padding: rem(16);
+        border-radius: rem(6);
+        line-height: rem(16);
+    }
+
+    &.card {
+        width: 202px;
+        height: 177px;
+        border-radius: rem(6);
     }
 }

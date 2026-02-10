@@ -194,7 +194,7 @@ export default function AddNavbar({ user, handleReturn }) {
       </nav>
       <div className={styles.button_position}>
         <div className={styles.button_container}>
-          <UiMarksButton className={styles.return_button} onClick={handleReturn}>Предпросмотр</UiMarksButton>
+          <UiMarksButton defaultStyle='blue' onClick={handleReturn}>Предпросмотр</UiMarksButton>
         </div>
       </div>
     </>

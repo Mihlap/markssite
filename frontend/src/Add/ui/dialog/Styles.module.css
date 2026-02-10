@@ -1,20 +1,32 @@
-.title {
-    color: rgb(0, 0, 0);
-    font-family: var(--font-unbounded);
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 300;
-    line-height: 32px;
+.dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 766px;
+  border-radius: 1rem;
+  padding-top: 26px;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+/* Style when the dialog is open */
+.dialog[open] {
+    /* Add open-specific styles or animations */
+}
+
+.dialog::backdrop {
+background-color: var(--black-1D2E43);
+opacity: 0.43;
 }
 
 .close_button {
     position: absolute;
     top: 16px;
     right: 16px;
-    width: 24px;
-    height: 24px;
+    width: 16px;
+    height: 16px;
 }
-
 
 .close_button::before {
     content: '';
@@ -41,4 +53,21 @@
 .close_button:hover::before,
 .close_button:hover::after {
     background-color: var(--blue-75BBFD);
+}
+
+.title {
+    color: rgb(0, 0, 0);
+    font-family: var(--font-unbounded);
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 32px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    padding-top: 32px;
+    padding-bottom: 24px;
 }
