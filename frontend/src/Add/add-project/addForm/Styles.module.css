@@ -1,0 +1,5 @@
+.wrap {
+    background-color: var(--light-light-gray-EBECEE);
+    padding: 32px 16px;
+    border-radius: 6px;
+}
