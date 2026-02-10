@@ -21,7 +21,9 @@ export default function MarksModal({ isOpen, onClose, title, children }) {
       {children}
       <div className={s.buttons}>
         <UiMarksButton disabled={true}>Сохранить</UiMarksButton>
-        <UiMarksButton defaultStyle="gray">Отмена</UiMarksButton>
+        <UiMarksButton defaultStyle="gray" onClick={onClose}>
+          Отмена
+        </UiMarksButton>
       </div>
     </dialog>
   );

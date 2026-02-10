@@ -8,6 +8,7 @@
   padding-top: 26px;
   padding-left: 32px;
   padding-right: 32px;
+  background-color: var(--white-F6F6F6);
 }
 
 /* Style when the dialog is open */
@@ -62,6 +63,7 @@ opacity: 0.43;
     font-style: normal;
     font-weight: 300;
     line-height: 32px;
+    padding-bottom: 1rem;
 }
 
 .buttons {

@@ -12,6 +12,7 @@ import { fetchToggleStateAsync, updateToggleStateAsync } from '../../store/Slice
 import LoadingModal from './loading/LoadingModal';
 import Edit from '../icon/Edit.svg';
 import { UiMarksButton, UiMarksDialog } from '../ui';
+import AddForm from './addForm/AddForm';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
@@ -314,7 +315,9 @@ export default function AddProject({ user }) {
           )}
         </div>
       </div>
-      <UiMarksDialog isOpen={isOpen} onClose={() => setIsOpen(false)} title="Новый проект" />
+      <UiMarksDialog isOpen={isOpen} onClose={() => setIsOpen(false)} title="Новый проект">
+        <AddForm />
+      </UiMarksDialog>
     </section>
   );
 }

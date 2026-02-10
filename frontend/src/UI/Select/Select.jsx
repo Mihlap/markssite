@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import ReactSelect from 'react-select';
 import styles from './styles.module.css';
 
-const Select = forwardRef(function Select(
+const MarksSelect = forwardRef(function Select(
   {
     options,
     value,
@@ -34,4 +34,4 @@ const Select = forwardRef(function Select(
   );
 });
 
-export default Select;
+export default MarksSelect;

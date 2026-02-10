@@ -155,14 +155,14 @@ export default function AddNavbar({ user, handleReturn }) {
                     <li key={item.name} className={styles.add_navbar_container__item_li}>
                       <Link
                         ref={(el) => (itemRefs.current[item.name] = el)}
-                        className={`${styles.add_navbar_container__item} ${selectedItem === item.name ? styles.active : ''
-                          }`}
+                        className={`${styles.add_navbar_container__item} ${
+                          selectedItem === item.name ? styles.active : ''
+                        }`}
                         to={item.path}
                         onClick={() => {
                           setSelectedItem(item.name);
                           localStorage.setItem('selectedItem', item.name);
-                        }}
-                      >
+                        }}>
                         <img className={styles.add_navbar_container__item__icons} src={item.icon} alt={item.icon} />
                         <p className={styles.add_navbar_container__title__ipad}>{item.label}</p>
                       </Link>
@@ -194,7 +194,9 @@ export default function AddNavbar({ user, handleReturn }) {
       </nav>
       <div className={styles.button_position}>
         <div className={styles.button_container}>
-          <UiMarksButton defaultStyle='blue' onClick={handleReturn}>Предпросмотр</UiMarksButton>
+          <UiMarksButton onClick={() => navigate('/')} defaultStyle="blue">
+            Предпросмотр
+          </UiMarksButton>
         </div>
       </div>
     </>

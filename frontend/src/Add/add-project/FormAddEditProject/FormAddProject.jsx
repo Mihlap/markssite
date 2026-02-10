@@ -60,6 +60,9 @@ export default function FormAddProject({ setIsModalOpen }) {
   const [isLoadingCloseImage, setIsLoadingCloseImage] = useState(false);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
 
+  const renderCount = useRef(0);
+  renderCount.current += 1;
+
   const quillRef1 = useRef(null);
 
   const quillRefs = useMemo(() => [quillRef1], [quillRef1]);
@@ -462,6 +465,7 @@ export default function FormAddProject({ setIsModalOpen }) {
       <div className={styles.form_container__title}>Новый проект</div>
       <div className={styles.form_container__block_form}>
         <form className={styles.form_container__form} onSubmit={submitHandler}>
+          {renderCount.current > 0 && <div className={styles.count}>Количество ре-рендеров: {renderCount.current}</div>}
           <HeaderFields
             styles={styles}
             inputData={inputData}
