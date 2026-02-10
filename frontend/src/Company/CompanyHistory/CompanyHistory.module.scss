@@ -15,10 +15,12 @@
 .history_section {
     position: relative;
     width: 100%;
-    min-height: 100vh;
+    min-height: 100svh;
     overflow-x: hidden;
     overflow-y: visible;
     overflow-anchor: none;
+
+    --cards-top-offset: 109px;
 }
 
 .history_content {
@@ -51,18 +53,16 @@
     z-index: 10;
     pointer-events: none;
     white-space: nowrap;
+    will-change: transform, opacity;
 }
 
 .history_timeline_container {
-    position: relative;
-    --timeline-overlap: clamp(24px, 4vh, 72px);
-    padding: 60px 0 120px;
-    margin-top: clamp(60px, 8vh, 120px);
-    margin-bottom: 80px;
-    z-index: 1;
-    width: 100%;
-    margin-left: 0;
-    will-change: transform;
+    padding: 0;
+    display: block;
+    box-sizing: border-box;
+    overflow: visible;
+    overscroll-behavior: contain;
+    overflow-anchor: none;
 }
 
 @media screen and (min-width: 1600px) {
@@ -74,17 +74,20 @@
 
 .timeline_wrapper {
     position: relative;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: auto auto auto;
     min-width: max-content;
     padding: 0;
+
     overflow-x: auto;
     overflow-y: hidden;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
+
     scrollbar-gutter: stable;
     scrollbar-width: thin;
     scrollbar-color: rgba(29, 46, 67, 0.3) transparent;
+    overflow-anchor: none;
 
     &::-webkit-scrollbar {
         height: 8px;
@@ -102,7 +105,6 @@
             background-color: rgba(29, 46, 67, 0.5);
         }
     }
-
 }
 
 .cards_row_top {
@@ -158,6 +160,7 @@
     --label-gap-top: 10px;
     --label-gap-bottom: 10px;
     --label-extra-top: 14px;
+
     position: relative;
     width: 100%;
     margin: 0;
@@ -261,24 +264,67 @@
     height: calc(var(--h-bottom) - var(--gap-bottom));
 }
 
+.loading,
+.empty_history {
+    text-align: center;
+    padding: 80px 2rem;
+    font-family: var(--font-raleway);
+    font-size: 1.125rem;
+    color: var(--gray-959DA6);
+}
+
+.timeline_wrapper,
+.history_timeline_container {
+    box-sizing: border-box;
+}
+
 .cards_focus {
     .history_timeline_container {
         --history-tag-safe-top: clamp(72px, 10vh, 120px);
         margin-top: 0;
         margin-bottom: 0;
-        padding: 0;
-        height: 100vh;
-        display: block;
-        box-sizing: border-box;
         overflow: visible;
         overscroll-behavior: contain;
+        overflow-anchor: none;
+    }
+
+    .history_tag {
+        position: absolute;
+        left: clamp(24px, 4vw, 48px);
+        top: -40px;
+        z-index: 999;
+        opacity: 0;
+        visibility: visible;
+        pointer-events: none;
+    }
+}
+
+// .cards_focus:not([data-focus-layout='ready']) {
+//     .history_timeline_container {
+//         padding-top: 0;
+//         height: auto;
+//     }
+
+//     .timeline_wrapper {
+//         grid-template-rows: auto auto auto;
+//         height: auto;
+//         padding-right: 0;
+//         overflow: visible;
+//     }
+
+//     .timeline_line {
+//         right: 0;
+//     }
+// }
+
+.cards_focus[data-focus-layout='ready'] {
+    .history_timeline_container {
+        padding: 100px 0 0 0;
+        height: 100vh;
     }
 
     .timeline_wrapper {
-        display: grid;
         grid-template-rows: 1fr auto 1fr;
-        grid-template-columns: 1fr;
-        min-width: max-content;
         height: 100vh;
         padding-right: 50vw;
         overflow: visible;
@@ -305,28 +351,6 @@
     .timeline_line {
         right: -50vw;
     }
-
-    // Тег уезжает за экран если не влезает
-    .history_tag {
-        position: absolute;
-        left: clamp(24px, 4vw, 48px);
-        top: -40px;
-        z-index: 999;
-    }
-}
-
-.loading,
-.empty_history {
-    text-align: center;
-    padding: 80px 2rem;
-    font-family: var(--font-raleway);
-    font-size: 1.125rem;
-    color: var(--gray-959DA6);
-}
-
-.timeline_wrapper,
-.history_timeline_container {
-    box-sizing: border-box;
 }
 
 @media screen and (min-width: 1024px) and (max-width: 1599px) {

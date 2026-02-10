@@ -1,0 +1,271 @@
+@import '../../App.css';
+
+.fixed_bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 28px;
+    z-index: 2500;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(40px);
+}
+
+.inner {
+    width: min(1440px, calc(100% - 96px));
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 22px;
+    pointer-events: auto;
+}
+
+.scale {
+    position: relative;
+    flex: 1 1 auto;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rail {
+    display: none;
+}
+
+.rowAll {
+    position: relative;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 36px;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    padding-inline: 0;
+}
+
+.rowFixed {
+    position: relative;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 36px;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    padding-inline: 0;
+}
+
+.rowAll::before,
+.rowFixed::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 8px;
+    height: 2px;
+    background: #a8dbf6;
+    border-radius: 2px;
+    pointer-events: none;
+}
+
+@media screen and (min-width: 1600px) {
+
+    .rowAll,
+    .rowFixed {
+        padding-inline: 12px;
+    }
+}
+
+.side {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 36px;
+    flex: 0 0 auto;
+}
+
+.centerViewport {
+    flex: 0 0 auto;
+    overflow: hidden;
+    padding: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.centerTrack {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 28px;
+    will-change: transform;
+}
+
+.tick {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    height: 44px;
+    flex: 0 0 auto;
+}
+
+.label {
+    font-family: var(--font-unbounded);
+    font-weight: var(--fw-700);
+    font-size: 18px;
+    line-height: 20px;
+    color: #c0c5cb;
+    user-select: none;
+    white-space: nowrap;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.mark {
+    width: 2px;
+    height: 12px;
+    background: rgba(168, 219, 246, 0.9);
+    border-radius: 2px;
+}
+
+.tick:hover .label {
+    color: rgba(29, 46, 67, 0.7);
+}
+
+.active .label {
+    color: #a8dbf6;
+    transform: translateY(-1px);
+}
+
+.active .mark {
+    height: 18px;
+    background: #a8dbf6;
+}
+
+.dotsTick {
+    cursor: pointer;
+}
+
+.dotsLabel {
+    font-family: var(--font-unbounded);
+    font-weight: var(--fw-700);
+    font-size: 18px;
+    line-height: 20px;
+    color: #c0c5cb;
+    user-select: none;
+    transform: translateY(-2px);
+}
+
+.dotsTick:hover .dotsLabel {
+    color: rgba(29, 46, 67, 0.7);
+}
+
+.skip {
+    height: 44px;
+    padding: 0 22px;
+    border-radius: 34px;
+    border: 0;
+    background: rgba(246, 246, 246, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    font-family: var(--font-raleway);
+    font-weight: var(--fw-400);
+    font-size: 14px;
+    line-height: 20px;
+    color: #1d2e43;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.skip:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 1);
+}
+
+.arrow {
+    font-size: 16px;
+    line-height: 1;
+}
+
+@media (max-width: 1024px) {
+    .inner {
+        width: calc(100% - 48px);
+    }
+
+    .rowAll,
+    .rowFixed {
+        gap: 22px;
+    }
+
+    .side {
+        gap: 22px;
+    }
+
+    .centerTrack {
+        gap: 22px;
+    }
+
+    .centerViewport {
+        padding: 0;
+    }
+
+    .label {
+        font-size: 16px;
+    }
+
+    .dotsLabel {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .inner {
+        width: calc(100% - 32px);
+        gap: 14px;
+    }
+
+    .rowAll,
+    .rowFixed {
+        gap: 16px;
+    }
+
+    .side {
+        gap: 16px;
+    }
+
+    .centerTrack {
+        gap: 16px;
+    }
+
+    .centerViewport {
+        padding: 0;
+    }
+
+    .label {
+        font-size: 14px;
+    }
+
+    .dotsLabel {
+        font-size: 14px;
+    }
+
+    .skip {
+        height: 40px;
+        padding: 0 16px;
+        font-size: 13px;
+    }
+}

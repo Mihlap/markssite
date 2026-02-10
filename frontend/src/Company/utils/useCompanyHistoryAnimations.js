@@ -1,217 +1,351 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import gsap from 'gsap';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { flushSync } from 'react-dom';
 import headerStyles from '../CompanyHistory/CompanyHistoryHeader.module.scss';
 
+gsap.registerPlugin(ScrollToPlugin);
+
+function getScrollYToFullyShowElement(el, { padTop = 40, padBottom = 40 } = {}) {
+  if (!el) return window.pageYOffset;
+
+  const vh = window.innerHeight;
+  const r = el.getBoundingClientRect();
+  const topAbs = r.top + window.pageYOffset;
+  const bottomAbs = r.bottom + window.pageYOffset;
+  const elH = r.height;
+
+  if (elH >= vh - (padTop + padBottom)) return Math.max(0, topAbs - padTop);
+
+  const minY = Math.max(0, topAbs - padTop);
+  const maxY = Math.max(0, bottomAbs - (vh - padBottom));
+
+  const y = window.pageYOffset;
+  if (y < maxY) return maxY;
+  if (y > minY) return minY;
+  return y;
+}
+
 export function useCompanyHistoryAnimations({
-    animationReady,
-    historyTagRef,
-    marksGroupRef,
-    titleRef,
-    subtitleLineRef,
-    subtitleLine1Ref,
-    subtitleLine2Ref,
-    backgroundRef,
-    sectionRef,
-    cardsFocusInProgressRef,
-    hasScrollToHeaderTriggered,
-    hasScrollToCardsTriggered,
-    hasRestoreTriggered,
-    hasSplitTriggered,
-    headerIntroArmedRef,
-    setCardsFocused,
+  animationReady,
+  historyTagRef,
+  cardsTopRowRef,
+  marksGroupRef,
+  titleRef,
+  subtitleLineRef,
+  subtitleLine1Ref,
+  subtitleLine2Ref,
+  backgroundRef,
+  sectionRef,
+  historyHeaderRef,
+  cardsFocusInProgressRef,
+  hasScrollToHeaderTriggered,
+  hasScrollToCardsTriggered,
+  hasRestoreTriggered,
+  hasSplitTriggered,
+  headerIntroArmedRef,
+  yearsScaleRef,
+  setCardsFocused,
 }) {
-    const exitCardsFocus = useCallback(
-        (cardsEl) => {
-            cardsFocusInProgressRef.current = true;
-            hasScrollToHeaderTriggered.current = true;
-            hasScrollToCardsTriggered.current = false;
+  const hideYearsScale = useCallback(
+    (immediate = true, { duration = 0.6, ease = 'power2.inOut', y = 40 } = {}) => {
+      const el = yearsScaleRef?.current;
+      if (!el) return;
 
+      gsap.killTweensOf(el);
 
-            if (historyTagRef.current) {
-                gsap.to(historyTagRef.current, { opacity: 0, duration: 0.2 });
-            }
+      if (immediate) {
+        gsap.set(el, { autoAlpha: 0, y, overwrite: true });
+        return;
+      }
 
-            const returnDuration = 1.0;
-            const returnEase = 'power2.inOut';
+      gsap.to(el, {
+        autoAlpha: 0,
+        y,
+        duration,
+        ease,
+        overwrite: true,
+      });
+    },
+    [yearsScaleRef]
+  );
 
-            const rectBeforeAnimation = cardsEl.getBoundingClientRect();
-            const widthBeforeAnimation = rectBeforeAnimation.width;
-            const heightBeforeAnimation = rectBeforeAnimation.height;
-            const topBeforeAnimation = rectBeforeAnimation.top;
-            const currentY = gsap.getProperty(cardsEl, 'y') || 0;
-            const currentX = gsap.getProperty(cardsEl, 'x') || 0;
+  const showYearsScale = useCallback(
+    (immediate = false, { duration = 0.9, ease = 'power2.inOut' } = {}) => {
+      const el = yearsScaleRef?.current;
+      if (!el) return;
+      gsap.killTweensOf(el);
 
-            // Вычисляем куда карточки должны "уехать" (вниз за viewport)
-            // Карточки сейчас занимают весь viewport (height: 100vh, top: 0)
-            // После сброса класса они будут ниже header
-            // Анимируем их вниз на высоту viewport чтобы создать эффект "ухода"
-            const targetY = window.innerHeight - topBeforeAnimation;
+      if (immediate) {
+        gsap.set(el, { autoAlpha: 1, y: 0, overwrite: true });
+        return;
+      }
 
-            cardsEl.style.willChange = 'transform';
-            cardsEl.style.transform = 'translateZ(0)';
-            cardsEl.style.width = `${widthBeforeAnimation}px`;
-            cardsEl.style.minWidth = `${widthBeforeAnimation}px`;
-            cardsEl.style.maxWidth = `${widthBeforeAnimation}px`;
-            cardsEl.style.height = `${heightBeforeAnimation}px`;
-            cardsEl.style.minHeight = `${heightBeforeAnimation}px`;
+      gsap.to(el, {
+        autoAlpha: 1,
+        y: 0,
+        duration,
+        ease,
+        overwrite: true,
+      });
+    },
+    [yearsScaleRef]
+  );
 
+  useEffect(() => {
+    hideYearsScale(true);
+  }, [hideYearsScale]);
 
-            const tl = gsap.timeline({
-                defaults: { duration: returnDuration, ease: returnEase },
-                onComplete: () => {
-                    const rectBefore = cardsEl.getBoundingClientRect();
-                    const topBefore = rectBefore.top;
-                    const leftBefore = rectBefore.left;
+  const hideHistoryTag = useCallback(
+    (immediate = true) => {
+      const tag = historyTagRef.current;
+      if (!tag) return;
 
-                    cardsEl.style.willChange = 'transform';
-                    cardsEl.style.transform = 'translateZ(0)';
-                    cardsEl.style.opacity = '0';
-                    cardsEl.style.pointerEvents = 'none';
-                    cardsEl.style.visibility = 'hidden';
+      gsap.killTweensOf(tag);
+      gsap.set(tag, {
+        autoAlpha: 0,
+        ...(immediate ? { y: 0 } : null),
+        overwrite: true,
+      });
+    },
+    [historyTagRef]
+  );
 
-                    const currentXBeforeReset = gsap.getProperty(cardsEl, 'x') || 0;
-                    const currentYBeforeReset = gsap.getProperty(cardsEl, 'y') || 0;
+  const showAndPlaceHistoryTag = useCallback(
+    (opts = {}) => {
+      const { immediate = false } = opts;
 
+      const tag = historyTagRef.current;
+      const topRow = cardsTopRowRef?.current;
+      const cardsContainer = tag?.parentElement;
 
-                    gsap.set(cardsEl, { x: 0, y: 0, clearProps: 'transform' });
+      if (!tag || !topRow || !cardsContainer) return;
+      if (cardsFocusInProgressRef?.current) return;
 
-                    requestAnimationFrame(() => {
-                        requestAnimationFrame(() => {
-                            flushSync(() => {
-                                setCardsFocused(false);
-                            });
+      const place = () => {
+        const w = window.innerWidth;
+        const gap = w >= 1600 ? 155 : 54;
+        const desiredLeft = Math.max(24, Math.min(w * 0.04, 48));
 
-                            const rectAfter = cardsEl.getBoundingClientRect();
-                            const topAfter = rectAfter.top;
-                            const leftAfter = rectAfter.left;
-                            const layoutJumpY = topAfter - topBefore;
-                            const layoutJumpX = leftAfter - leftBefore;
+        gsap.killTweensOf(tag);
+        gsap.set(tag, { x: 0, y: 0, autoAlpha: 0, overwrite: true });
 
+        const topRowRect = topRow.getBoundingClientRect();
+        const tagRect0 = tag.getBoundingClientRect();
 
-                            if (Math.abs(layoutJumpY) > 0.5 || Math.abs(layoutJumpX) > 0.5) {
-                                const compensationX = currentXBeforeReset - layoutJumpX;
-                                const compensationY = currentYBeforeReset - layoutJumpY;
+        const targetBottom = topRowRect.top - gap;
+        const deltaY = targetBottom - tagRect0.bottom;
 
-                                gsap.set(cardsEl, {
-                                    x: compensationX,
-                                    y: compensationY,
-                                    immediateRender: true,
-                                    force3D: true,
-                                });
-                                cardsEl.style.transform = `translateZ(0) translate(${compensationX}px, ${compensationY}px)`;
-                            }
+        gsap.set(tag, { y: deltaY, autoAlpha: 0, overwrite: true });
 
-                            requestAnimationFrame(() => {
-                                requestAnimationFrame(() => {
-                                    // Сброс ВСЕХ inline стилей из activateCardsFocus
-                                    cardsEl.style.marginTop = '';
-                                    cardsEl.style.marginBottom = '';
-                                    cardsEl.style.padding = '';
-                                    cardsEl.style.top = '';
-                                    cardsEl.style.display = '';
-                                    cardsEl.style.boxSizing = '';
-                                    cardsEl.style.overflow = '';
-                                    cardsEl.style.overscrollBehavior = '';
-                                    cardsEl.style.width = '';
-                                    cardsEl.style.minWidth = '';
-                                    cardsEl.style.maxWidth = '';
-                                    cardsEl.style.height = '';
-                                    cardsEl.style.minHeight = '';
-                                    cardsEl.style.opacity = '';
-                                    cardsEl.style.pointerEvents = '';
-                                    cardsEl.style.visibility = '';
-                                    cardsEl.style.willChange = '';
+        const tagRect1 = tag.getBoundingClientRect();
+        const deltaX = desiredLeft - tagRect1.left;
 
-                                    gsap.set(cardsEl, { x: 0, y: 0, clearProps: 'transform' });
-                                });
-                            });
-                        });
-                    });
+        gsap.set(tag, { x: deltaX, autoAlpha: 0, overwrite: true });
 
-                    cardsFocusInProgressRef.current = false;
-                    hasScrollToHeaderTriggered.current = false;
-                    headerIntroArmedRef.current = true;
+        if (immediate) {
+          gsap.set(tag, { autoAlpha: 1, overwrite: true });
+          return;
+        }
 
-                    if (!animationReady || hasRestoreTriggered.current) return;
+        gsap.to(tag, {
+          autoAlpha: 1,
+          duration: 0.18,
+          ease: 'power1.out',
+          overwrite: true,
+        });
+      };
 
-                    const marksGroup = marksGroupRef.current;
-                    const title = titleRef.current;
-                    const subtitleLine = subtitleLineRef.current;
-                    const descLine1 = subtitleLine1Ref.current;
-                    const descLine2 = subtitleLine2Ref.current;
-                    if (!marksGroup || !title) return;
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          gsap.delayedCall(0, place);
+        });
+      });
+    },
+    [historyTagRef, cardsTopRowRef, cardsFocusInProgressRef]
+  );
 
-                    hasRestoreTriggered.current = true;
-                    hasSplitTriggered.current = false;
+  const onCardsFocusEnter = useCallback(
+    ({ tl, duration = 0.9, ease = 'power2.inOut' } = {}) => {
+      const el = yearsScaleRef?.current;
+      if (!el) return;
+     
+      if (tl) {
+        tl.to(el, { autoAlpha: 1, y: 0, overwrite: 'auto' }, 0);
+      } else {
+        showYearsScale(false, { duration, ease });
+      }
+    },
+    [yearsScaleRef, showYearsScale]
+  );
 
-                    const elements = [marksGroup, title, subtitleLine, descLine1, descLine2];
-                    elements.forEach((el) => {
-                        if (!el) return;
-                        gsap.set(el, { clearProps: 'all' });
-                        el.style.animation = '';
-                        el.style.opacity = '';
-                        el.style.transform = '';
-                        el.classList.remove(headerStyles.animate);
-                    });
+  const exitCardsFocus = useCallback(
+    (cardsEl) => {
+      if (!cardsEl) return;
 
-                    // Скроллим к началу секции чтобы header был видим
-                    requestAnimationFrame(() => {
-                        const sectionEl = sectionRef?.current;
-                        if (sectionEl) {
-                            const sectionRect = sectionEl.getBoundingClientRect();
-                            const targetScroll = window.pageYOffset + sectionRect.top;
-                            window.scrollTo({
-                                top: targetScroll,
-                                behavior: 'smooth'
-                            });
-                        }
-                        window.dispatchEvent(new Event('scroll'));
-                    });
-                },
+      hideHistoryTag(true);
+
+      const snap1 = gsap.utils?.snap ? gsap.utils.snap(1) : (v) => Math.round(v);
+      const rectFirst = cardsEl.getBoundingClientRect();
+
+      cardsFocusInProgressRef.current = true;
+      hasScrollToHeaderTriggered.current = true;
+      hasScrollToCardsTriggered.current = false;
+
+      const returnDuration = 0.9;
+      const returnEase = 'power2.inOut';
+
+      gsap.killTweensOf(cardsEl);
+      gsap.killTweensOf(window);
+
+      cardsEl.style.willChange = 'transform';
+
+      const xBefore = Number(gsap.getProperty(cardsEl, 'x') || 0);
+      const yBefore = Number(gsap.getProperty(cardsEl, 'y') || 0);
+      gsap.set(cardsEl, { x: snap1(xBefore), y: snap1(yBefore), force3D: true });
+    
+      flushSync(() => {
+        setCardsFocused(false);
+      });
+
+      const rectAfter = cardsEl.getBoundingClientRect();
+      const xAfter = Number(gsap.getProperty(cardsEl, 'x') || 0);
+      const yAfter = Number(gsap.getProperty(cardsEl, 'y') || 0);
+
+      const lastLeft = rectAfter.left - xAfter;
+      const lastTop = rectAfter.top - yAfter;
+
+      const invertX = snap1(rectFirst.left - lastLeft);
+      const invertY = snap1(rectFirst.top - lastTop);
+
+      gsap.set(cardsEl, {
+        x: invertX,
+        y: invertY,
+        force3D: true,
+        immediateRender: true,
+      });
+
+      const tl = gsap.timeline({
+        defaults: { duration: returnDuration, ease: returnEase },
+        onComplete: () => {       
+          cardsEl.style.marginTop = '';
+          cardsEl.style.marginBottom = '';
+          cardsEl.style.padding = '';
+          cardsEl.style.top = '';
+          cardsEl.style.display = '';
+          cardsEl.style.boxSizing = '';
+          cardsEl.style.overflow = '';
+          cardsEl.style.overscrollBehavior = '';
+          cardsEl.style.width = '';
+          cardsEl.style.minWidth = '';
+          cardsEl.style.maxWidth = '';
+          cardsEl.style.height = '';
+          cardsEl.style.minHeight = '';
+          cardsEl.style.opacity = '';
+          cardsEl.style.pointerEvents = '';
+          cardsEl.style.visibility = '';
+          cardsEl.style.willChange = '';
+          cardsEl.style.transition = '';
+
+          gsap.set(cardsEl, { x: 0, y: 0, clearProps: 'transform' });
+
+          const root = sectionRef?.current;
+          if (root) root.removeAttribute('data-focus-layout');
+    
+          hideYearsScale(false, { duration: 0.35, ease: 'power2.out', y: 40 });
+
+          const headerEl = historyHeaderRef?.current;
+          if (headerEl) {
+            const targetY = getScrollYToFullyShowElement(headerEl, { padTop: 40, padBottom: 40 });
+            gsap.to(window, {
+              duration: 0.35,
+              ease: 'power2.out',
+              overwrite: 'auto',
+              scrollTo: { y: targetY, autoKill: false },
             });
+          }
 
-            if (backgroundRef.current) {
-                tl.to(backgroundRef.current, { y: 0 }, 0);
-            }
+          cardsFocusInProgressRef.current = false;
+          hasScrollToHeaderTriggered.current = false;
+          headerIntroArmedRef.current = true;
 
-            tl.fromTo(
-                cardsEl,
-                { x: currentX, y: currentY },
-                {
-                    x: currentX,
-                    y: targetY,  // Карточки уезжают вниз
-                    duration: returnDuration,
-                    ease: returnEase,
-                    onUpdate: () => {
-                        const currentXDuring = gsap.getProperty(cardsEl, 'x') || 0;
-                        if (Math.abs(currentXDuring - currentX) > 0.1) {
-                            gsap.set(cardsEl, { x: currentX, immediateRender: true });
-                        }
-                    },
-                },
-                0
-            );
+          requestAnimationFrame(() => window.dispatchEvent(new Event('scroll')));
+
+          if (!animationReady || hasRestoreTriggered.current) return;
+
+          const marksGroup = marksGroupRef.current;
+          const title = titleRef.current;
+          const subtitleLine = subtitleLineRef.current;
+          const descLine1 = subtitleLine1Ref.current;
+          const descLine2 = subtitleLine2Ref.current;
+          if (!marksGroup || !title) return;
+
+          hasRestoreTriggered.current = true;
+          hasSplitTriggered.current = false;
+
+          const elements = [marksGroup, title, subtitleLine, descLine1, descLine2];
+          elements.forEach((el) => {
+            if (!el) return;
+            gsap.set(el, { clearProps: 'all' });
+            el.style.animation = '';
+            el.style.opacity = '';
+            el.style.transform = '';
+            el.classList.remove(headerStyles.animate);
+          });
         },
-        [
-            animationReady,
-            historyTagRef,
-            backgroundRef,
-            sectionRef,
-            marksGroupRef,
-            titleRef,
-            subtitleLineRef,
-            subtitleLine1Ref,
-            subtitleLine2Ref,
-            cardsFocusInProgressRef,
-            hasScrollToHeaderTriggered,
-            hasScrollToCardsTriggered,
-            hasRestoreTriggered,
-            hasSplitTriggered,
-            headerIntroArmedRef,
-            setCardsFocused,
-        ]
-    );
+      });
+    
+      if (backgroundRef.current) {
+        tl.to(backgroundRef.current, { y: 0, overwrite: 'auto' }, 0);
+      }
+ 
+      if (yearsScaleRef?.current) {
+        tl.to(yearsScaleRef.current, { autoAlpha: 0, y: 40, overwrite: 'auto' }, 0);
+      }
 
-    return { exitCardsFocus };
+      tl.to(
+        cardsEl,
+        {
+          x: 0,
+          y: 0,
+          ease: returnEase,
+          overwrite: 'auto',
+          force3D: true,
+          autoRound: true,
+        },
+        0
+      );
+    },
+    [
+      animationReady,
+      hideHistoryTag,
+      hideYearsScale,
+      showYearsScale,
+      backgroundRef,
+      sectionRef,
+      historyHeaderRef,
+      marksGroupRef,
+      titleRef,
+      subtitleLineRef,
+      subtitleLine1Ref,
+      subtitleLine2Ref,
+      cardsFocusInProgressRef,
+      hasScrollToHeaderTriggered,
+      hasScrollToCardsTriggered,
+      hasRestoreTriggered,
+      hasSplitTriggered,
+      headerIntroArmedRef,
+      yearsScaleRef,
+      setCardsFocused,
+    ]
+  );
+
+  return {
+    exitCardsFocus,
+    showAndPlaceHistoryTag,
+    hideHistoryTag,
+    showYearsScale,
+    hideYearsScale,    
+    onCardsFocusEnter,
+  };
 }
