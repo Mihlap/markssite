@@ -1,1 +1,1 @@
-export { default as UiMarksSelect } from './Select/Select.jsx';
+export { default as UiMarksSelect } from './Select/MarksSelect.jsx';

@@ -53,6 +53,7 @@
     border-radius: 0;
     box-shadow: none;
     z-index: 100;
+    transform: translateY(7px);
 }
 
 .select :global(.select__option) {
@@ -75,17 +76,25 @@
 }
 
 .select :global(.select__clear-indicator) {
-    transform: translateY(-9px);
+    cursor: pointer;
+    transform: translate(-7px, -4px);
+}
+
+.select :global(.select__multi-value__remove) {
+    cursor: pointer;
+    padding-left: 8px;
+    padding-right: 8px;
+    transform: translateY(2px);
 }
 
 .select :global(.select__dropdown-indicator) {
     color: var(--gray-959DA6);
     transition: transform 0.2s ease, color 0.2s ease;
-    transform: translateY(-9px);
+    transform: translateY(-5px);
 }
 
 .select :global(.select__control--menu-is-open) :global(.select__dropdown-indicator) {
-    transform: translateY(-9px) rotate(180deg);
+    transform: translateY(-5px) rotate(180deg);
     color: var(--blue-75BBFD);
 }
 
