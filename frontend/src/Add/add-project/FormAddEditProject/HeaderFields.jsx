@@ -42,7 +42,7 @@ function HeaderFields({
       />
       <div className={`${styles.form__group} ${styles.field}`}>
         <Select
-          styles={customStyles}
+          // styles={customStyles}
           isMulti
           name="selectCompetencies"
           options={[

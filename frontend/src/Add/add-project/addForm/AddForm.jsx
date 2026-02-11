@@ -26,12 +26,15 @@ export default function AddForm() {
         <Controller
           name="selectCompetencies"
           control={control}
-          // render={({ field }) => <UiMarksInput label="Название проекта" name="title" {...field} />}
           render={({ field }) => (
             <UiMarksSelect
               isMulti
               label="Выбрать компетенции"
+              placeholder="Выберите компетенции"
               name="selectCompetencies"
+              customStyles={{
+                container: s.selectContainer,
+              }}
               options={[
                 { value: 'Архитектура', label: 'Архитектура' },
                 { value: 'BIM', label: 'BIM' },

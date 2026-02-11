@@ -471,7 +471,7 @@ export default function FormAddProject({ setIsModalOpen }) {
             inputData={inputData}
             setInputData={setInputData}
             changeHandler={changeHandler}
-            customStyles={customStyles}
+            // customStyles={customStyles}
             setIsFocused={setIsFocused}
             errorMessage={errorMessage}
             setErrorMessage={setErrorMessage}
