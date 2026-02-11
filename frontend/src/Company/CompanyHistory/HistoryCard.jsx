@@ -37,10 +37,7 @@ export default function HistoryCard({ item, variant = 1, isBottom = false }) {
                 </div>
 
                 <div className={styles.card_text}>
-                    <div
-                        className={styles.card_title}
-                        dangerouslySetInnerHTML={{ __html: item?.description || '' }}
-                    />
+                    <div className={styles.card_title} dangerouslySetInnerHTML={{ __html: item?.description || '' }} />
                     <p className={styles.card_link}>Открыть хронику...</p>
                 </div>
             </div>

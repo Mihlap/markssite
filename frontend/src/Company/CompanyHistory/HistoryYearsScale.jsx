@@ -69,7 +69,7 @@ function buildModel({ years, windowStart, windowSize = 5 }) {
     const last = ys[n - 1];
 
     const minStart = 1;
-    const maxStart = Math.max(1, (n - 2) - (windowSize - 1));
+    const maxStart = Math.max(1, n - 2 - (windowSize - 1));
     const ws = clamp(windowStart ?? 1, minStart, maxStart);
 
     const baseCanLeft = ws > minStart;
@@ -145,15 +145,38 @@ const HistoryYearsScale = forwardRef(function HistoryYearsScale(
 
     const rootRef = useRef(null);
     const trackRef = useRef(null);
-    const rafRef = useRef(0);
 
     const lockRef = useRef(false);
     const shiftingRef = useRef(false);
+
+    const rafLoopRef = useRef(0);
+    const lastOffsetRef = useRef(-1);
+
+    const forcedYearRef = useRef(null);
+    const forcedOffsetRef = useRef(null);
 
     const [tickWidth, setTickWidth] = useState(null);
     const measureYearRefs = useRef([]);
     const measureDotsRef = useRef(null);
     const scheduleMeasure = useRef(0);
+
+    const ACTIVE_X = 60;
+
+    const pretriggerRef = useRef(220);
+    const endEpsRef = useRef(260);
+
+    const PRETRIGGER_RATIO = 0.75;
+    const PRETRIGGER_EXTRA_PX = 120;
+    const PRETRIGGER_MIN = 80;
+    const PRETRIGGER_MAX = 520;
+
+    const END_EPS_RATIO = 0.8;
+    const END_EPS_EXTRA_PX = 160;
+    const END_EPS_MIN = 120;
+    const END_EPS_MAX = 700;
+
+    const ACTIVE_SCALE = 33 / 22;
+    const NORMAL_SCALE = 1;
 
     const measureTickWidth = useCallback(() => {
         cancelAnimationFrame(scheduleMeasure.current);
@@ -216,6 +239,9 @@ const HistoryYearsScale = forwardRef(function HistoryYearsScale(
         setWindowStart(1);
         lockRef.current = false;
         shiftingRef.current = false;
+        forcedYearRef.current = null;
+        forcedOffsetRef.current = null;
+        lastOffsetRef.current = -1;
         measureTickWidth();
     }, [yearsKey, allYears, measureTickWidth]);
 
@@ -229,84 +255,183 @@ const HistoryYearsScale = forwardRef(function HistoryYearsScale(
         return Array.from(container.querySelectorAll('[data-year-marker="true"][data-year]'));
     }, [timelineWrapperRef]);
 
-    const computeYearFromTimeline = useCallback(() => {
+    const updatePretrigger = useCallback(() => {
+        const markers = getMarkers();
+        if (markers.length >= 2) {
+            const c0 = markers[0].offsetLeft + markers[0].offsetWidth / 2;
+            const c1 = markers[1].offsetLeft + markers[1].offsetWidth / 2;
+            const step = Math.max(1, c1 - c0);
+
+            const pre = clamp(step * PRETRIGGER_RATIO + PRETRIGGER_EXTRA_PX, PRETRIGGER_MIN, PRETRIGGER_MAX);
+            const endEps = clamp(step * END_EPS_RATIO + END_EPS_EXTRA_PX, END_EPS_MIN, END_EPS_MAX);
+
+            pretriggerRef.current = pre;
+            endEpsRef.current = endEps;
+        } else {
+            pretriggerRef.current = 220;
+            endEpsRef.current = 260;
+        }
+    }, [getMarkers]);
+
+    useEffect(() => {
+        const id = requestAnimationFrame(() => updatePretrigger());
+        const onResize = () => requestAnimationFrame(() => updatePretrigger());
+        window.addEventListener('resize', onResize, { passive: true });
+        return () => {
+            cancelAnimationFrame(id);
+            window.removeEventListener('resize', onResize);
+        };
+    }, [yearsKey, updatePretrigger]);
+
+    const setActiveDot = useCallback(
+        (year) => {
+            const container = timelineWrapperRef?.current;
+            if (!container) return;
+
+            const yy = year == null ? null : String(year);
+            const markers = getMarkers();
+            if (!markers.length) return;
+
+            for (const m of markers) {
+                const y = m.getAttribute('data-year');
+                const isActive = yy && y === yy;
+
+                if (isActive) m.setAttribute('data-active', 'true');
+                else m.removeAttribute('data-active');
+
+                const dot = m.querySelector('[data-year-dot="true"]');
+                if (!dot) continue;
+
+                gsap.killTweensOf(dot);
+                gsap.killTweensOf(m);
+
+                const toScale = isActive ? ACTIVE_SCALE : NORMAL_SCALE;
+
+                gsap.to(dot, {
+                    duration: 0.25,
+                    ease: 'power2.out',
+                    overwrite: 'auto',
+                    '--dot-scale': toScale,
+                });
+
+                gsap.to(m, {
+                    duration: 0.25,
+                    ease: 'power2.out',
+                    overwrite: 'auto',
+                    '--dot-cutout-scale': toScale,
+                });
+            }
+        },
+        [timelineWrapperRef, getMarkers]
+    );
+
+    const computeActiveYearByLeftEdge = useCallback(() => {
         const markers = getMarkers();
         if (!markers.length) return null;
 
+        const container = timelineWrapperRef?.current;
         const offset = getCurrentOffset();
-        const viewportCenterX = window.innerWidth / 2;
-        const centerX = offset + viewportCenterX;
+
+        if (container) {
+            const maxOffset = Math.max(0, container.scrollWidth - window.innerWidth);
+            const endEps = Number(endEpsRef.current || 0);
+            if (offset >= maxOffset - endEps) {
+                const last = markers[markers.length - 1];
+                return last?.getAttribute('data-year') || null;
+            }
+        }
+
+        const edgeX = offset + ACTIVE_X + Number(pretriggerRef.current || 0);
 
         let best = null;
-        let bestDist = Infinity;
+        let bestDelta = Infinity;
 
         for (const el of markers) {
             const year = el.getAttribute('data-year');
             if (!year) continue;
 
             const elCenter = el.offsetLeft + el.offsetWidth / 2;
-            const d = Math.abs(elCenter - centerX);
-            if (d < bestDist) {
-                bestDist = d;
+            const delta = elCenter - edgeX;
+
+            if (delta >= 0 && delta < bestDelta) {
+                bestDelta = delta;
                 best = year;
             }
         }
 
-        return best;
-    }, [getMarkers, getCurrentOffset]);
+        if (!best) {
+            const last = markers[markers.length - 1];
+            best = last?.getAttribute('data-year') || null;
+        }
 
-    const snapUiToTimeline = useCallback(() => {
+        return best;
+    }, [getMarkers, getCurrentOffset, timelineWrapperRef]);
+
+    const applyActiveFromTimeline = useCallback(() => {
         if (!allYears.length) return;
 
         const container = timelineWrapperRef?.current;
         if (!container) {
-            setUiYear(allYears[0]);
+            const y0 = allYears[0];
+            setUiYear(y0);
             setWindowStart(1);
+            setActiveDot(y0);
             return;
         }
 
-        const offset = getCurrentOffset();
-        const EPS = 12;
-
-        if (offset <= EPS) {
-            setUiYear(allYears[0]);
-            setWindowStart(1);
-            return;
-        }
-
-        const y = computeYearFromTimeline();
+        const y = computeActiveYearByLeftEdge();
         if (!y) return;
 
         const yy = String(y);
         if (!allYears.includes(yy)) return;
 
-        setUiYear(yy);
+        setUiYear((prev) => (prev === yy ? prev : yy));
+        setActiveDot(yy);
 
         if (allYears.length > 7) {
             const idx = allYears.indexOf(yy);
             const minStart = 1;
-            const maxStart = Math.max(1, (allYears.length - 2) - (5 - 1));
+            const maxStart = Math.max(1, allYears.length - 2 - (5 - 1));
             const targetWs = clamp(idx - 2, minStart, maxStart);
             setWindowStart((prev) => (prev === targetWs ? prev : targetWs));
+        } else {
+            setWindowStart(1);
         }
-    }, [allYears, timelineWrapperRef, getCurrentOffset, computeYearFromTimeline]);
-
+    }, [allYears, timelineWrapperRef, computeActiveYearByLeftEdge, setActiveDot]);
+   
     const scrollToYear = useCallback(
         (year) => {
             const container = timelineWrapperRef?.current;
             if (!container) return;
 
             const y = String(year);
-            const targetEl = container.querySelector(`[data-year-marker="true"][data-year="${y}"]`);
+
+            let targetEl = null;
+            try {
+                targetEl = container.querySelector(`[data-year-marker="true"][data-year="${y}"]`);
+            } catch {
+                targetEl = null;
+            }
             if (!targetEl) return;
 
             const targetCenter = targetEl.offsetLeft + targetEl.offsetWidth / 2;
-            const viewportCenterX = window.innerWidth / 2;
 
             const maxOffset = Math.max(0, container.scrollWidth - window.innerWidth);
-            const targetOffset = clamp(targetCenter - viewportCenterX, 0, maxOffset);
 
-            lockRef.current = false;
+            const pre = Number(pretriggerRef.current || 0);
+            const edgeX = ACTIVE_X + pre;
+
+            let targetOffset = targetCenter - edgeX;
+            if (!Number.isFinite(targetOffset)) targetOffset = 0;
+
+            targetOffset = clamp(targetOffset, 0, maxOffset);
+
+            lockRef.current = true;
+            forcedYearRef.current = y;
+            forcedOffsetRef.current = null;
+
+            setUiYear(y);
+            setActiveDot(y);
 
             gsap.killTweensOf(container);
             gsap.to(container, {
@@ -317,46 +442,72 @@ const HistoryYearsScale = forwardRef(function HistoryYearsScale(
                 force3D: true,
                 onUpdate: () => {
                     const x = Number(gsap.getProperty(container, 'x') || 0);
-                    if (horizontalOffsetRef) horizontalOffsetRef.current = Math.max(0, -x);
+                    const off = Math.max(0, -x);
+                    if (horizontalOffsetRef) horizontalOffsetRef.current = off;
                 },
                 onComplete: () => {
                     const x = Number(gsap.getProperty(container, 'x') || 0);
-                    if (horizontalOffsetRef) horizontalOffsetRef.current = Math.max(0, -x);
+                    const off = Math.max(0, -x);
+
+                    if (horizontalOffsetRef) horizontalOffsetRef.current = off;
+                    lastOffsetRef.current = off;
+
+                    forcedYearRef.current = y;
+                    forcedOffsetRef.current = off;
+
+                    lockRef.current = false;
+
                     requestAnimationFrame(() => {
-                        requestAnimationFrame(() => snapUiToTimeline());
+                        setUiYear(y);
+                        setActiveDot(y);
                     });
                 },
             });
-
-            setUiYear(y);
         },
-        [timelineWrapperRef, horizontalOffsetRef, snapUiToTimeline]
+        [timelineWrapperRef, horizontalOffsetRef, setActiveDot]
     );
 
     useEffect(() => {
         if (!visible) return;
 
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => snapUiToTimeline());
-        });
+        cancelAnimationFrame(rafLoopRef.current);
 
-        const onAnyMove = () => {
-            cancelAnimationFrame(rafRef.current);
-            rafRef.current = requestAnimationFrame(() => {
-                if (lockRef.current) return;
-                snapUiToTimeline();
-            });
+        const loop = () => {
+            rafLoopRef.current = requestAnimationFrame(loop);
+
+            if (lockRef.current) return;
+            if (shiftingRef.current) return;
+
+            const off = getCurrentOffset();
+            if (!Number.isFinite(off)) return;
+
+            if (forcedYearRef.current && forcedOffsetRef.current != null) {
+                if (Math.abs(off - forcedOffsetRef.current) <= 0.5) return;
+                forcedYearRef.current = null;
+                forcedOffsetRef.current = null;
+                lastOffsetRef.current = -1;
+            }
+
+            if (Math.abs(off - lastOffsetRef.current) > 0.5) {
+                lastOffsetRef.current = off;
+                applyActiveFromTimeline();
+            }
         };
 
-        window.addEventListener('resize', onAnyMove, { passive: true });
-        window.addEventListener('wheel', onAnyMove, { passive: true });
+        rafLoopRef.current = requestAnimationFrame(loop);
+
+        const onResize = () => {
+            lastOffsetRef.current = -1;
+            requestAnimationFrame(() => applyActiveFromTimeline());
+        };
+
+        window.addEventListener('resize', onResize, { passive: true });
 
         return () => {
-            window.removeEventListener('resize', onAnyMove);
-            window.removeEventListener('wheel', onAnyMove);
-            cancelAnimationFrame(rafRef.current);
+            window.removeEventListener('resize', onResize);
+            cancelAnimationFrame(rafLoopRef.current);
         };
-    }, [visible, snapUiToTimeline]);
+    }, [visible, getCurrentOffset, applyActiveFromTimeline]);
 
     const model = useMemo(() => {
         return buildModel({
