@@ -67,7 +67,8 @@ export default function CompanyHistory({
     const [animationReady, setAnimationReady] = useState(false);
     const [cardsFocused, setCardsFocused] = useState(false);
     const [yearsScaleGate, setYearsScaleGate] = useState(true);
-    const [viewRef, inView] = useInView({ threshold: 0.2, triggerOnce: true }); 
+
+    const [viewRef, inView] = useInView({ threshold: 0.2, triggerOnce: true });
     const [timelineVisRef, timelineInView] = useInView({
         threshold: 0.15,
         triggerOnce: false,
@@ -98,6 +99,10 @@ export default function CompanyHistory({
         const apply = () => {
             const sbw = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
             el.style.setProperty('--sbw', `${sbw}px`);
+
+            const padRight = Math.round(window.innerWidth * 0.9);
+            el.style.setProperty('--history-pad-right', `${padRight}px`);
+            el.style.setProperty('--history-pad-right-num', `${padRight}`);
         };
 
         apply();
@@ -118,17 +123,16 @@ export default function CompanyHistory({
                 const ao = a.order ?? 0;
                 const bo = b.order ?? 0;
                 if (ao !== bo) return ao - bo;
-               
+
                 const at = a.createdAt ? new Date(a.createdAt).getTime() : 0;
                 const bt = b.createdAt ? new Date(b.createdAt).getTime() : 0;
                 if (at !== bt) return at - bt;
-              
+
                 return String(a.id ?? '').localeCompare(String(b.id ?? ''));
             });
     }, [historyItems]);
 
-
-    const { timelineItemsAdmin, cardsByYear, scaleYearsAsc } = useMemo(() => {   
+    const { timelineItemsAdmin, cardsByYear, scaleYearsAsc } = useMemo(() => {
         const yearsAdmin = [];
         const seen = new Set();
 
@@ -140,7 +144,7 @@ export default function CompanyHistory({
                 yearsAdmin.push(ys);
             }
         }
-    
+
         const grouped = {};
         for (const y of yearsAdmin) grouped[y] = { top: [], bottom: [] };
 
@@ -148,7 +152,7 @@ export default function CompanyHistory({
         for (const item of visibleItems) {
             if (item.year == null) continue;
             const y = String(item.year);
-      
+
             if (!grouped[y]) grouped[y] = { top: [], bottom: [] };
 
             if (globalIndex % 2 === 0) grouped[y].top.push(item);
@@ -156,7 +160,7 @@ export default function CompanyHistory({
 
             globalIndex += 1;
         }
-        
+
         const yearsAsc = [...yearsAdmin].sort((a, b) => (Number(a) || 0) - (Number(b) || 0));
 
         return {
@@ -165,7 +169,6 @@ export default function CompanyHistory({
             scaleYearsAsc: yearsAsc,
         };
     }, [visibleItems]);
-
 
     useEffect(() => {
         dispatch(fetchCompanyHistory());
@@ -220,10 +223,10 @@ export default function CompanyHistory({
 
     useEffect(() => {
         if (!cardsFocused) return;
-   
+
         if (timelineInView) {
             setYearsScaleGate(true);
-         
+
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
                     showYearsScale?.(false, { duration: 0.25, ease: 'power2.out' });
@@ -232,13 +235,11 @@ export default function CompanyHistory({
         }
     }, [cardsFocused, timelineInView, showYearsScale]);
 
-  
     useEffect(() => {
         if (!cardsFocused) return;
         if (timelineInView) return;
-      
-        hideYearsScale?.(false, { duration: 0.2, ease: 'power2.out', y: 40 });
 
+        hideYearsScale?.(false, { duration: 0.2, ease: 'power2.out', y: 40 });
     }, [cardsFocused, timelineInView, hideYearsScale]);
 
     useCompanyHistoryWheelHandlers({
@@ -336,6 +337,11 @@ export default function CompanyHistory({
 
     const yearsScaleVisible = cardsFocused && yearsScaleGate && timelineInView && scaleYearsAsc.length > 0;
 
+    const padRightNum =
+        typeof window !== 'undefined'
+            ? Math.round(window.innerWidth * 0.9)
+            : 0;
+
     return (
         <div
             id="history"
@@ -372,7 +378,11 @@ export default function CompanyHistory({
                             История MARKS GROUP
                         </div>
 
-                        <div ref={timelineWrapperRef} className={styles.timeline_wrapper}>
+                        <div
+                            ref={timelineWrapperRef}
+                            className={styles.timeline_wrapper}
+                            data-pad-right={padRightNum}
+                        >
                             <div ref={cardsTopRowRef} className={styles.cards_row_top}>
                                 {timelineItemsAdmin.map((year, idx) => {
                                     const isLast = idx === timelineItemsAdmin.length - 1;
@@ -415,7 +425,7 @@ export default function CompanyHistory({
                                                 data-year-marker="true"
                                                 data-last-year={isLast ? 'true' : 'false'}
                                             >
-                                                <div className={styles.year_dot} />
+                                                <div className={styles.year_dot} data-year-dot="true" />
                                                 <div className={`${styles.year_label} ${yearLabelClass}`}>{year}</div>
 
                                                 {hasTopCards && <div className={`${styles.year_connector} ${styles.connector_top}`} />}

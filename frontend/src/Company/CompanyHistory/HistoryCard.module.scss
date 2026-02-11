@@ -11,6 +11,18 @@
     box-sizing: border-box;
     position: relative;
     overflow: hidden;
+    transition: box-shadow 0.22s ease;
+    will-change: box-shadow;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .history_card:hover {
+        box-shadow: -2px 4px 22px 0 rgba(44, 59, 68, 0.2);
+    }
+}
+
+.history_card:focus-visible {
+    box-shadow: -2px 4px 22px 0 rgba(44, 59, 68, 0.2);
 }
 
 .card_image {
@@ -27,6 +39,52 @@
         object-fit: cover;
         object-position: center;
         display: block;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        pointer-events: none;
+        z-index: 2;
+
+        background: linear-gradient(135deg,
+                rgba(131, 199, 252, 0.55) 0%,
+                rgba(255, 149, 126, 0.55) 70%,
+                rgba(255, 149, 126, 0) 100%);
+
+        width: 42%;
+        left: 0;
+
+        filter: blur(10px);
+        transform: translateX(-6px);
+        opacity: 0.95;
+
+        mix-blend-mode: screen;
+    }
+
+    @supports (-webkit-mask-image: linear-gradient(#000, transparent)) or (mask-image: linear-gradient(#000, transparent)) {
+        &::after {
+            filter: blur(6px);
+            transform: translateX(-4px);
+
+            -webkit-mask-image: linear-gradient(90deg,
+                    rgba(0, 0, 0, 1) 0%,
+                    rgba(0, 0, 0, 1) 55%,
+                    rgba(0, 0, 0, 0) 100%);
+            mask-image: linear-gradient(90deg,
+                    rgba(0, 0, 0, 1) 0%,
+                    rgba(0, 0, 0, 1) 55%,
+                    rgba(0, 0, 0, 0) 100%);
+        }
+    }
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .history_card:hover .card_image::after {
+        opacity: 1;
+        width: 44%;
     }
 }
 
@@ -115,7 +173,8 @@
 @media screen and (min-width: 1024px) and (max-width: 1599px) {
     .history_card {
         width: 532px;
-        padding: 24px;
+        padding: 30px;
+        gap: 24px;
     }
 
     .card_image {
@@ -151,7 +210,7 @@
         -webkit-line-clamp: 3;
         align-self: stretch;
         overflow: hidden;
-        color: var(--black-1D2E43, #1D2E43);
+        color: var(--black-1D2E43, #1d2e43);
         font-variant-numeric: lining-nums proportional-nums;
         text-overflow: ellipsis;
         font-family: Raleway;
