@@ -1,6 +1,6 @@
 .wrap {
     background-color: var(--light-light-gray-EBECEE);
-    padding: 32px 16px;
+    padding: 24px 16px 32px 16px;
     border-radius: 6px;
 }
 
@@ -16,4 +16,10 @@
     box-shadow: none;
     z-index: 100;
     transform: translateY(10px);
+}
+
+.wrapSelects {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
 }

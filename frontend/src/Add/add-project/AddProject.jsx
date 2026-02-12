@@ -29,6 +29,7 @@ export default function AddProject({ user }) {
   const [modalBlockHeight, setModalBlockHeight] = useState('auto');
   const [editProjectData, setEditProjectData] = useState(null);
   const [isOpen, setIsOpen] = React.useState(false);
+  const [isFormValid, setIsFormValid] = useState(false);
 
   const isMountedRef = useRef(true);
   const updateModalBlockHeight = useCallback(() => {
@@ -315,8 +316,14 @@ export default function AddProject({ user }) {
           )}
         </div>
       </div>
-      <UiMarksDialog isOpen={isOpen} onClose={() => setIsOpen(false)} title="Новый проект">
-        <AddForm />
+      <UiMarksDialog
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        title="Новый проект"
+        isSaveDisabled={!isFormValid}
+        onSave={() => document.getElementById('add-form')?.requestSubmit()}
+      >
+        <AddForm onValidityChange={setIsFormValid} />
       </UiMarksDialog>
     </section>
   );

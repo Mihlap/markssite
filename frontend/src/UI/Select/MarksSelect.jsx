@@ -51,12 +51,13 @@ const MarksSelect = forwardRef(function Select(
     isSearchable = true,
     className,
     customStyles,
+    error,
     ...rest
   },
   ref
 ) {
   return (
-    <div className={clsx(styles.select, className, customStyles?.container)} data-variant={variant}>
+    <div className={clsx(styles.select, className, customStyles?.container, error && styles.select_error)} data-variant={variant}>
       <ReactSelect
         // menuIsOpen={true}
         ref={ref}
@@ -71,6 +72,7 @@ const MarksSelect = forwardRef(function Select(
         components={{ DropdownIndicator, ClearIndicator, MultiValueRemove }}
         {...rest}
       />
+      {error && <span className={styles.errorText}>{error}</span>}
     </div>
   );
 });
