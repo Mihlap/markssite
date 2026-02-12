@@ -19,6 +19,7 @@ function MarksInput({
   color = 'blue',
   buttonText = 'Загрузить изображение',
   hint,
+  error,
 }) {
   if (type === 'file') {
     const colorClass = styles[`file__button_${color}`] || styles.file__button_blue;
@@ -57,7 +58,7 @@ function MarksInput({
     <div className={`${styles.input} ${className || ''}`}>
       <input
         type={type}
-        className={`${styles.input__field} ${showCounter ? styles.input__field_bordered : ''} ${disabled ? styles.input__field_disabled : ''}`}
+        className={`${styles.input__field} ${showCounter ? styles.input__field_bordered : ''} ${disabled ? styles.input__field_disabled : ''} ${error ? styles.input__field_error : ''}`}
         placeholder={placeholder || name}
         name={name}
         id={name}
@@ -75,6 +76,7 @@ function MarksInput({
         className={`${styles.input__label} ${showCounter ? styles.input__label_top : ''} ${disabled ? styles.input__label_disabled : ''}`}>
         {label}
       </label>
+      {error && <span className={styles.input__error}>{error}</span>}
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { UiMarksButton } from '../index.js';
 
 import s from './Styles.module.css';
 
-export default function MarksModal({ isOpen, onClose, title, children }) {
+export default function MarksModal({ isOpen, onClose, onSave, isSaveDisabled = true, title, children }) {
   const dialogRef = useRef(null);
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export default function MarksModal({ isOpen, onClose, title, children }) {
       <div className={s.title}>{title && title.length > 0 ? title : 'No Title'}</div>
       {children}
       <div className={s.buttons}>
-        <UiMarksButton disabled={true}>Сохранить</UiMarksButton>
+        <UiMarksButton disabled={isSaveDisabled} onClick={onSave}>Сохранить</UiMarksButton>
         <UiMarksButton defaultStyle="gray" onClick={onClose}>
           Отмена
         </UiMarksButton>
