@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 import { useForm, Controller } from 'react-hook-form';
-import { UiMarksInput, UiMarksSelect, UiPhotoPreview } from '../../ui';
+import { UiMarksInput, UiMarksSelect, UiMarksTextarea, UiPhotoPreview } from '../../ui';
 import { monthOptions, yearOptions, typesСonstruction } from '../FormAddEditProject/utils/Time';
 
 import s from './Styles.module.css';
@@ -27,7 +27,7 @@ export default function AddForm({ onValidityChange }) {
   return (
     <form id="add-form" onSubmit={handleSubmit(onSubmit)}>
       {renderCount.current > 0 && <div>Количество ре-рендеров: {renderCount.current}</div>}
-      <div className={s.wrap}>
+      <div className={`${s.wrap} ${s.wrapBg}`}>
         <Controller
           name="title"
           control={control}
@@ -175,7 +175,6 @@ export default function AddForm({ onValidityChange }) {
           control={control}
           render={({ field: { onChange, value } }) => (
             <>
-              {console.log(value?.length === 4 ? 'не показать инпут' : 'показывать инпут')}
               {value?.length !== 4 && (
                 <UiMarksInput
                   type="file"
@@ -206,6 +205,40 @@ export default function AddForm({ onValidityChange }) {
                 }}
               />
             </>
+          )}
+        />
+      </div>
+
+      <div className={s.wrapBg}>
+        <Controller
+          name="titleTextBlock"
+          control={control}
+          render={({ field }) => (
+            <UiMarksInput
+              name="titleTextBlock"
+              label="Заголовок текстового блока"
+              placeholder="Не более 56 символов"
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value.length <= 56) {
+                  field.onChange(value);
+                }
+              }}
+              value={field.value}
+              maxLength={56}
+            />
+          )}
+        />
+        <Controller
+          name="descriptionProject"
+          control={control}
+          render={({ field }) => (
+            <UiMarksTextarea
+              name="descriptionProject"
+              label="Текстовый блок"
+              placeholder="Нет ограничения по символам"
+              {...field}
+            />
           )}
         />
       </div>
