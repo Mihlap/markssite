@@ -1,6 +1,7 @@
 export { default as UiMarksButton } from './button/MarksButton';
 export { default as UiMarksInput } from './input/MarksInput';
 export { default as UiMarksDialog } from './dialog/MarksDialog';
+export { default as UiPhotoPreview } from './photo-preview/PhotoPreview';
 export { default as UiMarksSelect } from '../../UI/Select/MarksSelect';
 
 // --- ICON ---

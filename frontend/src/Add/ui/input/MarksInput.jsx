@@ -18,6 +18,9 @@ function MarksInput({
   className,
   color = 'blue',
   buttonText = 'Загрузить изображение',
+  accept,
+  multiple,
+  inputRef,
   hint,
   error,
 }) {
@@ -40,7 +43,7 @@ function MarksInput({
         )}
         <div className={styles.file__row}>
           <label className={`${styles.file__button} ${colorClass}`}>
-            <input type="file" name={name} onChange={onChange} />
+            <input type="file" name={name} accept={accept} multiple={multiple} ref={inputRef} onChange={onChange} />
             <ClipIcon />
             <span className={styles.file__button_text}>{buttonText}</span>
           </label>
