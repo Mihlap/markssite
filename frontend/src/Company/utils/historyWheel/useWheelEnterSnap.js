@@ -83,7 +83,7 @@ export function useWheelEnterSnap({
             setFocusPhaseEntering(sectionRef);
 
             flushSync(() => setCardsFocused(true));
-      
+
             showYearsScale?.(false, { duration: 0.9, ease: 'power2.inOut' });
 
             requestAnimationFrame(() => {
@@ -276,7 +276,7 @@ export function useWheelEnterSnap({
                 });
 
             const tl = gsap.timeline({ defaults: { overwrite: 'auto', force3D: true }, paused: true });
-       
+
             hideYearsScale?.(true);
             tl.call(() => showYearsScale?.(false, { duration: 1.2, ease: 'power2.inOut' }), null, 0);
 
