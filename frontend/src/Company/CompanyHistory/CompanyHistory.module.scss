@@ -80,12 +80,10 @@
     grid-template-rows: auto auto auto;
     min-width: max-content;
     padding: 0;
-
-    overflow-x: auto;
+    overflow-x: hidden;
     overflow-y: hidden;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
-
     scrollbar-gutter: stable;
     scrollbar-width: thin;
     scrollbar-color: rgba(29, 46, 67, 0.3) transparent;
@@ -107,6 +105,13 @@
             background-color: rgba(29, 46, 67, 0.5);
         }
     }
+
+        @media screen and (max-width: 1023px) {
+            .timeline_wrapper {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
 }
 
 .cards_row_top {

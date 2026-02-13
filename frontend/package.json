@@ -5,7 +5,6 @@
   "proxy": "http://localhost:5000",
   "dependencies": {
     "@gsap/react": "^2.1.2",
-    "@mapbox/mapbox-gl-draw": "^1.4.1",
     "@mediapipe/tasks-vision": "^0.10.14",
     "@r3flector/react-yandex-maps": "^1.2.7",
     "@react-input/mask": "^2.0.4",
@@ -14,7 +13,7 @@
     "@react-three/postprocessing": "^2.16.2",
     "@react-three/rapier": "^1.4.0",
     "@reduxjs/toolkit": "^1.9.5",
-    "axios": "^1.12.2",
+    "axios": "^1.13.5",
     "browser-image-compression": "^2.0.2",
     "clsx": "^2.1.1",
     "dotenv": "^16.0.3",

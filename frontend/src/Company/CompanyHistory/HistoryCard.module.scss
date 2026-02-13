@@ -4,9 +4,6 @@
     background: #f6f6f6;
     border-radius: 16px;
     padding: 30px;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
     width: 689px;
     box-sizing: border-box;
     position: relative;
@@ -25,67 +22,17 @@
     box-shadow: -2px 4px 22px 0 rgba(44, 59, 68, 0.2);
 }
 
-.card_image {
-    position: relative;
-    width: 100%;
-    height: 290px;
-    border-radius: 16px;
-    overflow: hidden;
-    flex-shrink: 0;
-
-    img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
-        display: block;
-    }
-
-    &::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        pointer-events: none;
-        z-index: 2;
-
-        background: linear-gradient(135deg,
-                rgba(131, 199, 252, 0.55) 0%,
-                rgba(255, 149, 126, 0.55) 70%,
-                rgba(255, 149, 126, 0) 100%);
-
-        width: 42%;
-        left: 0;
-
-        filter: blur(10px);
-        transform: translateX(-6px);
-        opacity: 0.95;
-
-        mix-blend-mode: screen;
-    }
-
-    @supports (-webkit-mask-image: linear-gradient(#000, transparent)) or (mask-image: linear-gradient(#000, transparent)) {
-        &::after {
-            filter: blur(6px);
-            transform: translateX(-4px);
-
-            -webkit-mask-image: linear-gradient(90deg,
-                    rgba(0, 0, 0, 1) 0%,
-                    rgba(0, 0, 0, 1) 55%,
-                    rgba(0, 0, 0, 0) 100%);
-            mask-image: linear-gradient(90deg,
-                    rgba(0, 0, 0, 1) 0%,
-                    rgba(0, 0, 0, 1) 55%,
-                    rgba(0, 0, 0, 0) 100%);
-        }
-    }
+.card_split {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
-@media (hover: hover) and (pointer: fine) {
-    .history_card:hover .card_image::after {
-        opacity: 1;
-        width: 44%;
-    }
+.split_left,
+.split_right {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
 
 .card_content {
@@ -151,6 +98,69 @@
     cursor: pointer;
 }
 
+.card_image {
+    position: relative;
+    width: 100%;
+    height: 290px;
+    border-radius: 16px;
+    overflow: hidden;
+    flex-shrink: 0;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        pointer-events: none;
+        z-index: 2;
+
+        background: linear-gradient(135deg,
+                rgba(131, 199, 252, 0.55) 0%,
+                rgba(255, 149, 126, 0.55) 70%,
+                rgba(255, 149, 126, 0) 100%);
+
+        width: 42%;
+        left: 0;
+
+        filter: blur(10px);
+        transform: translateX(-6px);
+        opacity: 0.95;
+
+        mix-blend-mode: screen;
+    }
+
+    @supports (-webkit-mask-image: linear-gradient(#000, transparent)) or (mask-image: linear-gradient(#000, transparent)) {
+        &::after {
+            filter: blur(6px);
+            transform: translateX(-4px);
+
+            -webkit-mask-image: linear-gradient(90deg,
+                    rgba(0, 0, 0, 1) 0%,
+                    rgba(0, 0, 0, 1) 55%,
+                    rgba(0, 0, 0, 0) 100%);
+            mask-image: linear-gradient(90deg,
+                    rgba(0, 0, 0, 1) 0%,
+                    rgba(0, 0, 0, 1) 55%,
+                    rgba(0, 0, 0, 0) 100%);
+        }
+    }
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .history_card:hover .card_image::after {
+        opacity: 1;
+        width: 44%;
+    }
+}
+
 .card_image_placeholder {
     width: 100%;
     height: 290px;
@@ -160,12 +170,16 @@
 }
 
 .bottom_card {
-    .card_content {
+    .card_split {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .split_left {
         order: 1;
     }
 
-    .card_image,
-    .card_image_placeholder {
+    .split_right {
         order: 2;
     }
 }
@@ -174,6 +188,9 @@
     .history_card {
         width: 532px;
         padding: 30px;
+    }
+
+    .card_split {
         gap: 24px;
     }
 
@@ -225,6 +242,9 @@
     .history_card {
         width: 440px;
         padding: 24px;
+    }
+
+    .card_split {
         gap: 20px;
     }
 
@@ -255,6 +275,10 @@
         width: calc(100vw - 3rem);
         max-width: 360px;
         padding: 16px;
+    }
+
+    .card_split {
+        gap: 16px;
     }
 
     .card_image {
