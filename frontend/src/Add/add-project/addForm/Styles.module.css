@@ -23,3 +23,11 @@
     grid-template-columns: 1fr 1fr;
     gap: 32px;
 }
+
+.photoUpload {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding-top: 32px;
+    padding-bottom: 32px;
+}
