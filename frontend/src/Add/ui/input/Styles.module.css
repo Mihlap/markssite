@@ -3,7 +3,15 @@
   position: relative;
   padding: 15px 0 0;
   margin-top: 10px;
-    font-family: var(--font-raleway);
+  font-family: var(--font-raleway);
+}
+
+/* Bordered layout — flex so label order:-1 works */
+.input_bordered {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin-top: 10px;
 }
 
 /* Base field — bottom border only */
@@ -20,11 +28,11 @@
   background: transparent;
   transition: border-color 0.2s;
   position: relative;
-  caret-color: var(--blue-75BBFD);
+  caret-color: var(--light-blue-D4EDFB);
 }
 
 .input__field:focus {
-  border-color: var(--blue-75BBFD);
+  border-color: var(--light-blue-D4EDFB);
 }
 
 .input__field::placeholder {
@@ -38,12 +46,17 @@
 
 /* Bordered variant (for fields with maxLength counter) */
 .input__field_bordered {
-  border: 1px solid var(--blue-75BBFD);
+  background-color: var(--white-F6F6F6);
+  border: 1px solid var(--light-blue-D4EDFB);
+  caret-color: var(--light-blue-D4EDFB);
+  color: var(--black-1D2E43);
   border-radius: 6px;
   padding: 1rem 4.5rem 1rem 1rem;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
+  line-height: 20px;
+  font-family: var(--font-raleway);
 }
 
 .input__field_bordered::placeholder {
@@ -52,7 +65,7 @@
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
-  line-height: 16px;
+  line-height: 20px;
 }
 
 /* Error state */
@@ -89,7 +102,7 @@
   line-height: 16px;
 }
 
-.input__field:not(:placeholder-shown) ~ .input__label {
+.input__wrapper:has(.input__field:not(:placeholder-shown)) ~ .input__label {
   font-size: 12px;
   line-height: 16px;
   cursor: text;
@@ -102,7 +115,7 @@
 .input__label_top {
   position: static;
   font-size: 12px;
-  color: var(--light-gray-C0C5CB);
+  color: var(--gray-959DA6);
   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: 400;
@@ -119,7 +132,7 @@
 .input__measurement {
   position: absolute;
   right: 10px;
-  top: 65%;
+  top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
   font-family: Raleway;
@@ -130,11 +143,17 @@
   color: var(--gray-959DA6);
 }
 
+/* Input + counter wrapper */
+.input__wrapper {
+  position: relative;
+}
+
 /* Character counter */
 .input__counter {
   position: absolute;
   right: 7px;
-  bottom: 25%;
+  top: 50%;
+  transform: translateY(-50%);
   color: var(--gray-959DA6);
   font-family: var(--font-raleway);
   font-size: 16px;

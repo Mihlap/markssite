@@ -1,7 +1,9 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { UiMarksInput, UiMarksSelect, UiMarksTextarea, UiPhotoPreview } from '../../ui';
+import { UiMarksInput, UiMarksSelect, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
 import { monthOptions, yearOptions, typesСonstruction } from '../FormAddEditProject/utils/Time';
+import { MEASUREMENT_FIELDS } from '../FormAddEditProject/const/measurement';
+import { competenciesOptions, degreeParticipationOptions, statusObjectOptions } from './const/options';
 
 import s from './Styles.module.css';
 
@@ -11,23 +13,31 @@ export default function AddForm({ onValidityChange }) {
   const renderCount = useRef(0);
   renderCount.current += 1;
 
-  const { control, handleSubmit, reset, formState: { isValid } } = useForm({
+  const {
+    control,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { isValid },
+  } = useForm({
     mode: 'onChange',
   });
+
+  const measurementValues = watch(MEASUREMENT_FIELDS.map((f) => f.name));
+  const filledCount = measurementValues.filter((v) => v && String(v).trim() !== '').length;
 
   useEffect(() => {
     onValidityChange?.(isValid);
   }, [isValid, onValidityChange]);
-
 
   const onSubmit = (data) => {
     console.log(data);
   };
 
   return (
-    <form id="add-form" onSubmit={handleSubmit(onSubmit)}>
+    <form id="add-form" className={s.form} onSubmit={handleSubmit(onSubmit)}>
       {renderCount.current > 0 && <div>Количество ре-рендеров: {renderCount.current}</div>}
-      <div className={`${s.wrap} ${s.wrapBg}`}>
+      <UiMarksGrayWrap customStyles={{ padding: '24px 16px 32px 16px' }}>
         <Controller
           name="title"
           control={control}
@@ -53,13 +63,7 @@ export default function AddForm({ onValidityChange }) {
               customStyles={{
                 container: s.selectContainer,
               }}
-              options={[
-                { value: 'Архитектура', label: 'Архитектура' },
-                { value: 'BIM', label: 'BIM' },
-                { value: 'Конструктив', label: 'Конструктив' },
-                { value: 'Инженерия', label: 'Инженерия' },
-                { value: 'Дизайн', label: 'Дизайн' },
-              ]}
+              options={competenciesOptions}
               {...field}
             />
           )}
@@ -133,7 +137,7 @@ export default function AddForm({ onValidityChange }) {
             />
           )}
         />
-      </div>
+      </UiMarksGrayWrap>
 
       <div className={s.photoUpload}>
         <Controller
@@ -209,7 +213,7 @@ export default function AddForm({ onValidityChange }) {
         />
       </div>
 
-      <div className={s.wrapBg}>
+      <UiMarksGrayWrap customStyles={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '16px' }}>
         <Controller
           name="titleTextBlock"
           control={control}
@@ -237,11 +241,81 @@ export default function AddForm({ onValidityChange }) {
               name="descriptionProject"
               label="Текстовый блок"
               placeholder="Нет ограничения по символам"
+              // btn={true}
               {...field}
             />
           )}
         />
+      </UiMarksGrayWrap>
+
+      <div>
+        <p className={s.description}>Заполните 3 значения на выбор</p>
+        <UiMarksGrayWrap customStyles={{ padding: '24px 16px 32px 16px' }}>
+          {MEASUREMENT_FIELDS.map(({ name, label, measurement }) => (
+            <Controller
+              key={name}
+              name={name}
+              control={control}
+              render={({ field }) => (
+                <UiMarksInput
+                  label={label}
+                  name={name}
+                  measurement={measurement}
+                  disabled={filledCount >= 3 && (!field.value || String(field.value).trim() === '')}
+                  {...field}
+                />
+              )}
+            />
+          ))}
+        </UiMarksGrayWrap>
       </div>
+      <UiMarksGrayWrap customStyles={{ padding: '24px 16px 32px 16px' }}>
+        <Controller
+          name="location"
+          control={control}
+          render={({ field }) => (
+            <UiMarksInput name="location" label="Расположение: Город, улица, номер дома" {...field} />
+          )}
+        />
+        <Controller
+          name="degreeParticipation"
+          control={control}
+          render={({ field }) => (
+            <UiMarksSelect
+              isMulti
+              label="Степень участия"
+              placeholder="Степень участия"
+              name="degreeParticipation"
+              customStyles={{
+                container: s.selectContainer,
+              }}
+              options={degreeParticipationOptions}
+              {...field}
+            />
+          )}
+        />
+        <Controller
+          name="statusObject"
+          control={control}
+          render={({ field }) => (
+            <UiMarksSelect
+              label="Статус объекта"
+              placeholder="Статус объекта"
+              name="statusObject"
+              customStyles={{
+                container: s.selectContainer,
+              }}
+              options={statusObjectOptions}
+              {...field}
+            />
+          )}
+        />
+        <Controller
+          name="customer"
+          control={control}
+          render={({ field }) => <UiMarksInput name="customer" label="Заказчик" {...field} />}
+        />
+      </UiMarksGrayWrap>
     </form>
   );
 }

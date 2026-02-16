@@ -1,4 +1,4 @@
-import { forwardRef, useState } from 'react';
+import { forwardRef } from 'react';
 import clsx from 'clsx';
 import ReactSelect, { components } from 'react-select';
 import styles from './styles.module.css';
