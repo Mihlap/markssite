@@ -5,7 +5,7 @@
   transform: translate(-50%, -50%);
   min-width: 766px;
   border-radius: 1rem;
-  padding-top: 26px;
+  /* padding-top: 26px; */
   padding-left: 32px;
   padding-right: 32px;
   background-color: var(--white-F6F6F6);
@@ -58,12 +58,17 @@ opacity: 0.43;
 
 .title {
     color: rgb(0, 0, 0);
+    background-color: var(--white-F6F6F6);
     font-family: var(--font-unbounded);
     font-size: 24px;
     font-style: normal;
     font-weight: 300;
     line-height: 32px;
+    padding-top: 26px;
     padding-bottom: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
 .buttons {
@@ -72,4 +77,7 @@ opacity: 0.43;
     gap: 24px;
     padding-top: 32px;
     padding-bottom: 24px;
+    position: sticky;
+    bottom: 0;
+    background-color: var(--white-F6F6F6);
 }

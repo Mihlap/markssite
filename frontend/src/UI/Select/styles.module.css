@@ -22,15 +22,15 @@
 
 .select :global(.select__control) {
     --var-margin: 20px;
-    height: 31.5px;
+    min-height: 31.5px;
     margin-left: var(--var-margin);
     margin-right: var(--var-margin);
     border: none;
     border-bottom: 1px solid var(--gray-959DA6);
     border-radius: 0;
     background-color: transparent;
-    min-height: auto;
     align-items: flex-start;
+    display: flex;
 }
 
 .select[data-variant="full"] :global(.select__control) {
@@ -59,6 +59,29 @@
 
 .select :global(.select__value-container) {
     padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    flex: 1;
+    overflow: hidden;
+}
+
+.select :global(.select__multi-value) {
+    display: flex;
+    align-items: center;
+    background-color: var(--light-light-gray-EBECEE);
+    border-radius: 2px;
+    margin: 0;
+    min-width: 0;
+}
+
+.select :global(.select__multi-value__label) {
+    padding: 2px 0 2px 6px;
+    font-size: 14px;
+    color: var(--black-1D2E43);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .select :global(.select__menu) {
