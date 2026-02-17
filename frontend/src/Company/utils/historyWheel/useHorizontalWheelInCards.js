@@ -17,6 +17,7 @@ export function useHorizontalWheelInCards({
     exitCardsFocus,
     hideYearsScale,
     showYearsScale,
+    isModalOpen = false,
 }) {
     useEffect(() => {
         const container = timelineWrapperRef.current;
@@ -392,7 +393,7 @@ export function useHorizontalWheelInCards({
                 });
             });
         };
-    
+
         const DOT_ACTIVE_PX = 30;
         const DOT_OVERSHOOT_PX = 40;
 
@@ -469,7 +470,7 @@ export function useHorizontalWheelInCards({
             st.marker = null;
             st.dot = null;
             st.enabled = false;
-        };     
+        };
 
         const applyOffset = (next, immediate = false, onDone, opts = null) => {
             const clamped = clampOffset(next);
@@ -533,7 +534,7 @@ export function useHorizontalWheelInCards({
 
         const doExitUp = (e) => {
             stopWheelHard(e);
-            markRecentlyExited(recentlyExitedCardsRef);
+            markRecentlyExited(recentlyExitedCardsRef, 'up');
             clearFocusPhase(sectionRef);
             exitCardsFocus(cardsEl);
         };
@@ -742,6 +743,17 @@ export function useHorizontalWheelInCards({
         };
 
         const onWheelCapture = (e) => {
+            if (isModalOpen) return;
+
+            if (e?.target) {
+                const target = e.target;
+                const modalElement = target.closest?.('[class*="modal"]') ||
+                    target.closest?.('[class*="Modal"]') ||
+                    target.closest?.('[class*="ReactModal"]') ||
+                    target.closest?.('[role="dialog"]');
+                if (modalElement) return;
+            }
+
             if (!cardsFocused) return;
             if (!isHistoryActive(sectionRef, e)) return;
 
@@ -767,7 +779,13 @@ export function useHorizontalWheelInCards({
                 return;
             }
 
-            if (raw < 0) {
+            if (raw < 0) {           
+                const currentOffset = getOffset();
+                if (currentOffset > 0.1) {              
+                    stopWheelHard(e);
+                    stepByWheel(-1, e);
+                    return;
+                }
                 stepByWheel(-1, e);
             }
         };

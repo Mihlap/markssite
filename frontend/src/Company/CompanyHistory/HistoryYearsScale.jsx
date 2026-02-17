@@ -134,7 +134,7 @@ function buildModel({ years, windowStart, windowSize = 5 }) {
 }
 
 const HistoryYearsScale = forwardRef(function HistoryYearsScale(
-    { years = [], timelineWrapperRef, horizontalOffsetRef, visible = true, onSkip },
+    { years = [], timelineWrapperRef, horizontalOffsetRef, visible = true, onSkip, isModalOpen = false },
     barRef
 ) {
     const allYears = useMemo(() => uniqYears(years).map(String), [years]);
@@ -144,10 +144,9 @@ const HistoryYearsScale = forwardRef(function HistoryYearsScale(
     const [windowStart, setWindowStart] = useState(1);
 
     const rootRef = useRef(null);
-    const trackRef = useRef(null);
+    const scaleRef = useRef(null);
 
     const lockRef = useRef(false);
-    const shiftingRef = useRef(false);
 
     const scrollTokenRef = useRef(null);
 
@@ -222,7 +221,6 @@ const HistoryYearsScale = forwardRef(function HistoryYearsScale(
         setUiYear(allYears[0]);
         setWindowStart(1);
         lockRef.current = false;
-        shiftingRef.current = false;
         scrollTokenRef.current = null;
         lastAnimatedYearRef.current = null;
         lastAnimatedAtRef.current = 0;
@@ -241,9 +239,7 @@ const HistoryYearsScale = forwardRef(function HistoryYearsScale(
             if (!yy) return;
 
             const now = Date.now();
-            if (lastAnimatedYearRef.current === yy && now - lastAnimatedAtRef.current < 180) {
-                return;
-            }
+            if (lastAnimatedYearRef.current === yy && now - lastAnimatedAtRef.current < 180) return;
 
             const markers = getMarkers();
             if (!markers.length) return;
@@ -339,7 +335,6 @@ const HistoryYearsScale = forwardRef(function HistoryYearsScale(
             if (!targetEl) return;
 
             const targetCenter = targetEl.offsetLeft + targetEl.offsetWidth / 2;
-
             const maxOffset = Math.max(0, container.scrollWidth - window.innerWidth);
 
             const ACTIVE_X = 60;
@@ -347,14 +342,12 @@ const HistoryYearsScale = forwardRef(function HistoryYearsScale(
 
             let targetOffset = targetCenter - edgeX;
             if (!Number.isFinite(targetOffset)) targetOffset = 0;
-
             targetOffset = clamp(targetOffset, 0, maxOffset);
 
             const token = `${Date.now()}_${Math.random().toString(16).slice(2)}`;
             scrollTokenRef.current = token;
 
             lockRef.current = true;
-
             setUiYear(y);
 
             window.dispatchEvent(
@@ -397,19 +390,6 @@ const HistoryYearsScale = forwardRef(function HistoryYearsScale(
             windowSize: 5,
         });
     }, [allYears, windowStart]);
-
-    const getStep = useCallback(() => {
-        const track = trackRef.current;
-        if (!track) return 48;
-        const btns = Array.from(track.querySelectorAll('button[data-center="true"]'));
-        if (btns.length >= 2) {
-            const r0 = btns[0].getBoundingClientRect();
-            const r1 = btns[1].getBoundingClientRect();
-            const d = r1.left - r0.left;
-            if (Number.isFinite(d) && d > 10) return d;
-        }
-        return 48;
-    }, []);
 
     const pickNextHiddenYear = useCallback(
         (dir, m) => {
@@ -454,8 +434,6 @@ const HistoryYearsScale = forwardRef(function HistoryYearsScale(
     const onDotsClick = useCallback(
         (dir) => {
             if (model.mode !== 'window') return;
-            if (shiftingRef.current) return;
-
             if (dir === 'right' && !model.canRight) return;
             if (dir === 'left' && !model.canLeft) return;
 
@@ -466,39 +444,90 @@ const HistoryYearsScale = forwardRef(function HistoryYearsScale(
             if (idx < 0) return;
 
             const targetWs = clamp(idx - 2, model.minStart, model.maxStart);
-
-            const track = trackRef.current;
-            if (!track) return;
-
-            shiftingRef.current = true;
-            lockRef.current = true;
-
-            gsap.killTweensOf(track);
-
-            const step = getStep();
-            const xTo = dir === 'right' ? -step : step;
-
-            gsap.to(track, {
-                x: xTo,
-                duration: 0.28,
-                ease: 'power2.inOut',
-                overwrite: true,
-                force3D: true,
-                onComplete: () => {
-                    setWindowStart(targetWs);
-                    gsap.set(track, { x: 0, clearProps: 'transform' });
-                    shiftingRef.current = false;
-                    requestAnimationFrame(() => {
-                        lockRef.current = false;
-                    });
-                },
-            });
+            setWindowStart(targetWs);
         },
-        [model, pickNextHiddenYear, allYears, getStep]
+        [model, pickNextHiddenYear, allYears]
     );
 
     const isActuallyVisible = visible && allYears.length > 0;
     const tickStyle = tickWidth ? { width: `${tickWidth}px` } : undefined;
+
+    useEffect(() => {
+        if (isActuallyVisible) return;
+
+        const root = rootRef.current;
+        if (!root) return;
+
+        const ae = document.activeElement;
+        if (ae && root.contains(ae) && typeof ae.blur === 'function') {
+            ae.blur();
+        }
+    }, [isActuallyVisible]);
+
+    const updateGlowPosition = useCallback(() => {
+        const scale = scaleRef.current;
+        if (!scale) return;
+
+        const activeTick = scale.querySelector(`.${styles.active}`);
+        if (!activeTick) {
+            scale.style.setProperty('--active-line-x', '-9999px');
+            scale.style.setProperty('--active-line-size', '170px');
+            return;
+        }
+
+        const scaleRect = scale.getBoundingClientRect();
+        if (!scaleRect.width) return;
+
+        const ticks = Array.from(scale.querySelectorAll(`.${styles.tick}`))
+            .map((el) => {
+                const r = el.getBoundingClientRect();
+                return { el, center: r.left + r.width / 2 - scaleRect.left };
+            })
+            .sort((a, b) => a.center - b.center);
+
+        const activeIdx = ticks.findIndex((t) => t.el === activeTick);
+        if (activeIdx < 0) return;
+
+        const active = ticks[activeIdx];
+        const prev = activeIdx > 0 ? ticks[activeIdx - 1] : null;
+        const next = activeIdx < ticks.length - 1 ? ticks[activeIdx + 1] : null;
+
+        const labelEl = activeTick.querySelector(`.${styles.label}`);
+        const labelWidth = labelEl ? labelEl.getBoundingClientRect().width : 0;
+        const LABEL_EXTEND = labelWidth / 2 + 50;
+        const MAX_RATIO = 0.99;
+        const EDGE_EXTEND = 60;
+
+        let lineLeft, lineRight;
+
+        if (prev) {
+            const maxLeft = active.center - (active.center - prev.center) * MAX_RATIO;
+            const minLeft = active.center - LABEL_EXTEND;
+            lineLeft = Math.min(maxLeft, minLeft);
+        } else {
+            lineLeft = Math.max(0, active.center - EDGE_EXTEND);
+        }
+
+        if (next) {
+            const maxRight = active.center + (next.center - active.center) * MAX_RATIO;
+            const minRight = active.center + LABEL_EXTEND;
+            lineRight = Math.max(maxRight, minRight);
+        } else {
+            lineRight = Math.min(scaleRect.width, active.center + EDGE_EXTEND);
+        }
+
+        const lineSize = lineRight - lineLeft;
+        const lineCenter = active.center;
+
+        scale.style.setProperty('--active-line-x', `${lineCenter}px`);
+        scale.style.setProperty('--active-line-size', `${lineSize}px`);
+    }, []);
+
+    useEffect(() => {
+        updateGlowPosition();
+        const timer = setTimeout(updateGlowPosition, 350);
+        return () => clearTimeout(timer);
+    }, [uiYear, model, updateGlowPosition]);
 
     const renderYearBtn = (year, isCenter = false) => {
         const yy = String(year);
@@ -545,6 +574,7 @@ const HistoryYearsScale = forwardRef(function HistoryYearsScale(
                 transform: isActuallyVisible ? 'translateY(0)' : 'translateY(40px)',
                 visibility: 'visible',
                 display: 'block',
+                zIndex: isModalOpen ? 1 : 2500,
             }}
             aria-hidden={!isActuallyVisible}
         >
@@ -586,7 +616,7 @@ const HistoryYearsScale = forwardRef(function HistoryYearsScale(
             </div>
 
             <div className={styles.inner}>
-                <div className={styles.scale}>
+                <div ref={scaleRef} className={styles.scale}>
                     <div className={styles.rail} />
 
                     {model.mode === 'all' ? (
@@ -595,29 +625,19 @@ const HistoryYearsScale = forwardRef(function HistoryYearsScale(
                         </div>
                     ) : model.mode === 'window' ? (
                         <div className={styles.rowFixed}>
-                            <div className={styles.side}>
-                                {renderYearBtn(model.first, false)}
-                                {model.leftSlot?.type === 'dots'
-                                    ? renderDotsBtn('left', !model.canLeft)
-                                    : model.leftSlot?.type === 'year'
-                                        ? renderYearBtn(model.leftSlot.value, false)
-                                        : null}
-                            </div>
-
-                            <div className={styles.centerViewport}>
-                                <div ref={trackRef} className={styles.centerTrack}>
-                                    {model.centerYears.map((y) => renderYearBtn(y, true))}
-                                </div>
-                            </div>
-
-                            <div className={styles.side}>
-                                {model.rightSlot?.type === 'dots'
-                                    ? renderDotsBtn('right', !model.canRight)
-                                    : model.rightSlot?.type === 'year'
-                                        ? renderYearBtn(model.rightSlot.value, false)
-                                        : null}
-                                {renderYearBtn(model.last, false)}
-                            </div>
+                            {renderYearBtn(model.first, false)}
+                            {model.leftSlot?.type === 'dots'
+                                ? renderDotsBtn('left', !model.canLeft)
+                                : model.leftSlot?.type === 'year'
+                                    ? renderYearBtn(model.leftSlot.value, false)
+                                    : null}
+                            {model.centerYears.map((y) => renderYearBtn(y, true))}
+                            {model.rightSlot?.type === 'dots'
+                                ? renderDotsBtn('right', !model.canRight)
+                                : model.rightSlot?.type === 'year'
+                                    ? renderYearBtn(model.rightSlot.value, false)
+                                    : null}
+                            {renderYearBtn(model.last, false)}
                         </div>
                     ) : null}
                 </div>

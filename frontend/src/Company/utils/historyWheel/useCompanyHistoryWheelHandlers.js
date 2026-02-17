@@ -146,7 +146,7 @@ export function useCompanyHistoryWheelHandlers(props) {
         subtitleLine1Ref,
         subtitleLine2Ref,
     });
- 
+
     useHorizontalWheelInCards({
         sectionRef,
         cardsFocused,
@@ -157,6 +157,6 @@ export function useCompanyHistoryWheelHandlers(props) {
         recentlyExitedCardsRef,
         exitCardsFocus,
         hideYearsScale,
-        showYearsScale,       
+        showYearsScale,
     });
 }

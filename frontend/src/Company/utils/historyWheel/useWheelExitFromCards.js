@@ -12,6 +12,11 @@ export function useWheelExitFromCards({
 }) {
     useEffect(() => {
         const handleWheelUp = (e) => {
+            const currentOffset = horizontalOffsetRef?.current ?? 0;
+            if (currentOffset > 0.5) {
+                return;
+            }
+
             if (!isHistoryActive(sectionRef, e)) return;
             if (e.deltaY >= 0) return;
 
@@ -23,17 +28,15 @@ export function useWheelExitFromCards({
             const hasVerticalOverflow = cardsEl.scrollHeight > cardsEl.clientHeight + 1;
             if (hasVerticalOverflow && cardsEl.scrollTop > 1) return;
 
-            if ((horizontalOffsetRef.current || 0) > 1) return;
-
             e.preventDefault();
             e.stopPropagation();
 
-            markRecentlyExited(recentlyExitedCardsRef);
+            markRecentlyExited(recentlyExitedCardsRef, 'up');
             clearFocusPhase(sectionRef);
             exitCardsFocus(cardsEl);
         };
 
-        window.addEventListener('wheel', handleWheelUp, { passive: false });
+        window.addEventListener('wheel', handleWheelUp, { passive: false, capture: false });
         return () => window.removeEventListener('wheel', handleWheelUp);
     }, [
         sectionRef,

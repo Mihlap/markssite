@@ -17,11 +17,19 @@ export default function HistoryCard({ item, variant = 1, isBottom = false }) {
     const avatarSrc = item?.avatarUrl ? toSrc(item.avatarUrl) : toSrc(item?.avatar);
     const hasAvatar = !!avatarSrc;
 
+    const handleCardClick = (e) => {
+        if (item?.onOpenChronicle) {
+            item.onOpenChronicle(item);
+        }
+    };
+
     return (
         <div
             className={`${styles.history_card} ${hasImage ? styles.variant1 : styles.variant2} ${isBottom ? styles.bottom_card : ''
                 }`}
             data-history-card-root="true"
+            onClick={handleCardClick}
+            style={{ cursor: item?.onOpenChronicle ? 'pointer' : 'default' }}
         >
             <div className={styles.card_split} data-card-split="true">
                 <div className={styles.split_left} data-split-left="true">

@@ -4,7 +4,7 @@
     position: fixed;
     left: 0;
     right: 0;
-    bottom: 28px;
+    bottom: 0;
     z-index: 2500;
     pointer-events: none;
     opacity: 0;
@@ -12,69 +12,97 @@
 }
 
 .inner {
-    width: min(1440px, calc(100% - 96px));
-    margin: 0 auto;
     display: flex;
+    width: 100%;
+    height: 85px;
+    padding: 16px 27px 16px 263px;
+    justify-content: flex-end;
     align-items: center;
-    justify-content: space-between;
-    gap: 22px;
+    gap: 100px;
+    background: var(--white-F6F6F6, #f6f6f6);
     pointer-events: auto;
 }
 
 .scale {
-    position: relative;
-    flex: 1 1 auto;
-    height: 44px;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 914px;
+    height: 52px;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    position: relative;
+    overflow: visible;
+    --active-line-x: -9999px;
+    --active-line-size: 170px;
 }
 
 .rail {
-    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background:
+        linear-gradient(90deg, #ebecee 0%, rgba(117, 187, 253, 0.7) 50%, #ebecee 100%),
+        #ebecee;
+    background-repeat: no-repeat, no-repeat;
+    background-size: var(--active-line-size) 2px, 100% 2px;
+    background-position: calc(var(--active-line-x) - var(--active-line-size) / 2) 50%, 0 50%;
+    opacity: 1;
+    pointer-events: none;
+    z-index: 3;
+    transition: background-position 0.3s ease, background-size 0.3s ease;
 }
 
-.rowAll,
-.rowFixed {
+.rowAll {
     position: relative;
-    width: fit-content;
-    max-width: 100%;
-    margin: 0 auto;
+    width: 100%;
     display: flex;
     align-items: flex-end;
-    justify-content: center;
-    gap: 36px;
+    justify-content: space-between;
     flex-wrap: nowrap;
-    overflow: hidden;
-    padding: 10px 18px 6px;
-    border-radius: 34px;
-    background: rgba(246, 246, 246, 0.3);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    overflow: visible;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+    gap: 0;
+}
+
+.rowFixed {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    overflow: visible;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+    gap: 0;
 }
 
 .rowAll::before,
 .rowFixed::before {
-    content: '';
-    position: absolute;
-    left: 14px;
-    right: 14px;
-    bottom: 12px;
-    height: 2px;
-    background: rgba(168, 219, 246, 0.95);
-    border-radius: 2px;
-    pointer-events: none;
+    display: none;
 }
 
 .side {
     display: inline-flex;
     align-items: flex-end;
-    gap: 36px;
+    gap: 85px;
     flex: 0 0 auto;
 }
 
 .centerViewport {
-    flex: 0 0 auto;
+    flex: 1 1 auto;
+    min-width: 0;
     overflow: hidden;
     padding: 0;
     display: flex;
@@ -85,7 +113,7 @@
 .centerTrack {
     display: inline-flex;
     align-items: flex-end;
-    gap: 28px;
+    gap: 85px;
     will-change: transform;
 }
 
@@ -98,41 +126,69 @@
     display: inline-flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    height: 44px;
+    justify-content: flex-end;
+    gap: 6px;
     flex: 0 0 auto;
+    position: relative;
+    padding-bottom: 2px;
 }
 
 .label {
-    font-family: var(--font-unbounded);
-    font-weight: var(--fw-700);
-    font-size: 18px;
-    line-height: 20px;
-    color: #c0c5cb;
+    font-family: Unbounded, sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    /* 150% */
+    color: var(--light-gray-C0C5CB, #c0c5cb);
     user-select: none;
     white-space: nowrap;
-    transition: color 0.2s ease, transform 0.2s ease;
+    transition: color 0.3s ease, font-size 0.3s ease, line-height 0.3s ease;
 }
 
 .mark {
     width: 2px;
-    height: 12px;
-    background: rgba(168, 219, 246, 0.9);
-    border-radius: 2px;
+    height: 22px;
+    background: #ebecee;
+    border-radius: 0;
+    transition: height 0.3s ease, background 0.3s ease;
 }
 
-.tick:hover .label {
-    color: rgba(29, 46, 67, 0.7);
+.tick:not(.active):hover .label {
+    color: var(--gray-959DA6, #959da6);
+    font-family: Unbounded, sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    /* 150% */
+}
+
+.tick:not(.active):hover .mark {
+    background: #ebecee;
+}
+
+.active {
+    position: relative;
 }
 
 .active .label {
-    color: #a8dbf6;
-    transform: translateY(-1px);
+    color: var(--blue-A8DBF6, #75bbfd);
+    font-family: Unbounded, sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 28px;
+    /* 140% */
 }
 
 .active .mark {
-    height: 18px;
-    background: #a8dbf6;
+    width: 2px;
+    height: 20px;
+    background: linear-gradient(180deg,
+            #ebecee 0%,
+            rgba(117, 187, 253, 0.7) 100%);
+    z-index: 2;
 }
 
 .dotsTick {
@@ -140,43 +196,54 @@
 }
 
 .dotsLabel {
-    font-family: var(--font-unbounded);
-    font-weight: var(--fw-700);
-    font-size: 18px;
-    line-height: 20px;
-    color: #c0c5cb;
+    font-family: Unbounded, sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    /* 150% */
+    color: var(--light-gray-C0C5CB, #c0c5cb);
     user-select: none;
-    transform: translateY(-2px);
+    transition: color 0.3s ease;
 }
 
 .dotsTick:hover .dotsLabel {
-    color: rgba(29, 46, 67, 0.7);
+    color: var(--gray-959DA6, #959da6);
+    font-family: Unbounded, sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    /* 150% */
 }
 
 .skip {
-    height: 44px;
-    padding: 0 22px;
-    border-radius: 34px;
-    border: 0;
-    background: rgba(246, 246, 246, 0.95);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-    font-family: var(--font-raleway);
-    font-weight: var(--fw-400);
-    font-size: 14px;
-    line-height: 20px;
-    color: #1d2e43;
-    cursor: pointer;
-    display: inline-flex;
+    display: flex;
+    padding: 8px 16px;
+    justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    border-radius: 34px;
+    background: var(--light-light-gray-EBECEE, #ebecee);
+    border: 0;
+    cursor: pointer;
+    color: var(--black-1D2E43, #1D2E43);
+    font-variant-numeric: lining-nums proportional-nums;
+    font-family: Raleway;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
     transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    flex-shrink: 0;
+    white-space: nowrap;
 }
 
-.skip:hover {
+.skip:hover,
+.skip:active {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-    background: rgba(255, 255, 255, 1);
+    background: var(--light-gray-C0C5CB, #C0C5CB);
 }
 
 .arrow {
@@ -184,90 +251,46 @@
     line-height: 1;
 }
 
+@media screen and (min-width: 1600px) {
+    .scale {
+        max-width: 1625px;
+        --active-line-size: 296px;
+    }
+}
+
 @media (max-width: 1024px) {
     .inner {
-        width: calc(100% - 48px);
+        width: 100%;
+        padding: 16px 24px;
     }
 
-    .rowAll,
-    .rowFixed {
-        gap: 22px;
-        padding: 10px 16px 6px;
+    .scale {
+        max-width: 100%;
     }
 
-    .side {
-        gap: 22px;
-    }
-
-    .centerTrack {
-        gap: 22px;
-    }
-
-    .centerViewport {
-        padding: 0;
-    }
-
-    .label {
-        font-size: 16px;
-    }
-
-    .dotsLabel {
-        font-size: 16px;
-    }
 }
 
 @media (max-width: 768px) {
     .inner {
-        width: calc(100% - 32px);
+        width: 100%;
+        padding: 12px 16px;
+        height: auto;
+        min-height: 85px;
         gap: 14px;
     }
 
-    .rowAll,
-    .rowFixed {
-        gap: 16px;
-        padding: 8px 12px 6px;
-        border-radius: 28px;
-    }
-
-    .side {
-        gap: 16px;
-    }
-
-    .centerTrack {
-        gap: 16px;
-    }
-
-    .centerViewport {
-        padding: 0;
-    }
-
-    .label {
-        font-size: 14px;
-    }
-
-    .dotsLabel {
-        font-size: 14px;
+    .scale {
+        max-width: 100%;
+        height: auto;
+        min-height: 52px;
     }
 
     .skip {
-        height: 40px;
-        padding: 0 16px;
+        padding: 8px 12px;
         font-size: 13px;
     }
 
-    .scale {
-        height: 40px;
-    }
-
     .tick {
-        height: 40px;
-        gap: 8px;
-    }
-
-    .rowAll::before,
-    .rowFixed::before {
-        bottom: 11px;
-        left: 10px;
-        right: 10px;
+        gap: 4px;
     }
 }

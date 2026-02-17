@@ -209,11 +209,11 @@ export function useCompanyHistoryHeaderIntro({
         textAnimationReady,
         setAnimationReady,
     ]);
-   
+
     useEffect(() => {
         if (!inView || cardsIntroTriggeredRef.current) return;
         if (visibleItemsLength === 0) return;
-    
+
         const timer = setTimeout(() => {
             const cards = historyListRef.current?.querySelectorAll('[class*="history_card_wrapper"]');
             if (cards && cards.length > 0 && !cardsIntroTriggeredRef.current) {
