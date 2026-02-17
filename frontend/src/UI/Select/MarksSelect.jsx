@@ -44,6 +44,8 @@ const MarksSelect = forwardRef(function Select(
   {
     options,
     value,
+    name,
+    label,
     onChange,
     variant = 'simple',
     placeholder = 'Выберите...',
@@ -57,7 +59,9 @@ const MarksSelect = forwardRef(function Select(
   ref
 ) {
   return (
-    <div className={clsx(styles.select, className, customStyles?.container, error && styles.select_error)} data-variant={variant}>
+    <div
+      className={clsx(styles.select, className, customStyles?.container, error && styles.select_error)}
+      data-variant={variant}>
       <ReactSelect
         // menuIsOpen={true}
         ref={ref}

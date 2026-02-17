@@ -16,3 +16,18 @@ export const statusObjectOptions = [
   { value: 'Завершен', label: 'Завершен' },
   { value: 'В работе', label: 'В работе' },
 ];
+
+export const stageAwards = [
+  {
+    value: 'АФК',
+    label: 'АФК',
+  },
+  {
+    value: 'ПД',
+    label: 'ПД',
+  },
+  {
+    value: 'РД',
+    label: 'РД',
+  },
+];

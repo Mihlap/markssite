@@ -3,13 +3,15 @@ import { useForm, Controller } from 'react-hook-form';
 import { UiMarksInput, UiMarksSelect, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
 import { monthOptions, yearOptions, typesСonstruction } from '../FormAddEditProject/utils/Time';
 import { MEASUREMENT_FIELDS } from '../FormAddEditProject/const/measurement';
-import { competenciesOptions, degreeParticipationOptions, statusObjectOptions } from './const/options';
+import { competenciesOptions, degreeParticipationOptions, statusObjectOptions, stageAwards } from './const/options';
 
 import s from './Styles.module.css';
 
 export default function AddForm({ onValidityChange }) {
   const photoAvaRef = useRef(null);
   const dropPhotoRef = useRef(null);
+  const imageOpenRef = useRef(null);
+  const imageCloseRef = useRef(null);
   const renderCount = useRef(0);
   renderCount.current += 1;
 
@@ -315,7 +317,170 @@ export default function AddForm({ onValidityChange }) {
           control={control}
           render={({ field }) => <UiMarksInput name="customer" label="Заказчик" {...field} />}
         />
+        <div className={s.linksBlock}>
+          <div className={s.linksTitle}>
+            <Controller
+              name="publication"
+              control={control}
+              render={({ field }) => (
+                <UiMarksInput label="Публикация" placeholder="Публикация" name="publication" {...field} />
+              )}
+            />
+            <Controller
+              name="publicationTwo"
+              control={control}
+              render={({ field }) => (
+                <UiMarksInput label="Публикация" placeholder="Публикация2" name="publicationTwo" {...field} />
+              )}
+            />
+          </div>
+          <div className={s.linksTitle}>
+            <Controller
+              name="linkToPublication"
+              control={control}
+              render={({ field }) => (
+                <UiMarksInput
+                  label="Ссылк на статью"
+                  placeholder="Ссылк на статью"
+                  name="linkToPublication"
+                  {...field}
+                />
+              )}
+            />
+            <Controller
+              name="linkToPublicationTwo"
+              control={control}
+              render={({ field }) => (
+                <UiMarksInput
+                  label="Ссылк на статью"
+                  placeholder="Ссылк на статью2"
+                  name="linkToPublicationTwo"
+                  {...field}
+                />
+              )}
+            />
+          </div>
+        </div>
+        <Controller
+          name="awards"
+          control={control}
+          render={({ field }) => (
+            <UiMarksSelect
+              label="Выберите стадию"
+              placeholder="Выберите стадию"
+              name="awards"
+              customStyles={{
+                container: s.selectContainer,
+              }}
+              options={stageAwards}
+              {...field}
+            />
+          )}
+        />
       </UiMarksGrayWrap>
+
+      <Controller
+        name="imageOpen"
+        control={control}
+        render={({ field: { onChange, value } }) => (
+          <>
+            {value?.length > 0 ? (
+              <UiPhotoPreview
+                files={value}
+                variant="single"
+                onRemove={() => {
+                  onChange([]);
+                  if (imageOpenRef.current) {
+                    imageOpenRef.current.value = '';
+                  }
+                }}
+              />
+            ) : (
+              <UiMarksInput
+                type="file"
+                name="imageOpen"
+                accept="image/*"
+                inputRef={imageOpenRef}
+                label="Открывающая картинка"
+                color="grey"
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  onChange(file ? [file] : []);
+                }}
+              />
+            )}
+          </>
+        )}
+      />
+
+      <UiMarksGrayWrap customStyles={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <Controller
+          name="headingTextBlock"
+          control={control}
+          render={({ field }) => (
+            <UiMarksInput
+              name="headingTextBlock"
+              label="Заголовок текстового блока"
+              placeholder="Не более 56 символов"
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value.length <= 56) {
+                  field.onChange(value);
+                }
+              }}
+              value={field.value}
+              maxLength={56}
+            />
+          )}
+        />
+        <Controller
+          name="textBlock"
+          control={control}
+          render={({ field }) => (
+            <UiMarksTextarea
+              name="textBlock"
+              label="Текстовый блок"
+              placeholder="Нет ограничения по символам"
+              // btn={true}
+              {...field}
+            />
+          )}
+        />
+      </UiMarksGrayWrap>
+
+      <Controller
+        name="photo"
+        control={control}
+        render={({ field: { onChange, value } }) => (
+          <>
+            {value?.length > 0 ? (
+              <UiPhotoPreview
+                files={value}
+                variant="single"
+                onRemove={() => {
+                  onChange([]);
+                  if (imageCloseRef.current) {
+                    imageCloseRef.current.value = '';
+                  }
+                }}
+              />
+            ) : (
+              <UiMarksInput
+                type="file"
+                name="photo"
+                accept="image/*"
+                inputRef={imageCloseRef}
+                label="Закрывающая картинка"
+                color="grey"
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  onChange(file ? [file] : []);
+                }}
+              />
+            )}
+          </>
+        )}
+      />
     </form>
   );
 }
