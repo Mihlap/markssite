@@ -6,30 +6,29 @@ import headerStyles from '../CompanyHistory/CompanyHistoryHeader.module.scss';
 
 gsap.registerPlugin(ScrollToPlugin);
 
-function getScrollYToFullyShowElement(el, { padTop = 40, padBottom = 40 } = {}) {
-  if (!el) return window.pageYOffset;
+// function getScrollYToFullyShowElement(el, { padTop = 40, padBottom = 40 } = {}) {
+//   if (!el) return window.pageYOffset;
 
-  const vh = window.innerHeight;
-  const r = el.getBoundingClientRect();
-  const topAbs = r.top + window.pageYOffset;
-  const bottomAbs = r.bottom + window.pageYOffset;
-  const elH = r.height;
+//   const vh = window.innerHeight;
+//   const r = el.getBoundingClientRect();
+//   const topAbs = r.top + window.pageYOffset;
+//   const bottomAbs = r.bottom + window.pageYOffset;
+//   const elH = r.height;
 
-  if (elH >= vh - (padTop + padBottom)) return Math.max(0, topAbs - padTop);
+//   if (elH >= vh - (padTop + padBottom)) return Math.max(0, topAbs - padTop);
 
-  const minY = Math.max(0, topAbs - padTop);
-  const maxY = Math.max(0, bottomAbs - (vh - padBottom));
+//   const minY = Math.max(0, topAbs - padTop);
+//   const maxY = Math.max(0, bottomAbs - (vh - padBottom));
 
-  const y = window.pageYOffset;
-  if (y < maxY) return maxY;
-  if (y > minY) return minY;
-  return y;
-}
+//   const y = window.pageYOffset;
+//   if (y < maxY) return maxY;
+//   if (y > minY) return minY;
+//   return y;
+// }
 
 export function useCompanyHistoryAnimations({
   animationReady,
   historyTagRef,
-  cardsTopRowRef,
   marksGroupRef,
   titleRef,
   subtitleLineRef,
@@ -51,6 +50,9 @@ export function useCompanyHistoryAnimations({
     (immediate = true, { duration = 0.6, ease = 'power2.inOut', y = 40 } = {}) => {
       const el = yearsScaleRef?.current;
       if (!el) return;
+
+      const ae = document.activeElement;
+      if (ae && el.contains(ae) && typeof ae.blur === 'function') ae.blur();
 
       gsap.killTweensOf(el);
 
@@ -97,79 +99,63 @@ export function useCompanyHistoryAnimations({
   }, [hideYearsScale]);
 
   const hideHistoryTag = useCallback(
-    (immediate = true) => {
+    (immediate = true, { duration = 0.6, ease = 'power1.inOut' } = {}) => {
       const tag = historyTagRef.current;
       if (!tag) return;
 
       gsap.killTweensOf(tag);
-      gsap.set(tag, {
-        autoAlpha: 0,
-        ...(immediate ? { y: 0 } : null),
-        overwrite: true,
-      });
+      if (immediate) {
+        tag.style.opacity = '0';
+        tag.style.visibility = 'hidden';
+        gsap.set(tag, { clearProps: 'transform' });
+      } else {
+        gsap.to(tag, {
+          opacity: 0,
+          duration,
+          ease,
+          overwrite: true,
+          clearProps: 'transform',
+          onComplete: () => {
+            tag.style.visibility = 'hidden';
+            gsap.set(tag, { clearProps: 'transform' });
+          },
+        });
+      }
     },
     [historyTagRef]
   );
 
   const showAndPlaceHistoryTag = useCallback(
     (opts = {}) => {
-      const { immediate = false } = opts;
-
+      const { immediate = false, duration = 0.6, ease = 'power1.out' } = opts;
       const tag = historyTagRef.current;
-      const topRow = cardsTopRowRef?.current;
-      const cardsContainer = tag?.parentElement;
+      if (!tag) return;
 
-      if (!tag || !topRow || !cardsContainer) return;
-      if (cardsFocusInProgressRef?.current) return;
+      gsap.killTweensOf(tag);
 
-      const place = () => {
-        const w = window.innerWidth;
-        const gap = w >= 1600 ? 155 : 54;
-        const desiredLeft = Math.max(24, Math.min(w * 0.04, 48));
+      gsap.set(tag, { clearProps: 'transform' });
+      tag.style.visibility = 'visible';
 
-        gsap.killTweensOf(tag);
-        gsap.set(tag, { x: 0, y: 0, autoAlpha: 0, overwrite: true });
-
-        const topRowRect = topRow.getBoundingClientRect();
-        const tagRect0 = tag.getBoundingClientRect();
-
-        const targetBottom = topRowRect.top - gap;
-        const deltaY = targetBottom - tagRect0.bottom;
-
-        gsap.set(tag, { y: deltaY, autoAlpha: 0, overwrite: true });
-
-        const tagRect1 = tag.getBoundingClientRect();
-        const deltaX = desiredLeft - tagRect1.left;
-
-        gsap.set(tag, { x: deltaX, autoAlpha: 0, overwrite: true });
-
-        if (immediate) {
-          gsap.set(tag, { autoAlpha: 1, overwrite: true });
-          return;
-        }
-
+      if (immediate) {
+        tag.style.opacity = '1';
+      } else {
         gsap.to(tag, {
-          autoAlpha: 1,
-          duration: 0.18,
-          ease: 'power1.out',
+          opacity: 1,
+          duration,
+          ease,
           overwrite: true,
+          clearProps: 'transform',
         });
-      };
-
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          gsap.delayedCall(0, place);
-        });
-      });
+      }
     },
-    [historyTagRef, cardsTopRowRef, cardsFocusInProgressRef]
+    [historyTagRef]
   );
 
   const onCardsFocusEnter = useCallback(
     ({ tl, duration = 0.9, ease = 'power2.inOut' } = {}) => {
       const el = yearsScaleRef?.current;
       if (!el) return;
-     
+
       if (tl) {
         tl.to(el, { autoAlpha: 1, y: 0, overwrite: 'auto' }, 0);
       } else {
@@ -179,13 +165,103 @@ export function useCompanyHistoryAnimations({
     [yearsScaleRef, showYearsScale]
   );
 
+  const cleanupCardsFocusStyles = (cardsEl) => {
+    if (!cardsEl) return;
+
+    cardsEl.style.marginTop = '';
+    cardsEl.style.marginBottom = '';
+    cardsEl.style.padding = '';
+    cardsEl.style.top = '';
+    cardsEl.style.display = '';
+    cardsEl.style.boxSizing = '';
+    cardsEl.style.overflow = '';
+    cardsEl.style.overscrollBehavior = '';
+    cardsEl.style.width = '';
+    cardsEl.style.minWidth = '';
+    cardsEl.style.maxWidth = '';
+    cardsEl.style.height = '';
+    cardsEl.style.minHeight = '';
+    cardsEl.style.opacity = '';
+    cardsEl.style.pointerEvents = '';
+    cardsEl.style.visibility = '';
+    cardsEl.style.willChange = '';
+    cardsEl.style.transition = '';
+
+    gsap.set(cardsEl, { x: 0, y: 0, clearProps: 'transform' });
+
+    const wrapper = cardsEl.querySelector('[class*="timeline_wrapper"]');
+    if (wrapper) {
+      wrapper.style.gridTemplateRows = '';
+      wrapper.style.height = '';
+      wrapper.style.overflow = '';
+
+      const rowTop = wrapper.querySelector('.cards_row_top');
+      const rowBot = wrapper.querySelector('.cards_row_bottom');
+      const tl = wrapper.querySelector('.timeline');
+
+      if (rowTop) { rowTop.style.gridRow = ''; rowTop.style.alignSelf = ''; }
+      if (rowBot) { rowBot.style.gridRow = ''; rowBot.style.alignSelf = ''; }
+      if (tl) { tl.style.gridRow = ''; tl.style.alignSelf = ''; tl.style.margin = ''; }
+    }
+
+    const root = sectionRef?.current;
+    if (root) root.removeAttribute('data-focus-layout');
+  };
+
+  const exitCardsFocusSilent = useCallback(
+    (cardsEl) => {
+      if (!cardsEl) return;
+
+      const ae = document.activeElement;
+      if (ae && yearsScaleRef?.current && yearsScaleRef.current.contains(ae) && typeof ae.blur === 'function') {
+        ae.blur();
+      }
+
+      hideHistoryTag(true);
+      hideYearsScale(true, { y: 40 });
+
+      if (backgroundRef?.current) {
+        gsap.killTweensOf(backgroundRef.current);
+        gsap.set(backgroundRef.current, { y: 0, overwrite: true });
+      }
+
+      gsap.killTweensOf(cardsEl);
+      gsap.killTweensOf(window);
+
+      cardsFocusInProgressRef.current = true;
+      hasScrollToHeaderTriggered.current = false;
+      hasScrollToCardsTriggered.current = false;
+
+      flushSync(() => {
+        setCardsFocused(false);
+      });
+
+      cleanupCardsFocusStyles(cardsEl);
+
+      cardsFocusInProgressRef.current = false;
+      hasScrollToHeaderTriggered.current = false;
+      headerIntroArmedRef.current = true;
+    },
+    [
+      hideHistoryTag,
+      hideYearsScale,
+      backgroundRef,
+      yearsScaleRef,
+      cardsFocusInProgressRef,
+      hasScrollToHeaderTriggered,
+      hasScrollToCardsTriggered,
+      setCardsFocused,
+      sectionRef,
+      headerIntroArmedRef,
+    ]
+  );
+
   const exitCardsFocus = useCallback(
     (cardsEl) => {
       if (!cardsEl) return;
 
-      hideHistoryTag(true);
-
       const snap1 = gsap.utils?.snap ? gsap.utils.snap(1) : (v) => Math.round(v);
+
       const rectFirst = cardsEl.getBoundingClientRect();
 
       cardsFocusInProgressRef.current = true;
@@ -198,26 +274,28 @@ export function useCompanyHistoryAnimations({
       gsap.killTweensOf(cardsEl);
       gsap.killTweensOf(window);
 
-      cardsEl.style.willChange = 'transform';
-
       const xBefore = Number(gsap.getProperty(cardsEl, 'x') || 0);
       const yBefore = Number(gsap.getProperty(cardsEl, 'y') || 0);
       gsap.set(cardsEl, { x: snap1(xBefore), y: snap1(yBefore), force3D: true });
-    
+
       flushSync(() => {
         setCardsFocused(false);
       });
 
+      cleanupCardsFocusStyles(cardsEl);
+
+      cardsEl.style.overflow = 'visible';
+      const timelineWrapper = cardsEl.querySelector('[class*="timeline_wrapper"]');
+      if (timelineWrapper) {
+        timelineWrapper.style.overflow = 'visible';
+      }
+
       const rectAfter = cardsEl.getBoundingClientRect();
-      const xAfter = Number(gsap.getProperty(cardsEl, 'x') || 0);
-      const yAfter = Number(gsap.getProperty(cardsEl, 'y') || 0);
 
-      const lastLeft = rectAfter.left - xAfter;
-      const lastTop = rectAfter.top - yAfter;
+      const invertX = snap1(rectFirst.left - rectAfter.left);
+      const invertY = snap1(rectFirst.top - rectAfter.top);
 
-      const invertX = snap1(rectFirst.left - lastLeft);
-      const invertY = snap1(rectFirst.top - lastTop);
-
+      cardsEl.style.willChange = 'transform';
       gsap.set(cardsEl, {
         x: invertX,
         y: invertY,
@@ -225,45 +303,25 @@ export function useCompanyHistoryAnimations({
         immediateRender: true,
       });
 
+      const headerEl = historyHeaderRef?.current;
+      let scrollTargetY = window.pageYOffset;
+      if (headerEl) {
+        const headerRect = headerEl.getBoundingClientRect();
+        scrollTargetY = Math.max(0, headerRect.top + window.pageYOffset);
+      }
+
+      const tag = historyTagRef.current;
       const tl = gsap.timeline({
         defaults: { duration: returnDuration, ease: returnEase },
-        onComplete: () => {       
-          cardsEl.style.marginTop = '';
-          cardsEl.style.marginBottom = '';
-          cardsEl.style.padding = '';
-          cardsEl.style.top = '';
-          cardsEl.style.display = '';
-          cardsEl.style.boxSizing = '';
+        onComplete: () => {
           cardsEl.style.overflow = '';
-          cardsEl.style.overscrollBehavior = '';
-          cardsEl.style.width = '';
-          cardsEl.style.minWidth = '';
-          cardsEl.style.maxWidth = '';
-          cardsEl.style.height = '';
-          cardsEl.style.minHeight = '';
-          cardsEl.style.opacity = '';
-          cardsEl.style.pointerEvents = '';
-          cardsEl.style.visibility = '';
           cardsEl.style.willChange = '';
-          cardsEl.style.transition = '';
-
-          gsap.set(cardsEl, { x: 0, y: 0, clearProps: 'transform' });
-
-          const root = sectionRef?.current;
-          if (root) root.removeAttribute('data-focus-layout');
-    
-          hideYearsScale(false, { duration: 0.35, ease: 'power2.out', y: 40 });
-
-          const headerEl = historyHeaderRef?.current;
-          if (headerEl) {
-            const targetY = getScrollYToFullyShowElement(headerEl, { padTop: 40, padBottom: 40 });
-            gsap.to(window, {
-              duration: 0.35,
-              ease: 'power2.out',
-              overwrite: 'auto',
-              scrollTo: { y: targetY, autoKill: false },
-            });
+          if (timelineWrapper) {
+            timelineWrapper.style.overflow = '';
           }
+          gsap.set(cardsEl, { clearProps: 'transform' });
+
+          hideYearsScale(false, { duration: 0.35, ease: 'power2.out', y: 40 });
 
           cardsFocusInProgressRef.current = false;
           hasScrollToHeaderTriggered.current = false;
@@ -294,11 +352,37 @@ export function useCompanyHistoryAnimations({
           });
         },
       });
-    
+
+      if (tag) {
+        gsap.killTweensOf(tag);
+        gsap.set(tag, { clearProps: 'transform' });
+        tag.style.visibility = 'visible';
+        tl.to(tag, {
+          opacity: 0,
+          duration: returnDuration,
+          ease: 'power1.inOut',
+          overwrite: 'auto',
+          clearProps: 'transform',
+          onComplete: () => {
+            tag.style.visibility = 'hidden';
+            gsap.set(tag, { clearProps: 'transform' });
+          },
+        }, 0);
+      }
+
+      if (headerEl) {
+        tl.to(window, {
+          duration: returnDuration,
+          ease: returnEase,
+          overwrite: 'auto',
+          scrollTo: { y: scrollTargetY, autoKill: false },
+        }, 0);
+      }
+
       if (backgroundRef.current) {
         tl.to(backgroundRef.current, { y: 0, overwrite: 'auto' }, 0);
       }
- 
+
       if (yearsScaleRef?.current) {
         tl.to(yearsScaleRef.current, { autoAlpha: 0, y: 40, overwrite: 'auto' }, 0);
       }
@@ -320,7 +404,6 @@ export function useCompanyHistoryAnimations({
       animationReady,
       hideHistoryTag,
       hideYearsScale,
-      showYearsScale,
       backgroundRef,
       sectionRef,
       historyHeaderRef,
@@ -342,10 +425,11 @@ export function useCompanyHistoryAnimations({
 
   return {
     exitCardsFocus,
+    exitCardsFocusSilent,
     showAndPlaceHistoryTag,
     hideHistoryTag,
     showYearsScale,
-    hideYearsScale,    
+    hideYearsScale,
     onCardsFocusEnter,
   };
 }

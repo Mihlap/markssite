@@ -6,6 +6,7 @@ import { isHistoryActive, stopWheelHard, clearFocusPhase } from './wheelShared';
 export function useWheelExitToParent({
     sectionRef,
     cardsFocused,
+    historyListRef,
     historyHeaderRef,
     historyTagRef,
     marksGroupRef,
@@ -30,6 +31,14 @@ export function useWheelExitToParent({
         const handleWheelExitUp = (e) => {
             if (!isHistoryActive(sectionRef, e)) return;
             if (e.deltaY >= 0) return;
+
+            const lockUntil =
+                typeof window !== 'undefined' ? (window.__HISTORY_SKIP_LOCK_UNTIL__ || 0) : 0;
+            if (Date.now() < lockUntil) {
+                stopWheelHard(e);
+                return;
+            }
+
             if (cardsFocused || cardsFocusInProgressRef.current) return;
 
             if (exitToParentInProgressRef.current) {
@@ -37,9 +46,128 @@ export function useWheelExitToParent({
                 return;
             }
 
-            const headerEl = historyHeaderRef.current;
-            if (!headerEl) return;
+            const PAD = 20;
 
+            const cardsEl = historyListRef?.current;
+            const headerEl = historyHeaderRef?.current;
+
+            if (cardsEl) {
+                const cardsTopAbs = cardsEl.getBoundingClientRect().top + window.pageYOffset;
+                const targetCardsY = Math.max(0, cardsTopAbs - PAD);
+
+                if (window.pageYOffset > targetCardsY + 4) {
+                    stopWheelHard(e);
+
+                    gsap.killTweensOf(window);
+                    exitToParentInProgressRef.current = true;
+
+                    gsap.to(window, {
+                        duration: 0.65,
+                        ease: 'power2.inOut',
+                        overwrite: 'auto',
+                        scrollTo: { y: targetCardsY, autoKill: false },
+                        data: { tag: 'UP_TO_CARDS' },
+                        onComplete: () => {
+                            exitToParentInProgressRef.current = false;
+                        },
+                    });
+
+                    return;
+                }
+            }
+
+            if (headerEl) {
+                const headerTopAbs = headerEl.getBoundingClientRect().top + window.pageYOffset;
+                const targetHeaderY = Math.max(0, headerTopAbs - PAD);
+             
+                if (window.pageYOffset > targetHeaderY + 4 && Math.abs(window.pageYOffset - headerTopAbs) > PAD + 10) {
+                    stopWheelHard(e);
+
+                    gsap.killTweensOf(window);
+                    exitToParentInProgressRef.current = true;
+
+                    returnedToSliderRef.current = false;
+
+                    hasRestoreTriggered.current = true;
+                    hasSplitTriggered.current = false;
+                    hasScrollToHeaderTriggered.current = true;
+                    if (headerIntroArmedRef) headerIntroArmedRef.current = true;
+                    headerIntroInProgressRef.current = false;
+
+                    const marksGroup = marksGroupRef.current;
+                    const title = titleRef.current;
+                    const subtitleLine = subtitleLineRef.current;
+                    const descLine1 = subtitleLine1Ref.current;
+                    const descLine2 = subtitleLine2Ref.current;
+
+                    if (marksGroup && title) {
+                        const elements = [marksGroup, title, subtitleLine, descLine1, descLine2].filter(Boolean);
+                        elements.forEach((el) => {
+                            if (!el) return;
+                            gsap.killTweensOf(el);
+                            gsap.set(el, { clearProps: 'all' });
+                            el.classList.remove(headerStyles.animate);
+                            el.style.animation = '';
+                            el.style.opacity = '';
+                            el.style.transform = '';
+                        });
+                    }
+
+                    gsap.to(window, {
+                        duration: 0.65,
+                        ease: 'power2.inOut',
+                        overwrite: 'auto',
+                        scrollTo: { y: targetHeaderY, autoKill: false },
+                        data: { tag: 'UP_TO_HEADER' },
+                        onComplete: () => {
+                            exitToParentInProgressRef.current = false;
+                            hasScrollToHeaderTriggered.current = false;
+                            if (headerIntroArmedRef) headerIntroArmedRef.current = true;
+                            headerIntroInProgressRef.current = false;
+                            textAnimationReady.current = true;
+
+                            requestAnimationFrame(() => {
+                                const marksGroupEl = marksGroupRef?.current;
+                                const titleEl = titleRef?.current;
+                                const subtitleLineEl = subtitleLineRef?.current;
+                                const descLine1El = subtitleLine1Ref?.current;
+                                const descLine2El = subtitleLine2Ref?.current;
+
+                                if (marksGroupEl && titleEl && descLine1El) {
+                                    const elements = [titleEl, marksGroupEl, subtitleLineEl, descLine1El, descLine2El].filter(Boolean);
+
+                                    elements.forEach((el) => {
+                                        if (!el) return;
+                                        gsap.killTweensOf(el);
+                                        gsap.set(el, { clearProps: 'transform,opacity' });
+                                        el.classList.remove(headerStyles.animate);
+                                        el.style.animation = '';
+                                        el.style.opacity = '';
+                                        el.style.transform = '';
+                                    });
+
+                                    void titleEl.offsetWidth;
+
+                                    requestAnimationFrame(() => {
+                                        if (titleEl) titleEl.classList.add(headerStyles.animate);
+                                        if (marksGroupEl) marksGroupEl.classList.add(headerStyles.animate);
+                                        if (subtitleLineEl) subtitleLineEl.classList.add(headerStyles.animate);
+                                        if (descLine1El) descLine1El.classList.add(headerStyles.animate);
+                                        if (descLine2El) descLine2El.classList.add(headerStyles.animate);
+
+                                        hasRestoreTriggered.current = false;
+                                    });
+                                }
+                            });
+                        },
+                    });
+
+                    return;
+                }
+            } else {
+                stopWheelHard(e);
+                return;
+            }
             const isIntroActive = headerIntroInProgressRef.current || !textAnimationReady.current;
 
             if (isIntroActive) {
@@ -58,7 +186,10 @@ export function useWheelExitToParent({
             hasRestoreTriggered.current = false;
 
             if (historyTagRef.current) {
-                gsap.set(historyTagRef.current, { autoAlpha: 0, y: 0 });
+                // Скрываем таб без применения transform, только opacity
+                const tag = historyTagRef.current;
+                tag.style.opacity = '0';
+                tag.style.visibility = 'hidden';
             }
 
             const marksGroup = marksGroupRef.current;
@@ -104,6 +235,7 @@ export function useWheelExitToParent({
             }
 
             const scrollDuration = isIntroActive ? 0.7 : 0.85;
+
             requestAnimationFrame(() => {
                 gsap.to(window, {
                     duration: scrollDuration,
@@ -131,7 +263,10 @@ export function useWheelExitToParent({
 
             tl.fromTo(
                 marksGroup,
-                { x: gsap.getProperty(marksGroup, 'x') || 0, opacity: gsap.getProperty(marksGroup, 'opacity') || 1 },
+                {
+                    x: gsap.getProperty(marksGroup, 'x') || 0,
+                    opacity: gsap.getProperty(marksGroup, 'opacity') || 1,
+                },
                 { x: '-100vw', opacity: 0, duration: textAnimationDuration, immediateRender: true },
                 0
             );
@@ -153,6 +288,7 @@ export function useWheelExitToParent({
     }, [
         sectionRef,
         cardsFocused,
+        historyListRef,
         historyHeaderRef,
         sliderRef,
         parentStartRef,

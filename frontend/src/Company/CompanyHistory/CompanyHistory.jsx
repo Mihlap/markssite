@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useInView } from 'react-intersection-observer';
 import gsap from 'gsap';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+import Modal from 'react-modal';
 
 import HistoryCard from './HistoryCard';
 import CompanyHistoryHeader from './CompanyHistoryHeader';
 import HistoryYearsScale from './HistoryYearsScale';
+import HistoryModalBlocks from './HistoryModalBlocks';
 
 import { useCompanyHistoryHeaderIntro } from '../utils/useCompanyHistoryHeaderIntro';
 import { useCompanyHistoryWheelHandlers } from '../utils/historyWheel/useCompanyHistoryWheelHandlers';
@@ -15,6 +17,7 @@ import { useCompanyHistoryAnimations } from '../utils/useCompanyHistoryAnimation
 import { fetchCompanyHistory } from '../../store/Slice/companyHistorySlice';
 import styles from './CompanyHistory.module.scss';
 import cityVector from '../icons/cityVector.svg';
+import { normalizeConstructorGroups } from '../utils/historyModalUtils';
 
 gsap.registerPlugin(ScrollToPlugin);
 
@@ -67,12 +70,52 @@ export default function CompanyHistory({
     const [animationReady, setAnimationReady] = useState(false);
     const [cardsFocused, setCardsFocused] = useState(false);
     const [yearsScaleGate, setYearsScaleGate] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedHistoryItem, setSelectedHistoryItem] = useState(null);
 
     const [viewRef, inView] = useInView({ threshold: 0.2, triggerOnce: true });
     const [timelineVisRef, timelineInView] = useInView({
         threshold: 0.15,
         triggerOnce: false,
     });
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        if (window.__HISTORY_GSAP_PATCHED__) return;
+        window.__HISTORY_GSAP_PATCHED__ = true;
+
+        const origTo = gsap.to;
+
+        gsap.to = function patchedTo(targets, vars, position) {
+            const isWin =
+                targets === window ||
+                (Array.isArray(targets) && targets.length === 1 && targets[0] === window);
+
+            const hasScrollTo = !!(vars && typeof vars === 'object' && vars.scrollTo);
+
+            if (isWin && hasScrollTo) {
+                const y = typeof vars.scrollTo === 'object' ? vars.scrollTo.y : vars.scrollTo;
+                const tag = (vars && vars.data && vars.data.tag) ? vars.data.tag : 'NO_TAG';
+            }
+
+            return origTo.call(this, targets, vars, position);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+
+        const onWheel = (e) => {
+            if (Math.abs(e.deltaY) < 1 && Math.abs(e.deltaX) < 1) return;
+
+            const root = sectionRef.current;
+            const r = root?.getBoundingClientRect?.();
+            const inArea = r ? r.bottom > 0 && r.top < window.innerHeight : null;
+        };
+
+        window.addEventListener('wheel', onWheel, { passive: true });
+        return () => window.removeEventListener('wheel', onWheel);
+    }, [cardsFocused]);
 
     useEffect(() => {
         return () => {
@@ -195,6 +238,7 @@ export default function CompanyHistory({
 
     const {
         exitCardsFocus,
+        exitCardsFocusSilent,
         showAndPlaceHistoryTag,
         hideHistoryTag,
         showYearsScale,
@@ -242,6 +286,19 @@ export default function CompanyHistory({
         hideYearsScale?.(false, { duration: 0.2, ease: 'power2.out', y: 40 });
     }, [cardsFocused, timelineInView, hideYearsScale]);
 
+    useEffect(() => {
+        const tag = historyTagRef.current;
+        if (!tag) return;
+
+        if (cardsFocused) {
+            tag.style.opacity = '1';
+            tag.style.visibility = 'visible';
+        } else {
+            tag.style.opacity = '0';
+            tag.style.visibility = 'hidden';
+        }
+    }, [cardsFocused, historyTagRef]);
+
     useCompanyHistoryWheelHandlers({
         sectionRef,
         cardsFocused,
@@ -279,23 +336,19 @@ export default function CompanyHistory({
 
     useEffect(() => {
         if (!cardsFocused) return;
-
-        const onResize = () => {
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => showAndPlaceHistoryTag?.());
-            });
-        };
-
-        window.addEventListener('resize', onResize);
-        return () => window.removeEventListener('resize', onResize);
-    }, [cardsFocused, showAndPlaceHistoryTag]);
+    }, [cardsFocused]);
 
     const skipHorizontal = useCallback(
         (e) => {
             e?.preventDefault?.();
             e?.stopPropagation?.();
 
+            const ae = document.activeElement;
+            if (ae && typeof ae.blur === 'function') ae.blur();
+
             setYearsScaleGate(false);
+
+            exitToParentInProgressRef.current = true;
 
             gsap.killTweensOf(window);
             gsap.killTweensOf(document.documentElement);
@@ -310,8 +363,16 @@ export default function CompanyHistory({
 
             hideYearsScale?.(true, { y: 40 });
 
+            const cardsEl = historyListRef.current;
+            if (cardsEl && cardsFocused) {
+                exitCardsFocusSilent?.(cardsEl);
+            }
+
             const root = sectionRef.current;
-            if (!root) return;
+            if (!root) {
+                exitToParentInProgressRef.current = false;
+                return;
+            }
 
             const next = root.nextElementSibling;
 
@@ -325,14 +386,32 @@ export default function CompanyHistory({
             }
 
             const PAD = 20;
+            const finalY = Math.max(0, targetY - PAD);
+
+            if (typeof window !== 'undefined') {
+                window.__HISTORY_SKIP_LOCK_UNTIL__ = Date.now() + 500;
+            }
+
             gsap.to(window, {
                 duration: 0.9,
                 ease: 'power2.inOut',
                 overwrite: 'auto',
-                scrollTo: { y: Math.max(0, targetY - PAD), autoKill: false },
+                scrollTo: { y: finalY, autoKill: false },
+                data: { tag: 'SKIP_SCROLL' },
+                onComplete: () => {
+                    exitToParentInProgressRef.current = false;
+                    if (typeof window !== 'undefined') {
+                        window.__HISTORY_SKIP_LOCK_UNTIL__ = 0;
+                    }
+                },
             });
         },
-        [hideYearsScale]
+        [
+            hideYearsScale,
+            cardsFocused,
+            timelineInView,
+            exitCardsFocusSilent,
+        ]
     );
 
     const yearsScaleVisible = cardsFocused && yearsScaleGate && timelineInView && scaleYearsAsc.length > 0;
@@ -341,6 +420,36 @@ export default function CompanyHistory({
         typeof window !== 'undefined'
             ? Math.round(window.innerWidth * 0.9)
             : 0;
+
+    const handleOpenChronicle = useCallback((item) => {
+        let rawGroups = [];
+        if (Array.isArray(item?.dynamicBlocks) && item.dynamicBlocks.length) {
+            rawGroups = item.dynamicBlocks;
+        } else if (Array.isArray(item?.ConstructorLegends) && item.ConstructorLegends.length) {
+            rawGroups = item.ConstructorLegends.map((c) => (Array.isArray(c?.data) ? c.data : [])).filter((g) => g.length);
+        }
+
+        if (Array.isArray(rawGroups) && rawGroups.length && !Array.isArray(rawGroups[0])) {
+            rawGroups = [rawGroups];
+        }
+
+        const normalizedBlocks = normalizeConstructorGroups(rawGroups);
+
+        setSelectedHistoryItem({
+            ...item,
+            dynamicBlocks: normalizedBlocks,
+        });
+        setIsModalOpen(true);
+        document.body.style.overflow = 'hidden';
+        document.body.classList.add('modal-open');
+    }, []);
+
+    const handleCloseModal = useCallback(() => {
+        setIsModalOpen(false);
+        setSelectedHistoryItem(null);
+        document.body.style.overflow = '';
+        document.body.classList.remove('modal-open');
+    }, []);
 
     return (
         <div
@@ -351,6 +460,10 @@ export default function CompanyHistory({
             }}
             className={`${styles.history_section} ${cardsFocused ? styles.cards_focus : ''}`}
         >
+            <div ref={historyTagRef} className={styles.history_tag}>
+                История MARKS GROUP
+            </div>
+
             <div className={styles.history_content}>
                 <CompanyHistoryHeader
                     historyHeaderRef={historyHeaderRef}
@@ -374,10 +487,6 @@ export default function CompanyHistory({
                         }}
                         className={styles.history_timeline_container}
                     >
-                        <div ref={historyTagRef} className={styles.history_tag}>
-                            История MARKS GROUP
-                        </div>
-
                         <div
                             ref={timelineWrapperRef}
                             className={styles.timeline_wrapper}
@@ -395,7 +504,7 @@ export default function CompanyHistory({
                                         >
                                             {cardsByYear[year]?.top.map((item) => (
                                                 <div key={item.id} className={styles.history_card_wrapper}>
-                                                    <HistoryCard item={item} variant={item.img ? 1 : 2} />
+                                                    <HistoryCard item={{ ...item, onOpenChronicle: handleOpenChronicle }} variant={item.img ? 1 : 2} />
                                                 </div>
                                             ))}
                                         </div>
@@ -450,7 +559,7 @@ export default function CompanyHistory({
                                         >
                                             {cardsByYear[year]?.bottom.map((item) => (
                                                 <div key={item.id} className={styles.history_card_wrapper}>
-                                                    <HistoryCard item={item} variant={item.img ? 1 : 2} isBottom />
+                                                    <HistoryCard item={{ ...item, onOpenChronicle: handleOpenChronicle }} variant={item.img ? 1 : 2} isBottom />
                                                 </div>
                                             ))}
                                         </div>
@@ -469,9 +578,55 @@ export default function CompanyHistory({
                 years={scaleYearsAsc}
                 timelineWrapperRef={timelineWrapperRef}
                 horizontalOffsetRef={horizontalOffsetRef}
-                visible={yearsScaleVisible}
+                visible={yearsScaleVisible && !isModalOpen}
                 onSkip={skipHorizontal}
+                isModalOpen={isModalOpen}
             />
+
+            {isModalOpen && selectedHistoryItem && (
+                <Modal
+                    className={styles.modal_wrapper}
+                    isOpen={isModalOpen}
+                    onRequestClose={handleCloseModal}
+                    onAfterOpen={() => {
+                        document.body.style.overflow = 'hidden';
+                        document.body.classList.add('modal-open');
+                    }}
+                    onAfterClose={() => {
+                        document.body.style.overflow = '';
+                        document.body.classList.remove('modal-open');
+                    }}
+                    ariaHideApp={false}
+                    style={{
+                        overlay: { zIndex: 10, backgroundColor: '#2C3B447A' },
+                        content: { zIndex: 10, overflow: 'auto', WebkitOverflowScrolling: 'touch' },
+                    }}>
+                    <div key={selectedHistoryItem.id} className={styles.modal_context}>
+                        <div
+                            className={`${styles.modal_close} ${styles.fixed}`}
+                            onClick={handleCloseModal}>
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    fillRule="evenodd"
+                                    clipRule="evenodd"
+                                    d="M8.00025 8.70733L0.707107 16.0005L0 15.2934L7.29314 8.00023L2.41697e-05 0.707107L0.707131 0L8.00025 7.29312L15.2934 0L16.0005 0.707107L8.70736 8.00023L16.0005 15.2934L15.2934 16.0005L8.00025 8.70733Z"
+                                    fill="black"
+                                />
+                            </svg>
+                        </div>
+
+                        {selectedHistoryItem.description && (
+                            <div className={styles.modal_title} dangerouslySetInnerHTML={{ __html: selectedHistoryItem.description }} />
+                        )}
+
+                        {selectedHistoryItem.year && (
+                            <div className={styles.modal_year}>{selectedHistoryItem.year}</div>
+                        )}
+
+                        <HistoryModalBlocks selectedCard={selectedHistoryItem} bucketUrl={process.env.REACT_APP_S3_BUCKET_URL} />
+                    </div>
+                </Modal>
+            )}
         </div>
     );
 }

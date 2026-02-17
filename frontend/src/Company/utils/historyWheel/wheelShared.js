@@ -24,15 +24,15 @@ export const clearFocusPhase = (sectionRef) => {
     root.removeAttribute('data-focus-layout');
 };
 
-export const markRecentlyExited = (recentlyExitedCardsRef) => {
-    recentlyExitedCardsRef.current = { active: true, anchorY: window.pageYOffset };
+export const markRecentlyExited = (recentlyExitedCardsRef, dir = 'up') => {
+    recentlyExitedCardsRef.current = { active: true, anchorY: window.pageYOffset, dir };
 };
 
 export const clearRecentlyExitedIfFar = (recentlyExitedCardsRef, snapY) => {
     const st = recentlyExitedCardsRef.current;
     if (!st.active) return true;
 
-    if (Math.abs(window.pageYOffset - snapY) > 420) {
+    if (Math.abs(window.pageYOffset - snapY) > 400) {
         recentlyExitedCardsRef.current.active = false;
         return true;
     }

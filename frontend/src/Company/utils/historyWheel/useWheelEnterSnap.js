@@ -50,8 +50,32 @@ export function useWheelEnterSnap({
     applyingRef,
     vTweenRef,
 }) {
+    const applyFocusGrid = (wrapper) => {
+        if (!wrapper) return;
+        wrapper.style.setProperty('grid-template-rows', '1fr auto 1fr', 'important');
+        wrapper.style.setProperty('height', '100vh', 'important');
+
+        const rowTop = wrapper.querySelector('.cards_row_top');
+        const rowBot = wrapper.querySelector('.cards_row_bottom');
+        const tl = wrapper.querySelector('.timeline');
+
+        if (rowTop) {
+            rowTop.style.setProperty('grid-row', '1', 'important');
+            rowTop.style.setProperty('align-self', 'end', 'important');
+        }
+        if (rowBot) {
+            rowBot.style.setProperty('grid-row', '3', 'important');
+            rowBot.style.setProperty('align-self', 'start', 'important');
+        }
+        if (tl) {
+            tl.style.setProperty('grid-row', '2', 'important');
+            tl.style.setProperty('align-self', 'center', 'important');
+            tl.style.setProperty('margin', '0', 'important');
+        }
+    };
+
     useEffect(() => {
-        const SNAP_ZONE = 120;
+        const SNAP_ZONE = 300;
         const STEP_CLAMP = 900;
         const EASE = 'power2.out';
         const DUR = 0.2;
@@ -84,33 +108,44 @@ export function useWheelEnterSnap({
 
             flushSync(() => setCardsFocused(true));
 
+            const timelineWrapper = timelineEl?.parentElement;
+            applyFocusGrid(timelineWrapper);
+
             showYearsScale?.(false, { duration: 0.9, ease: 'power2.inOut' });
 
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
-                    const topAbs = cardsEl.getBoundingClientRect().top + window.pageYOffset;
+                    const lineEl = timelineWrapper?.querySelector('[class*="timeline_line"]');
+                    const lineRect = lineEl?.getBoundingClientRect();
+                    let targetScrollY;
+                    if (lineRect) {
+                        const lineCenterInViewport = lineRect.top + lineRect.height / 2;
+                        targetScrollY = window.pageYOffset + lineCenterInViewport - window.innerHeight / 2;
+                    } else {
+                        targetScrollY = cardsEl.getBoundingClientRect().top + window.pageYOffset;
+                    }
 
                     applyingRef.current = true;
+
                     gsap.to(window, {
                         duration: 0.26,
                         ease: 'power2.out',
                         overwrite: 'auto',
-                        scrollTo: { y: topAbs, autoKill: false },
+                        scrollTo: { y: targetScrollY, autoKill: false },
                         onUpdate: () => {
                             lockYRef.current = window.pageYOffset;
                             vScrollYRef.current = lockYRef.current;
                         },
                         onComplete: () => {
+                            cardsEl.style.setProperty('overflow', 'hidden', 'important');
+
                             applyingRef.current = false;
                             cardsFocusInProgressRef.current = false;
                             lockScrollRef.current = false;
 
                             setFocusPhaseReady(sectionRef);
 
-                            showAndPlaceHistoryTag?.();
-                            requestAnimationFrame(() => {
-                                requestAnimationFrame(() => showAndPlaceHistoryTag?.());
-                            });
+                            showAndPlaceHistoryTag?.({ duration: 0.3, ease: 'power2.out' });
                         },
                     });
                 });
@@ -131,6 +166,7 @@ export function useWheelEnterSnap({
 
         const onWheel = (e) => {
             if (cardsFocused) return;
+            if (cardsFocusInProgressRef.current) return;
             if (exitToParentInProgressRef.current || returnedToSliderRef.current) return;
             if (!isHistoryActive(sectionRef, e)) return;
 
@@ -140,7 +176,6 @@ export function useWheelEnterSnap({
 
             const sectionAbs = getSectionAbs(sectionRef);
             const snapY = computeSnapY(timelineEl);
-            const canEnter = clearRecentlyExitedIfFar(recentlyExitedCardsRef, snapY);
 
             const dyRaw = e.deltaY;
             const dx = e.deltaX || 0;
@@ -149,6 +184,17 @@ export function useWheelEnterSnap({
             const y0 = window.pageYOffset;
             const dy = gsap.utils.clamp(-STEP_CLAMP, STEP_CLAMP, dyRaw);
             const y1 = y0 + dy;
+
+            const recentExit = recentlyExitedCardsRef.current;
+            if (recentExit.active) {
+                const sameDir = (recentExit.dir === 'up' && dy < 0) ||
+                    (recentExit.dir === 'down' && dy > 0);
+                if (sameDir) {
+                    clearRecentlyExitedIfFar(recentlyExitedCardsRef, snapY);
+                    return;
+                }
+                recentlyExitedCardsRef.current.active = false;
+            }
 
             const needCatch = shouldConsiderSnap(y0, y1, snapY, sectionAbs, SNAP_ZONE);
             if (!needCatch) return;
@@ -173,11 +219,6 @@ export function useWheelEnterSnap({
                 },
                 onComplete: () => {
                     applyingRef.current = false;
-
-                    if (!canEnter) {
-                        lockScrollRef.current = false;
-                        return;
-                    }
 
                     const fromBottom = dy < 0;
                     activateCardsFocus(timelineEl, cardsEl, fromBottom);
@@ -321,6 +362,8 @@ export function useWheelEnterSnap({
 
             flushSync(() => setCardsFocused(true));
 
+            applyFocusGrid(timelineWrapperRef.current);
+
             const rectAfter = cardsEl.getBoundingClientRect();
             const topAfter = Math.round(rectAfter.top);
             const leftAfter = Math.round(rectAfter.left);
@@ -386,10 +429,8 @@ export function useWheelEnterSnap({
 
                             cardsFocusInProgressRef.current = false;
                             setFocusPhaseReady(sectionRef);
-
-                            requestAnimationFrame(() => {
-                                requestAnimationFrame(() => showAndPlaceHistoryTag?.());
-                            });
+               
+                            showAndPlaceHistoryTag?.({ duration: 0.3, ease: 'power2.out' });
                         },
                     },
                     0

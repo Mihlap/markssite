@@ -1,10 +1,13 @@
 @import '../../App.css';
 
 .history_card {
-    background: #f6f6f6;
-    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
     padding: 30px;
-    width: 689px;
+    border-radius: 16px;
+    background: var(--white-F6F6F6, #f6f6f6);
     box-sizing: border-box;
     position: relative;
     overflow: hidden;
@@ -22,10 +25,20 @@
     box-shadow: -2px 4px 22px 0 rgba(44, 59, 68, 0.2);
 }
 
+/* Верхний ряд: изображение сверху, автор и текст снизу */
+.history_card:not(.bottom_card) .split_right {
+    order: 1;
+}
+
+.history_card:not(.bottom_card) .split_left {
+    order: 2;
+}
+
 .card_split {
     display: flex;
     flex-direction: column;
     gap: 24px;
+    width: 100%;
 }
 
 .split_left,
@@ -184,10 +197,33 @@
     }
 }
 
-@media screen and (min-width: 1024px) and (max-width: 1599px) {
+@media screen and (min-width: 1025px) and (max-width: 1599px) {
     .history_card {
-        width: 532px;
+        width: clamp(400px, 37vw, 532px);
+        min-height: 372px;
+        height: auto;
         padding: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
+        border-radius: 16px;
+        background: var(--white-F6F6F6, #f6f6f6);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .history_card:hover {
+            border-radius: 16px;
+            background: var(--white-F6F6F6, #f6f6f6);
+            box-shadow: -2px 4px 22px 0 rgba(44, 59, 68, 0.2);
+        }
+    }
+}
+
+@media screen and (min-width: 1025px) and (max-width: 1599px) {
+    .split_left,
+    .split_right {
+        transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .card_split {
@@ -204,7 +240,19 @@
     }
 
     .card_title {
-        font-size: 18px;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        align-self: stretch;
+        overflow: hidden;
+        color: var(--black-1D2E43, #1D2E43);
+        font-variant-numeric: lining-nums proportional-nums;
+        text-overflow: ellipsis;
+        font-family: Raleway;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 28px;
     }
 
     .card_link {
@@ -218,7 +266,22 @@
 
 @media screen and (min-width: 1600px) {
     .history_card {
-        width: 689px;
+        width: clamp(570px, 26.9vw, 689px);
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
+        border-radius: 16px;
+        background: var(--white-F6F6F6, #f6f6f6);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .history_card:hover {
+            border-radius: 16px;
+            background: var(--white-F6F6F6, #f6f6f6);
+            box-shadow: -2px 4px 22px 0 rgba(44, 59, 68, 0.2);
+        }
     }
 
     .card_title {
