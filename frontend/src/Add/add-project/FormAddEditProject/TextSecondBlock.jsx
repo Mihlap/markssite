@@ -28,7 +28,8 @@ function TextSecondBlock({ styles, inputData, setInputData, quillRef1 }) {
             modules={{
               toolbar: [
                 ['bold', 'italic', 'underline'],
-                [{ list: 'bullet' }, { list: 'ordered' }],
+                [{ list: 'bullet' },
+                ],
               ],
               clipboard: {
                 matchVisual: false,

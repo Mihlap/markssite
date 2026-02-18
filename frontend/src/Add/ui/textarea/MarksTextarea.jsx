@@ -1,34 +1,57 @@
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
+import ReactQuill, { Quill } from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
+import { Icon1, Icon2, Icon3 } from './icon';
 
 import s from './Styles.module.css';
 
-function MarksTextarea({
-  name,
-  label,
-  value,
-  onChange,
-  placeholder,
-  color = 'blue',
-  error,
-  btn = false,
-}) {
+const icons = Quill.import('ui/icons');
+
+icons['bold'] = Icon1;
+icons['underline'] = Icon2;
+icons['list'] = Icon3;
+
+
+const quillFormats = ['bold', 'underline', 'list'];
+
+function MarksTextarea({ name, label, value, onChange, placeholder, color = 'blue', error, Quill = false, quillRef }) {
+  const toolbarId = `toolbar-${name}`;
+
+  const quillModules = useMemo(() => ({
+    toolbar: { container: `#${toolbarId}` },
+    clipboard: { matchVisual: false },
+  }), [toolbarId]);
 
   return (
     <div className={s.textarea__wrap}>
-      <textarea
-        className={`${s.textarea} ${error ? s.textarea_error : ''}`}
-        name={name}
-        id={name}
-        value={value ?? ''}
-        onChange={onChange}
-        placeholder={placeholder || name}
-      />
-      {btn && (
-        <div style={{display: 'flex', gap: '10px', order: '1'}}>
-          <button style={{height: "24px", width: '24px', backgroundColor: 'red'}}>1</button>
-          <button style={{height: "24px", width: '24px', backgroundColor: 'red'}}>2</button>
-          <button style={{height: "24px", width: '24px', backgroundColor: 'red'}}>3</button>
-        </div>
+      {Quill ? (
+        <>
+          <div id={toolbarId} className={s.toolbar}>
+            <button className="ql-bold"><Icon1 /></button>
+            <button className="ql-underline"><Icon2 /></button>
+            <button className="ql-list" value="bullet"><Icon3 /></button>
+          </div>
+          <ReactQuill
+            ref={quillRef}
+            modules={quillModules}
+            formats={quillFormats}
+            className={`${s.quill} ${error ? s.quill_error : ''}`}
+            name={name}
+            id={name}
+            value={value ?? ''}
+            onChange={onChange}
+            placeholder={placeholder || name}
+          />
+        </>
+      ) : (
+        <textarea
+          className={`${s.textarea} ${error ? s.textarea_error : ''}`}
+          name={name}
+          id={name}
+          value={value ?? ''}
+          onChange={onChange}
+          placeholder={placeholder || name}
+        />
       )}
       <label htmlFor={name} className={s.textarea__label}>
         {label}
