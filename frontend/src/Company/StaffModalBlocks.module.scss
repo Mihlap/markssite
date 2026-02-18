@@ -438,6 +438,22 @@
 }
 
 @media (min-width: 1700px) and (max-width: 3000px) {
+  .staff_person_of_year_img {
+    width: 260px;
+    height: 260px;
+  }
+
+  .staff_person_with_name_avatar {
+    width: 96px;
+    height: 96px;
+    flex: 0 0 96px;
+  }
+
+  .staff_person_with_name_text {
+    font-size: 20px;
+    line-height: 28px;
+  }
+
   .staff_fact_card {
     gap: 24px;
     padding: 40px;
@@ -501,6 +517,54 @@
   }
 }
 
+
+/* ===== Человек года ===== */
+.staff_person_of_year {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.staff_person_of_year_img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  box-shadow: 0 4px 16px rgba(29, 46, 67, .12);
+}
+
+/* ===== Портрет с именем ===== */
+.staff_person_with_name {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.staff_person_with_name_avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex: 0 0 72px;
+}
+
+.staff_person_with_name_avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.staff_person_with_name_text {
+  color: var(--gray-959DA6);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-weight: var(--fw-400);
+  font-size: 16px;
+  font-style: normal;
+  line-height: 24px;
+}
 
 /* ===== Текстовый блок в рамке ===== */
 .staff_frame_text {
@@ -669,6 +733,13 @@
   .staff_fact_title {
     font-size: 24px;
     line-height: 32px;
+  }
+}
+
+@media (max-width: 767px) {
+  .staff_person_of_year_img {
+    width: 140px;
+    height: 140px;
   }
 }
 
