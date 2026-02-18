@@ -1,6 +1,6 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { UiMarksInput, UiMarksSelect, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
+import { UiMarksInput, UiMarksSelect, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap, UiMarksButton, UiMarksConstructorWrap } from '../../ui';
 import { monthOptions, yearOptions, typesСonstruction } from '../FormAddEditProject/utils/Time';
 import { MEASUREMENT_FIELDS } from '../FormAddEditProject/const/measurement';
 import { competenciesOptions, degreeParticipationOptions, statusObjectOptions, stageAwards } from './const/options';
@@ -13,6 +13,7 @@ export default function AddForm({ onValidityChange }) {
   const imageOpenRef = useRef(null);
   const imageCloseRef = useRef(null);
   const renderCount = useRef(0);
+  const [open, setOpen] = useState(false);
   renderCount.current += 1;
 
   const {
@@ -91,9 +92,9 @@ export default function AddForm({ onValidityChange }) {
             rules={{ required: true }}
             render={({ field, fieldState }) => (
               <UiMarksSelect
+                name="month"
                 label="Месяц"
                 placeholder="Месяц"
-                name="month"
                 error={fieldState.error && 'Обязательное поле'}
                 customStyles={{
                   container: s.selectContainer,
@@ -447,6 +448,16 @@ export default function AddForm({ onValidityChange }) {
           )}
         />
       </UiMarksGrayWrap>
+
+      {open ? (
+        <UiMarksConstructorWrap>
+          
+        </UiMarksConstructorWrap>
+      ) : (
+        <UiMarksButton defaultStyle="constructor" size="large" icon onClick={() => setOpen(true)}>
+          Добавить блок из библиотеки
+        </UiMarksButton>
+      )}
 
       <Controller
         name="photo"

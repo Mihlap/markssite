@@ -48,6 +48,11 @@
     box-shadow: none;
 }
 
+.select_error :global(.select__control--is-focused) {
+    border-bottom: 1px solid var(--crimson-E00747);
+    caret-color: var(--crimson-E00747);
+}
+
 .select :global(.select__placeholder) {
     color: var(--gray-959DA6);
 }

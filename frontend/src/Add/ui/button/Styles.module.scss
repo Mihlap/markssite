@@ -62,6 +62,12 @@
         }
     }
 
+    &.constructor {
+        // background-color: transparent;
+        border: dashed 1px;
+        color: var(--salmon-FF7F6A);
+    }
+
     // --- Size variants ---
 
     &.large {
