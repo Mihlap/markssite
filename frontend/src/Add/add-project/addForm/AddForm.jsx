@@ -1,11 +1,19 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { UiMarksInput, UiMarksSelect, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap, UiMarksButton, UiMarksConstructorWrap } from '../../ui';
+import React, { useRef, useEffect } from 'react';
+import { useForm, useFieldArray, Controller } from 'react-hook-form';
+import { UiMarksInput, UiMarksSelect, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
 import { monthOptions, yearOptions, typesСonstruction } from '../FormAddEditProject/utils/Time';
 import { MEASUREMENT_FIELDS } from '../FormAddEditProject/const/measurement';
 import { competenciesOptions, degreeParticipationOptions, statusObjectOptions, stageAwards } from './const/options';
+import ConstructorMain from '../../constructor/ConstructorMain';
+import ConstructorBlock from '../../constructor/ConstructorBlock';
+import { Icon1 } from '../../constructor/icon';
 
 import s from './Styles.module.css';
+
+const PROJECT_ITEMS = [
+  { id: 'imageWithDesc', icon: Icon1, label: 'Картинка с описанием' },
+];
+
 
 export default function AddForm({ onValidityChange }) {
   const photoAvaRef = useRef(null);
@@ -13,7 +21,6 @@ export default function AddForm({ onValidityChange }) {
   const imageOpenRef = useRef(null);
   const imageCloseRef = useRef(null);
   const renderCount = useRef(0);
-  const [open, setOpen] = useState(false);
   renderCount.current += 1;
 
   const {
@@ -24,6 +31,11 @@ export default function AddForm({ onValidityChange }) {
     formState: { isValid },
   } = useForm({
     mode: 'onChange',
+  });
+
+  const { fields: constructorBlocks, append, remove } = useFieldArray({
+    control,
+    name: 'constructorBlocks',
   });
 
   const measurementValues = watch(MEASUREMENT_FIELDS.map((f) => f.name));
@@ -449,15 +461,57 @@ export default function AddForm({ onValidityChange }) {
         />
       </UiMarksGrayWrap>
 
-      {open ? (
-        <UiMarksConstructorWrap>
-          
-        </UiMarksConstructorWrap>
-      ) : (
-        <UiMarksButton defaultStyle="constructor" size="large" icon onClick={() => setOpen(true)}>
-          Добавить блок из библиотеки
-        </UiMarksButton>
-      )}
+      <ConstructorMain
+        items={PROJECT_ITEMS}
+        onSelect={(item) => append({ typeId: item.id, image: [], description: '' })}
+      >
+        {constructorBlocks.map((block, index) => (
+          <ConstructorBlock key={block.id} label="Картинка с описанием" onRemove={() => remove(index)}>
+            <Controller
+              name={`constructorBlocks.${index}.image`}
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <>
+                  {(!value || value.length === 0) && (
+                    <UiMarksInput
+                      type="file"
+                      name={`constructorBlocks.${index}.image`}
+                      accept="image/*"
+                      color="grey"
+                      label="Картинка с описанием"
+                      onChange={(e) => {
+                        const file = e.target.files[0];
+                        onChange(file ? [file] : []);
+                      }}
+                    />
+                  )}
+                  <UiPhotoPreview
+                    files={value}
+                    variant="single"
+                    onRemove={() => onChange([])}
+                  />
+                </>
+              )}
+            />
+            <Controller
+              name={`constructorBlocks.${index}.description`}
+              control={control}
+              render={({ field }) => (
+                <UiMarksInput
+                  name={`constructorBlocks.${index}.description`}
+                  label="Описание картинки"
+                  placeholder="Не более 56 символов"
+                  maxLength={56}
+                  value={field.value}
+                  onChange={(e) => {
+                    if (e.target.value.length <= 56) field.onChange(e.target.value);
+                  }}
+                />
+              )}
+            />
+          </ConstructorBlock>
+        ))}
+      </ConstructorMain>
 
       <Controller
         name="photo"
