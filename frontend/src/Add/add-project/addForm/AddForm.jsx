@@ -441,7 +441,7 @@ export default function AddForm({ onValidityChange }) {
               name="textBlock"
               label="Текстовый блок"
               placeholder="Нет ограничения по символам"
-              // btn={true}
+              Quill={true}
               {...field}
             />
           )}

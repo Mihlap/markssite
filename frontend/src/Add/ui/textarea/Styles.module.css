@@ -1,6 +1,7 @@
 .textarea__wrap {
     display: flex;
     flex-direction: column;
+    gap: 8px;
     font-family: var(--font-raleway);
 }
 
@@ -24,16 +25,13 @@
     transition: border-color 0.2s;
 }
 
-/* .textarea:focus {
-    border-color: var(--blue-75BBFD);
-} */
 
 .textarea::placeholder {
     color: var(--gray-959DA6);
-        font-size: 16px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 20px;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
 }
 
 .textarea_error {
@@ -52,7 +50,6 @@
     font-style: normal;
     font-weight: 400;
     line-height: 16px;
-    margin-bottom: 4px;
     order: -1;
 }
 
@@ -65,4 +62,73 @@
     font-style: normal;
     font-weight: 400;
     line-height: 14px;
+}
+
+.toolbar {
+    display: flex;
+    gap: 8px;
+    padding: 0 !important;
+    border: none !important;
+    padding-bottom: 8px;
+}
+
+.toolbar button {
+    width: 24px !important;
+    height: 24px !important;
+    background: var(--white-F6F6F6) !important;
+    border: none;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px !important;
+    cursor: pointer;
+    color: var(--gray-959DA6);
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.toolbar button:hover {
+    background: var(--light-gray-C0C5CB) !important;
+    color: var(--dark-gray-566272) !important;
+}
+
+.toolbar :global(button.ql-active) {
+    background: var(--blue-75BBFD) !important;
+    color: #fff !important;
+}
+
+
+.quill {
+    order: 2;
+    border-radius: 6px;
+    font-family: var(--font-raleway);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    color: var(--black-1D2E43);
+}
+
+.quill :global(.ql-container) {
+    font-family: var(--font-raleway);
+    border: 1px solid var(--light-blue-D4EDFB);
+    background-color: var(--white-F6F6F6);
+    border-radius: 6px;
+    min-height: 160px;
+}
+
+.quill :global(.ql-editor)::before {
+    font-size: 16px;
+    color: var(--gray-959DA6);
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.quill :global(.ql-toolbar.ql-snow+.ql-container.ql-snow) {
+    border-top: 1px solid var(--light-blue-D4EDFB);
+}
+
+.quill_error {
+    /* border-color: var(--crimson-E00747); */
 }
