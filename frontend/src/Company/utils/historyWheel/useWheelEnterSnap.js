@@ -95,6 +95,9 @@ export function useWheelEnterSnap({
                 gsap.set(timelineEl, { x: 0, force3D: true });
             }
 
+            const lineEl = timelineEl.querySelector('[class*="timeline_line"]');
+            const lineTopBefore = lineEl ? lineEl.getBoundingClientRect().top : null;
+
             cardsEl.style.marginTop = '0';
             cardsEl.style.marginBottom = '0';
             cardsEl.style.top = '0';
@@ -110,6 +113,17 @@ export function useWheelEnterSnap({
 
             const timelineWrapper = timelineEl?.parentElement;
             applyFocusGrid(timelineWrapper);
+
+            if (lineTopBefore != null && lineEl) {
+                const lineTopAfter = lineEl.getBoundingClientRect().top;
+                const delta = Math.round(lineTopBefore - lineTopAfter);
+                if (Math.abs(delta) > 0.5) {
+                    const newY = Math.max(0, window.pageYOffset - delta);
+                    lockYRef.current = newY;
+                    vScrollYRef.current = newY;
+                    window.scrollTo(0, newY);
+                }
+            }
 
             showYearsScale?.(false, { duration: 0.9, ease: 'power2.inOut' });
 
@@ -344,6 +358,9 @@ export function useWheelEnterSnap({
                 );
             });
 
+            const flipLineEl = timelineWrapperRef.current?.querySelector('[class*="timeline_line"]');
+            const flipLineTopBefore = flipLineEl ? flipLineEl.getBoundingClientRect().top : null;
+
             const rectBefore = cardsEl.getBoundingClientRect();
             const topBefore = Math.round(rectBefore.top);
             const leftBefore = Math.round(rectBefore.left);
@@ -364,12 +381,14 @@ export function useWheelEnterSnap({
 
             applyFocusGrid(timelineWrapperRef.current);
 
+            const flipLineTopAfter = flipLineEl ? flipLineEl.getBoundingClientRect().top : null;
             const rectAfter = cardsEl.getBoundingClientRect();
-            const topAfter = Math.round(rectAfter.top);
             const leftAfter = Math.round(rectAfter.left);
 
             const deltaX = leftBefore - leftAfter;
-            const deltaY = topBefore - topAfter;
+            const deltaY = (flipLineTopBefore != null && flipLineTopAfter != null)
+                ? Math.round(flipLineTopBefore - flipLineTopAfter)
+                : Math.round(topBefore - Math.round(rectAfter.top));
 
             let lockedX = snap1(currentX + deltaX);
             let initialY = snap1(currentY + deltaY);
@@ -429,8 +448,8 @@ export function useWheelEnterSnap({
 
                             cardsFocusInProgressRef.current = false;
                             setFocusPhaseReady(sectionRef);
-               
-                            showAndPlaceHistoryTag?.({ duration: 0.3, ease: 'power2.out' });
+
+                            showAndPlaceHistoryTag?.({ duration: 2.0, ease: 'sine.out' });
                         },
                     },
                     0

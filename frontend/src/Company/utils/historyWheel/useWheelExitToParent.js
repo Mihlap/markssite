@@ -79,7 +79,7 @@ export function useWheelExitToParent({
             if (headerEl) {
                 const headerTopAbs = headerEl.getBoundingClientRect().top + window.pageYOffset;
                 const targetHeaderY = Math.max(0, headerTopAbs - PAD);
-             
+
                 if (window.pageYOffset > targetHeaderY + 4 && Math.abs(window.pageYOffset - headerTopAbs) > PAD + 10) {
                     stopWheelHard(e);
 

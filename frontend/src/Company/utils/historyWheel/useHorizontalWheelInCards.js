@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import gsap from 'gsap';
 import { isHistoryActive, stopWheelHard, markRecentlyExited, clearFocusPhase } from './wheelShared';
+import { createPeekCardsManager, clearCardSplit } from './usePeekCards';
 
 function clamp(n, a, b) {
     return Math.max(a, Math.min(b, n));
@@ -17,6 +18,8 @@ export function useHorizontalWheelInCards({
     exitCardsFocus,
     hideYearsScale,
     showYearsScale,
+    hideHistoryTag,
+    showAndPlaceHistoryTag,
     isModalOpen = false,
 }) {
     useEffect(() => {
@@ -24,6 +27,8 @@ export function useHorizontalWheelInCards({
         const cardsEl = historyListRef.current;
 
         if (!container || !cardsEl) return;
+
+        const peekCards = createPeekCardsManager(container);
 
         const EASE = 'power2.out';
         const DUR = 0.55;
@@ -123,277 +128,6 @@ export function useHorizontalWheelInCards({
             endEps = 260;
         };
 
-        const SHIFT_X = 26;
-
-        const PEEK_MIN_VISIBLE = 24;
-        const PEEK_MAX_VISIBLE = 260;
-
-        const isPeekCard = (rect, vw) => {
-            const intersectsRightEdge = rect.left < vw && rect.right > vw;
-            if (!intersectsRightEdge) return false;
-
-            const visibleW = vw - rect.left;
-            if (visibleW < PEEK_MIN_VISIBLE || visibleW > PEEK_MAX_VISIBLE) return false;
-
-            return true;
-        };
-
-        const getSplitNodes = (card) => {
-            if (!card) return null;
-            const left = card.querySelector('[data-split-left="true"]');
-            const right = card.querySelector('[data-split-right="true"]');
-            if (!left || !right) return null;
-            return { left, right };
-        };
-
-        const clearCardSplit = (card) => {
-            const nodes = getSplitNodes(card);
-            if (!nodes) return;
-
-            gsap.killTweensOf(nodes.left);
-            gsap.killTweensOf(nodes.right);
-
-            gsap.set(nodes.left, { clearProps: 'transform' });
-            gsap.set(nodes.right, { clearProps: 'transform' });
-
-            try {
-                card.removeAttribute('data-peek-primed');
-                card.removeAttribute('data-peek-snapped');
-            } catch { }
-        };
-
-        const applyPeekStateForRightEdgeCards = () => {
-            const vw = window.innerWidth || 0;
-
-            let cards = [];
-            try {
-                cards = Array.from(container.querySelectorAll('[data-history-card-root="true"]'));
-            } catch {
-                cards = [];
-            }
-            if (!cards.length) return;
-
-            for (const card of cards) {
-                const r = card.getBoundingClientRect();
-                const shouldBePeek = isPeekCard(r, vw);
-
-                if (!shouldBePeek) {
-                    try {
-                        if (card.getAttribute('data-peek-primed') === 'true') {
-                            card.removeAttribute('data-peek-primed');
-                            if (card.getAttribute('data-peek-snapped') !== 'true') {
-                                const nodes = getSplitNodes(card);
-                                if (nodes) {
-                                    gsap.killTweensOf(nodes.left);
-                                    gsap.killTweensOf(nodes.right);
-                                    gsap.set(nodes.left, { clearProps: 'transform' });
-                                    gsap.set(nodes.right, { clearProps: 'transform' });
-                                }
-                            }
-                        }
-                    } catch { }
-                    continue;
-                }
-
-                if (card.getAttribute('data-peek-snapped') === 'true') continue;
-                if (card.getAttribute('data-peek-primed') === 'true') continue;
-
-                const nodes = getSplitNodes(card);
-                if (!nodes) continue;
-
-                gsap.killTweensOf(nodes.left);
-                gsap.killTweensOf(nodes.right);
-
-                gsap.set(nodes.left, { x: -SHIFT_X, force3D: true });
-                gsap.set(nodes.right, { x: +SHIFT_X, force3D: true });
-
-                try {
-                    card.setAttribute('data-peek-primed', 'true');
-                } catch { }
-            }
-        };
-
-        const findBestPeekCard = () => {
-            const vw = window.innerWidth || 0;
-
-            let cards = [];
-            try {
-                cards = Array.from(container.querySelectorAll('[data-history-card-root="true"]'));
-            } catch {
-                cards = [];
-            }
-            if (!cards.length) return null;
-
-            let best = null;
-            let bestScore = Infinity;
-
-            for (const card of cards) {
-                const r = card.getBoundingClientRect();
-                if (!isPeekCard(r, vw)) continue;
-
-                const visibleW = vw - r.left;
-                const score = Math.abs(visibleW - 120);
-                if (score < bestScore) {
-                    bestScore = score;
-                    best = card;
-                }
-            }
-
-            return best;
-        };
-
-        const peekStateRef = {
-            current: {
-                primedCard: null,
-                primedLeft: null,
-                primedRight: null,
-                tl: null,
-                start: 0,
-                end: 0,
-                animating: false,
-            },
-        };
-
-        const killPeekTween = () => {
-            const st = peekStateRef.current;
-            if (st.tl) {
-                try {
-                    st.tl.kill();
-                } catch { }
-            }
-            st.tl = null;
-            st.start = 0;
-            st.end = 0;
-            st.animating = false;
-        };
-
-        const primePeekCard = () => {
-            const st = peekStateRef.current;
-            if (st.animating) return;
-
-            applyPeekStateForRightEdgeCards();
-
-            const card = findBestPeekCard();
-            if (!card) return;
-
-            if (st.primedCard === card) {
-                const nodes = getSplitNodes(card);
-                if (nodes) {
-                    st.primedLeft = nodes.left;
-                    st.primedRight = nodes.right;
-                }
-                return;
-            }
-
-            if (st.primedCard && st.primedCard !== card) {
-                st.primedCard = null;
-                st.primedLeft = null;
-                st.primedRight = null;
-            }
-
-            const nodes = getSplitNodes(card);
-            if (!nodes) {
-                st.primedCard = null;
-                st.primedLeft = null;
-                st.primedRight = null;
-                return;
-            }
-
-            if (card.getAttribute('data-peek-snapped') !== 'true') {
-                gsap.set(nodes.left, { x: -SHIFT_X, force3D: true });
-                gsap.set(nodes.right, { x: +SHIFT_X, force3D: true });
-                try {
-                    card.setAttribute('data-peek-primed', 'true');
-                } catch { }
-            }
-
-            st.primedCard = card;
-            st.primedLeft = nodes.left;
-            st.primedRight = nodes.right;
-        };
-
-        const armPeekForSnap = (startOffset, endOffset) => {
-            const st = peekStateRef.current;
-
-            killPeekTween();
-            primePeekCard();
-
-            if (!st.primedCard || !st.primedLeft || !st.primedRight) return;
-
-            try {
-                st.primedCard.setAttribute('data-peek-snapped', 'true');
-            } catch { }
-
-            st.animating = true;
-            st.start = Number(startOffset || 0);
-            st.end = Number(endOffset || 0);
-
-            const tl = gsap.timeline({ paused: true });
-            tl.to(st.primedLeft, { x: 0, ease: 'none', duration: 1 }, 0);
-            tl.to(st.primedRight, { x: 0, ease: 'none', duration: 1 }, 0);
-
-            st.tl = tl;
-        };
-
-        const updatePeekProgress = (currentOffset) => {
-            const st = peekStateRef.current;
-            if (!st.tl || !st.animating) return;
-
-            const s = Number(st.start || 0);
-            const e = Number(st.end || 0);
-            const denom = e - s;
-
-            if (!Number.isFinite(denom) || Math.abs(denom) < 0.0001) {
-                st.tl.progress(1);
-                return;
-            }
-
-            const p = (Number(currentOffset || 0) - s) / denom;
-            const pp = Math.max(0, Math.min(1, p));
-            st.tl.progress(pp);
-        };
-
-        const finishPeekSnap = () => {
-            const st = peekStateRef.current;
-            if (st.tl) st.tl.progress(1);
-
-            if (st.primedCard) {
-                const nodes = getSplitNodes(st.primedCard);
-                if (nodes) {
-                    gsap.killTweensOf(nodes.left);
-                    gsap.killTweensOf(nodes.right);
-                    gsap.set(nodes.left, { clearProps: 'transform' });
-                    gsap.set(nodes.right, { clearProps: 'transform' });
-                }
-
-                try {
-                    st.primedCard.removeAttribute('data-peek-primed');
-                    st.primedCard.setAttribute('data-peek-snapped', 'true');
-                } catch { }
-            }
-
-            killPeekTween();
-
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    let cards = [];
-                    try {
-                        cards = Array.from(container.querySelectorAll('[data-history-card-root="true"]'));
-                    } catch {
-                        cards = [];
-                    }
-                    for (const card of cards) {
-                        try {
-                            card.removeAttribute('data-peek-snapped');
-                        } catch { }
-                    }
-
-                    applyPeekStateForRightEdgeCards();
-                    primePeekCard();
-                });
-            });
-        };
-
         const DOT_ACTIVE_PX = 30;
         const DOT_OVERSHOOT_PX = 40;
 
@@ -442,9 +176,11 @@ export function useHorizontalWheelInCards({
 
             const t = clamp(Number(p || 0), 0, 1);
 
-            const peakAt = 0.72;
+            const peakAt = 0.55;
 
-            const smooth = (x) => x * x * (3 - 2 * x);
+            const smooth = (x) => {
+                return x * x * x * (x * (x * 6 - 15) + 10);
+            };
             const lerp = (a, b, x) => a + (b - a) * x;
 
             let s;
@@ -472,6 +208,37 @@ export function useHorizontalWheelInCards({
             st.enabled = false;
         };
 
+        const animateDotWithOvershoot = (markerEl) => {
+            if (!markerEl) return;
+
+            const dot = markerEl.querySelector('[data-year-dot="true"]');
+            if (!dot) return;
+
+            gsap.killTweensOf(dot);
+            gsap.killTweensOf(markerEl);
+
+            const base = Number(dot.offsetWidth || 22) || 22;
+            const activeScale = Math.max(1, DOT_ACTIVE_PX / base);
+            const overScale = Math.max(activeScale, DOT_OVERSHOOT_PX / base);
+
+            dot.style.setProperty('--dot-scale', '1');
+            markerEl.style.setProperty('--dot-cutout-scale', '1');
+
+            const tl = gsap.timeline({ overwrite: true });
+
+            tl.to([dot, markerEl], {
+                '--dot-scale': overScale,
+                '--dot-cutout-scale': overScale,
+                duration: 0.45,
+                ease: 'power2.out',
+            }).to([dot, markerEl], {
+                '--dot-scale': activeScale,
+                '--dot-cutout-scale': activeScale,
+                duration: 0.4,
+                ease: 'power2.out',
+            });
+        };
+
         const applyOffset = (next, immediate = false, onDone, opts = null) => {
             const clamped = clampOffset(next);
             const startOffset = getOffset();
@@ -484,19 +251,19 @@ export function useHorizontalWheelInCards({
             gsap.killTweensOf(container);
 
             if (immediate) {
-                killPeekTween();
+                peekCards.killPeekTween();
                 gsap.set(container, { x: -clamped, force3D: true });
-                applyPeekStateForRightEdgeCards();
-                primePeekCard();
+                peekCards.applyPeekStateForRightEdgeCards();
+                peekCards.primePeekCard();
                 travelFinish();
                 onDone?.(clamped);
                 return;
             }
 
             if (Math.abs(clamped - startOffset) > 8) {
-                armPeekForSnap(startOffset, clamped);
+                peekCards.armPeekForSnap(startOffset, clamped);
             } else {
-                killPeekTween();
+                peekCards.killPeekTween();
             }
 
             const tween = gsap.to(container, {
@@ -510,8 +277,8 @@ export function useHorizontalWheelInCards({
                     const off = Math.max(0, -x);
                     setOffset(off);
 
-                    applyPeekStateForRightEdgeCards();
-                    updatePeekProgress(off);
+                    peekCards.applyPeekStateForRightEdgeCards();
+                    peekCards.updatePeekProgress(off);
 
                     travelUpdate(tween.progress());
                 },
@@ -519,7 +286,7 @@ export function useHorizontalWheelInCards({
                     const x = Number(gsap.getProperty(container, 'x') || 0);
                     const off = Math.max(0, -x);
                     setOffset(off);
-                    finishPeekSnap();
+                    peekCards.finishPeekSnap();
                     travelFinish();
                     onDone?.(off);
                 },
@@ -578,12 +345,11 @@ export function useHorizontalWheelInCards({
             const y0 = markers[0]?.getAttribute('data-year') || null;
             setActiveAttr(0);
             emitActiveYear(y0, false);
-            travelArm(markers[0] || null);
+            animateDotWithOvershoot(markers[0] || null);
 
             applyOffset(0, immediate, () => {
                 setActiveAttr(0);
                 emitActiveYear(y0, false);
-                travelFinish();
             });
         };
 
@@ -640,6 +406,7 @@ export function useHorizontalWheelInCards({
                 if (yearsHiddenBecauseEnd) {
                     yearsHiddenBecauseEnd = false;
                     showYearsScale?.(false, { duration: 0.35, ease: 'power2.out' });
+                    showAndPlaceHistoryTag?.({ duration: 0.3, ease: 'power2.out' });
                 }
                 return;
             }
@@ -655,8 +422,7 @@ export function useHorizontalWheelInCards({
 
             setActiveAttr(i);
             emitActiveYear(year, false);
-
-            travelArm(el);
+            animateDotWithOvershoot(el);
 
             applyOffset(targetOffset, immediate, (off) => {
                 emitActiveYear(year, false);
@@ -671,6 +437,7 @@ export function useHorizontalWheelInCards({
                     if (yearsHiddenBecauseEnd) {
                         yearsHiddenBecauseEnd = false;
                         showYearsScale?.(false, { duration: 0.35, ease: 'power2.out' });
+                        showAndPlaceHistoryTag?.({ duration: 0.3, ease: 'power2.out' });
                     }
                 }
             });
@@ -685,6 +452,7 @@ export function useHorizontalWheelInCards({
                 if (yearsHiddenBecauseEnd) {
                     yearsHiddenBecauseEnd = false;
                     showYearsScale?.(false, { duration: 0.35, ease: 'power2.out' });
+                    showAndPlaceHistoryTag?.({ duration: 0.3, ease: 'power2.out' });
                 }
             }
         };
@@ -694,6 +462,7 @@ export function useHorizontalWheelInCards({
                 yearsHiddenBecauseEnd = true;
                 hideYearsScale?.(false, { duration: 0.35, ease: 'power2.out' });
             }
+            hideHistoryTag?.(false, { duration: 0.3, ease: 'power1.out' });
             disableVLock();
         };
 
@@ -779,9 +548,9 @@ export function useHorizontalWheelInCards({
                 return;
             }
 
-            if (raw < 0) {           
+            if (raw < 0) {
                 const currentOffset = getOffset();
-                if (currentOffset > 0.1) {              
+                if (currentOffset > 0.1) {
                     stopWheelHard(e);
                     stepByWheel(-1, e);
                     return;
@@ -828,6 +597,7 @@ export function useHorizontalWheelInCards({
                         if (yearsHiddenBecauseEnd) {
                             yearsHiddenBecauseEnd = false;
                             showYearsScale?.(false, { duration: 0.35, ease: 'power2.out' });
+                            showAndPlaceHistoryTag?.({ duration: 0.3, ease: 'power2.out' });
                         }
                     }
 
@@ -879,15 +649,15 @@ export function useHorizontalWheelInCards({
 
                 requestAnimationFrame(() => {
                     requestAnimationFrame(() => {
-                        applyPeekStateForRightEdgeCards();
-                        primePeekCard();
+                        peekCards.applyPeekStateForRightEdgeCards();
+                        peekCards.primePeekCard();
                     });
                 });
             } else {
                 yearsHiddenBecauseEnd = false;
                 disableVLock();
 
-                killPeekTween();
+                peekCards.killPeekTween();
                 travelFinish();
 
                 let cards = [];
@@ -920,8 +690,8 @@ export function useHorizontalWheelInCards({
 
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
-                    applyPeekStateForRightEdgeCards();
-                    primePeekCard();
+                    peekCards.applyPeekStateForRightEdgeCards();
+                    peekCards.primePeekCard();
                 });
             });
         };
@@ -939,7 +709,7 @@ export function useHorizontalWheelInCards({
 
             disableVLock();
 
-            killPeekTween();
+            peekCards.killPeekTween();
             travelFinish();
 
             let cards = [];
@@ -963,5 +733,7 @@ export function useHorizontalWheelInCards({
         exitCardsFocus,
         hideYearsScale,
         showYearsScale,
+        hideHistoryTag,
+        showAndPlaceHistoryTag,
     ]);
 }

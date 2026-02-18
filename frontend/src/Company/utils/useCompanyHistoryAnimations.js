@@ -278,6 +278,8 @@ export function useCompanyHistoryAnimations({
       const yBefore = Number(gsap.getProperty(cardsEl, 'y') || 0);
       gsap.set(cardsEl, { x: snap1(xBefore), y: snap1(yBefore), force3D: true });
 
+      hideHistoryTag(true);
+
       flushSync(() => {
         setCardsFocused(false);
       });
@@ -310,7 +312,6 @@ export function useCompanyHistoryAnimations({
         scrollTargetY = Math.max(0, headerRect.top + window.pageYOffset);
       }
 
-      const tag = historyTagRef.current;
       const tl = gsap.timeline({
         defaults: { duration: returnDuration, ease: returnEase },
         onComplete: () => {
@@ -352,23 +353,6 @@ export function useCompanyHistoryAnimations({
           });
         },
       });
-
-      if (tag) {
-        gsap.killTweensOf(tag);
-        gsap.set(tag, { clearProps: 'transform' });
-        tag.style.visibility = 'visible';
-        tl.to(tag, {
-          opacity: 0,
-          duration: returnDuration,
-          ease: 'power1.inOut',
-          overwrite: 'auto',
-          clearProps: 'transform',
-          onComplete: () => {
-            tag.style.visibility = 'hidden';
-            gsap.set(tag, { clearProps: 'transform' });
-          },
-        }, 0);
-      }
 
       if (headerEl) {
         tl.to(window, {

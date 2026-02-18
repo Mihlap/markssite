@@ -158,5 +158,7 @@ export function useCompanyHistoryWheelHandlers(props) {
         exitCardsFocus,
         hideYearsScale,
         showYearsScale,
+        hideHistoryTag,
+        showAndPlaceHistoryTag,
     });
 }

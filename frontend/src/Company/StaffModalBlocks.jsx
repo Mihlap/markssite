@@ -150,6 +150,8 @@ const detectBlockType = (block) => {
 
   if (id === 'fact' || has('интересный факт') || has('title fact')) return 'fact';
   if (id === 'quote' || has('цитата') || has('author') || has('автор')) return 'quote';
+  if (id === 'personofyear' || has('человек года')) return 'personOfYear';
+  if (id === 'personwithname') return 'personWithName';
 
   if (has('текстовый блок в рамке') || id === 'frametext') return 'frameText';
   if (has('текстовый блок с фоном') || id === 'bgtext') return 'bgText';
@@ -463,6 +465,47 @@ const TwoVerticalImages = ({ styles, images = [], bucketUrl }) => {
   );
 };
 
+const PersonOfYearBlock = ({ styles, src, bucketUrl }) => {
+  const safeSrc = toBestImageSrc(src, bucketUrl);
+  if (!safeSrc) return null;
+  return (
+    <div className={styles.staff_person_of_year}>
+      <img
+        className={styles.staff_person_of_year_img}
+        src={safeSrc}
+        alt="Человек года"
+        loading="lazy"
+        onError={(e) => {
+          e.currentTarget.src = `${bucketUrl}/images/imageStaff/no_photo.png`;
+          e.currentTarget.classList.add('img-error');
+        }}
+      />
+    </div>
+  );
+};
+
+const PersonWithNameBlock = ({ styles, src, name, bucketUrl }) => {
+  const safeSrc = toBestImageSrc(src, bucketUrl);
+  if (!safeSrc && !name) return null;
+  return (
+    <div className={styles.staff_person_with_name}>
+      {safeSrc && (
+        <span className={styles.staff_person_with_name_avatar}>
+          <img
+            src={safeSrc}
+            alt={name || ''}
+            loading="lazy"
+            onError={(e) => {
+              e.currentTarget.style.visibility = 'hidden';
+            }}
+          />
+        </span>
+      )}
+      {name && <div className={styles.staff_person_with_name_text}>{name}</div>}
+    </div>
+  );
+};
+
 function StaffModalBlocks({ selectedCard, bucketUrl = '', styles: stylesProp }) {
   const styles = stylesProp || defaultStyles;
 
@@ -597,6 +640,32 @@ function StaffModalBlocks({ selectedCard, bucketUrl = '', styles: stylesProp }) 
                 />
               </div>
             );
+          case 'personOfYear': {
+            const src =
+              pickByIncludes(block, ['человек года'], 'file') ||
+              imgVal ||
+              firstVal ||
+              (typeof fileIndexes[0] === 'number' ? fromBlock(block, { index: fileIndexes[0] }) : null);
+            return (
+              <div className={styles.staff_section} key={`b-${idx}`}>
+                <PersonOfYearBlock styles={styles} src={src} bucketUrl={bucketUrl} />
+              </div>
+            );
+          }
+          case 'personWithName': {
+            const src =
+              pickByIncludes(block, ['портрет'], 'file') ||
+              imgVal ||
+              (typeof fileIndexes[0] === 'number' ? fromBlock(block, { index: fileIndexes[0] }) : null);
+            const name =
+              fromBlock(block, { byLabel: 'ФИО/Описание' }) ||
+              pickByIncludes(block, ['фио', 'имя', 'описание']);
+            return (
+              <div className={styles.staff_section} key={`b-${idx}`}>
+                <PersonWithNameBlock styles={styles} src={src} name={name} bucketUrl={bucketUrl} />
+              </div>
+            );
+          }
           case 'frameText': {
             const val = String(
               firstVal ??

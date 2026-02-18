@@ -286,19 +286,6 @@ export default function CompanyHistory({
         hideYearsScale?.(false, { duration: 0.2, ease: 'power2.out', y: 40 });
     }, [cardsFocused, timelineInView, hideYearsScale]);
 
-    useEffect(() => {
-        const tag = historyTagRef.current;
-        if (!tag) return;
-
-        if (cardsFocused) {
-            tag.style.opacity = '1';
-            tag.style.visibility = 'visible';
-        } else {
-            tag.style.opacity = '0';
-            tag.style.visibility = 'hidden';
-        }
-    }, [cardsFocused, historyTagRef]);
-
     useCompanyHistoryWheelHandlers({
         sectionRef,
         cardsFocused,
@@ -335,8 +322,18 @@ export default function CompanyHistory({
     });
 
     useEffect(() => {
-        if (!cardsFocused) return;
-    }, [cardsFocused]);
+        if (!cardsFocused) {
+            hideHistoryTag?.(true);
+        }
+    }, [cardsFocused, hideHistoryTag]);
+
+    useEffect(() => {
+        if (isModalOpen) {
+            hideHistoryTag?.(true);
+        } else if (cardsFocused) {
+            showAndPlaceHistoryTag?.();
+        }
+    }, [isModalOpen, cardsFocused, hideHistoryTag, showAndPlaceHistoryTag]);
 
     const skipHorizontal = useCallback(
         (e) => {
