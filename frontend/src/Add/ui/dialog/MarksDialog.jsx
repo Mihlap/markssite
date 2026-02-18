@@ -16,11 +16,15 @@ export default function MarksModal({ isOpen, onClose, onSave, isSaveDisabled = t
 
   return (
     <dialog className={s.dialog} ref={dialogRef} onClose={onClose}>
-      <button className={s.close_button} onClick={onClose} />
-      <div className={s.title}>{title && title.length > 0 ? title : 'No Title'}</div>
+      <div className={s.title}>
+        {title && title.length > 0 ? title : 'No Title'}
+        <button className={s.close_button} onClick={onClose} />
+      </div>
       {children}
       <div className={s.buttons}>
-        <UiMarksButton disabled={isSaveDisabled} onClick={onSave}>Сохранить</UiMarksButton>
+        <UiMarksButton disabled={isSaveDisabled} onClick={onSave}>
+          Сохранить
+        </UiMarksButton>
         <UiMarksButton defaultStyle="gray" onClick={onClose}>
           Отмена
         </UiMarksButton>
