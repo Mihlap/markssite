@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { isHistoryActive, markRecentlyExited, clearFocusPhase } from './wheelShared';
+import { isHistoryActive, isEventInsideModal, markRecentlyExited, clearFocusPhase } from './wheelShared';
 
 export function useWheelExitFromCards({
     sectionRef,
@@ -12,6 +12,7 @@ export function useWheelExitFromCards({
 }) {
     useEffect(() => {
         const handleWheelUp = (e) => {
+            if (isEventInsideModal(e)) return;
             const currentOffset = horizontalOffsetRef?.current ?? 0;
             if (currentOffset > 0.5) {
                 return;

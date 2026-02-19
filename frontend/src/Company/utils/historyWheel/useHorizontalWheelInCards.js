@@ -524,7 +524,42 @@ export function useHorizontalWheelInCards({
             }
 
             if (!cardsFocused) return;
-            if (!isHistoryActive(sectionRef, e)) return;
+
+            if (!isHistoryActive(sectionRef, e)) {
+                const root = sectionRef?.current;
+                if (!root) return;
+                const r = root.getBoundingClientRect();
+                if (r.bottom <= 0 || r.top >= window.innerHeight) return;
+                if (e.deltaY >= 0) return;
+
+                stopWheelHard(e);
+                enableVLock();
+
+                if (!gsap.isTweening(window) && !applyingScrollRef.current) {
+                    const lineEl = container?.querySelector('[class*="timeline_line"]');
+                    if (lineEl) {
+                        const lineRect = lineEl.getBoundingClientRect();
+                        const centerAbs = lineRect.top + window.pageYOffset + lineRect.height / 2;
+                        const targetY = Math.max(0, centerAbs - window.innerHeight / 2);
+
+                        applyingScrollRef.current = true;
+                        gsap.to(window, {
+                            duration: 0.4,
+                            ease: 'power2.out',
+                            overwrite: 'auto',
+                            scrollTo: { y: targetY, autoKill: false },
+                            onUpdate: () => {
+                                vLockYRef.current = window.pageYOffset;
+                            },
+                            onComplete: () => {
+                                applyingScrollRef.current = false;
+                                vLockYRef.current = window.pageYOffset;
+                            },
+                        });
+                    }
+                }
+                return;
+            }
 
             if (cardsFocusInProgressRef.current) {
                 enableVLock();

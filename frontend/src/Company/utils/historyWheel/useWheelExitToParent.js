@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import gsap from 'gsap';
 import headerStyles from '../../CompanyHistory/CompanyHistoryHeader.module.scss';
-import { isHistoryActive, stopWheelHard, clearFocusPhase } from './wheelShared';
+import { isHistoryActive, isEventInsideModal, stopWheelHard, clearFocusPhase } from './wheelShared';
 
 export function useWheelExitToParent({
     sectionRef,
@@ -29,6 +29,7 @@ export function useWheelExitToParent({
 }) {
     useEffect(() => {
         const handleWheelExitUp = (e) => {
+            if (isEventInsideModal(e)) return;
             if (!isHistoryActive(sectionRef, e)) return;
             if (e.deltaY >= 0) return;
 

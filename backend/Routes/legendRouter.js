@@ -10,6 +10,12 @@ const fileMiddleware = require('../middleware/file');
 const { uploadFileToS3, deleteFileFromS3 } = require('../s3Utils/s3Service');
 const { logResourceAction } = require('../utils/fileLogger');
 
+const LEGEND_INCLUDE = [
+  { model: ConstructorLegend },
+  { model: User, as: 'author', attributes: ['id', 'userName'] },
+];
+const CONSTRUCTOR_ORDER = [ConstructorLegend, 'id', 'ASC'];
+
 const LEGEND_FILES_DIR = 'images/imageHistory';
 const LEGEND_MD_IMAGES_DIR = 'images/imageHistory/imagesFolder/imageMarkdown';
 const LEGEND_MD_DOCS_DIR = 'images/imageHistory/imagesFolder/documents';
@@ -298,14 +304,8 @@ const deleteMarkdownFromS3Safe = async (url, logInfo = null, excludeLegendId = n
 router.get('/', async (req, res, next) => {
   try {
     const legends = await Legend.findAll({
-      order: [
-        ['order', 'ASC'],
-        ['year', 'DESC'],
-      ],
-      include: [
-        { model: ConstructorLegend },
-        { model: User, as: 'author', attributes: ['id', 'userName'] },
-      ],
+      order: [['order', 'ASC'], ['year', 'DESC'], CONSTRUCTOR_ORDER],
+      include: LEGEND_INCLUDE,
     });
 
     res.json(legends.map(withComputedUrls));
@@ -318,10 +318,8 @@ router.get('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
   try {
     const legend = await Legend.findByPk(req.params.id, {
-      include: [
-        { model: ConstructorLegend },
-        { model: User, as: 'author', attributes: ['id', 'userName'] },
-      ],
+      include: LEGEND_INCLUDE,
+      order: [CONSTRUCTOR_ORDER],
     });
 
     if (!legend) return res.status(404).json({ message: 'Legend not found' });
@@ -373,10 +371,8 @@ router.post('/', async (req, res, next) => {
     let fullLegend = legend;
     try {
       const withIncludes = await Legend.findByPk(legend.id, {
-        include: [
-          { model: ConstructorLegend },
-          { model: User, as: 'author', attributes: ['id', 'userName'] },
-        ],
+        include: LEGEND_INCLUDE,
+        order: [CONSTRUCTOR_ORDER],
       });
       if (withIncludes) fullLegend = withIncludes;
     } catch (fetchErr) {
@@ -521,10 +517,8 @@ router.put('/:id', async (req, res, next) => {
     let fullLegend = legend;
     try {
       const withIncludes = await Legend.findByPk(id, {
-        include: [
-          { model: ConstructorLegend },
-          { model: User, as: 'author', attributes: ['id', 'userName'] },
-        ],
+        include: LEGEND_INCLUDE,
+        order: [CONSTRUCTOR_ORDER],
       });
       if (withIncludes) fullLegend = withIncludes;
     } catch (fetchErr) {
@@ -554,10 +548,8 @@ router.patch('/:id/hidden', async (req, res, next) => {
     await legend.update({ hidden: !!hidden });
 
     const fullLegend = await Legend.findByPk(req.params.id, {
-      include: [
-        { model: ConstructorLegend },
-        { model: User, as: 'author', attributes: ['id', 'userName'] },
-      ],
+      include: LEGEND_INCLUDE,
+      order: [CONSTRUCTOR_ORDER],
     });
 
     res.json(withComputedUrls(fullLegend || legend));
@@ -584,14 +576,8 @@ router.patch('/order/bulk', async (req, res, next) => {
     await t.commit();
 
     const legends = await Legend.findAll({
-      order: [
-        ['order', 'ASC'],
-        ['year', 'DESC'],
-      ],
-      include: [
-        { model: ConstructorLegend },
-        { model: User, as: 'author', attributes: ['id', 'userName'] },
-      ],
+      order: [['order', 'ASC'], ['year', 'DESC'], CONSTRUCTOR_ORDER],
+      include: LEGEND_INCLUDE,
     });
     res.json(legends.map(withComputedUrls));
   } catch (err) {
@@ -826,10 +812,8 @@ router.post('/mp', fileMiddleware.any(), async (req, res) => {
     await t.commit();
 
     const fullLegend = await Legend.findByPk(legend.id, {
-      include: [
-        { model: ConstructorLegend },
-        { model: User, as: 'author', attributes: ['id', 'userName'] },
-      ],
+      include: LEGEND_INCLUDE,
+      order: [CONSTRUCTOR_ORDER],
     });
 
     if (req.session?.user) {
@@ -1019,10 +1003,8 @@ router.put('/mp/:id', fileMiddleware.any(), async (req, res) => {
       oldMdLinks.some((link) => !newMdLinks.includes(link));
 
     const fullLegend = await Legend.findByPk(id, {
-      include: [
-        { model: ConstructorLegend },
-        { model: User, as: 'author', attributes: ['id', 'userName'] },
-      ],
+      include: LEGEND_INCLUDE,
+      order: [CONSTRUCTOR_ORDER],
     });
 
     if (req.session?.user) {

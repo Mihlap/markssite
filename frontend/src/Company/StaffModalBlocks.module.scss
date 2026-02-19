@@ -42,12 +42,13 @@
 }
 
 .modal_md_container blockquote {
-  border-left: 4px solid #2f80ed;
+  border-left: 9px solid #75BBFD;
   padding: 4px 0 4px 16px;
-  color: #566272;
-  background: linear-gradient(90deg, rgba(47, 128, 237, .08), transparent 60%);
-  border-radius: 0 10px 10px 0;
+  color: var(--black-1D2E43, #1D2E43);
+  background: none;
+  border-radius: 0;
   margin: 0 0 16px;
+  align-self: stretch;
 }
 
 .modal_md_container .pdfEmbed,
@@ -196,7 +197,7 @@
 }
 
 .modal_md_container :not(pre)>code {
- color: var(--black-1D2E43);
+  color: var(--black-1D2E43);
   background-color: transparent;
   font-size: 16px;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -754,7 +755,7 @@
   }
 
   .staff_fact_title {
-    font-size: 22px;  
+    font-size: 22px;
   }
 
   .staff_frame_text {

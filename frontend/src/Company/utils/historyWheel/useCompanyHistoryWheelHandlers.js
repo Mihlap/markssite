@@ -40,6 +40,7 @@ export function useCompanyHistoryWheelHandlers(props) {
         setCardsFocused,
         showAndPlaceHistoryTag,
         horizontalOffsetRef: externalHorizontalOffsetRef,
+        isModalOpen = false,
     } = props;
 
     const fallbackHorizontalOffsetRef = useRef(0);
@@ -160,5 +161,6 @@ export function useCompanyHistoryWheelHandlers(props) {
         showYearsScale,
         hideHistoryTag,
         showAndPlaceHistoryTag,
+        isModalOpen,
     });
 }
