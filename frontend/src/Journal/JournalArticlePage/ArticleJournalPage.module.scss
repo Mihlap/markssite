@@ -426,15 +426,17 @@
 }
 
 .blockquote {
-  border-left: 0.5rem solid var(--blue-75BBFD);
+  border-left: 9px solid #75BBFD;
   padding-left: 1rem;
-  color: var(--black-1D2E43, );
-  font-style: var(--font-raleway);
+  color: var(--black-1D2E43, #1D2E43);
+  font-family: var(--font-raleway);
   font-size: 1rem;
   font-style: normal;
   font-weight: var(--fw-400);
   line-height: 1.5rem;
   margin: auto 0;
+  background: none;
+  align-self: stretch;
 }
 
 .inlineCode {

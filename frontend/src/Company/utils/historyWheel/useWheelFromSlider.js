@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import gsap from 'gsap';
 import headerStyles from '../../CompanyHistory/CompanyHistoryHeader.module.scss';
+import { isEventInsideModal } from './wheelShared';
 
 export function useWheelFromSlider({
     sectionRef,
@@ -24,6 +25,7 @@ export function useWheelFromSlider({
 }) {
     useEffect(() => {
         const handleWheelFromSlider = (e) => {
+            if (isEventInsideModal(e)) return;
             const root = sectionRef?.current;
             if (!root) return;
 

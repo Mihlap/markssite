@@ -319,6 +319,7 @@ export default function CompanyHistory({
         setCardsFocused,
         showAndPlaceHistoryTag,
         horizontalOffsetRef,
+        isModalOpen,
     });
 
     useEffect(() => {
@@ -612,12 +613,12 @@ export default function CompanyHistory({
                             </svg>
                         </div>
 
-                        {selectedHistoryItem.description && (
-                            <div className={styles.modal_title} dangerouslySetInnerHTML={{ __html: selectedHistoryItem.description }} />
-                        )}
-
-                        {selectedHistoryItem.year && (
-                            <div className={styles.modal_year}>{selectedHistoryItem.year}</div>
+                        {(selectedHistoryItem.year || selectedHistoryItem.title) && (
+                            <div className={styles.modal_title}>
+                                {selectedHistoryItem.year}
+                                {selectedHistoryItem.year && selectedHistoryItem.title && ' — '}
+                                {selectedHistoryItem.title}
+                            </div>
                         )}
 
                         <HistoryModalBlocks selectedCard={selectedHistoryItem} bucketUrl={process.env.REACT_APP_S3_BUCKET_URL} />

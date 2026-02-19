@@ -80,6 +80,17 @@ export const getMaxHorizontalOffsetToCenterLast = (container, horizontalOffsetRe
     return Math.max(0, cardCenterX - viewportCenterX);
 };
 
+export const isEventInsideModal = (e) => {
+    const t = e?.target;
+    if (!t || typeof t.closest !== 'function') return false;
+    return !!(
+        t.closest('[class*="modal"]') ||
+        t.closest('[class*="Modal"]') ||
+        t.closest('[class*="ReactModal"]') ||
+        t.closest('[role="dialog"]')
+    );
+};
+
 export const isHistoryActive = (sectionRef, e) => {
     const root = sectionRef?.current;
     if (!root) return false;

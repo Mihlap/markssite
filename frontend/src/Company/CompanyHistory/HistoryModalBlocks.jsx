@@ -1,9 +1,10 @@
 import { memo } from 'react';
 import StaffModalBlocks from '../StaffModalBlocks';
-import staffModalStyles from '../StaffModalBlocks.module.scss';
+import styles from './HistoryModalBlocks.module.scss';
 
 function HistoryModalBlocks({ selectedCard, bucketUrl = '' }) {
-  return <StaffModalBlocks selectedCard={selectedCard} bucketUrl={bucketUrl} styles={staffModalStyles} />;
+  if (!selectedCard) return null;
+  return <StaffModalBlocks selectedCard={selectedCard} bucketUrl={bucketUrl} styles={styles} />;
 }
 
 export default memo(HistoryModalBlocks);

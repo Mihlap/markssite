@@ -6,6 +6,7 @@ import headerStyles from '../../CompanyHistory/CompanyHistoryHeader.module.scss'
 import {
     stopWheelHard,
     isHistoryActive,
+    isEventInsideModal,
     computeSnapY,
     getSectionAbs,
     shouldConsiderSnap,
@@ -179,6 +180,7 @@ export function useWheelEnterSnap({
         };
 
         const onWheel = (e) => {
+            if (isEventInsideModal(e)) return;
             if (cardsFocused) return;
             if (cardsFocusInProgressRef.current) return;
             if (exitToParentInProgressRef.current || returnedToSliderRef.current) return;
@@ -276,6 +278,7 @@ export function useWheelEnterSnap({
         const snap1 = gsap.utils?.snap ? gsap.utils.snap(1) : (v) => Math.round(v);
 
         const handleWheelDown = (e) => {
+            if (isEventInsideModal(e)) return;
             if (!isHistoryActive(sectionRef, e)) return;
             if (e.deltaY <= 0) return;
 
