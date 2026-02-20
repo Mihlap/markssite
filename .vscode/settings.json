@@ -10,5 +10,9 @@
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "postman.settings.dotenv-detection-notification-visibility": false,
-  "files.autoSave": "afterDelay"
+  "files.autoSave": "afterDelay",
+  "cursor.ai.enableCache": true,
+  "cursor.ai.cacheEnabled": true,
+  "cursor.model.cache": true,
+  "cursor.chat.cacheEnabled": true
 }

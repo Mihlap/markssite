@@ -1,5 +1,3 @@
-// const Host = process.env.REACT_APP_SERVER_HOST;
-
 export const getUserGeolocation = () => {
   return new Promise((resolve, reject) => {
     if (navigator.geolocation) {
