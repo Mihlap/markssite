@@ -16,6 +16,7 @@ import { useCompanyHistoryAnimations } from '../utils/useCompanyHistoryAnimation
 
 import { fetchCompanyHistory } from '../../store/Slice/companyHistorySlice';
 import styles from './CompanyHistory.module.scss';
+import headerStyles from './CompanyHistoryHeader.module.scss';
 import cityVector from '../icons/cityVector.svg';
 import { normalizeConstructorGroups } from '../utils/historyModalUtils';
 
@@ -78,6 +79,36 @@ export default function CompanyHistory({
         threshold: 0.15,
         triggerOnce: false,
     });
+    const [sectionVisibilityRef, sectionInView] = useInView({
+        threshold: 0.1,
+        triggerOnce: false,
+    });
+    const prevSectionInViewRef = useRef(false);
+    const hashNavigationRef = useRef(false);
+
+    useEffect(() => {       
+        const handleHashChange = () => {
+            if (window.location.hash === '#history' || window.location.hash === '#section1') {
+                hashNavigationRef.current = true;           
+                setTimeout(() => {
+                    hashNavigationRef.current = false;
+                }, 100);
+            }
+        };
+
+        window.addEventListener('hashchange', handleHashChange);
+      
+        if (window.location.hash === '#history' || window.location.hash === '#section1') {
+            hashNavigationRef.current = true;
+            setTimeout(() => {
+                hashNavigationRef.current = false;
+            }, 100);
+        }
+
+        return () => {
+            window.removeEventListener('hashchange', handleHashChange);
+        };
+    }, []);
 
     useEffect(() => {
         if (typeof window === 'undefined') return;
@@ -331,10 +362,116 @@ export default function CompanyHistory({
     useEffect(() => {
         if (isModalOpen) {
             hideHistoryTag?.(true);
-        } else if (cardsFocused) {
+        } else if (cardsFocused && sectionInView) {
             showAndPlaceHistoryTag?.();
+        } else if (!sectionInView) {
+            hideHistoryTag?.(false);
         }
-    }, [isModalOpen, cardsFocused, hideHistoryTag, showAndPlaceHistoryTag]);
+    }, [isModalOpen, cardsFocused, sectionInView, hideHistoryTag, showAndPlaceHistoryTag]);
+
+    useEffect(() => {
+        const wasNotVisible = !prevSectionInViewRef.current;
+        const isNowVisible = sectionInView;
+        const becameVisible = wasNotVisible && isNowVisible;
+   
+        const title = titleRef.current;
+        const marksGroup = marksGroupRef.current;
+        const hasActiveAnimation = title?.classList.contains(headerStyles.animate) || 
+                                   marksGroup?.classList.contains(headerStyles.animate);
+      
+        const container = timelineWrapperRef.current;
+        const hasHorizontalScroll = container && Math.abs(horizontalOffsetRef.current) > 0;
+        const needsReset = cardsFocused || hasHorizontalScroll || 
+                          (becameVisible && hasActiveAnimation) ||
+                          (hashNavigationRef.current && sectionInView && hasActiveAnimation);
+
+        if (needsReset && (becameVisible || (hashNavigationRef.current && sectionInView))) {
+           
+            hideYearsScale?.(true, { y: 40 });
+           
+            if (container) {
+                gsap.killTweensOf(container);
+                gsap.set(container, { x: 0, clearProps: 'transform' });
+            }
+            horizontalOffsetRef.current = 0;
+         
+            if (cardsFocused && historyListRef.current) {
+                exitCardsFocusSilent?.(historyListRef.current);
+            }
+          
+            const subtitleLine = subtitleLineRef.current;
+            const descLine1 = subtitleLine1Ref.current;
+            const descLine2 = subtitleLine2Ref.current;
+
+            if (title || marksGroup || subtitleLine || descLine1 || descLine2) {          
+                [title, marksGroup, subtitleLine, descLine1, descLine2].forEach((el) => {
+                    if (!el) return;
+                    gsap.killTweensOf(el);
+                    el.classList.remove(headerStyles.animate);
+                    el.style.animation = '';
+                    el.style.opacity = '';
+                    el.style.transform = '';
+                });
+
+                if (title) {
+                    title.style.opacity = '0';
+                    title.style.transform = 'translateX(100vw)';
+                }
+                if (marksGroup) {
+                    marksGroup.style.opacity = '0';
+                    marksGroup.style.transform = 'translateX(-100vw)';
+                }
+                if (subtitleLine) {
+                    subtitleLine.style.opacity = '0';
+                    subtitleLine.style.transform = 'translateX(100vw)';
+                }
+                if (descLine1) {
+                    descLine1.style.opacity = '0';
+                    descLine1.style.transform = 'translateX(100vw)';
+                }
+                if (descLine2) {
+                    descLine2.style.opacity = '0';
+                    descLine2.style.transform = 'translateX(100vw)';
+                }
+            }
+         
+            hasScrollToCardsTriggered.current = false;
+            hasScrollToHeaderTriggered.current = false;
+            hasRestoreTriggered.current = false;
+            headerIntroArmedRef.current = true;
+            headerIntroInProgressRef.current = false;
+            returnedToSliderRef.current = false;
+            cardsIntroTriggeredRef.current = false;
+     
+            requestAnimationFrame(() => {
+                const headerEl = historyHeaderRef.current;
+                if (headerEl) {
+                    const headerRect = headerEl.getBoundingClientRect();
+                    const targetY = Math.max(0, headerRect.top + window.pageYOffset);
+                    
+                    gsap.killTweensOf(window);
+                    gsap.to(window, {
+                        duration: 0.6,
+                        ease: 'power2.out',
+                        overwrite: 'auto',
+                        scrollTo: { y: targetY, autoKill: false },
+                        data: { tag: 'RESET_TO_HEADER' },
+                        onComplete: () => {                       
+                            requestAnimationFrame(() => {
+                                if (title) title.classList.add(headerStyles.animate);
+                                if (marksGroup) marksGroup.classList.add(headerStyles.animate);
+                                if (subtitleLine) subtitleLine.classList.add(headerStyles.animate);
+                                if (descLine1) descLine1.classList.add(headerStyles.animate);
+                                if (descLine2) descLine2.classList.add(headerStyles.animate);
+                            });
+                        },
+                    });
+                }
+            });
+        }
+     
+        prevSectionInViewRef.current = sectionInView;
+    }, [sectionInView, cardsFocused, historyHeaderRef, historyListRef, timelineWrapperRef, exitCardsFocusSilent, horizontalOffsetRef, hideYearsScale, titleRef, marksGroupRef, subtitleLineRef, subtitleLine1Ref, subtitleLine2Ref]);
 
     const skipHorizontal = useCallback(
         (e) => {
@@ -454,6 +591,7 @@ export default function CompanyHistory({
             id="history"
             ref={(node) => {
                 viewRef(node);
+                sectionVisibilityRef(node);
                 sectionRef.current = node;
             }}
             className={`${styles.history_section} ${cardsFocused ? styles.cards_focus : ''}`}
