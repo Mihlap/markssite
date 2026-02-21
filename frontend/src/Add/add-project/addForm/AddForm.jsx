@@ -2,17 +2,19 @@ import React, { useRef, useEffect } from 'react';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { UiMarksInput, UiMarksSelect, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
 import { monthOptions, yearOptions, typesСonstruction } from '../FormAddEditProject/utils/Time';
-import { MEASUREMENT_FIELDS } from '../FormAddEditProject/const/measurement';
-import { competenciesOptions, degreeParticipationOptions, statusObjectOptions, stageAwards } from './const/options';
-import ConstructorMain from '../../constructor/ConstructorMain';
-import ConstructorBlock from '../../constructor/ConstructorBlock';
-import { Icon1 } from '../../constructor/icon';
+import {
+  competenciesOptions,
+  degreeParticipationOptions,
+  statusObjectOptions,
+  stageAwards,
+  MEASUREMENT_FIELDS,
+} from './const/options';
 
 import s from './Styles.module.css';
-
-const PROJECT_ITEMS = [
-  { id: 'imageWithDesc', icon: Icon1, label: 'Картинка с описанием' },
-];
+import ConstructorMain from '../../constructor/ConstructorMain';
+// в AddForm.jsx
+import { project_items } from '../../constructor/config/config';
+import { BLOCK_COMPONENTS } from '../../constructor/blocks';
 
 
 export default function AddForm({ onValidityChange }) {
@@ -454,7 +456,7 @@ export default function AddForm({ onValidityChange }) {
               name="textBlock"
               label="Текстовый блок"
               placeholder="Нет ограничения по символам"
-              Quill={true}
+              richText
               {...field}
             />
           )}
@@ -462,56 +464,22 @@ export default function AddForm({ onValidityChange }) {
       </UiMarksGrayWrap>
 
       <ConstructorMain
-        items={PROJECT_ITEMS}
-        onSelect={(item) => append({ typeId: item.id, image: [], description: '' })}
-      >
-        {constructorBlocks.map((block, index) => (
-          <ConstructorBlock key={block.id} label="Картинка с описанием" onRemove={() => remove(index)}>
-            <Controller
-              name={`constructorBlocks.${index}.image`}
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <>
-                  {(!value || value.length === 0) && (
-                    <UiMarksInput
-                      type="file"
-                      name={`constructorBlocks.${index}.image`}
-                      accept="image/*"
-                      color="grey"
-                      label="Картинка с описанием"
-                      onChange={(e) => {
-                        const file = e.target.files[0];
-                        onChange(file ? [file] : []);
-                      }}
-                    />
-                  )}
-                  <UiPhotoPreview
-                    files={value}
-                    variant="single"
-                    onRemove={() => onChange([])}
-                  />
-                </>
-              )}
-            />
-            <Controller
-              name={`constructorBlocks.${index}.description`}
-              control={control}
-              render={({ field }) => (
-                <UiMarksInput
-                  name={`constructorBlocks.${index}.description`}
-                  label="Описание картинки"
-                  placeholder="Не более 56 символов"
-                  maxLength={56}
-                  value={field.value}
-                  onChange={(e) => {
-                    if (e.target.value.length <= 56) field.onChange(e.target.value);
-                  }}
-                />
-              )}
-            />
-          </ConstructorBlock>
-        ))}
-      </ConstructorMain>
+        items={project_items}
+        onSelect={(item) => append({ type: item.id })}
+      />
+
+      {constructorBlocks.map((block, index) => {
+        const Component = BLOCK_COMPONENTS[block.type];
+        if (!Component) return null;
+        return (
+          <Component
+            key={block.id}
+            control={control}
+            index={index}
+            onRemove={() => remove(index)}
+          />
+        );
+      })}
 
       <Controller
         name="photo"

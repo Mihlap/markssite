@@ -14,8 +14,8 @@ icons['list'] = Icon3;
 
 const quillFormats = ['bold', 'underline', 'list'];
 
-function MarksTextarea({ name, label, value, onChange, placeholder, color = 'blue', error, Quill = false, quillRef }) {
-  const toolbarId = `toolbar-${name}`;
+function MarksTextarea({ name, label, value, onChange, placeholder, color = 'blue', error, richText = false, quillRef }) {
+  const toolbarId = `toolbar-${name.replaceAll('.', '-')}`;
 
   const quillModules = useMemo(() => ({
     toolbar: { container: `#${toolbarId}` },
@@ -24,7 +24,7 @@ function MarksTextarea({ name, label, value, onChange, placeholder, color = 'blu
 
   return (
     <div className={s.textarea__wrap}>
-      {Quill ? (
+      {richText ? (
         <>
           <div id={toolbarId} className={s.toolbar}>
             <button className="ql-bold"><Icon1 /></button>
@@ -45,7 +45,7 @@ function MarksTextarea({ name, label, value, onChange, placeholder, color = 'blu
         </>
       ) : (
         <textarea
-          className={`${s.textarea} ${error ? s.textarea_error : ''}`}
+          className={`${s.textarea} ${color !== 'blue' ? s[`textarea_${color}`] || '' : ''} ${error ? s.textarea_error : ''}`}
           name={name}
           id={name}
           value={value ?? ''}

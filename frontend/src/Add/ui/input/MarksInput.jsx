@@ -56,13 +56,21 @@ function MarksInput({
 
   const showMeasurement = measurement && value;
   const showCounter = maxLength != null;
+  const colorClass = styles[`input__field_${color}`] || styles.input__field_blue;
+
 
   return (
     <div className={`${styles.input} ${showCounter ? styles.input_bordered : ''} ${className || ''}`}>
       <div className={styles.input__wrapper}>
         <input
           type={type}
-          className={`${styles.input__field} ${showCounter ? styles.input__field_bordered : ''} ${disabled ? styles.input__field_disabled : ''} ${error ? styles.input__field_error : ''}`}
+          className={
+            `${!showCounter ? styles.input__field : ''} 
+            ${showCounter ? styles.input__field_bordered : ''} 
+            ${showCounter || className ? colorClass : ''}
+            ${disabled ? styles.input__field_disabled : ''} 
+            ${error ? styles.input__field_error : ''}
+            `}
           placeholder={placeholder || name}
           name={name}
           id={name}
