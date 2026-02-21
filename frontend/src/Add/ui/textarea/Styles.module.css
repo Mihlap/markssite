@@ -34,6 +34,11 @@
     line-height: 20px;
 }
 
+.textarea_salmon {
+border: 1px solid var(--salmon-light-FFBFB5);
+    caret-color: var(--salmon-light-FFBFB5);
+}
+
 .textarea_error {
     border-color: var(--crimson-E00747);
     caret-color: var(--crimson-E00747);

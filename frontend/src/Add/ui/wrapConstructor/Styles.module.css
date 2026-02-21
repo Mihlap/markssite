@@ -1,4 +1,8 @@
 .wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 8px 16px;
     border-radius: 6px;
     border: dashed 1px;
     color: var(--salmon-FF7F6A);

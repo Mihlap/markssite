@@ -1,4 +1,41 @@
 .bg {
     background-color: var(--light-light-gray-EBECEE);
     border-radius: 6px;
+    position: relative;
+}
+
+
+.btnClose {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 12px;
+    height: 12px;
+}
+
+.btnClose::before {
+    content: '';
+    background-color: #000;
+    height: 1px;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    width: 16.5px;
+}
+
+.btnClose::after {
+    content: '';
+    background-color: #000;
+    height: 1px;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    width: 16.5px;
+}
+
+.btnClose:hover::before,
+.btnClose:hover::after {
+    background-color: var(--salmon-light-FFBFB5);
 }

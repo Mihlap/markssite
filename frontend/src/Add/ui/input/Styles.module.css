@@ -14,7 +14,6 @@
   margin-top: 10px;
 }
 
-/* Base field — bottom border only */
 .input__field {
   font-family: var(--font-raleway);
   font-size: 1rem;
@@ -23,16 +22,16 @@
   width: 100%;
   border: 0;
   border-bottom: 1px solid var(--gray-959DA6);
+  caret-color: var(--light-blue-D4EDFB);
   outline: 0;
   padding: 7px 0;
   background: transparent;
   transition: border-color 0.2s;
   position: relative;
-  caret-color: var(--light-blue-D4EDFB);
 }
 
 .input__field:focus {
-  border-color: var(--light-blue-D4EDFB);
+  border-color: var(--blue-75BBFD);
 }
 
 .input__field::placeholder {
@@ -44,11 +43,10 @@
   cursor: not-allowed;
 }
 
-/* Bordered variant (for fields with maxLength counter) */
 .input__field_bordered {
+  width: 100%;
+  font-family: var(--font-raleway);
   background-color: var(--white-F6F6F6);
-  border: 1px solid var(--light-blue-D4EDFB);
-  caret-color: var(--light-blue-D4EDFB);
   color: var(--black-1D2E43);
   border-radius: 6px;
   padding: 1rem 4.5rem 1rem 1rem;
@@ -56,7 +54,16 @@
   font-style: normal;
   font-weight: 400;
   line-height: 20px;
-  font-family: var(--font-raleway);
+}
+
+.input__field_blue {
+  border: 1px solid var(--light-blue-D4EDFB);
+  caret-color: var(--light-blue-D4EDFB);
+}
+
+.input__field_salmon {
+    border: 1px solid var(--salmon-light-FFBFB5);
+    caret-color: var(--salmon-light-FFBFB5);
 }
 
 .input__field_bordered::placeholder {
