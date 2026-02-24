@@ -115,6 +115,107 @@ const updateDynamicBlocksContent = (blocks, newImages) => {
 };
 
 router.post(
+  '/postzapros-new',
+  fileMiddleware.fields([
+    { name: 'dropPhoto', maxCount: 4 },
+    { name: 'photoAva', maxCount: 1 },
+    { name: 'imageOpen', maxCount: 1 },
+    { name: 'imageClose', maxCount: 1 },
+    { name: 'constructorImages', maxCount: 100 },
+  ]),
+  async (req, res) => {
+    try {
+      // Загружаем обычные фото
+      const imageTitles = req.files.dropPhoto
+        ? await Promise.all(req.files.dropPhoto.map((f) => uploadFileToS3(f, 'images/imageAdd')))
+        : [];
+      const imageProject = req.files.photoAva
+        ? await uploadFileToS3(req.files.photoAva[0], 'images/imageAdd')
+        : null;
+      const imageOpen = req.files.imageOpen
+        ? await uploadFileToS3(req.files.imageOpen[0], 'images/imageAdd')
+        : null;
+      const imageClose = req.files.imageClose
+        ? await uploadFileToS3(req.files.imageClose[0], 'images/imageAdd')
+        : null;
+
+      // Загружаем картинки конструктора и строим map: originalname → s3Url
+      const constructorImageMap = {};
+      if (req.files.constructorImages) {
+        await Promise.all(
+          req.files.constructorImages.map(async (file) => {
+            const url = await uploadFileToS3(file, 'images/imageAdd');
+            constructorImageMap[file.originalname] = url;
+          })
+        );
+      }
+
+      // Парсим блоки конструктора и подставляем S3 URL вместо имён файлов
+      let constructorBlocks = [];
+      if (req.body.constructorBlocksJSON) {
+        const parsed = JSON.parse(req.body.constructorBlocksJSON);
+        constructorBlocks = parsed.map((block) => {
+          if (block.type === 'imageWithDesc' && block.image && constructorImageMap[block.image]) {
+            return { ...block, image: constructorImageMap[block.image] };
+          }
+          return block;
+        });
+      }
+
+      const constructorImageUrls = Object.values(constructorImageMap);
+
+      // Сохраняем проект
+      const createdProject = await Project.create({
+        title: req.body.title,
+        selectCompetencies: req.body.selectCompetencies,
+        countryCity: req.body.countryCity,
+        monthYear: req.body.monthYear,
+        viewConstruction: req.body.viewConstruction,
+        titleTextBlock: req.body.titleTextBlock,
+        descriptionProject: req.body.descriptionProject,
+        totalArea: req.body.totalArea,
+        siteArea: req.body.siteArea,
+        floors: req.body.floors,
+        altitude: req.body.altitude,
+        constructionVolume: req.body.constructionVolume,
+        numberOfLanes: req.body.numberOfLanes,
+        long: req.body.long,
+        location: req.body.location,
+        degreeParticipation: req.body.degreeParticipation,
+        statusObject: req.body.statusObject,
+        customer: req.body.customer,
+        publication: req.body.publication,
+        linkToPublication: req.body.linkToPublication,
+        publicationTwo: req.body.publicationTwo,
+        linkToPublicationTwo: req.body.linkToPublicationTwo,
+        awards: req.body.awards,
+        headingTextBlock: req.body.headingTextBlock,
+        textBlock: req.body.textBlock,
+        imageTitle: imageTitles.join(', '),
+        imageProject,
+        imageOpen,
+        imageClose,
+      });
+
+      // Сохраняем конструктор
+      await Constructor.create({
+        data: constructorBlocks,
+        image: constructorImageUrls.join(', '),
+        idBlock: createdProject.id,
+      });
+
+      console.log('=== postzapros-new: project created, id:', createdProject.id);
+      console.log('constructorBlocks:', JSON.stringify(constructorBlocks, null, 2));
+
+      res.status(200).json({ message: 'Данные успешно сохранены' });
+    } catch (error) {
+      console.error('Ошибка postzapros-new:', error);
+      res.status(500).json({ message: 'Произошла ошибка при сохранении данных' });
+    }
+  }
+);
+
+router.post(
   '/postzapros',
   fileMiddleware.fields([{
     name: 'dropPhoto',
