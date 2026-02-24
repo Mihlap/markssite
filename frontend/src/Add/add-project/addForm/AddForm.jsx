@@ -47,8 +47,73 @@ export default function AddForm({ onValidityChange }) {
     onValidityChange?.(isValid);
   }, [isValid, onValidityChange]);
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    const formData = new FormData();
+
+    // Текстовые поля
+    formData.append('title', data.title || '');
+    formData.append('selectCompetencies', Array.isArray(data.selectCompetencies)
+      ? data.selectCompetencies.map((o) => o.label).join(',')
+      : '');
+    formData.append('countryCity', data.countryCity || '');
+    formData.append('monthYear', [data.month?.value, data.year?.value].filter(Boolean).join(' '));
+    formData.append('viewConstruction', Array.isArray(data.viewConstruction)
+      ? data.viewConstruction.map((o) => o.label).join(',')
+      : '');
+    formData.append('titleTextBlock', data.titleTextBlock || '');
+    formData.append('descriptionProject', data.descriptionProject || '');
+    formData.append('totalArea', data.totalArea || '');
+    formData.append('siteArea', data.siteArea || '');
+    formData.append('floors', data.floors || '');
+    formData.append('altitude', data.altitude || '');
+    formData.append('constructionVolume', data.constructionVolume || '');
+    formData.append('numberOfLanes', data.numberOfLanes || '');
+    formData.append('long', data.long || '');
+    formData.append('location', data.location || '');
+    formData.append('degreeParticipation', Array.isArray(data.degreeParticipation)
+      ? data.degreeParticipation.map((o) => o.label).join(',')
+      : '');
+    formData.append('statusObject', data.statusObject?.label || '');
+    formData.append('customer', data.customer || '');
+    formData.append('publication', data.publication || '');
+    formData.append('linkToPublication', data.linkToPublication || '');
+    formData.append('publicationTwo', data.publicationTwo || '');
+    formData.append('linkToPublicationTwo', data.linkToPublicationTwo || '');
+    formData.append('awards', data.awards?.label || '');
+    formData.append('headingTextBlock', data.headingTextBlock || '');
+    formData.append('textBlock', data.textBlock || '');
+
+    // Файлы
+    if (data.photoAva?.[0]) formData.append('photoAva', data.photoAva[0]);
+    (data.dropPhoto || []).forEach((file) => formData.append('dropPhoto', file));
+    if (data.imageOpen?.[0]) formData.append('imageOpen', data.imageOpen[0]);
+    if (data.photo?.[0]) formData.append('imageClose', data.photo[0]);
+
+    // Блоки конструктора
+    const constructorBlocks = data.constructorBlocks || [];
+    const blocksForJSON = constructorBlocks.map((block) => {
+      if (block.type === 'imageWithDesc' && block.image?.[0] instanceof File) {
+        return { ...block, image: block.image[0].name };
+      }
+      return block;
+    });
+    formData.append('constructorBlocksJSON', JSON.stringify(blocksForJSON));
+    constructorBlocks.forEach((block) => {
+      if (block.type === 'imageWithDesc' && block.image?.[0] instanceof File) {
+        formData.append('constructorImages', block.image[0]);
+      }
+    });
+
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_HOST}/api-project/postzapros-new`,
+        { method: 'POST', body: formData }
+      );
+      const result = await response.json();
+      console.log('Ответ сервера:', result);
+    } catch (error) {
+      console.error('Ошибка отправки формы:', error);
+    }
   };
 
   return (
