@@ -7,8 +7,6 @@ export default function MarksButton({ className, defaultStyle = 'blue', icon = f
   const sizeClass = size !== 'normal' ? styles[size] : '';
   const orange = defaultStyle === 'constructor' ? 'var(--salmon-FF7F6A)' : 'var(--white-F6F6F6)';
 
-  console.log(defaultStyle);
-
   return (
     <button
       className={`${styles.button} ${styles[colorClass]} ${sizeClass} ${className || ''}`}
