@@ -132,6 +132,7 @@
 .quill_salmon :global(.ql-container) {
     border: 1px solid var(--salmon-light-FFBFB5);
     caret-color: var(--salmon-light-FFBFB5);
+    background-color: var(--white-F6F6F6);
 }
 
 .quill_blue :global(.ql-container) {

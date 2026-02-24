@@ -5,7 +5,7 @@ const project_items = [
   { id: 'titleWithDesc', icon: Icon2, label: 'Заголовок с описанием' },
   { id: 'video', icon: Icon3, label: 'Видео' },
   { id: 'threeImages', icon: Icon4, label: 'Три картинки' },
-  { id: 'twopImages', icon: Icon5, label: 'Две картинки' },
+  { id: 'twoImages', icon: Icon5, label: 'Две картинки' },
   { id: 'slider', icon: Icon6, label: 'Слалайдер' },
 ];
 
