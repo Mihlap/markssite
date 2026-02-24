@@ -1,7 +1,7 @@
 import { memo, useEffect, useState } from 'react';
 import styles from './Styles.module.css';
 
-function PhotoPreview({ files, variant = 'single', onRemove, color = 'blue', label }) {
+function PhotoPreview({ files, variant = 'single', onRemove, color = 'blue', label, customStyles }) {
   const [previews, setPreviews] = useState([]);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ function PhotoPreview({ files, variant = 'single', onRemove, color = 'blue', lab
   if (previews.length === 0) return null;
 
   return (
-    <div>
+    <div style={customStyles}>
       {label && <div className={styles.preview__label}>{label}</div>}
       <div className={styles.preview} data-variant={variant}>
         {previews.map((url, index) => (
