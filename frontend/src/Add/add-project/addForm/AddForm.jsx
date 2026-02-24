@@ -172,6 +172,7 @@ export default function AddForm({ onValidityChange }) {
                       photoAvaRef.current.value = '';
                     }
                   }}
+                  label="Загрузите фото превью *для отображения на&nbsp;странице &laquo;Проекты&raquo;"
                 />
               ) : (
                 <UiMarksInput
@@ -224,6 +225,7 @@ export default function AddForm({ onValidityChange }) {
                   const next = (value || []).filter((_, i) => i !== index);
                   onChange(next);
                 }}
+                label="Слайдер *допускается загрузка 4х&nbsp;изображений"
               />
             </>
           )}
@@ -409,6 +411,7 @@ export default function AddForm({ onValidityChange }) {
                     imageOpenRef.current.value = '';
                   }
                 }}
+                label="Открывающая картинка"
               />
             ) : (
               <UiMarksInput
@@ -463,22 +466,12 @@ export default function AddForm({ onValidityChange }) {
         />
       </UiMarksGrayWrap>
 
-      <ConstructorMain
-        items={project_items}
-        onSelect={(item) => append({ type: item.id })}
-      />
+      <ConstructorMain items={project_items} onSelect={(item) => append({ type: item.id })} />
 
       {constructorBlocks.map((block, index) => {
         const Component = BLOCK_COMPONENTS[block.type];
         if (!Component) return null;
-        return (
-          <Component
-            key={block.id}
-            control={control}
-            index={index}
-            onRemove={() => remove(index)}
-          />
-        );
+        return <Component key={block.id} control={control} index={index} onRemove={() => remove(index)} />;
       })}
 
       <Controller
@@ -496,6 +489,7 @@ export default function AddForm({ onValidityChange }) {
                     imageCloseRef.current.value = '';
                   }
                 }}
+                label="Закрывающая картинка"
               />
             ) : (
               <UiMarksInput

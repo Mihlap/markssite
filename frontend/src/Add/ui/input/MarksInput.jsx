@@ -1,9 +1,9 @@
-import { memo } from 'react';
+import { memo, forwardRef } from 'react';
 import { ClipIcon } from '../index.js';
 
 import styles from './Styles.module.css';
 
-function MarksInput({
+const MarksInput = forwardRef(function MarksInput({
   name,
   label,
   value,
@@ -15,6 +15,7 @@ function MarksInput({
   placeholder,
   measurement,
   maxLength,
+  bordered = false,
   className,
   color = 'blue',
   buttonText = 'Загрузить изображение',
@@ -23,7 +24,7 @@ function MarksInput({
   inputRef,
   hint,
   error,
-}) {
+}, ref) {
   if (type === 'file') {
     const colorClass = styles[`file__button_${color}`] || styles.file__button_blue;
 
@@ -56,19 +57,20 @@ function MarksInput({
 
   const showMeasurement = measurement && value;
   const showCounter = maxLength != null;
+  const isBordered = showCounter || bordered;
   const colorClass = styles[`input__field_${color}`] || styles.input__field_blue;
 
-
   return (
-    <div className={`${styles.input} ${showCounter ? styles.input_bordered : ''} ${className || ''}`}>
+    <div className={`${styles.input} ${isBordered ? styles.input_bordered : ''} ${className || ''}`}>
       <div className={styles.input__wrapper}>
         <input
+          ref={ref}
           type={type}
           className={
-            `${!showCounter ? styles.input__field : ''} 
-            ${showCounter ? styles.input__field_bordered : ''} 
-            ${showCounter || className ? colorClass : ''}
-            ${disabled ? styles.input__field_disabled : ''} 
+            `${!isBordered ? styles.input__field : ''}
+            ${isBordered ? styles.input__field_bordered : ''}
+            ${isBordered ? colorClass : ''}
+            ${disabled ? styles.input__field_disabled : ''}
             ${error ? styles.input__field_error : ''}
             `}
           placeholder={placeholder || name}
@@ -86,12 +88,12 @@ function MarksInput({
       </div>
       <label
         htmlFor={name}
-        className={`${styles.input__label} ${showCounter ? styles.input__label_top : ''} ${disabled ? styles.input__label_disabled : ''}`}>
+        className={`${styles.input__label} ${isBordered ? styles.input__label_top : ''} ${disabled ? styles.input__label_disabled : ''}`}>
         {label}
       </label>
       {error && <span className={styles.input__error}>{error}</span>}
     </div>
   );
-}
+});
 
 export default memo(MarksInput);

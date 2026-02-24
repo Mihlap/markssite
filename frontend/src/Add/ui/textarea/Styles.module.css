@@ -6,9 +6,7 @@
 }
 
 .textarea {
-    border: 1px solid var(--light-blue-D4EDFB);
     background: var(--white-F6F6F6);
-    caret-color: var(--light-blue-D4EDFB);
     color: var(--black-1D2E43);
     font-family: var(--font-raleway);
     border-radius: 6px;
@@ -34,8 +32,13 @@
     line-height: 20px;
 }
 
+.textarea_blue {
+    border: 1px solid var(--light-blue-D4EDFB);
+    caret-color: var(--light-blue-D4EDFB);
+}
+
 .textarea_salmon {
-border: 1px solid var(--salmon-light-FFBFB5);
+    border: 1px solid var(--salmon-light-FFBFB5);
     caret-color: var(--salmon-light-FFBFB5);
 }
 
@@ -97,8 +100,13 @@ border: 1px solid var(--salmon-light-FFBFB5);
     color: var(--dark-gray-566272) !important;
 }
 
-.toolbar :global(button.ql-active) {
+.toolbar_blue :global(button.ql-active) {
     background: var(--blue-75BBFD) !important;
+    color: #fff !important;
+}
+
+.toolbar_salmon :global(button.ql-active) {
+    background: var(--salmon-FF7F6A) !important;
     color: #fff !important;
 }
 
@@ -116,10 +124,19 @@ border: 1px solid var(--salmon-light-FFBFB5);
 
 .quill :global(.ql-container) {
     font-family: var(--font-raleway);
-    border: 1px solid var(--light-blue-D4EDFB);
-    background-color: var(--white-F6F6F6);
     border-radius: 6px;
     min-height: 160px;
+    font-size: 1rem;
+}
+
+.quill_salmon :global(.ql-container) {
+    border: 1px solid var(--salmon-light-FFBFB5);
+    caret-color: var(--salmon-light-FFBFB5);
+}
+
+.quill_blue :global(.ql-container) {
+    border: 1px solid var(--light-blue-D4EDFB);
+    background-color: var(--white-F6F6F6);
 }
 
 .quill :global(.ql-editor)::before {
@@ -130,8 +147,12 @@ border: 1px solid var(--salmon-light-FFBFB5);
     line-height: 20px;
 }
 
-.quill :global(.ql-toolbar.ql-snow+.ql-container.ql-snow) {
+.quill_blue :global(.ql-toolbar.ql-snow+.ql-container.ql-snow) {
     border-top: 1px solid var(--light-blue-D4EDFB);
+}
+
+.quill_salmon :global(.ql-toolbar.ql-snow+.ql-container.ql-snow) {
+    border-top: 1px solid var(--salmon-light-FFBFB5);
 }
 
 .quill_error {

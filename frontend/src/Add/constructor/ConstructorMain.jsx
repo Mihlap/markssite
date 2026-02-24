@@ -18,7 +18,7 @@ export default function ConstructorMain({ items, onSelect, children }) {
           {items?.map((el) => {
             const Icon = el.icon;
             return (
-              <button className={s.button} type="button" onClick={() => handleSelect(el)}>
+              <button key={el.id} className={s.button} type="button" onClick={() => handleSelect(el)}>
                 <Icon />
               </button>
             );

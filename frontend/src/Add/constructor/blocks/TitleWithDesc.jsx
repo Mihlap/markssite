@@ -30,11 +30,11 @@ export default function TitleWithDesc({ control, index, onRemove }) {
         control={control}
         render={({ field }) => (
           <UiMarksTextarea
-            color="salmon"
-            name={`constructorBlocks.${index}.description`}
-            label="Описание"
-            placeholder="Нет ограничения по символам"
-            richText
+          name={`constructorBlocks.${index}.description`}
+          label="Описание"
+          placeholder="Нет ограничения по символам"
+          richText
+          color="salmon"
             {...field}
           />
         )}

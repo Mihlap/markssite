@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react';
+import { memo, useMemo, forwardRef } from 'react';
 import ReactQuill, { Quill } from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 import { Icon1, Icon2, Icon3 } from './icon';
@@ -14,7 +14,7 @@ icons['list'] = Icon3;
 
 const quillFormats = ['bold', 'underline', 'list'];
 
-function MarksTextarea({ name, label, value, onChange, placeholder, color = 'blue', error, richText = false, quillRef }) {
+const MarksTextarea = forwardRef(function MarksTextarea({ name, label, value, onChange, placeholder, color = 'blue', error, richText = false, quillRef }, ref) {
   const toolbarId = `toolbar-${name.replaceAll('.', '-')}`;
 
   const quillModules = useMemo(() => ({
@@ -26,16 +26,22 @@ function MarksTextarea({ name, label, value, onChange, placeholder, color = 'blu
     <div className={s.textarea__wrap}>
       {richText ? (
         <>
-          <div id={toolbarId} className={s.toolbar}>
-            <button className="ql-bold"><Icon1 /></button>
-            <button className="ql-underline"><Icon2 /></button>
-            <button className="ql-list" value="bullet"><Icon3 /></button>
+          <div id={toolbarId} className={`${s.toolbar} ${s[`toolbar_${color}`] || ''}`}>
+            <button className="ql-bold">
+              <Icon1 />
+            </button>
+            <button className="ql-underline">
+              <Icon2 />
+            </button>
+            <button className="ql-list" value="bullet">
+              <Icon3 />
+            </button>
           </div>
           <ReactQuill
             ref={quillRef}
             modules={quillModules}
             formats={quillFormats}
-            className={`${s.quill} ${error ? s.quill_error : ''}`}
+            className={`${s.quill} ${s[`quill_${color}`] || ''} ${error ? s.quill_error : ''}`}
             name={name}
             id={name}
             value={value ?? ''}
@@ -45,7 +51,8 @@ function MarksTextarea({ name, label, value, onChange, placeholder, color = 'blu
         </>
       ) : (
         <textarea
-          className={`${s.textarea} ${color !== 'blue' ? s[`textarea_${color}`] || '' : ''} ${error ? s.textarea_error : ''}`}
+          ref={ref}
+          className={`${s.textarea} ${s[`textarea_${color}`] || ''} ${error ? s.textarea_error : ''}`}
           name={name}
           id={name}
           value={value ?? ''}
@@ -59,6 +66,6 @@ function MarksTextarea({ name, label, value, onChange, placeholder, color = 'blu
       {error && <span className={s.textarea__error}>{error}</span>}
     </div>
   );
-}
+});
 
 export default memo(MarksTextarea);
