@@ -143,3 +143,31 @@
   width: 100%;
   height: 140px;
 }
+
+/* Grid 2 photos */
+.preview[data-variant='grid-2'] {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.preview[data-variant='grid-2'] .preview__img{
+      width: 100%;
+      height: 179px;
+      position: relative;
+}
+
+/* Grid 8 photos */
+.preview[data-variant='grid-8'] {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.preview[data-variant='grid-8'] .preview__img {
+  width: 100%;
+  height: 179px;
+  position: relative;
+}

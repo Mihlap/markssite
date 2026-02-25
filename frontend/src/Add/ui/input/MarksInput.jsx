@@ -28,6 +28,8 @@ const MarksInput = forwardRef(function MarksInput({
   if (type === 'file') {
     const colorClass = styles[`file__button_${color}`] || styles.file__button_blue;
 
+    console.log(color);
+
     return (
       <div className={`${styles.file} ${className || ''}`}>
         {label && (
@@ -35,7 +37,9 @@ const MarksInput = forwardRef(function MarksInput({
             {label.includes('*') ? (
               <>
                 {label.split('*')[0]}
-                <span className={styles.accent}>*{label.split('*')[1]}</span>
+                <span className={`${color === 'salmon' ? styles.accent_salmon : styles.accent}`}>
+                  *{label.split('*')[1]}
+                </span>
               </>
             ) : (
               label

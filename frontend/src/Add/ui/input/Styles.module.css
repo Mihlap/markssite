@@ -189,7 +189,11 @@
 }
 
 .accent {
-    color: var(--blue-75BBFD); /* Цвет текста после звездочки (например, серый) */
+  color: var(--blue-75BBFD); /* Цвет текста после звездочки (например, серый) */
+}
+
+.accent_salmon {
+  color: var(--salmon-FF7F6A);
 }
 
 .file__row {
