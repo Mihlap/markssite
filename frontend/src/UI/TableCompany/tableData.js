@@ -1,4 +1,10 @@
-const tableData = [ 
+const tableData = [
+  {
+    title: 'Международный конкурс на Terraviva Competitions',
+    nomination: 'Bodegas Vinival',
+    prize: 'Финалист',
+    year: '/_2025/',
+  },
   {
     title: 'Лидеры проектирования',
     nomination: 'BIM-компания года',
