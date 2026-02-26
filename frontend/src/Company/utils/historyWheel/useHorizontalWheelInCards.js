@@ -21,8 +21,10 @@ export function useHorizontalWheelInCards({
     hideHistoryTag,
     showAndPlaceHistoryTag,
     isModalOpen = false,
+    isDesktop,
 }) {
     useEffect(() => {
+        if (isDesktop === false) return;
         const container = timelineWrapperRef.current;
         const cardsEl = historyListRef.current;
 
@@ -492,7 +494,9 @@ export function useHorizontalWheelInCards({
                     enableVLock();
                     stopWheelHard(e);
 
-                    if (getOffset() > 0.5) {
+                    const off = getOffset();
+
+                    if (off > 0.5) {
                         snapToStart(false);
                         return;
                     }
@@ -758,6 +762,7 @@ export function useHorizontalWheelInCards({
             gsap.killTweensOf(container);
         };
     }, [
+        isDesktop,
         cardsFocused,
         sectionRef,
         timelineWrapperRef,

@@ -371,30 +371,30 @@
 
 @media screen and (min-width: 1024px) and (max-width: 1599px) {
     .year_cards_group {
-        width: 532px;
-        padding: 0 clamp(40px, 6vw, 120px);
-        padding-left: calc(clamp(22px, 3.5vw, 60px) + 100px);
+        width: calc(100vw / 3.5);
+        padding: 0 clamp(20px, 3vw, 56px);
+        padding-left: calc(clamp(22px, 3.5vw, 60px) + 68px);
         margin-top: 20px;
 
         &:first-child {
-            padding-left: calc(clamp(22px, 3.5vw, 60px) + 111px);
+            padding-left: calc(clamp(22px, 3.5vw, 60px) + 80px);
         }
 
         &:last-child {
-            padding-right: clamp(60px, 10vw, 150px);
+            padding-right: clamp(32px, 5vw, 96px);
         }
     }
 
     .timeline_year_marker {
-        width: 532px;
-        padding: 0 clamp(40px, 6vw, 120px);
+        width: calc(100vw / 3.5);
+        padding: 0 clamp(20px, 3vw, 56px);
 
         &:first-child {
-            padding-left: clamp(60px, 10vw, 200px);
+            padding-left: clamp(40px, 6vw, 140px);
         }
 
         &:last-child {
-            padding-right: clamp(60px, 10vw, 150px);
+            padding-right: clamp(32px, 5vw, 96px);
         }
 
         &::before {
@@ -462,31 +462,31 @@
 }
 
 @media screen and (min-width: 1600px) {
-    .year_cards_group {
-        width: 570px;
-        padding: 0 clamp(80px, 10vw, 285px);
-        padding-left: calc(clamp(38px, 4.75vw, 150px) + 48px);
+    .year_cards_group {      
+        width: calc(100vw / 3.5);
+        padding: 0 clamp(64px, 6vw, 200px);
+        padding-left: calc(clamp(38px, 4.75vw, 150px) + 38px);
         margin-bottom: 40px;
 
         &:first-child {
-            padding-left: calc(clamp(38px, 4.75vw, 150px) + 65px);
+            padding-left: calc(clamp(38px, 4.75vw, 150px) + 56px);
         }
 
         &:last-child {
-            padding-right: clamp(120px, 15vw, 345px);
+            padding-right: clamp(96px, 10vw, 260px);
         }
     }
 
     .timeline_year_marker {
-        width: 570px;
-        padding: 0 clamp(80px, 10vw, 285px);
+        width: calc(100vw / 3.5);
+        padding: 0 clamp(64px, 6vw, 200px);
 
         &:first-child {
-            padding-left: clamp(120px, 15vw, 519px);
+            padding-left: clamp(160px, 14vw, 520px);
         }
 
         &:last-child {
-            padding-right: clamp(120px, 15vw, 345px);
+            padding-right: clamp(96px, 10vw, 260px);
         }
 
         &::before {
@@ -615,14 +615,14 @@
 
 @media screen and (max-width: 768px) {
     .history_section {
-        padding: 60px 1rem 40px;
+        padding: 60px 0rem 0rem;       
     }
 
     .history_timeline_container {
         --timeline-overlap: 0px;
-        margin-top: 60px;
-        margin-bottom: 60px;
-        padding: 30px 0 80px;
+        margin-top: 0px;
+        // margin-bottom: 60px;
+        padding: 48px 0 80px;
     }
 
     .timeline_wrapper {

@@ -50,6 +50,7 @@ export function useWheelEnterSnap({
     lockYRef,
     applyingRef,
     vTweenRef,
+    isDesktop,
 }) {
     const applyFocusGrid = (wrapper) => {
         if (!wrapper) return;
@@ -76,6 +77,7 @@ export function useWheelEnterSnap({
     };
 
     useEffect(() => {
+        if (isDesktop === false) return;
         const SNAP_ZONE = 300;
         const STEP_CLAMP = 900;
         const EASE = 'power2.out';
@@ -253,6 +255,7 @@ export function useWheelEnterSnap({
             applyingRef.current = false;
         };
     }, [
+        isDesktop,
         sectionRef,
         cardsFocused,
         historyListRef,
@@ -275,6 +278,7 @@ export function useWheelEnterSnap({
     ]);
 
     useEffect(() => {
+        if (isDesktop === false) return;
         const snap1 = gsap.utils?.snap ? gsap.utils.snap(1) : (v) => Math.round(v);
 
         const handleWheelDown = (e) => {
@@ -465,6 +469,7 @@ export function useWheelEnterSnap({
         window.addEventListener('wheel', handleWheelDown, { passive: false });
         return () => window.removeEventListener('wheel', handleWheelDown);
     }, [
+        isDesktop,
         sectionRef,
         cardsFocused,
         historyHeaderRef,

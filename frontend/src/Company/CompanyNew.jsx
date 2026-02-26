@@ -48,7 +48,7 @@ const VIDEO_SOURCE2 = {
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleMouseHover }) {
-  const dispatch = useDispatch();  
+  const dispatch = useDispatch();
 
   const [countPercent, setCountPercent] = useState(0);
   const [countHuman, setCountHuman] = useState(0);
@@ -84,9 +84,9 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
   const topCountersStartedRef = useRef(false);
 
   const armTopCounters = () => {
-     if (topCountersStartedRef.current) return;
-      topCountersStartedRef.current = true;
-       setStartTopCounters(true);
+    if (topCountersStartedRef.current) return;
+    topCountersStartedRef.current = true;
+    setStartTopCounters(true);
   }
 
   useEffect(() => {

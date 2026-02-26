@@ -276,6 +276,14 @@
         background: var(--white-F6F6F6, #f6f6f6);
     }
 
+    .split_left,
+    .split_right {
+        transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+        transform: translateZ(0);
+        will-change: transform;
+        backface-visibility: hidden;
+    }
+
     @media (hover: hover) and (pointer: fine) {
         .history_card:hover {
             border-radius: 16px;
