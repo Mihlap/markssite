@@ -15,6 +15,8 @@ const awardsImages = [
   { src: './assets/11.svg', alt: 'award11' },
   { src: './assets/12.svg', alt: 'award12' },
   { src: './assets/13.svg', alt: 'award13' },
+  { src: './assets/14.png', alt: 'award14' },
+  { src: './assets/15.png', alt: 'award15' },
 ];
 
 const companiesImages = [
@@ -90,7 +92,7 @@ const SliderHeader = ({ isAwards }) => {
       <div ref={marqueeRef} className={styles.marqueeContainer}>
         {show && (
           <div className={styles.SliderHeader__marquee}>
-            {Array.from({ length: 13 }).flatMap((_, i) =>
+            {Array.from({ length: 15 }).flatMap((_, i) =>
               images.map((image, index) => (
                 <div
                   key={`${i}-${index}`}
