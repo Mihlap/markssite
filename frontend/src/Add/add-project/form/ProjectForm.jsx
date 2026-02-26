@@ -1,10 +1,10 @@
 import React, { useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
-import { transliterate } from 'transliteration';
-import { fetchProject } from '../../../store/Slice/projectSlice';
+import { fetchProject, setProjectId } from '../../../store/Slice/projectSlice';
 import { UiMarksInput, UiMarksSelect, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
 import { monthOptions, yearOptions, typesСonstruction } from '../FormAddEditProject/utils/Time';
+import renameFile from './function/renameFile';
 import {
   competenciesOptions,
   degreeParticipationOptions,
@@ -15,28 +15,61 @@ import {
 
 import s from './Styles.module.css';
 import ConstructorMain from '../../constructor/ConstructorMain';
-// в AddForm.jsx
+// в ProjectForm.jsx
 import { project_items } from '../../constructor/config/config';
 import { BLOCK_COMPONENTS } from '../../constructor/blocks';
 
-// Generate unique filename to avoid special characters and duplicates
-function generateUniqueName(originalName) {
-  const timestamp = Date.now();
-  const randomNum = Math.floor(Math.random() * 10000);
-  const fileExtension = originalName.split('.').pop();
-  const sliceOfOriginalName = transliterate(originalName.slice(0, 5));
-  const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
-  return newName;
+// Convert old format constructor blocks to new format for react-hook-form
+function convertOldToNewFormat(oldBlocks) {
+  if (!Array.isArray(oldBlocks)) return [];
+
+  return oldBlocks
+    .map((block) => {
+      if (!Array.isArray(block) || block.length === 0) return null;
+
+      const label = block[0]?.label;
+
+      switch (label) {
+        case 'Картинка с описанием':
+          return {
+            type: 'imageWithDesc',
+            image: block[0]?.value || [],
+            description: block[1]?.value || '',
+          };
+        case 'Заголовок':
+          return {
+            type: 'titleWithDesc',
+            title: block[0]?.value || '',
+            description: block[1]?.value || '',
+          };
+        case 'Ссылка на видеоролик':
+          return {
+            type: 'video',
+            description: block[0]?.value || '',
+          };
+        case 'Блок 3 картинки':
+          return {
+            type: 'threeImages',
+            image: block[0]?.value || [],
+          };
+        case 'Блок 2е вертикальные картинки':
+          return {
+            type: 'twoImages',
+            image: block[0]?.value || [],
+          };
+        case 'Слайдер *допускается загрузка 8ми изображений':
+          return {
+            type: 'slider',
+            image: block[0]?.value || [],
+          };
+        default:
+          return null;
+      }
+    })
+    .filter(Boolean);
 }
 
-// Rename file with unique name
-function renameFile(file) {
-  const uniqueName = generateUniqueName(file.name);
-  return new File([file], uniqueName, { type: file.type });
-}
-
-
-export default function AddForm({ onValidityChange }) {
+export default function ProjectForm({ onValidityChange, editProjectData, onSuccess }) {
   const dispatch = useDispatch();
   const photoAvaRef = useRef(null);
   const dropPhotoRef = useRef(null);
@@ -55,7 +88,11 @@ export default function AddForm({ onValidityChange }) {
     mode: 'onChange',
   });
 
-  const { fields: constructorBlocks, append, remove } = useFieldArray({
+  const {
+    fields: constructorBlocks,
+    append,
+    remove,
+  } = useFieldArray({
     control,
     name: 'constructorBlocks',
   });
@@ -67,17 +104,138 @@ export default function AddForm({ onValidityChange }) {
     onValidityChange?.(isValid);
   }, [isValid, onValidityChange]);
 
+  // Populate form when editing or reset for new project
+  useEffect(() => {
+    if (!editProjectData) {
+      // Clear projectId for new project (POST request)
+      dispatch(setProjectId(null));
+      // Reset form to empty state for adding new project
+      reset({
+        title: '',
+        countryCity: '',
+        month: null,
+        year: null,
+        selectCompetencies: [],
+        viewConstruction: [],
+        titleTextBlock: '',
+        descriptionProject: '',
+        totalArea: '',
+        siteArea: '',
+        floors: '',
+        altitude: '',
+        constructionVolume: '',
+        numberOfLanes: '',
+        long: '',
+        location: '',
+        degreeParticipation: [],
+        statusObject: null,
+        customer: '',
+        publication: '',
+        linkToPublication: '',
+        publicationTwo: '',
+        linkToPublicationTwo: '',
+        awards: null,
+        headingTextBlock: '',
+        textBlock: '',
+        photoAva: [],
+        dropPhoto: [],
+        imageOpen: [],
+        photo: [],
+        constructorBlocks: [],
+      });
+      return;
+    }
+
+    // Set projectId for PUT request
+    dispatch(setProjectId(editProjectData.id));
+
+    // Debug: log the image fields to see actual data structure
+    console.log('Edit project image fields:', {
+      photoAva: editProjectData.photoAva,
+      imageProject: editProjectData.imageProject,
+      imageTitle: editProjectData.imageTitle,
+      dropPhoto: editProjectData.dropPhoto,
+      imageOpen: editProjectData.imageOpen,
+      imageClose: editProjectData.imageClose,
+      allKeys: Object.keys(editProjectData),
+    });
+
+    // Parse monthYear
+    const [month, year] = (editProjectData.monthYear || '').trim().split(' ');
+
+    // Parse comma-separated values to select options
+    const parseToOptions = (str) =>
+      str ? str.split(',').map((item) => ({ value: item.trim(), label: item.trim() })) : [];
+
+    // Convert constructor blocks from old format
+    const constructorData = editProjectData.Constructors?.[0]?.data;
+    const newFormatBlocks = convertOldToNewFormat(constructorData);
+
+    reset({
+      title: editProjectData.title || '',
+      countryCity: editProjectData.countryCity || '',
+      month: month ? { value: month, label: month } : null,
+      year: year ? { value: year, label: year } : null,
+      selectCompetencies: parseToOptions(editProjectData.selectCompetencies),
+      viewConstruction: parseToOptions(editProjectData.viewConstruction),
+      titleTextBlock: editProjectData.titleTextBlock || '',
+      descriptionProject: editProjectData.descriptionProject || '',
+      totalArea: editProjectData.totalArea || '',
+      siteArea: editProjectData.siteArea || '',
+      floors: editProjectData.floors || '',
+      altitude: editProjectData.altitude || '',
+      constructionVolume: editProjectData.constructionVolume || '',
+      numberOfLanes: editProjectData.numberOfLanes || '',
+      long: editProjectData.long || '',
+      location: editProjectData.location || '',
+      degreeParticipation: parseToOptions(editProjectData.degreeParticipation),
+      statusObject: editProjectData.statusObject
+        ? { value: editProjectData.statusObject, label: editProjectData.statusObject }
+        : null,
+      customer: editProjectData.customer || '',
+      publication: editProjectData.publication || '',
+      linkToPublication: editProjectData.linkToPublication || '',
+      publicationTwo: editProjectData.publicationTwo || '',
+      linkToPublicationTwo: editProjectData.linkToPublicationTwo || '',
+      awards: editProjectData.awards ? { value: editProjectData.awards, label: editProjectData.awards } : null,
+      headingTextBlock: editProjectData.headingTextBlock || '',
+      textBlock: editProjectData.textBlock || '',
+      // Images - store as arrays with URL strings for existing images
+      // photoAva is stored in imageProject field
+      photoAva: editProjectData.imageProject ? [editProjectData.imageProject] : [],
+      // dropPhoto is stored in imageTitle field (can be single URL or comma-separated URLs)
+      dropPhoto: editProjectData.imageTitle
+        ? editProjectData.imageTitle.split(',').map((f) => f.trim()).filter(Boolean)
+        : [],
+      imageOpen: editProjectData.imageOpen ? [editProjectData.imageOpen] : [],
+      photo: editProjectData.imageClose ? [editProjectData.imageClose] : [],
+      // Constructor blocks
+      constructorBlocks: newFormatBlocks,
+    });
+
+    // Cleanup on unmount
+    return () => {
+      dispatch(setProjectId(null));
+    };
+  }, [editProjectData, dispatch, reset]);
+
   const toOldFormat = (block) => {
-    // Helper to rename files array
-    const renameFiles = (files) => {
+    // Helper to process files - rename new File objects, keep existing URL strings
+    const processFiles = (files) => {
       if (!Array.isArray(files)) return [];
-      return files.map((file) => (file instanceof File ? renameFile(file) : file));
+      return files.map((file) => {
+        if (file instanceof File) {
+          return renameFile(file);
+        }
+        // Keep existing URL strings as-is
+        return file;
+      });
     };
 
     switch (block.type) {
       case 'imageWithDesc':
         return [
-          { type: 'file', label: 'Картинка с описанием', value: block.image?.[0] instanceof File ? [renameFile(block.image[0])] : [] },
+          { type: 'file', label: 'Картинка с описанием', value: processFiles(block.image) },
           { type: 'text', label: 'Описание картинки', value: block.description || '' },
         ];
       case 'titleWithDesc':
@@ -86,20 +244,14 @@ export default function AddForm({ onValidityChange }) {
           { type: 'text', label: 'Текстовый блок', value: block.description || '' },
         ];
       case 'video':
-        return [
-          { type: 'text', label: 'Ссылка на видеоролик', value: block.description || '' },
-        ];
+        return [{ type: 'text', label: 'Ссылка на видеоролик', value: block.description || '' }];
       case 'threeImages':
-        return [
-          { type: 'file', label: 'Блок 3 картинки', value: renameFiles(block.image) },
-        ];
+        return [{ type: 'file', label: 'Блок 3 картинки', value: processFiles(block.image) }];
       case 'twoImages':
-        return [
-          { type: 'file', label: 'Блок 2е вертикальные картинки', value: renameFiles(block.image) },
-        ];
+        return [{ type: 'file', label: 'Блок 2е вертикальные картинки', value: processFiles(block.image) }];
       case 'slider':
         return [
-          { type: 'file', label: 'Слайдер *допускается загрузка 8ми изображений', value: renameFiles(block.image) },
+          { type: 'file', label: 'Слайдер *допускается загрузка 8ми изображений', value: processFiles(block.image) },
         ];
       default:
         return [];
@@ -116,9 +268,7 @@ export default function AddForm({ onValidityChange }) {
         : '',
       countryCity: data.countryCity || '',
       monthYear: [data.month?.value, data.year?.value].filter(Boolean).join(' '),
-      viewConstruction: Array.isArray(data.viewConstruction)
-        ? data.viewConstruction.map((o) => o.label).join(',')
-        : '',
+      viewConstruction: Array.isArray(data.viewConstruction) ? data.viewConstruction.map((o) => o.label).join(',') : '',
       titleTextBlock: data.titleTextBlock || '',
       descriptionProject: data.descriptionProject || '',
       totalArea: data.totalArea || '',
@@ -148,7 +298,9 @@ export default function AddForm({ onValidityChange }) {
       dynamicBlocks: oldFormatBlocks,
     };
 
-    dispatch(fetchProject(formattedData));
+    await dispatch(fetchProject(formattedData));
+    reset();
+    onSuccess?.();
   };
 
   return (
