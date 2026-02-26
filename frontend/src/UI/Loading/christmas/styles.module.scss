@@ -1,0 +1,687 @@
+:root {
+    --ball-size: null;
+    --initial-position: null;
+
+    --ball-start: null;
+    --ball-mid: null;
+
+    --logo-dec-end: -30px;
+    --ball-three-position: 47%;
+
+    --rope-size: 2px;
+    --rope-offset: 4px;
+    --pimpa-width: 11px;
+    --pisma-height: 17.6px;
+    --pimpa-offset: -9px;
+
+    --circle-blue-width: 374px;
+    --circle-blue-height: 374px;
+    --x: 0px;
+    --y: 0px;
+    --mid: 0px;
+    --end: 0px;
+    --img-position: null;
+
+    --rope-blue-size: 2px;
+    --pimpa-blue-width: 48.4px;
+    --pimpa-blue-height: 48.4px;
+    --pimpa-blue-offset: -30px;
+}
+
+@mixin christmas-background {
+    $christmas-bg-color: rgba(29, 46, 67, 1);
+    $christmas-bg-gradient: linear-gradient(to top,
+            rgba(117, 187, 253, 1) 0%,
+            rgba(117, 187, 253, 0.67) 22.0139%,
+            rgba(117, 187, 253, 0.31) 45.6377%,
+            rgba(117, 187, 253, 0.09) 64.844%,
+            rgba(117, 187, 253, 0) 79.0568%);
+
+    background: $christmas-bg-gradient;
+    background-color: $christmas-bg-color;
+}
+
+
+.loading-container {
+    width: 100%;
+    height: 100dvh;
+    @include christmas-background();
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: clip;
+}
+
+.progres-bar {
+    position: absolute;
+
+
+        @media (min-width: 320px) {
+               top: 55%;
+            }
+        
+            @media (min-width: 768px) {
+                top: 60%;
+            }
+        
+            @media (min-width: 1440px) {
+                top: 65%;
+            }
+        
+            @media (min-width: 2560px) {
+              
+            }
+}
+
+@mixin ball-white() {
+    width: var(--ball-size);
+    height: var(--ball-size);
+    background-color: var(--white-F6F6F6);
+    border-radius: 50%;
+
+    // пипка идущая вниз 
+    &::before {
+        content: '';
+        position: absolute;
+        top: var(--pimpa-offset);
+        left: 50%;
+        transform: translateX(-50%);
+        width: var(--pimpa-width);
+        height: var(--pisma-height);
+        background: url('./images/pimpa-2-white.png') center/contain no-repeat;
+        pointer-events: none;
+
+        animation: hide-drop 500ms linear forwards;
+        animation-delay: 2.6s;
+    }
+
+    // веревочка, идущая вверх от пимпы
+    &::after {
+        content: '';
+        position: absolute;
+        top: -100dvh; // начинаем от верхней границы экрана
+        left: 50%;
+        transform: translateX(-50%);
+        width: var(--rope-size);
+        height: calc(100dvh - var(--rope-offset)); // тянемся до пимпы
+        background: var(--white-F6F6F6);
+        border-radius: 6px;
+
+        animation: hide-rope 500ms linear forwards;
+        animation-delay: 2.6s;
+    }
+
+    @media (min-width: 320px) {
+        --pimpa-width: 3.5px;
+        --pisma-height: 5.5px;
+        --pimpa-offset: -3px;
+        --rope-size: 1px;
+        --rope-offset: 2px;
+    }
+
+    @media (min-width: 768px) {
+        --pimpa-width: 7.8px;
+        --pisma-height: 12.5px;
+        --pimpa-offset: -6px;
+        --rope-size: 1.5px;
+    }
+
+    @media (min-width: 1440px) {
+        --pimpa-width: 11px;
+        --pisma-height: 17.5px;
+        --pimpa-offset: -8px;
+        --rope-size: 2px;
+    }
+
+    @media (min-width: 2560px) {
+        --pimpa-width: 19.5px;
+        --pisma-height: 31.2px;
+        --pimpa-offset: -17px;
+        --rope-size: 3.6px;
+        --logo-dec-end: -50px;
+    }
+}
+
+
+.ball-one {
+    --ball-size: 66px;
+    --ball-start: -115px;
+    --ball-mid: -143px;
+    transform: translateY(var(--ball-start));
+
+    @include ball-white;
+    animation:
+        ball-first 1.5s linear forwards,
+        ball-second 1s ease-in 1.5s forwards;
+}
+
+.ball-two {
+    --ball-size: 66px;
+    --ball-start: 165px;
+    --ball-mid: 149px;
+    transform: translateY(var(--ball-start));
+
+    @include ball-white;
+    animation:
+        ball-first 1.5s linear forwards,
+        ball-second 1s ease-in 1.5s forwards;
+}
+
+.ball-three {
+    //41
+    --ball-size: 66px;
+    --ball-start: -172px;
+    --ball-mid: -131px;
+    position: absolute;
+    left: var(--ball-three-position);
+    transform: translateY(var(--ball-start));
+    @include ball-white;
+
+    animation:
+        ball-first 1.5s linear forwards,
+        ball-third 1s ease-in 1.5s forwards;
+}
+
+
+@media (min-width: 320px) {
+    .ball-one {
+        --ball-size: 20.6px;
+        --ball-start: -47px;
+        --ball-mid: -75px;
+    }
+
+    .ball-two {
+        --ball-size: 20.6px;
+        --ball-start: 160px;
+        --ball-mid: 144px;
+    }
+
+    .ball-three {
+        --ball-three-position: 70%;
+        --ball-size: 28px;
+        --ball-start: -202px;
+        --ball-mid: -161px;
+        left: var(--ball-three-position);
+    }
+}
+
+@media (min-width: 768px) {
+
+    //28
+    .ball-one {
+        --ball-size: 47px;
+        --ball-start: -74px;
+        --ball-mid: -102px;
+    }
+
+    // 16
+    .ball-two {
+        --ball-size: 47px;
+        --ball-start: 108px;
+        --ball-mid: 92px;
+    }
+
+    .ball-three {
+        --ball-three-position: 47%;
+        --ball-size: 45.5px;
+        --ball-start: -110px;
+        --ball-mid: -69px;
+        left: var(--ball-three-position);
+    }
+}
+
+@media (min-width: 1440px) {
+    .ball-one {
+        --ball-size: 66px;
+        --ball-start: -115px;
+        --ball-mid: -143px;
+    }
+
+    .ball-two {
+        --ball-size: 66px;
+        --ball-start: 165px;
+        --ball-mid: 149px;
+    }
+
+    .ball-three {
+        --ball-size: 66px;
+        --ball-start: -174px;
+        --ball-mid: -131px;
+    }
+}
+
+@media (min-width: 2560px) {
+    .ball-one {
+        --ball-size: 117px;
+        --ball-start: -186px;
+        --ball-mid: -157px;
+    }
+
+    .ball-two {
+        --ball-size: 117px;
+        --ball-start: 272px;
+        --ball-mid: 243px;
+    }
+
+    .ball-three {
+        --ball-size: 113px;
+        --ball-start: -275px;
+        --ball-mid: -243px;
+    }
+}
+
+
+@keyframes ball-first {
+    from {
+        transform: translateY(var(--ball-start));
+    }
+
+    to {
+        transform: translateY(var(--ball-mid));
+    }
+}
+
+@keyframes ball-second {
+    from {
+        transform: translateY(var(--ball-mid));
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes ball-third {
+    from {
+        transform: translateY(var(--ball-mid));
+    }
+
+    to {
+        transform: translateY(-1000px);
+    }
+}
+
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @media (min-width: 320px) {
+        gap: 6.72px;
+    }
+
+    @media (min-width: 768px) {
+        gap: 15.3px;
+    }
+
+    @media (min-width: 1440px) {
+        gap: 21.51px;
+    }
+
+    @media (min-width: 2560px) {
+        gap: 38.25px;
+        --logo-dec-end: -50px;
+    }
+
+    &-wrap {
+        position: relative;
+        z-index: 4;
+        display: flex;
+
+        @media (min-width: 320px) {
+            gap: 10px;
+        }
+
+        @media (min-width: 768px) {
+            gap: 22px;
+        }
+
+        @media (min-width: 1440px) {
+            gap: 32px;
+        }
+
+        @media (min-width: 2560px) {
+            gap: 57px;
+        }
+    }
+
+    &-decoration {
+        overflow: hidden;
+        z-index: 3;
+
+        img {
+            animation: hide-img 1s linear forwards;
+            animation-delay: 1.5s;
+        }
+    }
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--black-1D2E43);
+        opacity: 0.6;
+        filter: blur(54px);
+        z-index: -1;
+    }
+
+}
+
+@keyframes hide-drop {
+    0% {
+        top: var(--pimpa-offset);
+    }
+
+    100% {
+        top: 1px;
+    }
+}
+
+@keyframes hide-rope {
+    0% {
+        top: -100dvh;
+    }
+
+    100% {
+        top: -200dvh; // резко уводим вверх
+    }
+}
+
+@keyframes hide-img {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(var(--logo-dec-end));
+    }
+}
+
+
+@mixin circle-blue() {
+    width: var(--circle-blue-width);
+    height: var(--circle-blue-height);
+    border-radius: 50%;
+    overflow: hidden;
+    background: radial-gradient(50% 50% at 50% 50%, #1D2E43 0%, #1D2E43 30%, #21344A 50%, #263D56 60%, #304D6B 70%, #426890 80%, #598DC0 90%, #75BBFD 100%);
+    box-shadow: 0 0 10px 0 rgb(79 126 173);
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+        will-change: transform;
+        transition: transform 0.3s ease;
+        z-index: 1;
+
+        animation: img-blue-ball 1.5s linear forwards;
+    }
+}
+
+
+.circle-wrap {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform:
+        translate(-50%, -50%) translate(var(--x, 0), var(--y, 0));
+}
+
+.circle {
+    @include circle-blue();
+
+        &::before {
+                content: '';
+                position: absolute;
+                top: var(--pimpa-blue-offset);
+                left: 50%;
+                transform: translateX(-50%);
+                width: var(--pimpa-blue-width);
+                height: var(--pimpa-blue-height);
+                background: url('./images/pimpa.png') center/contain no-repeat;
+                pointer-events: none;
+                z-index: -1;
+            }
+        
+            // веревочка, идущая вверх от пимпы
+            &::after {
+                content: '';
+                position: absolute;
+                top: -100dvh; // начинаем от верхней границы экрана
+                left: 50%;
+                transform: translateX(-50%);
+                width: var(--rope-blue-size);
+                height: calc(100dvh - 10px); // тянемся до пимпы
+                background: #75BBFD;
+                border-radius: 6px;
+                z-index: -2;
+            }
+}
+
+.circle-left {
+    --img-position: -20px;
+    animation: blue-ball-first 1.5s linear forwards,
+        blue-ball-second 1s ease-in 1.5s forwards;
+}
+
+.circle-center {
+    --img-position: 20px;
+    animation: blue-ball-first 1.5s linear forwards,
+        blue-ball-second 1s ease-in 1.5s forwards;
+}
+
+.circle-right {
+    --img-position: -20px;
+    animation: blue-ball-first 1.5s linear forwards,
+        blue-ball-second 1s ease-in 1.5s forwards;
+}
+
+   @media (min-width: 320px) {
+    .circle-left {
+        --rope-blue-size: 2.2px;
+        --pimpa-blue-offset: -19px;
+            --pimpa-blue-width: 35.4px;
+            --pimpa-blue-height: 35.4px;
+            --circle-blue-width: 274px;
+            --circle-blue-height: 274px;
+            --x: -92px;
+            --y: -166px;
+            --mid: -146px;
+            --end: calc(-100dvh - 269px);
+        }
+    
+        .circle-center {
+                    --rope-blue-size: 2.2px;
+            --pimpa-blue-offset: -19px;
+                --pimpa-blue-width: 35.4px;
+                --pimpa-blue-height: 35.4px;
+            --circle-blue-width: 200px;
+            --circle-blue-height: 200px;
+            --x: -65px;
+            --y: 220px;
+            --mid: 240px;
+            --end: calc(-100dvh - 214px);
+        }
+    
+        .circle-right {
+                    --rope-blue-size: 2.2px;
+            --pimpa-blue-offset: -19px;
+                --pimpa-blue-width: 35.4px;
+                --pimpa-blue-height: 35.4px;
+            --circle-blue-width: 236px;
+            --circle-blue-height: 236px;
+            --x: 135px;
+            --y: -10px;
+            --mid: -30px;
+            --end: calc(-100dvh - 27px);
+        }
+   }
+
+   @media (min-width: 768px) {
+    .circle-left {
+                --rope-blue-size: 2.6px;
+
+            --pimpa-blue-offset: -19px;
+            --pimpa-blue-width: 32.3px;
+            --pimpa-blue-height: 32.3px;
+            
+            --circle-blue-width: 249px;
+            --circle-blue-height: 249px;
+            --x: -295px;
+            --y: -10px;
+            --mid: 10px;
+            --end: calc(-100dvh - 269px);
+        }
+    
+        .circle-center {
+                    --rope-blue-size: 2.6px;
+
+               --pimpa-blue-offset: -19px;
+            --pimpa-blue-width: 32.3px;
+            --pimpa-blue-height: 32.3px;
+            --circle-blue-width: 147px;
+            --circle-blue-height: 147px;
+            --x: 50px;
+            --y: 250px;
+            --mid: 230px;
+            --end: calc(-100dvh - 214px);
+        }
+    
+        .circle-right {
+                    --rope-blue-size: 2.6px;
+
+               --pimpa-blue-offset: -19px;
+            --pimpa-blue-width: 32.3px;
+            --pimpa-blue-height: 32.3px;
+            --circle-blue-width: 292px;
+            --circle-blue-height: 292px;
+            --x: 282px;
+            --y: -35px;
+            --mid: -15px;
+            --end: calc(-100dvh - 27px);
+        }
+   }
+
+   @media (min-width: 1440px) {
+       .circle-left {
+        // 57.5
+                --rope-blue-size: 3.9px;
+                                    --pimpa-blue-offset: -28.6px;
+
+                --pimpa-blue-width:  57.5px;
+                --pimpa-blue-height:  57.5px;
+
+           --circle-blue-width: 374px;
+           --circle-blue-height: 374px;
+           --x: -420px;
+           --y: 0px;
+           --mid: 20px;
+           --end: calc(-100dvh - 269px);
+       }
+
+       .circle-center {
+                --rope-blue-size: 3.9px;
+                                    --pimpa-blue-offset: -28.6px;
+
+                --pimpa-blue-width: 57.5px;
+                    --pimpa-blue-height: 57.5px;
+
+           --circle-blue-width: 224px;
+           --circle-blue-height: 224px;
+           --x: 20px;
+           --y: 240px;
+           --mid: 220px;
+           --end: calc(-100dvh - 214px);
+       }
+
+       .circle-right {
+                --rope-blue-size: 3.9px;
+                                    --pimpa-blue-offset: -28.6px;
+
+                --pimpa-blue-width: 57.5px;
+                    --pimpa-blue-height: 57.5px;
+
+           --circle-blue-width: 445px;
+           --circle-blue-height: 445px;
+           --x: 400px;
+           --y: -50px;
+           --mid: -30px;
+           --end: calc(-100dvh - 27px);
+       }
+   }
+
+   @media (min-width: 2560px) {
+        .circle-left {
+                    --rope-blue-size: 6.5px;
+                    --pimpa-blue-offset: -55px;
+                    --pimpa-blue-width: 94.7px;
+                        --pimpa-blue-height: 94.7px;
+
+                --circle-blue-width: 624px;
+                --circle-blue-height: 624px;
+                --x: -730px;
+                --y: 0px;
+                --mid: 20px;
+                --end: calc(-100dvh - 269px);
+            }
+        
+            .circle-center {
+                        --rope-blue-size: 6.5px;
+                                            --pimpa-blue-offset: -55px;
+                        --pimpa-blue-width: 94.7px;
+                            --pimpa-blue-height: 94.7px;
+
+                --circle-blue-width: 368px;
+                --circle-blue-height: 368px;
+                --x: 110px;
+                --y: 380px;
+                --mid: 360px;
+                --end: calc(-100dvh - 214px);
+            }
+        
+            .circle-right {
+                        --rope-blue-size: 6.5px;
+                                            --pimpa-blue-offset: -55px;
+                        --pimpa-blue-width: 94.7px;
+                            --pimpa-blue-height: 94.7px;
+
+                --circle-blue-width: 732px;
+                --circle-blue-height: 732px;
+                --x: 710px;
+                --y: -80px;;
+                --mid: -70px;
+                --end: calc(-100dvh - 27px);
+            }
+   }
+
+@keyframes blue-ball-first {
+    from {
+        transform: translate(-50%, -50%) translate(var(--x), var(--y));
+    }
+
+    to {
+        transform: translate(-50%, -50%) translate(var(--x), var(--mid));
+    }
+}
+
+@keyframes blue-ball-second {
+    from {
+        transform: translate(-50%, -50%) translate(var(--x), var(--mid));
+    }
+
+    to {
+        transform: translate(-50%, -50%) translate(var(--x), var(--end));
+    }
+}
+
+@keyframes img-blue-ball {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(var(--img-position));
+    }
+}
