@@ -135,37 +135,62 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
   const randomProjects = useMemo(() => [...projects].sort(() => 0.5 - Math.random()).slice(0, 20), [projects]);
 
   const renderCompetencies = useCallback((competenciesString, isSlider = false) => {
-    const style = { border: '1px solid', padding: '3px 6px', borderRadius: '34px' };
     const className = isSlider
       ? styles.div_el_selectCompetencies_projectCard
       : styles.el_project_selectCompetencies__block__card;
 
-    try {
-      const selectCompetencies = JSON.parse(competenciesString);
-      return selectCompetencies.map((competency) => (
-        <div key={competency.value} className={className} style={style}>
-          {competency.label}
+    const colors = {
+      Архитектура: '#FF7F6A',
+      BIM: '#75BBFD',
+      Конструкции: '#566272',
+      Дизайн: '#FAA8BD',
+      Инженерия: '#90B734',
+    };
+
+    const getStyle = (item) => {
+      if (!isSlider) {
+        return { border: '1px solid', padding: '3px 6px', borderRadius: '34px' };
+      }
+
+      const label = typeof item === 'string' ? item : item.label || item.value;
+      const keyForColor = typeof item === 'string' ? label : item.value;
+      const color = colors[keyForColor] || '#000';
+
+      return {
+        color,
+        borderColor: color,
+        border: '0.5px solid',
+        padding: '3px 6px',
+        borderRadius: '34px',
+      };
+    };
+
+    const renderItem = (item, key) => {
+      const label = typeof item === 'string' ? item : item.label || item.value;
+      return (
+        <div key={key} className={className} style={getStyle(item)}>
+          {label}
         </div>
-      ));
+      );
+    };
+
+    try {
+      const parsed = JSON.parse(competenciesString);
+      const items = Array.isArray(parsed) ? parsed : [parsed];
+      return items.map((item, index) => renderItem(item, item.value || index));
     } catch {
       if (typeof competenciesString === 'string') {
         if (!competenciesString.includes(',')) {
           const label = competenciesString.trim();
-          return (
-            <div key={label} className={className} style={style}>
-              {label}
-            </div>
-          );
+          return renderItem(label, label);
         }
+
         return competenciesString.split(',').map((value) => {
           const label = value.trim();
-          return (
-            <div key={value} className={className} style={style}>
-              {label}
-            </div>
-          );
+          return renderItem(label, value);
         });
       }
+
       return null;
     }
   }, []);
