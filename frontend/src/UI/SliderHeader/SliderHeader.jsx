@@ -15,8 +15,8 @@ const awardsImages = [
   { src: './assets/11.svg', alt: 'award11' },
   { src: './assets/12.svg', alt: 'award12' },
   { src: './assets/13.svg', alt: 'award13' },
-  { src: './assets/14.png', alt: 'award14' },
-  { src: './assets/15.png', alt: 'award15' },
+  { src: './assets/14.svg', alt: 'award14' },
+  { src: './assets/15.svg', alt: 'award15' },
 ];
 
 const companiesImages = [
@@ -67,7 +67,7 @@ const companiesImages = [
 ];
 
 const SliderHeader = ({ isAwards }) => {
-  const [show, setShow] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const marqueeRef = useRef(null);
 
   const images = isAwards ? awardsImages : companiesImages;
@@ -75,34 +75,38 @@ const SliderHeader = ({ isAwards }) => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting) {
-          setShow(true);
-          observer.disconnect();
-        }
+        const [entry] = entries;
+        setIsVisible(entry.isIntersecting);
       },
       { threshold: 0.5 }
     );
 
-    observer.observe(marqueeRef.current);
+    if (marqueeRef.current) {
+      observer.observe(marqueeRef.current);
+    }
+
     return () => observer.disconnect();
   }, []);
 
   return (
     <div className={styles.SliderHeader}>
       <div ref={marqueeRef} className={styles.marqueeContainer}>
-        {show && (
-          <div className={styles.SliderHeader__marquee}>
-            {Array.from({ length: 15 }).flatMap((_, i) =>
-              images.map((image, index) => (
-                <div
-                  key={`${i}-${index}`}
-                  className={`${styles.SliderHeader__item} ${isAwards ? '' : styles.SliderHeader__item_companies}`}>
-                  <img src={image.src} alt={image.alt} />
-                </div>
-              ))
-            )}
-          </div>
-        )}
+        <div
+          className={`${styles.SliderHeader__marquee} ${
+            isVisible ? styles.SliderHeader__marquee_active : ''
+          }`}>
+          {Array.from({ length: 15 }).flatMap((_, i) =>
+            images.map((image, index) => (
+              <div
+                key={`${i}-${index}`}
+                className={`${styles.SliderHeader__item} ${
+                  isAwards ? '' : styles.SliderHeader__item_companies
+                }`}>
+                <img src={image.src} alt={image.alt} />
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </div>
   );
