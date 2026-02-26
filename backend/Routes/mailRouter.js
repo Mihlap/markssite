@@ -137,6 +137,7 @@ const transportPortal = nodemailer.createTransport({
   connectionTimeout: 500,
 });
 
+// будет удален /portalSubmitForm
 mailRouter.post('/portalSubmitForm', upload.array('resumeFiles', 2), (req, res) => {
 
   const formData = req.body;
@@ -177,6 +178,80 @@ mailRouter.post('/portalSubmitForm', upload.array('resumeFiles', 2), (req, res) 
     console.log(`Email отправлен: ${info.response}`);
     return res.status(200).json({ message: 'Письмо успешно отправлено' });
   });
+});
+
+mailRouter.post('/portalSubmitForm/v2', upload.array('resumeFiles', 2), async (req, res) => {
+  // Быстрый режим для просмотра UI-обработки ошибок: /portalSubmitForm/v2?forceError=true
+  if (req.query.forceError === 'true') {
+    return res.status(400).json({
+      errors: {
+        name: 'Имя уже используется',
+        city: 'Город не принят сервером',
+      },
+    });
+  }
+
+  const { name = '', phone = '', city = '', choose = '', letter = '', resume = '', title = '' } = req.body;
+  const resumeFiles = req.files;
+
+  const errors = {};
+
+  if (!name.trim()) {
+    errors.name = 'Имя обязательно';
+  } else if (name.trim().length > 50) {
+    errors.name = 'Максимум 50 символов';
+  }
+
+  const phoneRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
+  if (!phone.trim()) {
+    errors.phone = 'Телефон обязателен';
+  } else if (!phoneRegex.test(phone)) {
+    errors.phone = 'Некорректный телефон';
+  }
+
+  if (city && city.trim().length > 50) {
+    errors.city = 'Максимум 50 символов';
+  }
+
+  if (Object.keys(errors).length > 0) {
+    return res.status(400).json({ errors });
+  }
+
+  const emailBody = `
+  Имя: ${name ? name : ''}
+  Телефон: ${phone ? phone : ''}
+  ${city ? `Город: ${city}` : ''}
+  ${choose ? `Выбранное направление: ${choose}` : ''}
+  Сопроводительное письмо: ${letter ? letter : ''}
+  Ссылка на резюме/портфолио: ${resume ? resume : ''}
+`;
+
+  const mailOptions = {
+    from: process.env.EMAIL_PORTAL_USER,
+    to: process.env.EMAIL_PORTAL_USER,
+    subject: title ? `Заявка на вакансию: ${title}` : 'Заявка на вакансию',
+    text: emailBody,
+    attachments: [],
+  };
+
+  if (resumeFiles) {
+    resumeFiles.forEach((file, index) => {
+      mailOptions.attachments.push({
+        filename: file.originalname || `${index + 1}.pdf`,
+        content: file.buffer,
+      });
+      delete resumeFiles[index].buffer;
+    });
+  }
+
+  try {
+    const info = await transportPortal.sendMail(mailOptions);
+    console.log(`Email отправлен: ${info.response}`);
+    return res.status(200).json({ message: 'Письмо успешно отправлено' });
+  } catch (error) {
+    console.error('Ошибка отправки письма:', error);
+    return res.status(500).json({ message: 'Ошибка отправки письма' });
+  }
 });
 
 module.exports = mailRouter;
