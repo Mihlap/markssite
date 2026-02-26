@@ -4,6 +4,7 @@ import styles from '../CompanyHistory/CompanyHistory.module.scss';
 import headerStyles from '../CompanyHistory/CompanyHistoryHeader.module.scss';
 
 export function useCompanyHistoryHeaderIntro({
+    isDesktop = true,
     inView,
     visibleItemsLength,
     historyListRef,
@@ -22,7 +23,7 @@ export function useCompanyHistoryHeaderIntro({
     setAnimationReady,
 }) {
     useEffect(() => {
-        if (!inView) return;
+        if (!inView || !isDesktop) return;
 
         const applyOffsetsForIntro = () => {
             if (headerIntroInProgressRef.current) return;
@@ -89,6 +90,7 @@ export function useCompanyHistoryHeaderIntro({
         };
     }, [
         inView,
+        isDesktop,
         hasSplitTriggered,
         headerIntroInProgressRef,
         marksGroupRef,
@@ -97,6 +99,41 @@ export function useCompanyHistoryHeaderIntro({
         subtitleLine1Ref,
         subtitleLine2Ref,
     ]);
+
+    useEffect(() => {
+        if (isDesktop) return;
+        const headerEl = historyHeaderRef?.current;
+        const title = titleRef?.current;
+        const marksGroup = marksGroupRef?.current;
+        const subtitleLine = subtitleLineRef?.current;
+        const descLine1 = subtitleLine1Ref?.current;
+        const descLine2 = subtitleLine2Ref?.current;
+        if (!headerEl || !title) return;
+
+        const elements = [title, marksGroup, subtitleLine, descLine1, descLine2].filter(Boolean);
+        const io = new IntersectionObserver(
+            (entries) => {
+                const [e] = entries;
+                if (!e || e.isIntersecting) return;
+                const rect = headerEl.getBoundingClientRect();
+                if (rect.bottom >= 0) return;
+                elements.forEach((el) => {
+                    if (!el) return;
+                    gsap.killTweensOf(el);
+                    gsap.to(el, {
+                        x: '-100vw',
+                        opacity: 0,
+                        duration: 0.5,
+                        ease: 'power2.in',
+                        overwrite: true,
+                    });
+                });
+            },
+            { root: null, rootMargin: '0px', threshold: 0 }
+        );
+        io.observe(headerEl);
+        return () => io.disconnect();
+    }, [isDesktop, historyHeaderRef, titleRef, marksGroupRef, subtitleLineRef, subtitleLine1Ref, subtitleLine2Ref]);
 
     useEffect(() => {
         if (inView) {

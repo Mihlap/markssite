@@ -22,6 +22,7 @@ const NavBar = () => {
   const [showDropdownContent, setShowDropdownContent] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const container = useRef();
+  const burgerRef = useRef(null);
 
   // сustom hooks 
   const { pathname, hash, isCompany, isVacancyDetail, isInternship, linkBack, textBack, isHrPortal } = useHrNavMeta();
@@ -97,7 +98,10 @@ const NavBar = () => {
     });
   };
 
-  const closeMenu = () => setIsMenuOpen(false);
+  const closeMenu = () => {
+    burgerRef.current?.focus();
+    setIsMenuOpen(false);
+  };
 
   const handleSidebarNavigate = (path) => {
     if (!path) return;
@@ -262,6 +266,7 @@ const NavBar = () => {
             })}
           </div>
           <button
+            ref={burgerRef}
             type="button"
             aria-label={isMenuOpen ? 'Закрыть меню' : 'Открыть меню'}
             aria-expanded={isMenuOpen}

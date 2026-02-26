@@ -26,6 +26,7 @@ export function useWheelExitToParent({
     hasScrollToHeaderTriggered,
     returnedToSliderRef,
     headerIntroArmedRef,
+    isDesktop,
 }) {
     useEffect(() => {
         const handleWheelExitUp = (e) => {
@@ -229,10 +230,16 @@ export function useWheelExitToParent({
                 const sliderRect = sliderEl.getBoundingClientRect();
                 const sliderAbsoluteBottom = sliderRect.bottom + window.pageYOffset;
                 const bottomOffset = 60;
-                y = Math.max(0, sliderAbsoluteBottom - window.innerHeight + bottomOffset);
+                const NAV_OFFSET_MOBILE = 120;
+                const extraOffset = isDesktop ? 0 : NAV_OFFSET_MOBILE;
+                y = Math.max(0, sliderAbsoluteBottom - window.innerHeight + bottomOffset + extraOffset);
             } else if (parentEl) {
                 const r = parentEl.getBoundingClientRect();
-                y = Math.max(0, r.top + window.pageYOffset);
+                const NAV_OFFSET_MOBILE = 120;
+                const baseY = r.top + window.pageYOffset;
+                y = isDesktop
+                    ? Math.max(0, baseY)
+                    : Math.max(0, baseY - NAV_OFFSET_MOBILE);
             }
 
             const scrollDuration = isIntroActive ? 0.7 : 0.85;
@@ -250,6 +257,8 @@ export function useWheelExitToParent({
             });
 
             const textAnimationDuration = 0.6;
+            const exitXForMarks = '-100vw';
+            const exitXForOthers = isDesktop ? '100vw' : '-100vw';
             const tl = gsap.timeline({
                 defaults: { ease: 'power2.in', force3D: true, overwrite: 'auto' },
                 onComplete: () => {
@@ -268,7 +277,7 @@ export function useWheelExitToParent({
                     x: gsap.getProperty(marksGroup, 'x') || 0,
                     opacity: gsap.getProperty(marksGroup, 'opacity') || 1,
                 },
-                { x: '-100vw', opacity: 0, duration: textAnimationDuration, immediateRender: true },
+                { x: exitXForMarks, opacity: 0, duration: textAnimationDuration, immediateRender: true },
                 0
             );
 
@@ -278,7 +287,7 @@ export function useWheelExitToParent({
                     tl.fromTo(
                         el,
                         { x: gsap.getProperty(el, 'x') || 0, opacity: gsap.getProperty(el, 'opacity') || 1 },
-                        { x: '100vw', opacity: 0, duration: textAnimationDuration, immediateRender: true },
+                        { x: exitXForOthers, opacity: 0, duration: textAnimationDuration, immediateRender: true },
                         0
                     );
                 });
@@ -309,5 +318,6 @@ export function useWheelExitToParent({
         subtitleLineRef,
         subtitleLine1Ref,
         subtitleLine2Ref,
+        isDesktop,
     ]);
 }

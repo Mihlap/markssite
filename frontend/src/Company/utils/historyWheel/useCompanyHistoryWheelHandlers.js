@@ -23,6 +23,7 @@ export function useCompanyHistoryWheelHandlers(props) {
         sliderRef,
         parentStartRef,
         onExitToParentTop,
+        isDesktop,
         cardsFocusInProgressRef,
         exitToParentInProgressRef,
         hasScrollToCardsTriggered,
@@ -101,11 +102,13 @@ export function useCompanyHistoryWheelHandlers(props) {
         lockYRef,
         applyingRef,
         vTweenRef,
+        isDesktop,
     });
 
     useWheelExitToParent({
         sectionRef,
         cardsFocused,
+        historyListRef,
         historyHeaderRef,
         historyTagRef,
         marksGroupRef,
@@ -125,9 +128,11 @@ export function useCompanyHistoryWheelHandlers(props) {
         hasScrollToHeaderTriggered,
         returnedToSliderRef,
         headerIntroArmedRef,
+        isDesktop,
     });
 
     useWheelFromSlider({
+        isDesktop,
         sectionRef,
         cardsFocused,
         sliderRef,
@@ -162,5 +167,6 @@ export function useCompanyHistoryWheelHandlers(props) {
         hideHistoryTag,
         showAndPlaceHistoryTag,
         isModalOpen,
+        isDesktop,
     });
 }

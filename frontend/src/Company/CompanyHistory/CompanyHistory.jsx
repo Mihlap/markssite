@@ -74,6 +74,10 @@ export default function CompanyHistory({
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedHistoryItem, setSelectedHistoryItem] = useState(null);
 
+    const [isDesktop, setIsDesktop] = useState(() =>
+        typeof window !== 'undefined' ? window.innerWidth > 1024 : true
+    );
+
     const [viewRef, inView] = useInView({ threshold: 0.2, triggerOnce: true });
     const [timelineVisRef, timelineInView] = useInView({
         threshold: 0.15,
@@ -86,10 +90,21 @@ export default function CompanyHistory({
     const prevSectionInViewRef = useRef(false);
     const hashNavigationRef = useRef(false);
 
-    useEffect(() => {       
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+
+        const handleResize = () => {
+            setIsDesktop(window.innerWidth > 1024);
+        };
+
+        window.addEventListener('resize', handleResize, { passive: true });
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    useEffect(() => {
         const handleHashChange = () => {
             if (window.location.hash === '#history' || window.location.hash === '#section1') {
-                hashNavigationRef.current = true;           
+                hashNavigationRef.current = true;
                 setTimeout(() => {
                     hashNavigationRef.current = false;
                 }, 100);
@@ -97,7 +112,7 @@ export default function CompanyHistory({
         };
 
         window.addEventListener('hashchange', handleHashChange);
-      
+
         if (window.location.hash === '#history' || window.location.hash === '#section1') {
             hashNavigationRef.current = true;
             setTimeout(() => {
@@ -249,6 +264,7 @@ export default function CompanyHistory({
     }, [dispatch]);
 
     useCompanyHistoryHeaderIntro({
+        isDesktop,
         inView,
         visibleItemsLength: visibleItems.length,
         historyListRef,
@@ -351,6 +367,7 @@ export default function CompanyHistory({
         showAndPlaceHistoryTag,
         horizontalOffsetRef,
         isModalOpen,
+        isDesktop,
     });
 
     useEffect(() => {
@@ -373,37 +390,37 @@ export default function CompanyHistory({
         const wasNotVisible = !prevSectionInViewRef.current;
         const isNowVisible = sectionInView;
         const becameVisible = wasNotVisible && isNowVisible;
-   
+
         const title = titleRef.current;
         const marksGroup = marksGroupRef.current;
-        const hasActiveAnimation = title?.classList.contains(headerStyles.animate) || 
-                                   marksGroup?.classList.contains(headerStyles.animate);
-      
+        const hasActiveAnimation = title?.classList.contains(headerStyles.animate) ||
+            marksGroup?.classList.contains(headerStyles.animate);
+
         const container = timelineWrapperRef.current;
-        const hasHorizontalScroll = container && Math.abs(horizontalOffsetRef.current) > 0;
-        const needsReset = cardsFocused || hasHorizontalScroll || 
-                          (becameVisible && hasActiveAnimation) ||
-                          (hashNavigationRef.current && sectionInView && hasActiveAnimation);
+
+        const needsReset =
+            (becameVisible && hasActiveAnimation) ||
+            (hashNavigationRef.current && sectionInView && hasActiveAnimation);
 
         if (needsReset && (becameVisible || (hashNavigationRef.current && sectionInView))) {
-           
+
             hideYearsScale?.(true, { y: 40 });
-           
+
             if (container) {
                 gsap.killTweensOf(container);
                 gsap.set(container, { x: 0, clearProps: 'transform' });
             }
             horizontalOffsetRef.current = 0;
-         
+
             if (cardsFocused && historyListRef.current) {
                 exitCardsFocusSilent?.(historyListRef.current);
             }
-          
+
             const subtitleLine = subtitleLineRef.current;
             const descLine1 = subtitleLine1Ref.current;
             const descLine2 = subtitleLine2Ref.current;
 
-            if (title || marksGroup || subtitleLine || descLine1 || descLine2) {          
+            if (title || marksGroup || subtitleLine || descLine1 || descLine2) {
                 [title, marksGroup, subtitleLine, descLine1, descLine2].forEach((el) => {
                     if (!el) return;
                     gsap.killTweensOf(el);
@@ -434,7 +451,7 @@ export default function CompanyHistory({
                     descLine2.style.transform = 'translateX(100vw)';
                 }
             }
-         
+
             hasScrollToCardsTriggered.current = false;
             hasScrollToHeaderTriggered.current = false;
             hasRestoreTriggered.current = false;
@@ -442,13 +459,13 @@ export default function CompanyHistory({
             headerIntroInProgressRef.current = false;
             returnedToSliderRef.current = false;
             cardsIntroTriggeredRef.current = false;
-     
+
             requestAnimationFrame(() => {
                 const headerEl = historyHeaderRef.current;
                 if (headerEl) {
                     const headerRect = headerEl.getBoundingClientRect();
                     const targetY = Math.max(0, headerRect.top + window.pageYOffset);
-                    
+
                     gsap.killTweensOf(window);
                     gsap.to(window, {
                         duration: 0.6,
@@ -456,7 +473,7 @@ export default function CompanyHistory({
                         overwrite: 'auto',
                         scrollTo: { y: targetY, autoKill: false },
                         data: { tag: 'RESET_TO_HEADER' },
-                        onComplete: () => {                       
+                        onComplete: () => {
                             requestAnimationFrame(() => {
                                 if (title) title.classList.add(headerStyles.animate);
                                 if (marksGroup) marksGroup.classList.add(headerStyles.animate);
@@ -469,7 +486,7 @@ export default function CompanyHistory({
                 }
             });
         }
-     
+
         prevSectionInViewRef.current = sectionInView;
     }, [sectionInView, cardsFocused, historyHeaderRef, historyListRef, timelineWrapperRef, exitCardsFocusSilent, horizontalOffsetRef, hideYearsScale, titleRef, marksGroupRef, subtitleLineRef, subtitleLine1Ref, subtitleLine2Ref]);
 
