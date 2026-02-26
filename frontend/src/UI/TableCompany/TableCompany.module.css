@@ -17,7 +17,8 @@
 }
 
 .visible .tableWrapper {
-  max-height: 1800px;
+  max-height: 9999px;
+  overflow: visible;
 }
 
 .tableStyle {
@@ -150,7 +151,8 @@
   }
 
   .visible .tableWrapper {
-    max-height: 1730px;
+    max-height: 9999px;
+    overflow: visible;
   }
 
   .slideDown {
