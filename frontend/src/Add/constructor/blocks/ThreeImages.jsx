@@ -13,9 +13,12 @@ export default function ThreeImages({ control, index, onRemove }) {
         name={`constructorBlocks.${index}.image`}
         control={control}
         render={
-          ({ field: { onChange, value } }) => (
+          ({ field: { onChange, value } }) => {
+            const currentCount = value?.length || 0;
+            const remaining = 3 - currentCount;
+            return (
             <>
-              {value?.length !== 3 && (
+              {currentCount < 3 && (
                 <UiMarksInput
                   type="file"
                   color="salmon"
@@ -25,25 +28,27 @@ export default function ThreeImages({ control, index, onRemove }) {
                   multiple
                   inputRef={imageRef}
                   onChange={(e) => {
-                    const files = Array.from(e.target.files).slice(0, 3);
-                    onChange(files.length > 0 ? files : []);
+                    const newFiles = Array.from(e.target.files).slice(0, remaining);
+                    const existing = value || [];
+                    onChange([...existing, ...newFiles].slice(0, 3));
+                    if (imageRef.current) imageRef.current.value = '';
                   }}
-                      />
-                  )}
+                />
+              )}
               <UiPhotoPreview
                 files={value}
                 variant="grid-3"
-                label={value?.length === 3 ? 'Блок 3 картинки' : undefined}
+                label={currentCount === 3 ? 'Блок 3 картинки' : undefined}
                 color="salmon"
                 onRemove={(i) => {
                   const newFiles = value.filter((_, idx) => idx !== i);
                   onChange(newFiles);
                   if (newFiles.length === 0 && imageRef.current) imageRef.current.value = '';
                 }}
-                customStyles={value?.length !== 3 ? { paddingTop: '0.5rem' } : null}
+                customStyles={currentCount < 3 ? { paddingTop: '0.5rem' } : null}
               />
             </>
-          )
+          );}
         }
       />
     </UiMarksGrayWrap>

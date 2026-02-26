@@ -12,9 +12,12 @@ export default function Slider({ control, index, onRemove }) {
       <Controller
         name={`constructorBlocks.${index}.image`}
         control={control}
-        render={({ field: { onChange, value } }) => (
+        render={({ field: { onChange, value } }) => {
+          const currentCount = value?.length || 0;
+          const remaining = 8 - currentCount;
+          return (
           <>
-            {value?.length !== 8 && (
+            {currentCount < 8 && (
               <UiMarksInput
                 type="file"
                 color="salmon"
@@ -24,25 +27,27 @@ export default function Slider({ control, index, onRemove }) {
                 multiple
                 inputRef={imageRef}
                 onChange={(e) => {
-                  const files = Array.from(e.target.files).slice(0, 8);
-                  onChange(files.length > 0 ? files : []);
+                  const newFiles = Array.from(e.target.files).slice(0, remaining);
+                  const existing = value || [];
+                  onChange([...existing, ...newFiles].slice(0, 8));
+                  if (imageRef.current) imageRef.current.value = '';
                 }}
               />
             )}
             <UiPhotoPreview
               files={value}
               variant="grid-8"
-              label={value?.length === 8 ? 'Слайдер *допускается загрузка 8ми изображений' : undefined}
+              label={currentCount === 8 ? 'Слайдер *допускается загрузка 8ми изображений' : undefined}
               color="salmon"
               onRemove={(i) => {
                 const newFiles = value.filter((_, idx) => idx !== i);
                 onChange(newFiles);
                 if (newFiles.length === 0 && imageRef.current) imageRef.current.value = '';
               }}
-              customStyles={value?.length !== 8 ? { paddingTop: '0.5rem' } : null}
+              customStyles={currentCount < 8 ? { paddingTop: '0.5rem' } : null}
             />
           </>
-        )}
+        );}}
       />
     </UiMarksGrayWrap>
   );

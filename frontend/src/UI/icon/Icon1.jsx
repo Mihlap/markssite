@@ -3,16 +3,16 @@ const Icon1 = () => (
     <path
       d="M0.666748 0.666016L6.66675 6.66602"
       stroke="#27292F"
-      stroke-width="1.33333"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.33333"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M6.66675 0.666016L0.666748 6.66602"
       stroke="#27292F"
-      stroke-width="1.33333"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.33333"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );

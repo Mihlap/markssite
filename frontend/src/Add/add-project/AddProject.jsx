@@ -12,11 +12,11 @@ import { fetchToggleStateAsync, updateToggleStateAsync } from '../../store/Slice
 import LoadingModal from './loading/LoadingModal';
 import Edit from '../icon/Edit.svg';
 import { UiMarksButton, UiMarksDialog } from '../ui';
-import AddForm from './addForm/AddForm';
+import ProjectForm from './form/ProjectForm';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
-export default function AddProject({ user }) { 
+export default function AddProject({ user }) {
   const dispatch = useDispatch();
   const project = useSelector((state) => state.project.projects);
   const isActiveForButton1 = useSelector((state) => state.toggle.isActiveForButton1);
@@ -30,6 +30,7 @@ export default function AddProject({ user }) {
   const [editProjectData, setEditProjectData] = useState(null);
   const [isOpen, setIsOpen] = React.useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
+  const [editDataForNewForm, setEditDataForNewForm] = useState(null);
 
   const isMountedRef = useRef(true);
   const updateModalBlockHeight = useCallback(() => {
@@ -110,6 +111,16 @@ export default function AddProject({ user }) {
     [project]
   );
 
+  // Handle edit with the new ProjectForm
+  const handleEditWithNewForm = useCallback(
+    (id) => {
+      const projectToEdit = project.find((el) => el.id === id);
+      setEditDataForNewForm(projectToEdit);
+      setIsOpen(true);
+    },
+    [project]
+  );
+
   const handleFormDelete = useCallback(
     (formId) => {
       dispatch(deleteForm(formId));
@@ -135,7 +146,6 @@ export default function AddProject({ user }) {
   const sortedProjects = useMemo(() => {
     return [...project];
   }, [project]);
-
 
   return (
     <section className={styles.card_components_admin}>
@@ -172,7 +182,7 @@ export default function AddProject({ user }) {
                   </g>
                 </svg>
               </div>
-              <div className={styles.card_components_admin__button_text}>Добавить новый проект</div>
+              <div className={styles.card_components_admin__button_text}>old form</div>
             </button>
           </div>
           <UiMarksButton defaultStyle="blue" size="large" icon onClick={() => setIsOpen(true)}>
@@ -250,7 +260,7 @@ export default function AddProject({ user }) {
                                 </div>
                               ) : null}
                               {user?.name === 'obezyankaa' || user?.name === 'manager' || user?.name === 'Pokemon' ? (
-                                <div className={styles.edit_block} onClick={() => handleEditClick(el.id)}>
+                                <div className={styles.edit_block} onClick={() => handleEditWithNewForm(el.id)}>
                                   <button className={styles.buttom_edit}>
                                     <label htmlFor="edit" className={styles.label}>
                                       <div className={`${styles.wrapper}`}>
@@ -318,12 +328,21 @@ export default function AddProject({ user }) {
       </div>
       <UiMarksDialog
         isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        title="Новый проект"
+        onClose={() => {
+          setIsOpen(false);
+          setEditDataForNewForm(null);
+        }}
+        title={editDataForNewForm ? 'Редактирование проекта' : 'Новый проект'}
         isSaveDisabled={!isFormValid}
-        onSave={() => document.getElementById('add-form')?.requestSubmit()}
-      >
-        <AddForm onValidityChange={setIsFormValid} />
+        onSave={() => document.getElementById('add-form')?.requestSubmit()}>
+        <ProjectForm
+          onValidityChange={setIsFormValid}
+          editProjectData={editDataForNewForm}
+          onSuccess={() => {
+            setIsOpen(false);
+            setEditDataForNewForm(null);
+          }}
+        />
       </UiMarksDialog>
     </section>
   );
