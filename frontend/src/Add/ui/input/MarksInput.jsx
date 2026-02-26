@@ -28,8 +28,6 @@ const MarksInput = forwardRef(function MarksInput({
   if (type === 'file') {
     const colorClass = styles[`file__button_${color}`] || styles.file__button_blue;
 
-    console.log(color);
-
     return (
       <div className={`${styles.file} ${className || ''}`}>
         {label && (

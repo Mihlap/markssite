@@ -1,5 +1,8 @@
 import React, { useRef, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
+import { transliterate } from 'transliteration';
+import { fetchProject } from '../../../store/Slice/projectSlice';
 import { UiMarksInput, UiMarksSelect, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
 import { monthOptions, yearOptions, typesСonstruction } from '../FormAddEditProject/utils/Time';
 import {
@@ -16,8 +19,25 @@ import ConstructorMain from '../../constructor/ConstructorMain';
 import { project_items } from '../../constructor/config/config';
 import { BLOCK_COMPONENTS } from '../../constructor/blocks';
 
+// Generate unique filename to avoid special characters and duplicates
+function generateUniqueName(originalName) {
+  const timestamp = Date.now();
+  const randomNum = Math.floor(Math.random() * 10000);
+  const fileExtension = originalName.split('.').pop();
+  const sliceOfOriginalName = transliterate(originalName.slice(0, 5));
+  const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
+  return newName;
+}
+
+// Rename file with unique name
+function renameFile(file) {
+  const uniqueName = generateUniqueName(file.name);
+  return new File([file], uniqueName, { type: file.type });
+}
+
 
 export default function AddForm({ onValidityChange }) {
+  const dispatch = useDispatch();
   const photoAvaRef = useRef(null);
   const dropPhotoRef = useRef(null);
   const imageOpenRef = useRef(null);
@@ -47,73 +67,88 @@ export default function AddForm({ onValidityChange }) {
     onValidityChange?.(isValid);
   }, [isValid, onValidityChange]);
 
-  const onSubmit = async (data) => {
-    const formData = new FormData();
+  const toOldFormat = (block) => {
+    // Helper to rename files array
+    const renameFiles = (files) => {
+      if (!Array.isArray(files)) return [];
+      return files.map((file) => (file instanceof File ? renameFile(file) : file));
+    };
 
-    // Текстовые поля
-    formData.append('title', data.title || '');
-    formData.append('selectCompetencies', Array.isArray(data.selectCompetencies)
-      ? data.selectCompetencies.map((o) => o.label).join(',')
-      : '');
-    formData.append('countryCity', data.countryCity || '');
-    formData.append('monthYear', [data.month?.value, data.year?.value].filter(Boolean).join(' '));
-    formData.append('viewConstruction', Array.isArray(data.viewConstruction)
-      ? data.viewConstruction.map((o) => o.label).join(',')
-      : '');
-    formData.append('titleTextBlock', data.titleTextBlock || '');
-    formData.append('descriptionProject', data.descriptionProject || '');
-    formData.append('totalArea', data.totalArea || '');
-    formData.append('siteArea', data.siteArea || '');
-    formData.append('floors', data.floors || '');
-    formData.append('altitude', data.altitude || '');
-    formData.append('constructionVolume', data.constructionVolume || '');
-    formData.append('numberOfLanes', data.numberOfLanes || '');
-    formData.append('long', data.long || '');
-    formData.append('location', data.location || '');
-    formData.append('degreeParticipation', Array.isArray(data.degreeParticipation)
-      ? data.degreeParticipation.map((o) => o.label).join(',')
-      : '');
-    formData.append('statusObject', data.statusObject?.label || '');
-    formData.append('customer', data.customer || '');
-    formData.append('publication', data.publication || '');
-    formData.append('linkToPublication', data.linkToPublication || '');
-    formData.append('publicationTwo', data.publicationTwo || '');
-    formData.append('linkToPublicationTwo', data.linkToPublicationTwo || '');
-    formData.append('awards', data.awards?.label || '');
-    formData.append('headingTextBlock', data.headingTextBlock || '');
-    formData.append('textBlock', data.textBlock || '');
-
-    // Файлы
-    if (data.photoAva?.[0]) formData.append('photoAva', data.photoAva[0]);
-    (data.dropPhoto || []).forEach((file) => formData.append('dropPhoto', file));
-    if (data.imageOpen?.[0]) formData.append('imageOpen', data.imageOpen[0]);
-    if (data.photo?.[0]) formData.append('imageClose', data.photo[0]);
-
-    // Блоки конструктора
-    const constructorBlocks = data.constructorBlocks || [];
-    const blocksForJSON = constructorBlocks.map((block) => {
-      if (block.type === 'imageWithDesc' && block.image?.[0] instanceof File) {
-        return { ...block, image: block.image[0].name };
-      }
-      return block;
-    });
-    formData.append('constructorBlocksJSON', JSON.stringify(blocksForJSON));
-    constructorBlocks.forEach((block) => {
-      if (block.type === 'imageWithDesc' && block.image?.[0] instanceof File) {
-        formData.append('constructorImages', block.image[0]);
-      }
-    });
-
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_SERVER_HOST}/api-project/postzapros-new`,
-        { method: 'POST', body: formData }
-      );
-      const result = await response.json();
-      console.log('Ответ сервера:', result);
-    } catch (error) {
-      console.error('Ошибка отправки формы:', error);
+    switch (block.type) {
+      case 'imageWithDesc':
+        return [
+          { type: 'file', label: 'Картинка с описанием', value: block.image?.[0] instanceof File ? [renameFile(block.image[0])] : [] },
+          { type: 'text', label: 'Описание картинки', value: block.description || '' },
+        ];
+      case 'titleWithDesc':
+        return [
+          { type: 'text', label: 'Заголовок', value: block.title || '' },
+          { type: 'text', label: 'Текстовый блок', value: block.description || '' },
+        ];
+      case 'video':
+        return [
+          { type: 'text', label: 'Ссылка на видеоролик', value: block.description || '' },
+        ];
+      case 'threeImages':
+        return [
+          { type: 'file', label: 'Блок 3 картинки', value: renameFiles(block.image) },
+        ];
+      case 'twoImages':
+        return [
+          { type: 'file', label: 'Блок 2е вертикальные картинки', value: renameFiles(block.image) },
+        ];
+      case 'slider':
+        return [
+          { type: 'file', label: 'Слайдер *допускается загрузка 8ми изображений', value: renameFiles(block.image) },
+        ];
+      default:
+        return [];
     }
+  };
+
+  const onSubmit = async (data) => {
+    const oldFormatBlocks = (data.constructorBlocks || []).map(toOldFormat);
+
+    const formattedData = {
+      title: data.title || '',
+      selectCompetencies: Array.isArray(data.selectCompetencies)
+        ? data.selectCompetencies.map((o) => o.label).join(',')
+        : '',
+      countryCity: data.countryCity || '',
+      monthYear: [data.month?.value, data.year?.value].filter(Boolean).join(' '),
+      viewConstruction: Array.isArray(data.viewConstruction)
+        ? data.viewConstruction.map((o) => o.label).join(',')
+        : '',
+      titleTextBlock: data.titleTextBlock || '',
+      descriptionProject: data.descriptionProject || '',
+      totalArea: data.totalArea || '',
+      siteArea: data.siteArea || '',
+      floors: data.floors || '',
+      altitude: data.altitude || '',
+      constructionVolume: data.constructionVolume || '',
+      numberOfLanes: data.numberOfLanes || '',
+      long: data.long || '',
+      location: data.location || '',
+      degreeParticipation: Array.isArray(data.degreeParticipation)
+        ? data.degreeParticipation.map((o) => o.label).join(',')
+        : '',
+      statusObject: data.statusObject?.label || '',
+      customer: data.customer || '',
+      publication: data.publication || '',
+      linkToPublication: data.linkToPublication || '',
+      publicationTwo: data.publicationTwo || '',
+      linkToPublicationTwo: data.linkToPublicationTwo || '',
+      awards: data.awards?.label || '',
+      headingTextBlock: data.headingTextBlock || '',
+      textBlock: data.textBlock || '',
+      photoAva: data.photoAva || [],
+      dropPhoto: data.dropPhoto || [],
+      imageOpen: data.imageOpen || [],
+      imageClose: data.photo || [],
+      dynamicBlocks: oldFormatBlocks,
+    };
+
+    dispatch(fetchProject(formattedData));
   };
 
   return (
@@ -422,8 +457,8 @@ export default function AddForm({ onValidityChange }) {
               control={control}
               render={({ field }) => (
                 <UiMarksInput
-                  label="Ссылк на статью"
-                  placeholder="Ссылк на статью"
+                  label="Ссылка на статью"
+                  placeholder="Ссылка на статью"
                   name="linkToPublication"
                   {...field}
                 />
@@ -434,8 +469,8 @@ export default function AddForm({ onValidityChange }) {
               control={control}
               render={({ field }) => (
                 <UiMarksInput
-                  label="Ссылк на статью"
-                  placeholder="Ссылк на статью2"
+                  label="Ссылка на статью"
+                  placeholder="Ссылка на статью2"
                   name="linkToPublicationTwo"
                   {...field}
                 />
