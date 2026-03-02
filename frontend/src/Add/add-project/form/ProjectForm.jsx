@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { DevTool } from '@hookform/devtools';
 import { fetchProject, setProjectId } from '../../../store/Slice/projectSlice';
-import { UiMarksInput, UiMarksSelect, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
+import { UiMarksInput, UiMarksSelect, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap, UiMarksSpinner } from '../../ui';
 import { monthOptions, yearOptions, typesСonstruction } from '../FormAddEditProject/utils/Time';
 import renameFile from './function/renameFile';
 import {
@@ -22,7 +22,7 @@ import { BLOCK_COMPONENTS } from '../../constructor/blocks';
 import { convertOldToNewFormat } from './function/convertOldToNewFormat';
 
 
-export default function ProjectForm({ onValidityChange, editProjectData, onSuccess }) {
+export default function ProjectForm({ onValidityChange, onLoadingChange, editProjectData, onSuccess }) {
   const dispatch = useDispatch();
   const photoAvaRef = useRef(null);
   const dropPhotoRef = useRef(null);
@@ -36,7 +36,7 @@ export default function ProjectForm({ onValidityChange, editProjectData, onSucce
     handleSubmit,
     reset,
     watch,
-    formState: { isValid },
+    formState: { isValid, isSubmitting },
   } = useForm({
     mode: 'onChange',
   });
@@ -56,6 +56,10 @@ export default function ProjectForm({ onValidityChange, editProjectData, onSucce
   useEffect(() => {
     onValidityChange?.(isValid);
   }, [isValid, onValidityChange]);
+
+  useEffect(() => {
+    onLoadingChange?.(isSubmitting);
+  }, [isSubmitting, onLoadingChange]);
 
   // Populate form when editing or reset for new project
   useEffect(() => {
