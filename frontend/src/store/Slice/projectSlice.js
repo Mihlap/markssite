@@ -149,7 +149,20 @@ export const fetchProject = createAsyncThunk('project/fetchProject', async (form
 
       if (value !== null && typeof value === 'object') {
         if (key === 'photoAva' && value?.length > 0) {
-          formData.append('photoAva', value[0]);
+          if (value[0] instanceof File) {
+            formData.append('photoAva', value[0]);
+          } else {
+            // Existing URL — send under the DB field name the backend expects
+            formData.append('imageProject', value[0]);
+          }
+        } else if (key === 'dropPhoto' && value?.length > 0) {
+          const existingUrls = value.filter((f) => !(f instanceof File));
+          const newFiles = value.filter((f) => f instanceof File);
+          if (existingUrls.length > 0) {
+            // Send existing URLs as a comma-separated string under 'imageTitle'
+            formData.append('imageTitle', existingUrls.join(','));
+          }
+          newFiles.forEach((file) => formData.append('dropPhoto', file));
         } else if (key === 'imageOpen' && value?.length > 0) {
           formData.append('imageOpen', value[0]);
         } else if (key === 'dynamicBlocks' && value?.length > 0) {

@@ -120,6 +120,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@figma/code-connect": "^1.1.0",
+    "@hookform/devtools": "^4.4.0",
     "autoprefixer": "^10.4.20",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "cross-env": "^10.1.0",
