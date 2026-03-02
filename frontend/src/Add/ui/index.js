@@ -6,6 +6,7 @@ export { default as UiMarksSelect } from '../../UI/Select/MarksSelect';
 export { default as UiMarksTextarea } from './textarea/MarksTextarea';
 export { default as UiMarksGrayWrap } from './wrap/MarksGrayWrap';
 export { default as UiMarksConstructorWrap } from './wrapConstructor/MarksConstructorWrap';
+export { default as UiMarksSpinner } from './spiner/MarksSpinner';
 
 // --- ICON ---
 export { default as ClipIcon } from './icon/ClipIcon';

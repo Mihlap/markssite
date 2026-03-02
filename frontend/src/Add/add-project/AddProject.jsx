@@ -7,7 +7,6 @@ import { deleteForm, getFetchForm } from '../../store/Slice/projectSlice';
 import { fetchToggleStateAsync, updateToggleStateAsync } from '../../store/Slice/toggleSlice';
 
 // import Loading from "./loading/Loading";
-import LoadingModal from './loading/LoadingModal';
 import Edit from '../icon/Edit.svg';
 import { UiMarksButton, UiMarksDialog } from '../ui';
 import ProjectForm from './form/ProjectForm';
@@ -18,13 +17,13 @@ export default function AddProject({ user }) {
   const dispatch = useDispatch();
   const project = useSelector((state) => state.project.projects);
   const isActiveForButton1 = useSelector((state) => state.toggle.isActiveForButton1);
-  const loading = useSelector((state) => state.project.loading);
   const error = useSelector((state) => state.project.error);
   const [isCopied, setIsCopied] = useState(false);
   const [copiedId, setCopiedId] = useState('');
   const [deleteModalState, setDeleteModalState] = useState({});
   const [isOpen, setIsOpen] = React.useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
+  const [isFormLoading, setIsFormLoading] = useState(false);
   const [editDataForNewForm, setEditDataForNewForm] = useState(null);
 
   const isMountedRef = useRef(true);
@@ -33,10 +32,6 @@ export default function AddProject({ user }) {
     dispatch(getFetchForm());
     dispatch(fetchToggleStateAsync());
   }, [dispatch]);
-
-  const checkIsMounted = () => {
-    isMountedRef.current = false;
-  };
 
   const handleDeleteModalOpen = useCallback((id) => {
     setDeleteModalState((prevState) => ({
@@ -114,17 +109,14 @@ export default function AddProject({ user }) {
             </div>
           </div>
         </div>
-          <UiMarksButton defaultStyle="blue" size="large" icon onClick={() => setIsOpen(true)}>
-            Добавить новый проект
-          </UiMarksButton>
+        <UiMarksButton defaultStyle="blue" size="large" icon onClick={() => setIsOpen(true)}>
+          Добавить новый проект
+        </UiMarksButton>
         <div className={styles.card_components_admin__section_map}>
           {error ? (
             <div className={styles.card_components_admin__errore_div}>
               Нажмите на кнопку Проекты, <span>это позволит серверу сделать запрос ещё раз.</span>
             </div>
-          ) : loading ? (
-            // <Loading />
-            <LoadingModal />
           ) : (
             <>
               {project && project.length === 0 ? (
@@ -246,9 +238,12 @@ export default function AddProject({ user }) {
         }}
         title={editDataForNewForm ? 'Редактирование проекта' : 'Новый проект'}
         isSaveDisabled={!isFormValid}
-        onSave={() => document.getElementById('add-form')?.requestSubmit()}>
+        onSave={() => document.getElementById('add-form')?.requestSubmit()}
+        isLoading={isFormLoading}
+        nameSpinner="Проект">
         <ProjectForm
           onValidityChange={setIsFormValid}
+          onLoadingChange={setIsFormLoading}
           editProjectData={editDataForNewForm}
           onSuccess={() => {
             setIsOpen(false);

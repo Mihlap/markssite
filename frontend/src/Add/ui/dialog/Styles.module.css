@@ -16,6 +16,13 @@
     /* Add open-specific styles or animations */
 }
 
+.dialogLoading {
+    width: 534px;
+    height: 320px;
+    overflow: hidden;
+    padding: 0;
+}
+
 .dialog::backdrop {
 background-color: var(--black-1D2E43);
 opacity: 0.43;
