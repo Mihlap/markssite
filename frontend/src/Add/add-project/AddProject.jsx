@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import styles from '../style/style-card.module.scss';
-import FormAddProject from './FormAddEditProject/FormAddProject';
-import FormEditProject from './FormAddEditProject/FormEditProject';
 // import cat from "../img/default-photo.jpeg";
 import cat from '../../img/default-photo.jpeg';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,51 +20,23 @@ export default function AddProject({ user }) {
   const isActiveForButton1 = useSelector((state) => state.toggle.isActiveForButton1);
   const loading = useSelector((state) => state.project.loading);
   const error = useSelector((state) => state.project.error);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [copiedId, setCopiedId] = useState('');
   const [deleteModalState, setDeleteModalState] = useState({});
-  const [modalBlockHeight, setModalBlockHeight] = useState('auto');
-  const [editProjectData, setEditProjectData] = useState(null);
   const [isOpen, setIsOpen] = React.useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
   const [editDataForNewForm, setEditDataForNewForm] = useState(null);
 
   const isMountedRef = useRef(true);
-  const updateModalBlockHeight = useCallback(() => {
-    const windowHeight = window.innerHeight;
-    const maxHeight = Math.min(windowHeight - 100, 1900);
-    setModalBlockHeight(`${maxHeight}px`);
-  }, []);
 
   useEffect(() => {
     dispatch(getFetchForm());
     dispatch(fetchToggleStateAsync());
   }, [dispatch]);
 
-  useEffect(() => {
-    updateModalBlockHeight();
-    window.addEventListener('resize', updateModalBlockHeight);
-    return () => {
-      window.removeEventListener('resize', updateModalBlockHeight);
-      checkIsMounted();
-    };
-  }, []);
-
   const checkIsMounted = () => {
     isMountedRef.current = false;
   };
-
-  const handleOpenModal = useCallback(() => {
-    setIsModalOpen(true);
-    if (editProjectData) {
-      setEditProjectData(null);
-    }
-  }, [editProjectData]);
-
-  const handleCloseModal = useCallback(() => {
-    setIsModalOpen(false);
-  }, []);
 
   const handleDeleteModalOpen = useCallback((id) => {
     setDeleteModalState((prevState) => ({
@@ -95,21 +65,6 @@ export default function AddProject({ user }) {
     }
   }, []);
 
-  const handleEditClick = useCallback(
-    async (id) => {
-      try {
-        await navigator.clipboard.writeText(id);
-        if (isMountedRef.current) {
-          const projectToEdit = project.find((el) => el.id === id);
-          setEditProjectData(projectToEdit);
-          setIsModalOpen(true);
-        }
-      } catch (err) {
-        console.error('Unable to copy project to clipboard:', err);
-      }
-    },
-    [project]
-  );
 
   // Handle edit with the new ProjectForm
   const handleEditWithNewForm = useCallback(
@@ -159,52 +114,9 @@ export default function AddProject({ user }) {
             </div>
           </div>
         </div>
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <div className={styles.card_components_admin__button_block} onClick={handleOpenModal}>
-            <button className={styles.card_components_admin__button}>
-              <div>
-                <svg
-                  className={styles.card_components_admin__icon}
-                  width="41"
-                  height="40"
-                  viewBox="0 0 41 40"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <g id="icon">
-                    <circle id="Ellipse 4" cx="20.5" cy="20" r="20" fill="#F6F6F6" />
-                    <path
-                      id="Vector 10"
-                      d="M10.5 20H20.5M30.5 20H20.5M20.5 20V10M20.5 20V30"
-                      stroke="#75BBFD"
-                      strokeWidth="2"
-                      strokeLinecap="square"
-                    />
-                  </g>
-                </svg>
-              </div>
-              <div className={styles.card_components_admin__button_text}>old form</div>
-            </button>
-          </div>
           <UiMarksButton defaultStyle="blue" size="large" icon onClick={() => setIsOpen(true)}>
             Добавить новый проект
           </UiMarksButton>
-        </div>
-        {isModalOpen && (
-          <div className={styles.card_components_admin__modal_container}>
-            <div style={{ maxHeight: modalBlockHeight }} className={styles.card_components_admin__modal_block}>
-              {editProjectData ? (
-                <FormEditProject
-                  setIsModalOpen={setIsModalOpen}
-                  editProjectData={editProjectData}
-                  className={styles.formAddProjectClass}
-                />
-              ) : (
-                <FormAddProject className={styles.formAddProjectClass} setIsModalOpen={setIsModalOpen} />
-              )}
-              <button className={styles.card_components_admin__close_button} onClick={handleCloseModal}></button>
-            </div>
-          </div>
-        )}
         <div className={styles.card_components_admin__section_map}>
           {error ? (
             <div className={styles.card_components_admin__errore_div}>
