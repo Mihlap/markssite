@@ -165,7 +165,10 @@ export const fetchProject = createAsyncThunk('project/fetchProject', async (form
           newFiles.forEach((file) => formData.append('dropPhoto', file));
         } else if (key === 'imageOpen' && value?.length > 0) {
           formData.append('imageOpen', value[0]);
-        } else if (key === 'dynamicBlocks' && value?.length > 0) {
+        } else if (key === 'imageClose' && value?.length > 0) {
+          formData.append('imageClose', value[0]);
+        }
+        else if (key === 'dynamicBlocks' && value?.length > 0) {
           let photosArray = [];
 
           value.forEach((outerObj) => {
