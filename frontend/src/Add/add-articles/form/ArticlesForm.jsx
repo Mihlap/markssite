@@ -4,9 +4,13 @@ import { DevTool } from '@hookform/devtools';
 import { fetchProject, setProjectId } from '../../../store/Slice/projectSlice';
 import { UiMarksInput, UiMarksSelect, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
 import { renameFile, convertOldToNewFormat } from '../../function/index';
-import ConstructorMain from '../../constructor/ConstructorMain';
-import s from './Styles.module.css';
 import { tabFilterOptions } from './const/tabFilterSelection';
+import ConstructorMain from '../../constructor/ConstructorMain';
+
+import { publications_news_items } from '../../constructor/config/config';
+import { BLOCK_COMPONENTS } from '../../constructor/blocks';
+
+import s from './Styles.module.css';
 
 export default function ArticlesForm({ onValidityChange, onLoadingChange, editProjectData, onSuccess }) {
     const photoAvaRef = useRef(null);
@@ -23,6 +27,15 @@ export default function ArticlesForm({ onValidityChange, onLoadingChange, editPr
   } = useForm({
     mode: 'onChange',
   });
+    
+     const {
+        fields: constructorBlocks,
+        append,
+        remove,
+      } = useFieldArray({
+        control,
+        name: 'constructorBlocks',
+      });
 
   useEffect(() => {
     onValidityChange?.(isValid);
@@ -251,6 +264,14 @@ export default function ArticlesForm({ onValidityChange, onLoadingChange, editPr
           )}
         />
       </UiMarksGrayWrap>
+
+      <ConstructorMain items={publications_news_items} onSelect={(item) => append({ type: item.id })} />
+
+      {constructorBlocks.map((block, index) => {
+        const Component = BLOCK_COMPONENTS[block.type];
+        if (!Component) return null;
+        return <Component key={block.id} control={control} index={index} onRemove={() => remove(index)} />;
+      })}
       <Controller
         name="imageClose"
         control={control}

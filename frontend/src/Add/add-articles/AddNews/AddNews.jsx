@@ -293,7 +293,7 @@ export default function AddNews({ user }) {
           setIsOpen(false);
           // setEditDataForNewForm(null);
         }}
-        title={editDataForNewForm ? 'Редактирование новости' : 'Создай новость'}
+        title={editDataForNewForm ? 'Редактирование новости' : 'Добавить новость'}
         isSaveDisabled={!isFormValid}
         onSave={() => document.getElementById('add-form-news')?.requestSubmit()}
         // isLoading={isFormLoading}

@@ -10,7 +10,6 @@ export default function ConstructorMain({ items, onSelect, children }) {
     onSelect?.(item);
     // setPickerOpen(false);
   };
-
   return (
     <>
       {pickerOpen ? (
@@ -18,7 +17,7 @@ export default function ConstructorMain({ items, onSelect, children }) {
           {items?.map((el) => {
             const Icon = el.icon;
             return (
-              <button key={el.id} className={s.button} type="button" onClick={() => handleSelect(el)}>
+              <button title={el.label} key={el.id} className={s.button} type="button" onClick={() => handleSelect(el)}>
                 <Icon />
               </button>
             );
