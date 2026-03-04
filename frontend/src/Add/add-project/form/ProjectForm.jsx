@@ -3,9 +3,8 @@ import { useDispatch } from 'react-redux';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { DevTool } from '@hookform/devtools';
 import { fetchProject, setProjectId } from '../../../store/Slice/projectSlice';
-import { UiMarksInput, UiMarksSelect, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap, UiMarksSpinner } from '../../ui';
+import { UiMarksInput, UiMarksSelect, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
 import { monthOptions, yearOptions, typesСonstruction } from '../FormAddEditProject/utils/Time';
-import renameFile from './function/renameFile';
 import {
   competenciesOptions,
   degreeParticipationOptions,
@@ -13,13 +12,13 @@ import {
   stageAwards,
   MEASUREMENT_FIELDS,
 } from './const/options';
+import { renameFile, convertOldToNewFormat } from '../../function/index';
 
 import s from './Styles.module.css';
 import ConstructorMain from '../../constructor/ConstructorMain';
 
 import { project_items } from '../../constructor/config/config';
 import { BLOCK_COMPONENTS } from '../../constructor/blocks';
-import { convertOldToNewFormat } from './function/convertOldToNewFormat';
 
 
 export default function ProjectForm({ onValidityChange, onLoadingChange, editProjectData, onSuccess }) {
@@ -95,7 +94,7 @@ export default function ProjectForm({ onValidityChange, onLoadingChange, editPro
         photoAva: [],
         dropPhoto: [],
         imageOpen: [],
-        photo: [],
+        imageClose: [],
         constructorBlocks: [],
       });
       return;
@@ -146,10 +145,13 @@ export default function ProjectForm({ onValidityChange, onLoadingChange, editPro
       textBlock: editProjectData.textBlock || '',
       photoAva: editProjectData.imageProject ? [editProjectData.imageProject] : [],
       dropPhoto: editProjectData.imageTitle
-        ? editProjectData.imageTitle.split(',').map((f) => f.trim()).filter(Boolean)
+        ? editProjectData.imageTitle
+            .split(',')
+            .map((f) => f.trim())
+            .filter(Boolean)
         : [],
       imageOpen: editProjectData.imageOpen ? [editProjectData.imageOpen] : [],
-      photo: editProjectData.imageClose ? [editProjectData.imageClose] : [],
+      imageClose: editProjectData.imageClose ? [editProjectData.imageClose] : [],
       constructorBlocks: newFormatBlocks,
     });
 
@@ -231,7 +233,7 @@ export default function ProjectForm({ onValidityChange, onLoadingChange, editPro
       photoAva: data.photoAva || [],
       dropPhoto: data.dropPhoto || [],
       imageOpen: data.imageOpen || [],
-      imageClose: data.photo || [],
+      imageClose: data.imageClose || [],
       dynamicBlocks: oldFormatBlocks,
     };
 
@@ -664,7 +666,7 @@ export default function ProjectForm({ onValidityChange, onLoadingChange, editPro
       })}
 
       <Controller
-        name="photo"
+        name="imageClose"
         control={control}
         render={({ field: { onChange, value } }) => (
           <>
@@ -683,7 +685,7 @@ export default function ProjectForm({ onValidityChange, onLoadingChange, editPro
             ) : (
               <UiMarksInput
                 type="file"
-                name="photo"
+                name="imageClose"
                 accept="image/*"
                 inputRef={imageCloseRef}
                 label="Закрывающая картинка"

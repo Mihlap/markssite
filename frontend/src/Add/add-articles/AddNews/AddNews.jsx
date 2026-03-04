@@ -8,6 +8,8 @@ import LoadingModal from '../../add-project/loading/LoadingModal';
 import { fetchToggleStateForButton2Async, updateToggleStateForButton2Async } from '../../../store/Slice/toggleSlice';
 import cat from '../../../img/default-photo.jpeg';
 import Edit from '../../icon/Edit.svg';
+import { UiMarksButton, UiMarksDialog } from '../../ui';
+import ArticlesForm from '../form/ArticlesForm';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
@@ -24,6 +26,10 @@ export default function AddNews({ user }) {
   const [editArticleData, setEditArticleData] = useState(null);
   const [deleteModalState, setDeleteModalState] = useState({});
   const [modalBlockHeight, setModalBlockHeight] = useState('auto');
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [isFormValid, setIsFormValid] = React.useState(false);
+  const [isFormLoading, setIsFormLoading] = React.useState(false);
+  const [editDataForNewForm, setEditDataForNewForm] = React.useState(null);
 
   const isMountedRef = useRef(true);
 
@@ -132,30 +138,35 @@ export default function AddNews({ user }) {
         </div>
       </div>
       <div>
-        <div className={styles.card_components_admin__button_block} onClick={handleOpenModal}>
-          <button className={styles.card_components_admin__button}>
-            <div>
-              <svg
-                className={styles.card_components_admin__icon}
-                width="41"
-                height="40"
-                viewBox="0 0 41 40"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <g id="icon">
-                  <circle id="Ellipse 4" cx="20.5" cy="20" r="20" fill="#F6F6F6" />
-                  <path
-                    id="Vector 10"
-                    d="M10.5 20H20.5M30.5 20H20.5M20.5 20V10M20.5 20V30"
-                    stroke="#75BBFD"
-                    strokeWidth="2"
-                    strokeLinecap="square"
-                  />
-                </g>
-              </svg>
-            </div>
-            <div className={styles.card_components_admin__button_text}>Добавить новость</div>
-          </button>
+        <div style={{ display: 'flex', gap: '1rem' }}>
+          <div className={styles.card_components_admin__button_block} onClick={handleOpenModal}>
+            <button className={styles.card_components_admin__button}>
+              <div>
+                <svg
+                  className={styles.card_components_admin__icon}
+                  width="41"
+                  height="40"
+                  viewBox="0 0 41 40"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <g id="icon">
+                    <circle id="Ellipse 4" cx="20.5" cy="20" r="20" fill="#F6F6F6" />
+                    <path
+                      id="Vector 10"
+                      d="M10.5 20H20.5M30.5 20H20.5M20.5 20V10M20.5 20V30"
+                      stroke="#75BBFD"
+                      strokeWidth="2"
+                      strokeLinecap="square"
+                    />
+                  </g>
+                </svg>
+              </div>
+              <div className={styles.card_components_admin__button_text}>Старая форма</div>
+            </button>
+          </div>
+          <UiMarksButton defaultStyle="blue" size="large" icon onClick={() => setIsOpen(true)}>
+            Новая форма
+          </UiMarksButton>
         </div>
         {isModalOpen && (
           <div className={styles.card_components_admin__modal_container}>
@@ -276,6 +287,27 @@ export default function AddNews({ user }) {
           </div>
         )}
       </div>
+      <UiMarksDialog
+        isOpen={isOpen}
+        onClose={() => {
+          setIsOpen(false);
+          // setEditDataForNewForm(null);
+        }}
+        title={editDataForNewForm ? 'Редактирование новости' : 'Создай новость'}
+        isSaveDisabled={!isFormValid}
+        onSave={() => document.getElementById('add-form-news')?.requestSubmit()}
+        // isLoading={isFormLoading}
+        nameSpinner="Новость">
+        <ArticlesForm
+        onValidityChange={setIsFormValid}
+        // onLoadingChange={setIsFormLoading}
+        // editProjectData={editDataForNewForm}
+        // onSuccess={() => {
+        //   setIsOpen(false);
+        //   setEditDataForNewForm(null);
+        // }}
+        />
+      </UiMarksDialog>
     </>
   );
 }
