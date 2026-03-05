@@ -3,23 +3,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useInView } from 'react-intersection-observer';
 import gsap from 'gsap';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
-import Modal from 'react-modal';
-
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Keyboard } from 'swiper';
-import 'swiper/swiper-bundle.min.css';
-
-import HistoryCard from './HistoryCard';
 import CompanyHistoryHeader from './CompanyHistoryHeader';
 import HistoryYearsScale from './HistoryYearsScale';
-import HistoryModalBlocks from './HistoryModalBlocks';
+import HistoryTimelineDesktop from './HistoryTimelineDesktop';
+import HistoryTimelineMobile from './HistoryTimelineMobile';
+import HistoryModal from './HistoryModal';
 
 import { useCompanyHistoryHeaderIntro } from '../utils/useCompanyHistoryHeaderIntro';
 import { useCompanyHistoryWheelHandlers } from '../utils/historyWheel/useCompanyHistoryWheelHandlers';
 import { useCompanyHistoryAnimations } from '../utils/useCompanyHistoryAnimations';
 
 import { fetchCompanyHistory } from '../../store/Slice/companyHistorySlice';
-import styles from './CompanyHistory.module.scss';
+import layoutStyles from './CompanyHistory.module.scss';
+import timelineStyles from './HistoryTimeline.module.scss';
 import headerStyles from './CompanyHistoryHeader.module.scss';
 import cityVector from '../icons/cityVector.svg';
 import { normalizeConstructorGroups } from '../utils/historyModalUtils';
@@ -638,15 +634,11 @@ export default function CompanyHistory({
             dynamicBlocks: normalizedBlocks,
         });
         setIsModalOpen(true);
-        document.body.style.overflow = 'hidden';
-        document.body.classList.add('modal-open');
     }, []);
 
     const handleCloseModal = useCallback(() => {
         setIsModalOpen(false);
         setSelectedHistoryItem(null);
-        document.body.style.overflow = '';
-        document.body.classList.remove('modal-open');
     }, []);
 
     return (
@@ -657,13 +649,13 @@ export default function CompanyHistory({
                 sectionVisibilityRef(node);
                 sectionRef.current = node;
             }}
-            className={`${styles.history_section} ${cardsFocused ? styles.cards_focus : ''}`}
+            className={`${layoutStyles.history_section} ${cardsFocused ? timelineStyles.cards_focus : ''}`}
         >
-            <div ref={historyTagRef} className={styles.history_tag}>
+            <div ref={historyTagRef} className={timelineStyles.history_tag}>
                 История MARKS GROUP
             </div>
 
-            <div className={styles.history_content}>
+            <div className={layoutStyles.history_content}>
                 <CompanyHistoryHeader
                     historyHeaderRef={historyHeaderRef}
                     backgroundRef={backgroundRef}
@@ -677,304 +669,46 @@ export default function CompanyHistory({
                 />
 
                 {loading ? (
-                    <div className={styles.loading}>Загрузка...</div>
+                    <div className={layoutStyles.loading}>Загрузка...</div>
                 ) : visibleItems.length > 0 ? (
                     <div
                         ref={(node) => {
                             historyListRef.current = node;
                             timelineVisRef(node);
                         }}
-                        className={styles.history_timeline_container}
+                        className={timelineStyles.history_timeline_container}
                     >
                         {isDesktop ? (
-                            <div
-                                ref={timelineWrapperRef}
-                                className={styles.timeline_wrapper}
-                                data-pad-right={padRightNum}
-                            >
-                                <div ref={cardsTopRowRef} className={styles.cards_row_top}>
-                                    {timelineItemsAdmin.map((year, idx) => {
-                                        const isLast = idx === timelineItemsAdmin.length - 1;
-                                        const topItems = cardsByYear[year]?.top || [];
-                                        const bottomItemsForTablet =
-                                            isTablet ? cardsByYear[year]?.bottom || [] : [];
-                                        const itemsToRender = isTablet
-                                            ? [...topItems, ...bottomItemsForTablet]
-                                            : topItems;
-
-                                        return (
-                                            <div
-                                                key={`top-${year}`}
-                                                className={styles.year_cards_group}
-                                                data-year={year}
-                                                data-last-cards={isLast ? 'true' : 'false'}
-                                            >
-                                                {itemsToRender.map((item) => (
-                                                    <div key={item.id} className={styles.history_card_wrapper}>
-                                                        <HistoryCard
-                                                            item={{ ...item, onOpenChronicle: handleOpenChronicle }}
-                                                            variant={item.img ? 1 : 2}
-                                                        />
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-
-                                <div className={styles.timeline}>
-                                    <div className={styles.timeline_line} />
-
-                                    <div className={styles.timeline_years}>
-                                        {timelineItemsAdmin.map((year, idx) => {
-                                            const isLast = idx === timelineItemsAdmin.length - 1;
-
-                                            const hasBottomCards =
-                                                (cardsByYear[year]?.bottom?.length || 0) > 0;
-                                            const hasTopCards =
-                                                (cardsByYear[year]?.top?.length || 0) > 0;
-
-                                            let yearLabelClass = '';
-                                            if (hasBottomCards) yearLabelClass = styles.year_label_bottom;
-                                            else if (hasTopCards) yearLabelClass = styles.year_label_top;
-
-                                            return (
-                                                <div
-                                                    key={year}
-                                                    className={styles.timeline_year_marker}
-                                                    data-year={year}
-                                                    data-year-marker="true"
-                                                    data-last-year={isLast ? 'true' : 'false'}
-                                                >
-                                                    <div className={styles.year_dot} data-year-dot="true" />
-                                                    <div className={`${styles.year_label} ${yearLabelClass}`}>{year}</div>
-
-                                                    {hasTopCards && (
-                                                        <div className={`${styles.year_connector} ${styles.connector_top}`} />
-                                                    )}
-                                                    {hasBottomCards && (
-                                                        <div className={`${styles.year_connector} ${styles.connector_bottom}`} />
-                                                    )}
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
-
-                                {!isTablet && (
-                                    <div className={styles.cards_row_bottom}>
-                                        {timelineItemsAdmin.map((year, idx) => {
-                                            const isLast = idx === timelineItemsAdmin.length - 1;
-                                            return (
-                                                <div
-                                                    key={`bottom-${year}`}
-                                                    className={styles.year_cards_group}
-                                                    data-year={year}
-                                                    data-last-cards={isLast ? 'true' : 'false'}
-                                                >
-                                                    {cardsByYear[year]?.bottom.map((item) => (
-                                                        <div
-                                                            key={item.id}
-                                                            className={styles.history_card_wrapper}
-                                                        >
-                                                            <HistoryCard
-                                                                item={{
-                                                                    ...item,
-                                                                    onOpenChronicle: handleOpenChronicle,
-                                                                }}
-                                                                variant={item.img ? 1 : 2}
-                                                                isBottom
-                                                            />
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                )}
-                            </div>
+                            <HistoryTimelineDesktop
+                                timelineItemsAdmin={timelineItemsAdmin}
+                                cardsByYear={cardsByYear}
+                                isTablet={isTablet}
+                                handleOpenChronicle={handleOpenChronicle}
+                                timelineWrapperRef={timelineWrapperRef}
+                                cardsTopRowRef={cardsTopRowRef}
+                                padRightNum={padRightNum}
+                            />
                         ) : (
-                            <div className={styles.history_mobile}>
-                                <div className={styles.history_mobile_swiper_wrapper}>
-                                    <Swiper
-                                        className={styles.history_mobile_swiper}
-                                        modules={[Keyboard]}
-                                        keyboard={{ enabled: true }}
-                                        spaceBetween={30}
-                                        slidesPerView="auto"
-                                        slidesPerGroup={1}
-                                        slidesOffsetBefore={24}
-                                        slidesOffsetAfter={mobileSlidesOffsetAfter}
-                                        watchSlidesProgress
-                                        onProgress={(swiper) => {
-                                            if (!swiper || !swiper.slides) return;
-
-                                            const MAX_SHIFT = 80;
-                                            const TARGET_PROGRESS = -3;
-                                            const RADIUS = 0.8;
-
-                                            swiper.slides.forEach((slide) => {
-                                                const img = slide.querySelector('[data-card-image="true"]');
-                                                if (!img) return;
-
-                                                const p = typeof slide.progress === 'number' ? slide.progress : 0;
-
-                                                const dist = Math.abs(p - TARGET_PROGRESS);
-                                                if (dist >= RADIUS) {
-                                                    img.style.transform = '';
-                                                    return;
-                                                }
-
-                                                const norm = dist / RADIUS;
-                                                const t = 1 - norm;
-                                                const shift = MAX_SHIFT * t;
-
-                                                img.style.transform = `translateX(${shift}px)`;
-                                            });
-                                        }}
-                                        onSwiper={(swiper) => {
-                                            if (!swiper) return;
-
-                                            let isClamping = false;
-
-                                            swiper.on('setTranslate', (translate) => {
-                                                if (isClamping) return;
-
-                                                let tx =
-                                                    typeof translate === 'number'
-                                                        ? translate
-                                                        : swiper.translate || 0;
-
-                                                const slides = swiper.slides;
-                                                if (slides && slides.length) {
-                                                    const lastSlide = slides[slides.length - 1];
-                                                    const lastLeft = lastSlide?.offsetLeft ?? 0;
-                                                    const minTx = 24 - lastLeft;
-
-                                                    if (Number.isFinite(minTx) && tx < minTx) {
-                                                        isClamping = true;
-                                                        tx = minTx;
-                                                        swiper.setTranslate(tx);
-                                                        isClamping = false;
-                                                    }
-                                                }
-
-                                                const yearsEl = mobileTimelineYearsRef.current;
-                                                if (yearsEl) {
-                                                    yearsEl.style.transform = `translate3d(${tx}px, 0, 0)`;
-                                                }
-                                            });
-
-                                            swiper.on('slideChangeTransitionStart', () => {
-                                                const nextIndex =
-                                                    typeof swiper.realIndex === 'number'
-                                                        ? swiper.realIndex
-                                                        : swiper.activeIndex || 0;
-
-                                                const nextItem = visibleItems[nextIndex];
-                                                if (!nextItem || nextItem.year == null) return;
-
-                                                const idx = yearIndexByYear[String(nextItem.year)];
-                                                if (typeof idx === 'number' && !Number.isNaN(idx)) {
-                                                    setMobileIncomingYearIndex(idx);
-                                                    setIsMobileSliding(true);
-                                                }
-                                            });
-
-                                            swiper.on('slideChangeTransitionEnd', () => {
-                                                const activeIndex =
-                                                    typeof swiper.realIndex === 'number'
-                                                        ? swiper.realIndex
-                                                        : swiper.activeIndex || 0;
-
-                                                const activeItem = visibleItems[activeIndex];
-                                                if (activeItem && activeItem.year != null) {
-                                                    const idx = yearIndexByYear[String(activeItem.year)];
-                                                    if (typeof idx === 'number' && !Number.isNaN(idx)) {
-                                                        setMobileActiveYearIndex(idx);
-                                                    }
-                                                }
-
-                                                setMobileIncomingYearIndex(null);
-                                                setIsMobileSliding(false);
-                                            });
-                                        }}
-                                    >
-                                        {visibleItems.map((item) => (
-                                            <SwiperSlide
-                                                key={item.id}
-                                                className={styles.history_mobile_slide}
-                                            >
-                                                <div className={styles.history_card_wrapper}>
-                                                    <HistoryCard
-                                                        item={{ ...item, onOpenChronicle: handleOpenChronicle }}
-                                                        variant={item.img ? 1 : 2}
-                                                    />
-                                                </div>
-                                            </SwiperSlide>
-                                        ))}
-                                    </Swiper>
-                                </div>
-
-                                <div className={styles.timeline}>
-                                    <div className={styles.timeline_line} />
-
-                                    <div
-                                        ref={mobileTimelineYearsRef}
-                                        className={styles.timeline_years}
-                                    >
-                                        {timelineItemsAdmin.map((year, idx) => {
-                                            const isLast = idx === timelineItemsAdmin.length - 1;
-
-                                            const hasBottomCards =
-                                                (cardsByYear[year]?.bottom?.length || 0) > 0;
-                                            const hasTopCards =
-                                                (cardsByYear[year]?.top?.length || 0) > 0;
-
-                                            let yearLabelClass = '';
-                                            if (hasBottomCards) yearLabelClass = styles.year_label_bottom;
-                                            else if (hasTopCards) yearLabelClass = styles.year_label_top;
-
-                                            let dotScale = 1;
-                                            if (!isDesktop) {
-                                                if (idx === mobileActiveYearIndex) {
-                                                    dotScale = 1.2; // 24px from base 20px
-                                                } else if (isMobileSliding && idx === mobileIncomingYearIndex) {
-                                                    dotScale = 1.4; // 28px from base 20px during переход
-                                                }
-                                            }
-
-                                            return (
-                                                <div
-                                                    key={year}
-                                                    className={styles.timeline_year_marker}
-                                                    data-year={year}
-                                                    data-year-marker="true"
-                                                    data-last-year={isLast ? 'true' : 'false'}
-                                                >
-                                                    <div
-                                                        className={styles.year_dot}
-                                                        data-year-dot="true"
-                                                        style={{ '--dot-scale': dotScale }}
-                                                    />
-                                                    <div className={`${styles.year_label} ${yearLabelClass}`}>{year}</div>
-
-                                                    {hasTopCards && (
-                                                        <div className={`${styles.year_connector} ${styles.connector_top}`} />
-                                                    )}
-                                                    {hasBottomCards && (
-                                                        <div className={`${styles.year_connector} ${styles.connector_bottom}`} />
-                                                    )}
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
-                            </div>
+                            <HistoryTimelineMobile
+                                visibleItems={visibleItems}
+                                timelineItemsAdmin={timelineItemsAdmin}
+                                cardsByYear={cardsByYear}
+                                mobileSlidesOffsetAfter={mobileSlidesOffsetAfter}
+                                mobileTimelineYearsRef={mobileTimelineYearsRef}
+                                mobileActiveYearIndex={mobileActiveYearIndex}
+                                mobileIncomingYearIndex={mobileIncomingYearIndex}
+                                isMobileSliding={isMobileSliding}
+                                setMobileActiveYearIndex={setMobileActiveYearIndex}
+                                setMobileIncomingYearIndex={setMobileIncomingYearIndex}
+                                setIsMobileSliding={setIsMobileSliding}
+                                yearIndexByYear={yearIndexByYear}
+                                isDesktop={isDesktop}
+                                handleOpenChronicle={handleOpenChronicle}
+                            />
                         )}
                     </div>
                 ) : (
-                    <div className={styles.empty_history}>История компании обновляется</div>
+                    <div className={layoutStyles.empty_history}>История компании обновляется</div>
                 )}
             </div>
 
@@ -988,50 +722,11 @@ export default function CompanyHistory({
                 isModalOpen={isModalOpen}
             />
 
-            {isModalOpen && selectedHistoryItem && (
-                <Modal
-                    className={styles.modal_wrapper}
-                    isOpen={isModalOpen}
-                    onRequestClose={handleCloseModal}
-                    onAfterOpen={() => {
-                        document.body.style.overflow = 'hidden';
-                        document.body.classList.add('modal-open');
-                    }}
-                    onAfterClose={() => {
-                        document.body.style.overflow = '';
-                        document.body.classList.remove('modal-open');
-                    }}
-                    ariaHideApp={false}
-                    style={{
-                        overlay: { zIndex: 10, backgroundColor: '#2C3B447A' },
-                        content: { zIndex: 10, overflow: 'auto', WebkitOverflowScrolling: 'touch' },
-                    }}>
-                    <div key={selectedHistoryItem.id} className={styles.modal_context}>
-                        <div
-                            className={`${styles.modal_close} ${styles.fixed}`}
-                            onClick={handleCloseModal}>
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    fillRule="evenodd"
-                                    clipRule="evenodd"
-                                    d="M8.00025 8.70733L0.707107 16.0005L0 15.2934L7.29314 8.00023L2.41697e-05 0.707107L0.707131 0L8.00025 7.29312L15.2934 0L16.0005 0.707107L8.70736 8.00023L16.0005 15.2934L15.2934 16.0005L8.00025 8.70733Z"
-                                    fill="black"
-                                />
-                            </svg>
-                        </div>
-
-                        {(selectedHistoryItem.year || selectedHistoryItem.title) && (
-                            <div className={styles.modal_title}>
-                                {selectedHistoryItem.year}
-                                {selectedHistoryItem.year && selectedHistoryItem.title && ' — '}
-                                {selectedHistoryItem.title}
-                            </div>
-                        )}
-
-                        <HistoryModalBlocks selectedCard={selectedHistoryItem} bucketUrl={process.env.REACT_APP_S3_BUCKET_URL} />
-                    </div>
-                </Modal>
-            )}
+            <HistoryModal
+                isOpen={isModalOpen}
+                selectedHistoryItem={selectedHistoryItem}
+                onClose={handleCloseModal}
+            />
         </div>
     );
 }

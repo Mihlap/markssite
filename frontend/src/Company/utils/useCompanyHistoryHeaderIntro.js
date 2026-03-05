@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import gsap from 'gsap';
-import styles from '../CompanyHistory/CompanyHistory.module.scss';
+import styles from '../CompanyHistory/HistoryTimeline.module.scss';
 import headerStyles from '../CompanyHistory/CompanyHistoryHeader.module.scss';
 
 export function useCompanyHistoryHeaderIntro({
