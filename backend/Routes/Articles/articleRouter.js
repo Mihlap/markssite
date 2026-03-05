@@ -74,7 +74,7 @@ const updateDynamicBlocksContent = (blocks, newImages) => {
     blockGroup.map((block) => {
       if (block.type === 'file' && Array.isArray(block.value)) {
         const updatedValues = block.value.map((val) => {
-          if (typeof val === 'string' && (val.startsWith('blob:') || val.startsWith('temp_'))) {
+          if (typeof val === 'string' && val.length > 0 && !val.startsWith('http')) {
             const newImage = newImages[imageIndex];
             imageIndex += 1;
             return newImage;
@@ -170,8 +170,12 @@ router.post(
         imageClose: imageCloses,
       });
 
+      const updatedDynamicBlocksContent = dynamicBlocksContent
+        ? updateDynamicBlocksContent(dynamicBlocksContent, dynamicImageTitles)
+        : null;
+
       await ConstructorArticles.create({
-        data: dynamicBlocksContent,
+        data: updatedDynamicBlocksContent,
         image: dynamicImageTitles.join(', '),
         idBlock: createdArticle.id,
       });
@@ -296,9 +300,7 @@ router.put(
       const dynamicImagesNew = req.files.dynamicImages ?
         await Promise.all(
           req.files.dynamicImages.map(async (file) => {
-            const {
-              fileUrl
-            } = await uploadFileToS3(file, 'images/imageArticle');
+            const fileUrl = await uploadFileToS3(file, 'images/imageArticle');
             return fileUrl;
           })) : [];
 

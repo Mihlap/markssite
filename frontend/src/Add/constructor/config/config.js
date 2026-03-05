@@ -16,7 +16,7 @@ const publications_news_items = [
   { id: 'imageWithDesc', icon: Icon1, label: 'Картинка с описанием' },
   { id: 'quote', icon: Icon10, label: 'Цитата' },
   { id: 'textWithSelection', icon: Icon11, label: 'Текстовый блок выделенный' },
-  { id: 'twopImages', icon: Icon5, label: 'Две картинки' },
+  { id: 'twoImages', icon: Icon5, label: 'Две картинки' },
   { id: 'slider', icon: Icon6, label: 'Слалайдер' },
   { id: 'video', icon: Icon3, label: 'Видео' },
 ];

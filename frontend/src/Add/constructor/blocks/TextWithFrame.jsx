@@ -1,7 +1,24 @@
-import React from 'react'
+import React from 'react';
+import { Controller } from 'react-hook-form';
+import { UiMarksTextarea, UiMarksGrayWrap } from '../../ui';
 
-export default function TextWithFrame() {
+export default function TextWithFrame({ control, index, onRemove }) {
   return (
-    <div>TextWithFrame</div>
-  )
+    <UiMarksGrayWrap btnClose={true} handlerClick={onRemove} customStyles={{ padding: '38px 1rem 32px 1rem' }}>
+      <Controller
+        name={`constructorBlocks.${index}.textarea`}
+        control={control}
+        render={({ field }) => (
+          <UiMarksTextarea
+            name={`constructorBlocks.${index}.textarea`}
+            label="Текстовый блок в рамке"
+            placeholder="Нет ограничения по символам"
+            richText
+            color="salmon"
+            {...field}
+          />
+        )}
+      />
+    </UiMarksGrayWrap>
+  );
 }
