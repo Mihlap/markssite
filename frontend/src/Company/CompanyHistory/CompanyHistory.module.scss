@@ -32,12 +32,6 @@
     width: 100%;
 }
 
-@media screen and (min-width: 1600px) {
-    .history_content {
-        max-width: 1440px;
-    }
-}
-
 .history_tag {
     position: fixed;
     left: clamp(24px, 4vw, 48px);
@@ -71,25 +65,6 @@
     margin-top: 0;
 }
 
-@media screen and (min-width: 1024px) and (max-width: 1599px) {
-    .history_timeline_container {
-        margin-top: 53px;
-    }
-}
-
-@media screen and (min-width: 1600px) {
-    .history_timeline_container {
-        margin-top: 110px;
-    }
-}
-
-@media screen and (min-width: 1600px) {
-    .history_timeline_container {
-        width: 100vw;
-        margin-left: calc((1440px - 100vw) / 2);
-    }
-}
-
 .timeline_wrapper {
     position: relative;
     display: grid;
@@ -119,13 +94,6 @@
 
         &:hover {
             background-color: rgba(29, 46, 67, 0.5);
-        }
-    }
-
-    @media screen and (max-width: 1023px) {
-        .timeline_wrapper {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
         }
     }
 }
@@ -174,8 +142,26 @@
     }
 }
 
+.history_mobile {
+    width: 100%;
+}
+
+.history_mobile_swiper_wrapper {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.history_mobile_swiper {
+    width: 100%;
+}
+
+.history_mobile_slide {
+    width: auto !important;
+    flex-shrink: 0;
+}
+
 .timeline {
-    --dot-size: 22px;
+    --dot-size: 20px;
     --gap-top: 10px;
     --gap-bottom: 10px;
     --h-top: 121px;
@@ -369,9 +355,17 @@
     }
 }
 
-@media screen and (min-width: 1024px) and (max-width: 1599px) {
+/* ===========================
+   АДАПТИВ ДЛЯ ХРОНОЛОГИИ
+   =========================== */
+
+@media screen and (min-width: 1025px) and (max-width: 1599px) {
+    .history_timeline_container {
+        margin-top: 53px;
+    }
+
     .year_cards_group {
-        width: calc(100vw / 3.5);
+        width: calc(100vw / 3);
         padding: 0 clamp(20px, 3vw, 56px);
         padding-left: calc(clamp(22px, 3.5vw, 60px) + 68px);
         margin-top: 20px;
@@ -386,7 +380,7 @@
     }
 
     .timeline_year_marker {
-        width: calc(100vw / 3.5);
+        width: calc(100vw / 3);
         padding: 0 clamp(20px, 3vw, 56px);
 
         &:first-child {
@@ -462,7 +456,17 @@
 }
 
 @media screen and (min-width: 1600px) {
-    .year_cards_group {      
+    .history_content {
+        max-width: 1440px;
+    }
+
+    .history_timeline_container {
+        margin-top: 110px;
+        width: 100vw;
+        margin-left: calc((1440px - 100vw) / 2);
+    }
+
+    .year_cards_group {
         width: calc(100vw / 3.5);
         padding: 0 clamp(64px, 6vw, 200px);
         padding-left: calc(clamp(38px, 4.75vw, 150px) + 38px);
@@ -541,9 +545,9 @@
     }
 }
 
-@media screen and (max-width: 1023px) {
+@media screen and (max-width: 1024px) {
     .history_section {
-        padding: 80px 1.5rem 60px;
+        padding: 80px 0 60px;
     }
 
     .history_timeline_container {
@@ -551,14 +555,18 @@
         margin-top: 80px;
         margin-bottom: 80px;
         padding: 40px 0 100px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-x: contain;
     }
 
     .timeline_wrapper {
         padding: 0;
+        overflow-x: visible;
     }
 
     .timeline {
-        --dot-size: 18px;
+        --dot-size: 20px;
         --gap-top: 10px;
         --gap-bottom: 4px;
         --h-top: 80px;
@@ -566,37 +574,26 @@
         --label-gap-top: 10px;
         --label-gap-bottom: 10px;
         --label-extra-top: 11px;
+        --marker-x: -40px;
     }
 
     .year_cards_group {
         width: 440px;
-        padding: 0 clamp(30px, 5vw, 80px);
-
-        &:first-child {
-            padding-left: clamp(40px, 8vw, 120px);
-        }
-
-        &:last-child {
-            padding-right: clamp(40px, 8vw, 100px);
-        }
+        padding: 0;
     }
 
     .timeline_year_marker {
         width: 440px;
-        padding: 0 clamp(30px, 5vw, 80px);
-
-        &:first-child {
-            padding-left: clamp(40px, 8vw, 120px);
-        }
-
-        &:last-child {
-            padding-right: clamp(40px, 8vw, 100px);
-        }
+        padding: 0;
     }
 
     .cards_row_top {
-        padding-bottom: calc(var(--dot-size) / 2 - var(--gap-top) - var(--h-top) - var(--label-gap-top) - var(--label-extra-top) + 20px);
+        padding-bottom: 110px;
         min-height: 320px;
+    }
+
+    .history_mobile_swiper_wrapper {
+        padding-bottom: 110px;
     }
 
     .cards_row_bottom {
@@ -608,21 +605,62 @@
         }
     }
 
-    .year_label {
-        font-size: 16px;
+    .timeline_year_marker {
+        align-items: flex-start;
+
+        &::before {
+            left: var(--marker-x);
+            transform: translate(-50%, -50%);
+            width: calc(var(--dot-size) + 20px);
+        }
+
+        .year_connector {
+            width: 2px;
+            height: 26px;
+            top: auto;
+            bottom: calc(var(--dot-size) / 2 + 5px);
+            left: var(--marker-x);
+            transform: translateX(-50%);
+        }
+
+        .year_label {
+            font-family: var(--font-unbounded);
+            left: calc(var(--marker-x) - 8px);
+            transform: none;
+            text-align: left;
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 300;
+            line-height: 28px;
+            color: var(--blue-A8DBF6, #75BBFD);
+        }
+
+        .year_label_top,
+        .year_label_bottom {
+            top: -78px;
+        }
+    }
+
+    .year_dot {
+        left: var(--marker-x);
+        transform: translate(-50%, -50%) scale(var(--dot-scale));
+        transition: transform 0.3s ease-out;
+    }
+
+    .timeline_year_marker[data-active='true'] .year_dot {
+        transform: translate(-50%, -50%) scale(1.2);
     }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767px) {
     .history_section {
-        padding: 60px 0rem 0rem;       
+        padding: 60px 0 0;
     }
 
     .history_timeline_container {
         --timeline-overlap: 0px;
         margin-top: 0px;
-        // margin-bottom: 60px;
-        padding: 48px 0 80px;
+        padding: 48px 1rem 80px;
     }
 
     .timeline_wrapper {
@@ -630,7 +668,7 @@
     }
 
     .timeline {
-        --dot-size: 16px;
+        --dot-size: 20px;
         --gap-top: 10px;
         --gap-bottom: 4px;
         --h-top: 60px;
@@ -641,36 +679,32 @@
     }
 
     .year_cards_group {
-        width: calc(100vw - 2rem);
+        width: 100%;
         max-width: 360px;
-        padding: 0 20px;
-
-        &:first-child {
-            padding-left: 24px;
-        }
+        padding: 0;
 
         &:last-child {
-            padding-right: 24px;
+            margin-right: -1rem;
         }
     }
 
     .timeline_year_marker {
-        width: calc(100vw - 2rem);
+        width: 100%;
         max-width: 360px;
-        padding: 0 20px;
-
-        &:first-child {
-            padding-left: 24px;
-        }
+        padding: 0;
 
         &:last-child {
-            padding-right: 24px;
+            margin-right: -1rem;
         }
     }
 
     .cards_row_top {
         padding-bottom: calc(var(--dot-size) / 2 - var(--gap-top) - var(--h-top) - var(--label-gap-top) - var(--label-extra-top) + 15px);
         min-height: 260px;
+    }
+
+    .history_mobile_swiper_wrapper {
+        padding-bottom: calc(var(--dot-size) / 2 - var(--gap-top) - var(--h-top) - var(--label-gap-top) - var(--label-extra-top) + 15px);
     }
 
     .cards_row_bottom {
@@ -684,6 +718,69 @@
 
     .year_label {
         font-size: 14px;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+
+    .history_timeline_container {
+        &::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+        }
+    }
+
+    .cards_row_top {
+        column-gap: 30px;
+    }
+
+    .cards_row_bottom {
+        column-gap: 30px;
+    }
+
+    .cards_row_bottom {
+        display: none;
+        min-height: 0;
+        padding-top: 0;
+    }
+
+
+    .timeline_years {
+        column-gap: 30px;
+    }
+
+    .year_cards_group {
+        width: auto;
+        padding: 0;
+        flex: 0 0 auto;
+
+        &:first-child {
+            margin-left: 55px;
+        }
+    }
+
+    .timeline_year_marker {
+        width: 324px;
+        padding: 0;
+
+        &:first-child {
+            margin-left: 55px;
+        }
+    }
+
+    .connector_top,
+    .connector_bottom {
+        height: 26px;
+    }
+
+    .year_label_bottom {
+        top: calc(-1 * (var(--gap-top) + var(--h-top) + var(--label-gap-top) + var(--label-extra-top)));
+    }
+
+    .connector_bottom {
+        top: auto;
+        bottom: calc(var(--dot-size) / 2 + var(--gap-top));
+        height: var(--h-top);
     }
 }
 
@@ -776,7 +873,7 @@
     }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767px) {
     .modal_wrapper {
         width: 100%;
         left: 0;

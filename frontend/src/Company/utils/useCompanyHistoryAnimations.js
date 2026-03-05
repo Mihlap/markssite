@@ -6,26 +6,6 @@ import headerStyles from '../CompanyHistory/CompanyHistoryHeader.module.scss';
 
 gsap.registerPlugin(ScrollToPlugin);
 
-// function getScrollYToFullyShowElement(el, { padTop = 40, padBottom = 40 } = {}) {
-//   if (!el) return window.pageYOffset;
-
-//   const vh = window.innerHeight;
-//   const r = el.getBoundingClientRect();
-//   const topAbs = r.top + window.pageYOffset;
-//   const bottomAbs = r.bottom + window.pageYOffset;
-//   const elH = r.height;
-
-//   if (elH >= vh - (padTop + padBottom)) return Math.max(0, topAbs - padTop);
-
-//   const minY = Math.max(0, topAbs - padTop);
-//   const maxY = Math.max(0, bottomAbs - (vh - padBottom));
-
-//   const y = window.pageYOffset;
-//   if (y < maxY) return maxY;
-//   if (y > minY) return minY;
-//   return y;
-// }
-
 export function useCompanyHistoryAnimations({
   animationReady,
   historyTagRef,
