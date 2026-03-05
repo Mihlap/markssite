@@ -130,8 +130,10 @@ export function useHorizontalWheelInCards({
             endEps = 260;
         };
 
-        const DOT_ACTIVE_PX = 30;
-        const DOT_OVERSHOOT_PX = 40;
+        const DOT_ACTIVE_DESKTOP_PX = 30;
+        const DOT_OVERSHOOT_DESKTOP_PX = 40;
+        const DOT_ACTIVE_TOUCH_PX = 24;
+        const DOT_OVERSHOOT_TOUCH_PX = 28;
 
         const travelDotRef = {
             current: {
@@ -159,8 +161,10 @@ export function useHorizontalWheelInCards({
             gsap.killTweensOf(markerEl);
 
             const base = Number(dot.offsetWidth || 22) || 22;
-            const activeScale = Math.max(1, DOT_ACTIVE_PX / base);
-            const overScale = Math.max(activeScale, DOT_OVERSHOOT_PX / base);
+            const activePx = isDesktop ? DOT_ACTIVE_DESKTOP_PX : DOT_ACTIVE_TOUCH_PX;
+            const overPx = isDesktop ? DOT_OVERSHOOT_DESKTOP_PX : DOT_OVERSHOOT_TOUCH_PX;
+            const activeScale = Math.max(1, activePx / base);
+            const overScale = Math.max(activeScale, overPx / base);
 
             st.marker = markerEl;
             st.dot = dot;
@@ -220,8 +224,10 @@ export function useHorizontalWheelInCards({
             gsap.killTweensOf(markerEl);
 
             const base = Number(dot.offsetWidth || 22) || 22;
-            const activeScale = Math.max(1, DOT_ACTIVE_PX / base);
-            const overScale = Math.max(activeScale, DOT_OVERSHOOT_PX / base);
+            const activePx = isDesktop ? DOT_ACTIVE_DESKTOP_PX : DOT_ACTIVE_TOUCH_PX;
+            const overPx = isDesktop ? DOT_OVERSHOOT_DESKTOP_PX : DOT_OVERSHOOT_TOUCH_PX;
+            const activeScale = Math.max(1, activePx / base);
+            const overScale = Math.max(activeScale, overPx / base);
 
             dot.style.setProperty('--dot-scale', '1');
             markerEl.style.setProperty('--dot-cutout-scale', '1');
@@ -392,7 +398,7 @@ export function useHorizontalWheelInCards({
         };
 
         const scrollToMarkerIndex = (idx, opts = {}) => {
-            const { immediate = false } = opts;
+            const { immediate = false, onDone: externalOnDone } = opts;
 
             updateEndEps();
 
@@ -442,6 +448,10 @@ export function useHorizontalWheelInCards({
                         showAndPlaceHistoryTag?.({ duration: 0.3, ease: 'power2.out' });
                     }
                 }
+
+                if (typeof externalOnDone === 'function') {
+                    externalOnDone(off);
+                }
             });
 
             const after = targetOffset;
@@ -466,6 +476,33 @@ export function useHorizontalWheelInCards({
             }
             hideHistoryTag?.(false, { duration: 0.3, ease: 'power1.out' });
             disableVLock();
+        };
+
+        let swipeLocked = false;
+
+        const stepBySwipe = (dir) => {
+            if (swipeLocked) return;
+
+            const markers = getMarkers();
+            if (!markers.length) return;
+
+            const cur = getActiveIndex();
+            if (cur < 0) return;
+
+            let next = dir > 0 ? cur + 1 : cur - 1;
+
+            if (next < 0) next = 0;
+            if (next >= markers.length) next = markers.length - 1;
+            if (next === cur) return;
+
+            swipeLocked = true;
+
+            scrollToMarkerIndex(next, {
+                immediate: false,
+                onDone: () => {
+                    swipeLocked = false;
+                },
+            });
         };
 
         const stepByWheel = (dir, e) => {
@@ -517,6 +554,7 @@ export function useHorizontalWheelInCards({
 
         const onWheelCapture = (e) => {
             if (isModalOpen) return;
+            if (!isDesktop) return;
 
             if (e?.target) {
                 const target = e.target;
@@ -657,6 +695,69 @@ export function useHorizontalWheelInCards({
             );
         };
 
+        const touchState = {
+            active: false,
+            startX: 0,
+            startY: 0,
+            dx: 0,
+            dy: 0,
+        };
+
+        const onPointerDown = (e) => {
+            if (isDesktop) return;
+            if (e.pointerType !== 'touch') return;
+            if (isModalOpen) return;
+
+            touchState.active = true;
+            touchState.startX = e.clientX;
+            touchState.startY = e.clientY;
+            touchState.dx = 0;
+            touchState.dy = 0;
+        };
+
+        const onPointerMove = (e) => {
+            if (isDesktop) return;
+            if (!touchState.active) return;
+            if (e.pointerType !== 'touch') return;
+
+            touchState.dx = e.clientX - touchState.startX;
+            touchState.dy = e.clientY - touchState.startY;
+
+            const absDx = Math.abs(touchState.dx);
+            const absDy = Math.abs(touchState.dy);
+
+            if (absDx > absDy && absDx > 8) {
+                e.preventDefault();
+            }
+        };
+
+        const finishSwipe = () => {
+            if (!touchState.active) return;
+
+            const { dx, dy } = touchState;
+            touchState.active = false;
+
+            const absDx = Math.abs(dx);
+            const absDy = Math.abs(dy);
+
+            if (absDx < 30 || absDx < absDy) return;
+
+            const dir = dx < 0 ? +1 : -1;
+            stepBySwipe(dir);
+        };
+
+        const onPointerUp = (e) => {
+            if (isDesktop) return;
+            if (e.pointerType !== 'touch') return;
+            finishSwipe();
+        };
+
+        const onPointerCancel = (e) => {
+            if (isDesktop) return;
+            if (e.pointerType !== 'touch') return;
+            finishSwipe();
+        };
+
         const init = () => {
             updateEndEps();
 
@@ -740,11 +841,25 @@ export function useHorizontalWheelInCards({
         window.addEventListener('wheel', onWheelCapture, { passive: false, capture: true });
         window.addEventListener('history:scrollToOffset', onExternalScrollToOffset);
 
+        if (!isDesktop && typeof window !== 'undefined' && 'PointerEvent' in window) {
+            container.addEventListener('pointerdown', onPointerDown, { passive: true });
+            container.addEventListener('pointermove', onPointerMove, { passive: false });
+            container.addEventListener('pointerup', onPointerUp, { passive: true });
+            container.addEventListener('pointercancel', onPointerCancel, { passive: true });
+        }
+
         return () => {
             window.removeEventListener('resize', onResize);
             window.removeEventListener('scroll', onScroll);
             window.removeEventListener('wheel', onWheelCapture, { capture: true });
             window.removeEventListener('history:scrollToOffset', onExternalScrollToOffset);
+
+            if (!isDesktop && typeof window !== 'undefined' && 'PointerEvent' in window) {
+                container.removeEventListener('pointerdown', onPointerDown);
+                container.removeEventListener('pointermove', onPointerMove);
+                container.removeEventListener('pointerup', onPointerUp);
+                container.removeEventListener('pointercancel', onPointerCancel);
+            }
 
             disableVLock();
 

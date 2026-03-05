@@ -408,6 +408,13 @@
     }
 }
 
+/* Горизонтальный планшет: полностью скрываем заголовок и текст */
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    .history_header {
+        display: none;
+    }
+}
+
 @media screen and (min-width: 768px) and (max-width: 1024px) {
     .history_description {
         max-width: 520px;

@@ -24,6 +24,7 @@ export function useCompanyHistoryWheelHandlers(props) {
         parentStartRef,
         onExitToParentTop,
         isDesktop,
+        isTablet,
         cardsFocusInProgressRef,
         exitToParentInProgressRef,
         hasScrollToCardsTriggered,
@@ -168,5 +169,6 @@ export function useCompanyHistoryWheelHandlers(props) {
         showAndPlaceHistoryTag,
         isModalOpen,
         isDesktop,
+        isTablet,
     });
 }

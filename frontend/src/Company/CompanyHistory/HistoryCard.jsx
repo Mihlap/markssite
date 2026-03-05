@@ -52,7 +52,7 @@ export default function HistoryCard({ item, variant = 1, isBottom = false }) {
 
                 <div className={styles.split_right} data-split-right="true">
                     {hasImage ? (
-                        <div className={styles.card_image}>
+                        <div className={styles.card_image} data-card-image="true">
                             <img src={previewImgSrc} alt={item?.title || ''} />
                         </div>
                     ) : (
