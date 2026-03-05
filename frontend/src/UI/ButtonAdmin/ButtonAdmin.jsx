@@ -13,8 +13,6 @@ export default function ButtonAdmin({ user, handleMouseEnter, handleMouseLeave }
     <>
       {user ? (
         <NavLink
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
           className={styles.preview_mode}
           to={`/admin/${data}`}
         >

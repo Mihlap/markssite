@@ -19,7 +19,6 @@ export default function AddNews({ user }) {
   const loading = useSelector((state) => state.article.loading);
   const error = useSelector((state) => state.article.error);
   const isActiveForButton2 = useSelector((state) => state.toggle.isActiveForButton2);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [copiedId, setCopiedId] = useState('');
@@ -91,18 +90,11 @@ export default function AddNews({ user }) {
     }
   }, []);
 
-  const handleEditClick = useCallback(
-    async (id) => {
-      try {
-        await navigator.clipboard.writeText(id);
-        if (isMountedRef.current) {
-          const articleToEdit = article.find((el) => el.id === id);
-          setEditArticleData(articleToEdit);
-          setIsModalOpen(true);
-        }
-      } catch (err) {
-        console.error('Unable to copy project to clipboard:', err);
-      }
+  const handleEditWithNewForm = useCallback(
+    (id) => {
+      const articleToEdit = article.find((el) => el.id === id);
+      setEditDataForNewForm(articleToEdit);
+      setIsOpen(true);
     },
     [article]
   );
@@ -128,6 +120,8 @@ export default function AddNews({ user }) {
   const toggleActive = useCallback(() => {
     dispatch(updateToggleStateForButton2Async(!isActiveForButton2));
   }, [dispatch, isActiveForButton2]);
+
+  console.log(article);
 
   return (
     <>
@@ -228,7 +222,7 @@ export default function AddNews({ user }) {
                         ) : null}
                         {user?.name === 'obezyankaa' || user?.name === 'manager' || user?.name === 'Pokemon' ? (
                           <div className={styles.edit_block}>
-                            <button className={styles.buttom_edit} onClick={() => handleEditClick(el.id)}>
+                            <button className={styles.buttom_edit} onClick={() => handleEditWithNewForm(el.id)}>
                               <label htmlFor="edit" className={styles.label}>
                                 <div className={`${styles.wrapper}`}>
                                   <img src={Edit} alt={Edit} />
@@ -291,21 +285,21 @@ export default function AddNews({ user }) {
         isOpen={isOpen}
         onClose={() => {
           setIsOpen(false);
-          // setEditDataForNewForm(null);
+          setEditDataForNewForm(null);
         }}
         title={editDataForNewForm ? 'Редактирование новости' : 'Добавить новость'}
         isSaveDisabled={!isFormValid}
         onSave={() => document.getElementById('add-form-news')?.requestSubmit()}
-        // isLoading={isFormLoading}
+        isLoading={isFormLoading}
         nameSpinner="Новость">
         <ArticlesForm
         onValidityChange={setIsFormValid}
-        // onLoadingChange={setIsFormLoading}
-        // editProjectData={editDataForNewForm}
-        // onSuccess={() => {
-        //   setIsOpen(false);
-        //   setEditDataForNewForm(null);
-        // }}
+        onLoadingChange={setIsFormLoading}
+        editProjectData={editDataForNewForm}
+        onSuccess={() => {
+          setIsOpen(false);
+          setEditDataForNewForm(null);
+        }}
         />
       </UiMarksDialog>
     </>

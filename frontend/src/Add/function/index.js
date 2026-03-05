@@ -58,6 +58,31 @@ const convertOldToNewFormat = (oldBlocks) => {
             type: 'slider',
             image: block[0]?.value || [],
           };
+        case 'Текстовый блок':
+        case 'Блок описание':
+          return {
+            type: 'textWithQuill',
+            textarea: block[0]?.value || '',
+          };
+        case 'Текстовый блок в рамке':
+        case 'Текст в рамочке':
+          return {
+            type: 'textWithFrame',
+            textarea: block[0]?.value || '',
+          };
+        case 'Текстовый блок выделенный':
+        case 'Текст заметки':
+          return {
+            type: 'textWithSelection',
+            textarea: block[0]?.value || '',
+          };
+        case 'Автор цитаты ( ФИО должность )':
+          return {
+            type: 'quote',
+            title: block[0]?.value || '',
+            textarea: block[1]?.value || '',
+            image: block[2]?.value || [],
+          };
         default:
           return null;
       }
