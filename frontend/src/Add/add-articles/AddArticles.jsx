@@ -1,54 +1,38 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import styles from '../style/style-card.module.scss';
+import { UiMarksSegmentedControls } from '../ui';
 import AddNews from './AddNews/AddNews';
 import AddJournal from './AddJournal/AddJournal';
+import { Icon1, Icon2 } from './icon';
 
-
-import news from '../add-navbar/icon/hr.svg';
-import journal from '../add-navbar/icon/internships.svg';
-
-
-const filters = ['Новости', 'Marks Journal'];
-const icons = [news, journal]; 
-
-export default function AddArticles({ user }) { 
+export default function AddArticles({ user }) {
   const [selectedFilter, setSelectedFilter] = useState('Новости');
-  const [activeButtonIndex, setActiveButtonIndex] = useState(0);
 
+  const controlRef = useRef();
+  const newsRef = useRef();
+  const journalRef = useRef();
 
-   const handleFilterChange = useCallback((filter, index) => {
-     setActiveButtonIndex(index);
-     setSelectedFilter(filter);
-   }, []);
-  
-   
+  const segments = [
+    { value: 'Новости', label: 'Новости', ref: newsRef, icon: <Icon1 /> },
+    { value: 'Marks Journal', label: 'Marks Journal', ref: journalRef, icon: <Icon2 /> },
+  ];
+
+  const handleFilterChange = useCallback((value) => {
+    setSelectedFilter(value);
+  }, []);
+
   return (
     <section className={styles.card_components_admin}>
       <div className={styles.card_components_admin__block}>
         <div className={styles.card_components_admin__block_title_btn}>
           <div className={styles.card_components_admin__title}>Публикации</div>
         </div>
-        <div className={styles.card_components_admin__buttonFilter}>
-          <div className={styles.buttonFilterStrip}>
-            {filters.map((filter, index) => (
-              <button
-                key={index}
-                className={`${styles.card_components_admin__buttonFilter__group} ${
-                  activeButtonIndex === index ? styles.activeButtonVacancy : ''
-                } ${index === 0 ? styles.noAnimation : ''}`}
-                onClick={() => handleFilterChange(filter, index)}>
-                <img
-                  className={`${styles.card_components_admin__buttonFilter__icons} ${
-                    activeButtonIndex === index ? styles.activeIcon : ''
-                  }`}
-                  src={icons[index]}
-                  alt={filter}
-                />
-                {filter}
-              </button>
-            ))}
-          </div>
-        </div>
+        <UiMarksSegmentedControls
+          name="articles-filter"
+          segments={segments}
+          callback={handleFilterChange}
+          controlRef={controlRef}
+        />
         <div>{selectedFilter === 'Новости' ? <AddNews user={user} /> : <AddJournal user={user} />}</div>
       </div>
     </section>
