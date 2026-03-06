@@ -125,12 +125,12 @@ export default function AddNews({ user }) {
 
   return (
     <>
-      <div className={`${styles.card_components_admin__hide_block} ${styles.card_components_admin__hide_block_top}`}>
+      {/* <div className={`${styles.card_components_admin__hide_block} ${styles.card_components_admin__hide_block_top}`}>
         <div className={styles.card_components_admin__hide_text}>Скрыть фильтрацию</div>
         <div className={`${styles.toggleButton} ${isActiveForButton2 ? styles.active : ''}`} onClick={toggleActive}>
           <div className={styles.circle}></div>
         </div>
-      </div>
+      </div> */}
       <div>
         <div style={{ display: 'flex', gap: '1rem' }}>
           <div className={styles.card_components_admin__button_block} onClick={handleOpenModal}>
