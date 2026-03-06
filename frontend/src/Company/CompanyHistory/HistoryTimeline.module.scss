@@ -126,6 +126,34 @@
     width: 100%;
 }
 
+.history_mobile_year_button_wrapper {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 40px;
+    padding-bottom: 32px;
+    padding-right: 39px;
+}
+
+.history_mobile_year_button {
+    display: flex;
+    padding: 8px 16px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 34px;
+    border: 1px solid rgba(29, 46, 67, 0.12);
+    background: var(--light-light-gray-EBECEE, #EBECEE);
+    cursor: default;
+
+    color: var(--black-1D2E43, #1D2E43);
+    font-variant-numeric: lining-nums proportional-nums;
+    font-family: var(--font-raleway, Raleway);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+}
+
 .history_mobile_swiper_wrapper {
     width: 100%;
     box-sizing: border-box;
@@ -740,4 +768,3 @@
         height: var(--h-top);
     }
 }
-

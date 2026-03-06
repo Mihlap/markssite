@@ -414,7 +414,6 @@
     }
 }
 
-/* На экранах 1024px и меньше убираем hover‑тень у карточки */
 @media screen and (max-width: 1024px) {
     .history_card {
         box-shadow: none;
