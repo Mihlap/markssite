@@ -103,6 +103,8 @@ const NextArrow = ({ props, onClick, onMouseEnter, onMouseLeave }) => (
 );
 
 export default function ConstructorBlockRenderer({ block, handleMouseEnter, handleMouseLeave }) {
+
+  console.log(block);
   const [activeSlide, setActiveSlide] = useState(0);
   const [dotsVisible, setDotsVisible] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -389,6 +391,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
 
     block?.forEach((item) => {
       if (item.label === 'Текст в рамочке') descriptionText = item.value;
+      if (item.label === 'Текстовый блок в рамке') descriptionText = item.value;
     });
 
     return (
@@ -477,6 +480,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
 
     block?.forEach((item) => {
       if (item.label === 'Текст заметки') noteBlockText = item?.value;
+      if (item.label === 'Текстовый блок выделенный') noteBlockText = item?.value;
     });
     return (
       <div className={styles.note_block}>
@@ -691,11 +695,13 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
       return renderImageSlider(block);
     case 'Блок описание':
       return renderTextBlock(block);
+    case 'Текстовый блок в рамке':
     case 'Текст в рамочке':
       return renderTextFramed(block);
     case 'Автор цитаты ( ФИО должность )':
       return renderQuoteBlock(block);
     case 'Текст заметки':
+    case 'Текстовый блок выделенный':
       return renderNoteBlock(block);
     case 'Видеоролик':
       return renderVideoBlock(block);

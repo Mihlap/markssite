@@ -307,11 +307,9 @@ router.put(
       const existingDynamicImages = existingConstructor && existingConstructor.image ?
         existingConstructor.image.split(', ').map((img) => img.trim()) : [];
 
-      const allDynamicImages = [...existingDynamicImages, ...dynamicImagesNew];
-
       const updatedDynamicBlocksContent = updateDynamicBlocksContent(
         dynamicBlocksContent,
-        allDynamicImages
+        dynamicImagesNew
       );
 
       const extractImages = (blocks) =>
@@ -321,24 +319,30 @@ router.put(
           .flatMap((block) => block.value)
           .filter(Boolean);
 
-      const newDynamicImages = extractImages(dynamicBlocksContent).map((img) => img.trim());
+      // Extract kept URLs from pre-update JSON (http strings)
+      const keptDynamicImages = extractImages(dynamicBlocksContent)
+        .map((img) => img.trim())
+        .filter((img) => img.startsWith('http'));
+
+      // Final image list = kept existing URLs + newly uploaded S3 URLs
+      const finalDynamicImages = [...keptDynamicImages, ...dynamicImagesNew];
 
       const normalizedExistingDynamicImages = existingDynamicImages.map(extractFileName);
-      const normalizedNewDynamicImages = newDynamicImages.map(extractFileName);
+      const normalizedFinalDynamicImages = finalDynamicImages.map(extractFileName);
 
-      const imagesToRemoveFromDynamicBlocks = normalizedExistingDynamicImages.filter((image) => !normalizedNewDynamicImages.includes(image));
+      const imagesToRemoveFromDynamicBlocks = normalizedExistingDynamicImages.filter((image) => !normalizedFinalDynamicImages.includes(image));
 
       await Promise.all(imagesToRemoveFromDynamicBlocks.map(deleteImageFromS3));
 
       if (existingConstructor) {
         await existingConstructor.update({
           data: updatedDynamicBlocksContent,
-          image: newDynamicImages.join(', ')
+          image: finalDynamicImages.join(', ')
         });
       } else {
         await ConstructorArticles.create({
           data: updatedDynamicBlocksContent,
-          image: newDynamicImages.join(', '),
+          image: finalDynamicImages.join(', '),
           idBlock: articleId
         });
       }

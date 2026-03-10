@@ -1,6 +1,6 @@
 .controlsContainer {
     --highlight-width: auto;
-    --highlight-x-pos: 0;
+    --highlight-x-pos: calm(0 + 0);
 }
 
 .controls {

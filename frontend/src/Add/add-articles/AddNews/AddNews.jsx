@@ -121,17 +121,15 @@ export default function AddNews({ user }) {
     dispatch(updateToggleStateForButton2Async(!isActiveForButton2));
   }, [dispatch, isActiveForButton2]);
 
-  console.log(article);
-
   return (
     <>
-      {/* <div className={`${styles.card_components_admin__hide_block} ${styles.card_components_admin__hide_block_top}`}>
+      <div className={`${styles.card_components_admin__hide_block} ${styles.card_components_admin__hide_block_top}`}>
         <div className={styles.card_components_admin__hide_text}>Скрыть фильтрацию</div>
         <div className={`${styles.toggleButton} ${isActiveForButton2 ? styles.active : ''}`} onClick={toggleActive}>
           <div className={styles.circle}></div>
         </div>
-      </div> */}
-      <div>
+      </div>
+      <>
         <div style={{ display: 'flex', gap: '1rem' }}>
           <div className={styles.card_components_admin__button_block} onClick={handleOpenModal}>
             <button className={styles.card_components_admin__button}>
@@ -280,12 +278,13 @@ export default function AddNews({ user }) {
               })}
           </div>
         )}
-      </div>
+      </>
       <UiMarksDialog
         isOpen={isOpen}
         onClose={() => {
           setIsOpen(false);
           setEditDataForNewForm(null);
+          setIsFormLoading(false);
         }}
         title={editDataForNewForm ? 'Редактирование новости' : 'Добавить новость'}
         isSaveDisabled={!isFormValid}
@@ -299,6 +298,7 @@ export default function AddNews({ user }) {
         onSuccess={() => {
           setIsOpen(false);
           setEditDataForNewForm(null);
+          setIsFormLoading(false);
         }}
         />
       </UiMarksDialog>

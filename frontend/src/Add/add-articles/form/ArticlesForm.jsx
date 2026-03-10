@@ -74,6 +74,7 @@ export default function ArticlesForm({ onValidityChange, onLoadingChange, editPr
 
     const constructorData = editProjectData.ConstructorArticles?.[0]?.data;
     const newFormatBlocks = convertOldToNewFormat(constructorData);
+    console.log(newFormatBlocks);
 
     reset({
       title: editProjectData.title || '',

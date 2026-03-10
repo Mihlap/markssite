@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import s from './Styles.module.css';
 
-export default function MarksSegmentedСontrols({ name, segments, callback, defaultIndex = 0, controlRef }) {
+export default function MarksSegmentedСontrols({ name, segments, callback, controlRef, defaultIndex = 0 }) {
   const [activeIndex, setActiveIndex] = useState(defaultIndex);
   const componentReady = useRef();
 
@@ -27,11 +27,7 @@ export default function MarksSegmentedСontrols({ name, segments, callback, defa
     <div className={s.controlsContainer} ref={controlRef}>
       <div className={`${s.controls}${componentReady.current ? ` ${s.ready}` : ''}`}>
         {segments?.map((item, i) => (
-          <div
-            key={item.value}
-            className={`${s.segment}${i === activeIndex ? ` ${s.active}` : ''}`}
-            ref={item.ref}
-          >
+          <div key={item.value} className={`${s.segment}${i === activeIndex ? ` ${s.active}` : ''}`} ref={item.ref}>
             <input
               type="radio"
               value={item.value}
