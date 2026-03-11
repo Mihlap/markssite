@@ -7,7 +7,7 @@ export default function TitleWithDesc({ control, index, onRemove }) {
     <UiMarksGrayWrap
       btnClose={true}
       handlerClick={onRemove}
-      customStyles={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      customStyles={{ padding: '1rem', paddingTop: '38px', paddingBottom: '32px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <Controller
         name={`constructorBlocks.${index}.title`}
         control={control}

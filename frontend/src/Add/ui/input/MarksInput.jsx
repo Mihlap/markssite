@@ -125,13 +125,19 @@ const MarksInput = forwardRef(function MarksInput({
   const colorClass = styles[`input__field_${color}`] || styles.input__field_blue;
 
   return (
-    <div className={`${styles.input} ${isBordered ? styles.input_bordered : ''} ${className || ''}`}>
+    <div className={`${!isBordered ? styles.input : ''} ${isBordered ? styles.input_bordered : ''} ${className || ''}`}>
+      {label && (
+      <label
+        htmlFor={name}
+        className={`${styles.input__label} ${isBordered ? styles.input__label_top : ''} ${disabled ? styles.input__label_disabled : ''}`}>
+        {label}
+      </label>
+      )}
       <div className={styles.input__wrapper}>
         <input
           ref={ref}
           type={type}
-          className={
-            `${!isBordered ? styles.input__field : ''}
+          className={`${!isBordered ? styles.input__field : ''}
             ${isBordered ? styles.input__field_bordered : ''}
             ${isBordered ? colorClass : ''}
             ${disabled ? styles.input__field_disabled : ''}
@@ -150,11 +156,6 @@ const MarksInput = forwardRef(function MarksInput({
         {showMeasurement && <span className={styles.input__measurement}>{measurement}</span>}
         {showCounter && <div className={styles.input__counter}>{`${(value || '').length}/${maxLength}`}</div>}
       </div>
-      <label
-        htmlFor={name}
-        className={`${styles.input__label} ${isBordered ? styles.input__label_top : ''} ${disabled ? styles.input__label_disabled : ''}`}>
-        {label}
-      </label>
       {error && <span className={styles.input__error}>{error}</span>}
     </div>
   );

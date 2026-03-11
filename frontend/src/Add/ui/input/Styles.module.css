@@ -2,16 +2,16 @@
 .input {
   position: relative;
   padding: 15px 0 0;
-  margin-top: 10px;
+  /* margin-top: 10px; */
   font-family: var(--font-raleway);
 }
 
 /* Bordered layout — flex so label order:-1 works */
 .input_bordered {
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   padding: 0;
-  margin-top: 10px;
+  margin-top: 10px; */
 }
 
 .input__field {
@@ -109,11 +109,12 @@
   line-height: 16px;
 }
 
-.input__wrapper:has(.input__field:not(:placeholder-shown)) ~ .input__label {
+.input:has(.input__field:not(:placeholder-shown)) .input__label,
+.input:has(.input__field:focus) .input__label {
   font-size: 12px;
   line-height: 16px;
   cursor: text;
-  top: 5px;
+  top: 0px;
   font-weight: var(--fw-400);
   color: var(--gray-959DA6);
 }
@@ -142,7 +143,6 @@
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
-  font-family: Raleway;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
