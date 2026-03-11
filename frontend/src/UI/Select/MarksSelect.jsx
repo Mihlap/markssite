@@ -24,13 +24,13 @@ function DropdownIndicator(props) {
   );
 }
 
-function ClearIndicator(props) {
-  return (
-    <components.ClearIndicator {...props}>
-      <Icon1 />
-    </components.ClearIndicator>
-  );
-}
+// function ClearIndicator(props) {
+//   return (
+//     <components.ClearIndicator {...props}>
+//       <Icon1 />
+//     </components.ClearIndicator>
+//   );
+// }
 
 function MultiValueRemove(props) {
   return (
@@ -58,22 +58,33 @@ const MarksSelect = forwardRef(function Select(
   },
   ref
 ) {
+  const hasValue = Array.isArray(value) ? value.length > 0 : value != null;
+
   return (
     <div
       className={clsx(styles.select, className, customStyles?.container, error && styles.select_error)}
       data-variant={variant}>
+      {label && (
+        <label
+          htmlFor={name}
+          className={clsx(styles.floatingLabel, hasValue && styles.floatingLabel_up)}>
+          {label}
+        </label>
+      )}
       <ReactSelect
-        // menuIsOpen={true}
+        inputId={name}
         ref={ref}
         options={options}
         value={value}
         onChange={onChange}
-        placeholder={placeholder}
+        placeholder={label ? '' : placeholder}
         isDisabled={isDisabled}
         isSearchable={isSearchable}
         classNamePrefix="select"
         unstyled
-        components={{ DropdownIndicator, ClearIndicator, MultiValueRemove }}
+        // components={{ DropdownIndicator, ClearIndicator, MultiValueRemove }}
+        components={{ DropdownIndicator, MultiValueRemove }}
+        isClearable={false}
         {...rest}
       />
       {error && <span className={styles.errorText}>{error}</span>}

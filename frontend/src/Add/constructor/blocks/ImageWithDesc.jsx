@@ -9,7 +9,7 @@ export default function ImageWithDesc({ control, index, onRemove }) {
     <UiMarksGrayWrap
       btnClose={true}
       handlerClick={onRemove}
-      customStyles={{ padding: '1rem', paddingBottom: '32px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+      customStyles={{ padding: '1rem', paddingTop: '38px', paddingBottom: '32px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
       <Controller
         name={`constructorBlocks.${index}.image`}
         control={control}

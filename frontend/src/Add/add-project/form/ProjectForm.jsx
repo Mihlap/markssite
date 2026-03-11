@@ -244,7 +244,7 @@ export default function ProjectForm({ onValidityChange, onLoadingChange, editPro
   return (
     <form id="add-form" className={s.form} onSubmit={handleSubmit(onSubmit)}>
       {renderCount.current > 0 && <div>Количество ре-рендеров: {renderCount.current}</div>}
-      <UiMarksGrayWrap customStyles={{ padding: '24px 16px 32px 16px' }}>
+      <UiMarksGrayWrap customStyles={{ display: 'flex', flexDirection: 'column', gap: '24px', padding: '32px 16px' }}>
         <Controller
           name="title"
           control={control}
@@ -396,7 +396,6 @@ export default function ProjectForm({ onValidityChange, onLoadingChange, editPro
                   inputRef={dropPhotoRef}
                   label="Слайдер *допускается загрузка 4х&nbsp;изображений"
                   color="grey"
-                  info
                   onChange={(e) => {
                     const files = Array.from(e.target.files || []);
                     if (files.length === 0) return;
