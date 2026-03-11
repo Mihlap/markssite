@@ -1,7 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
-import { DevTool } from '@hookform/devtools';
 import { UiMarksInput, UiMarksSelect, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
 import { renameFile, convertOldToNewFormat } from '../../function/index';
 import { tabFilterOptions } from './const/tabFilterSelection';
@@ -13,7 +12,49 @@ import { BLOCK_COMPONENTS } from '../../constructor/blocks';
 
 import s from './Styles.module.css';
 
-export default function ArticlesForm({ onValidityChange, onLoadingChange, editProjectData, onSuccess }) {
+const processFiles = (files) => {
+  if (!Array.isArray(files)) return [];
+  return files.map((file) => (file instanceof File ? renameFile(file) : file));
+};
+
+const toOldFormat = (block) => {
+  switch (block.type) {
+    case 'imageWithDesc':
+      return [
+        { type: 'file', label: 'Картинка с описанием', value: processFiles(block.image) },
+        { type: 'text', label: 'Описание картинки', value: block.description || '' },
+      ];
+    case 'titleWithDesc':
+      return [
+        { type: 'text', label: 'Заголовок', value: block.title || '' },
+        { type: 'text', label: 'Текстовый блок', value: block.description || '' },
+      ];
+    case 'video':
+      return [{ type: 'text', label: 'Ссылка на видеоролик', value: block.description || '' }];
+    case 'threeImages':
+      return [{ type: 'file', label: 'Блок 3 картинки', value: processFiles(block.image) }];
+    case 'twoImages':
+      return [{ type: 'file', label: 'Блок 2е вертикальные картинки', value: processFiles(block.image) }];
+    case 'slider':
+      return [{ type: 'file', label: 'Слайдер *допускается загрузка 8ми изображений', value: processFiles(block.image) }];
+    case 'textWithQuill':
+      return [{ type: 'textarea', label: 'Текстовый блок', value: block.textarea || '' }];
+    case 'textWithFrame':
+      return [{ type: 'textarea', label: 'Текстовый блок в рамке', value: block.textarea || '' }];
+    case 'textWithSelection':
+      return [{ type: 'textarea', label: 'Текстовый блок выделенный', value: block.textarea || '' }];
+    case 'quote':
+      return [
+        { type: 'text', label: 'Автор цитаты ( ФИО должность )', value: block.title || '' },
+        { type: 'textarea', label: 'Текст цитаты', value: block.textarea || '' },
+        { type: 'file', label: 'Фото автора статьи', value: processFiles(block.image) },
+      ];
+    default:
+      return [];
+  }
+};
+
+export default function ArticlesForm({ onValidityChange, onLoadingChange, editArticleData, onSuccess }) {
   const dispatch = useDispatch();
   const photoAvaRef = useRef(null);
   const dropPhotoRef = useRef(null);
@@ -47,7 +88,7 @@ export default function ArticlesForm({ onValidityChange, onLoadingChange, editPr
   }, [isSubmitting, onLoadingChange]);
 
   useEffect(() => {
-    if (!editProjectData) {
+    if (!editArticleData) {
       dispatch(setArticleId(null));
       reset({
         title: '',
@@ -67,79 +108,36 @@ export default function ArticlesForm({ onValidityChange, onLoadingChange, editPr
       return;
     }
 
-    dispatch(setArticleId(editProjectData.id));
+    dispatch(setArticleId(editArticleData.id));
 
     const parseToOptions = (str) =>
       str ? str.split(',').map((item) => ({ value: item.trim(), label: item.trim() })) : [];
 
-    const constructorData = editProjectData.ConstructorArticles?.[0]?.data;
+    const constructorData = editArticleData.ConstructorArticles?.[0]?.data;
     const newFormatBlocks = convertOldToNewFormat(constructorData);
-    console.log(newFormatBlocks);
 
     reset({
-      title: editProjectData.title || '',
-      author: editProjectData.author || '',
-      city: editProjectData.city || '',
-      dataMonthYear: editProjectData.dataMonthYear || '',
-      selectCompetencies: parseToOptions(editProjectData.selectCompetencies),
-      dropPhoto: editProjectData.imageTitle
-        ? editProjectData.imageTitle.split(',').map((f) => f.trim()).filter(Boolean)
+      title: editArticleData.title || '',
+      author: editArticleData.author || '',
+      city: editArticleData.city || '',
+      dataMonthYear: editArticleData.dataMonthYear || '',
+      selectCompetencies: parseToOptions(editArticleData.selectCompetencies),
+      dropPhoto: editArticleData.imageTitle
+        ? editArticleData.imageTitle.split(',').map((f) => f.trim()).filter(Boolean)
         : [],
-      titleTextBlock: editProjectData.titleTextBlock || '',
-      descriptionArticle: editProjectData.descriptionArticle || '',
-      photoAva: editProjectData.imageAuthor ? [editProjectData.imageAuthor] : [],
-      imageOpen: editProjectData.imageOpen ? [editProjectData.imageOpen] : [],
-      textBlock: editProjectData.textBlock || '',
-      imageClose: editProjectData.imageClose ? [editProjectData.imageClose] : [],
+      titleTextBlock: editArticleData.titleTextBlock || '',
+      descriptionArticle: editArticleData.descriptionArticle || '',
+      photoAva: editArticleData.imageAuthor ? [editArticleData.imageAuthor] : [],
+      imageOpen: editArticleData.imageOpen ? [editArticleData.imageOpen] : [],
+      textBlock: editArticleData.textBlock || '',
+      imageClose: editArticleData.imageClose ? [editArticleData.imageClose] : [],
       constructorBlocks: newFormatBlocks,
     });
 
     return () => {
       dispatch(setArticleId(null));
     };
-  }, [editProjectData, dispatch, reset]);
-
-  const toOldFormat = (block) => {
-    const processFiles = (files) => {
-      if (!Array.isArray(files)) return [];
-      return files.map((file) => (file instanceof File ? renameFile(file) : file));
-    };
-
-    switch (block.type) {
-      case 'imageWithDesc':
-        return [
-          { type: 'file', label: 'Картинка с описанием', value: processFiles(block.image) },
-          { type: 'text', label: 'Описание картинки', value: block.description || '' },
-        ];
-      case 'titleWithDesc':
-        return [
-          { type: 'text', label: 'Заголовок', value: block.title || '' },
-          { type: 'text', label: 'Текстовый блок', value: block.description || '' },
-        ];
-      case 'video':
-        return [{ type: 'text', label: 'Ссылка на видеоролик', value: block.description || '' }];
-      case 'threeImages':
-        return [{ type: 'file', label: 'Блок 3 картинки', value: processFiles(block.image) }];
-      case 'twoImages':
-        return [{ type: 'file', label: 'Блок 2е вертикальные картинки', value: processFiles(block.image) }];
-      case 'slider':
-        return [{ type: 'file', label: 'Слайдер *допускается загрузка 8ми изображений', value: processFiles(block.image) }];
-      case 'textWithQuill':
-        return [{ type: 'textarea', label: 'Текстовый блок', value: block.textarea || '' }];
-      case 'textWithFrame':
-        return [{ type: 'textarea', label: 'Текстовый блок в рамке', value: block.textarea || '' }];
-      case 'textWithSelection':
-        return [{ type: 'textarea', label: 'Текстовый блок выделенный', value: block.textarea || '' }];
-      case 'quote':
-        return [
-          { type: 'text', label: 'Автор цитаты ( ФИО должность )', value: block.title || '' },
-          { type: 'textarea', label: 'Текст цитаты', value: block.textarea || '' },
-          { type: 'file', label: 'Фото автора статьи', value: processFiles(block.image) },
-        ];
-      default:
-        return [];
-    }
-  };
+  }, [editArticleData, dispatch, reset]);
 
   const onSubmit = async (data) => {
     const oldFormatBlocks = (data.constructorBlocks || []).map(toOldFormat);
@@ -287,17 +285,14 @@ export default function ArticlesForm({ onValidityChange, onLoadingChange, editPr
           control={control}
           render={({ field }) => (
             <UiMarksInput
+              {...field}
               name="titleTextBlock"
               label="Заголовок текстового блока"
               placeholder="Не более 255 символов"
-              onChange={(e) => {
-                const value = e.target.value;
-                if (value.length <= 255) {
-                  field.onChange(value);
-                }
-              }}
-              value={field.value}
               maxLength={255}
+              onChange={(e) => {
+                if (e.target.value.length <= 255) field.onChange(e);
+              }}
             />
           )}
         />
@@ -440,7 +435,6 @@ export default function ArticlesForm({ onValidityChange, onLoadingChange, editPr
           </>
         )}
       />
-      <DevTool control={control} />
     </form>
   );
 }

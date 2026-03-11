@@ -1,10 +1,7 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from '../../style/style-card.module.scss';
-import FormAddNews from '../AddNews/FormAddEditNews/FormAddNews';
-import FormEditNews from '../AddNews/FormAddEditNews/FormEditNews';
 import { deleteFormArticle, getFetchFormArticle } from '../../../store/Slice/articleSlice';
-import LoadingModal from '../../add-project/loading/LoadingModal';
 import { fetchToggleStateForButton2Async, updateToggleStateForButton2Async } from '../../../store/Slice/toggleSlice';
 import cat from '../../../img/default-photo.jpeg';
 import Edit from '../../icon/Edit.svg';
@@ -19,12 +16,9 @@ export default function AddNews({ user }) {
   const loading = useSelector((state) => state.article.loading);
   const error = useSelector((state) => state.article.error);
   const isActiveForButton2 = useSelector((state) => state.toggle.isActiveForButton2);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [copiedId, setCopiedId] = useState('');
-  const [editArticleData, setEditArticleData] = useState(null);
   const [deleteModalState, setDeleteModalState] = useState({});
-  const [modalBlockHeight, setModalBlockHeight] = useState('auto');
   const [isOpen, setIsOpen] = React.useState(false);
   const [isFormValid, setIsFormValid] = React.useState(false);
   const [isFormLoading, setIsFormLoading] = React.useState(false);
@@ -32,36 +26,10 @@ export default function AddNews({ user }) {
 
   const isMountedRef = useRef(true);
 
-  const updateModalBlockHeight = useCallback(() => {
-    const windowHeight = window.innerHeight;
-    const maxHeight = Math.min(windowHeight - 100, 1900);
-    setModalBlockHeight(`${maxHeight}px`);
-  }, []);
-
   useEffect(() => {
     dispatch(getFetchFormArticle());
     dispatch(fetchToggleStateForButton2Async());
   }, [dispatch]);
-
-  useEffect(() => {
-    updateModalBlockHeight();
-    window.addEventListener('resize', updateModalBlockHeight);
-    return () => {
-      window.removeEventListener('resize', updateModalBlockHeight);
-      isMountedRef.current = false;
-    };
-  }, [updateModalBlockHeight]);
-
-  const handleOpenModal = useCallback(() => {
-    setIsModalOpen(true);
-    if (editArticleData) {
-      setEditArticleData(null);
-    }
-  }, [editArticleData]);
-
-  const handleCloseModal = useCallback(() => {
-    setIsModalOpen(false);
-  }, []);
 
   const handleDeleteModalOpen = useCallback((id) => {
     setDeleteModalState((prevState) => ({
@@ -130,50 +98,11 @@ export default function AddNews({ user }) {
         </div>
       </div>
       <>
-        <div style={{ display: 'flex', gap: '1rem' }}>
-          <div className={styles.card_components_admin__button_block} onClick={handleOpenModal}>
-            <button className={styles.card_components_admin__button}>
-              <div>
-                <svg
-                  className={styles.card_components_admin__icon}
-                  width="41"
-                  height="40"
-                  viewBox="0 0 41 40"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <g id="icon">
-                    <circle id="Ellipse 4" cx="20.5" cy="20" r="20" fill="#F6F6F6" />
-                    <path
-                      id="Vector 10"
-                      d="M10.5 20H20.5M30.5 20H20.5M20.5 20V10M20.5 20V30"
-                      stroke="#75BBFD"
-                      strokeWidth="2"
-                      strokeLinecap="square"
-                    />
-                  </g>
-                </svg>
-              </div>
-              <div className={styles.card_components_admin__button_text}>Старая форма</div>
-            </button>
-          </div>
-          <UiMarksButton defaultStyle="blue" size="large" icon onClick={() => setIsOpen(true)}>
-            Новая форма
-          </UiMarksButton>
-        </div>
-        {isModalOpen && (
-          <div className={styles.card_components_admin__modal_container}>
-            <div style={{ maxHeight: modalBlockHeight }} className={styles.card_components_admin__modal_block}>
-              {editArticleData ? (
-                <FormEditNews setIsModalOpen={setIsModalOpen} editArticleData={editArticleData} />
-              ) : (
-                <FormAddNews setIsModalOpen={setIsModalOpen} />
-              )}
-              <button className={styles.card_components_admin__close_button} onClick={handleCloseModal}></button>
-            </div>
-          </div>
-        )}
+        <UiMarksButton defaultStyle="blue" size="large" icon onClick={() => setIsOpen(true)}>
+          Добавить новость
+        </UiMarksButton>
         {loading ? (
-          <LoadingModal />
+          <p>загрузка. . . </p>
         ) : error ? (
           <div className={styles.card_components_admin__errore_div}>Ошибка загрузки данных.</div>
         ) : article && article.length === 0 ? (
@@ -292,14 +221,14 @@ export default function AddNews({ user }) {
         isLoading={isFormLoading}
         nameSpinner="Новость">
         <ArticlesForm
-        onValidityChange={setIsFormValid}
-        onLoadingChange={setIsFormLoading}
-        editProjectData={editDataForNewForm}
-        onSuccess={() => {
-          setIsOpen(false);
-          setEditDataForNewForm(null);
-          setIsFormLoading(false);
-        }}
+          onValidityChange={setIsFormValid}
+          onLoadingChange={setIsFormLoading}
+          editArticleData={editDataForNewForm}
+          onSuccess={() => {
+            setIsOpen(false);
+            setEditDataForNewForm(null);
+            setIsFormLoading(false);
+          }}
         />
       </UiMarksDialog>
     </>

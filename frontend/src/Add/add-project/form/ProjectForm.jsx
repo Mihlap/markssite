@@ -1,7 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
-import { DevTool } from '@hookform/devtools';
 import { fetchProject, setProjectId } from '../../../store/Slice/projectSlice';
 import { UiMarksInput, UiMarksSelect, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
 import { monthOptions, yearOptions, typesСonstruction } from '../FormAddEditProject/utils/Time';
@@ -397,6 +396,7 @@ export default function ProjectForm({ onValidityChange, onLoadingChange, editPro
                   inputRef={dropPhotoRef}
                   label="Слайдер *допускается загрузка 4х&nbsp;изображений"
                   color="grey"
+                  info
                   onChange={(e) => {
                     const files = Array.from(e.target.files || []);
                     if (files.length === 0) return;
@@ -699,7 +699,6 @@ export default function ProjectForm({ onValidityChange, onLoadingChange, editPro
           </>
         )}
       />
-      <DevTool control={control} />
     </form>
   );
 }

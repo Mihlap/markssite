@@ -12,3 +12,4 @@ export { default as UiMarksSegmentedControls } from './SegmentedСontrols/MarksS
 // --- ICON ---
 export { default as ClipIcon } from './icon/ClipIcon';
 export { default as Icon0 } from './icon/Icon0';
+export { default as Icon1 } from './icon/Icon1';
