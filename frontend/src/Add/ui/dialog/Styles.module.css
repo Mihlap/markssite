@@ -4,16 +4,17 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 766px;
+  max-height: 95vh;
   border-radius: 1rem;
-  /* padding-top: 26px; */
   padding-left: 32px;
   padding-right: 32px;
   background-color: var(--white-F6F6F6);
+  overflow: clip;
 }
 
-/* Style when the dialog is open */
 .dialog[open] {
-    /* Add open-specific styles or animations */
+  display: flex;
+  flex-direction: column;
 }
 
 .dialogLoading {
@@ -72,10 +73,40 @@ opacity: 0.43;
     font-weight: 300;
     line-height: 32px;
     padding-top: 26px;
-    padding-bottom: 1rem;
-    position: sticky;
-    top: 0;
-    z-index: 1;
+    padding-bottom: 40px;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.content {
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    scroll-behavior: smooth;
+    padding-right: 12px;
+    margin-right: -16px;
+}
+
+.content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.content::-webkit-scrollbar-thumb {
+    background-color: var(--light-gray-C0C5CB);
+    border-radius: 3px;
+    border: 1px solid transparent;
+    background-clip: padding-box;
+    transition: border-width 0.2s ease, background-color 0.2s ease;
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+    border-width: 0;
+    background-color: var(--gray-959DA6);
+}
+
+.content::-webkit-scrollbar-track {
+    background-color: var(--light-light-gray-EBECEE);
+    border-radius: 3px;
 }
 
 .buttons {
@@ -84,7 +115,6 @@ opacity: 0.43;
     gap: 24px;
     padding-top: 32px;
     padding-bottom: 24px;
-    position: sticky;
-    bottom: 0;
+    flex-shrink: 0;
     background-color: var(--white-F6F6F6);
 }

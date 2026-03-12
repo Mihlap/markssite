@@ -24,7 +24,9 @@ export default function MarksModal({ isOpen, onClose, onSave, isSaveDisabled = t
             {title && title.length > 0 ? title : 'No Title'}
             <button className={s.close_button} onClick={onClose} />
           </div>
-          {children}
+            <div className={s.content}>
+              {children}
+          </div>
           <div className={s.buttons}>
             <UiMarksButton disabled={isSaveDisabled || isLoading} onClick={onSave}>
               Сохранить
