@@ -26,8 +26,6 @@ export default function ProjectForm({ onValidityChange, onLoadingChange, editPro
   const dropPhotoRef = useRef(null);
   const imageOpenRef = useRef(null);
   const imageCloseRef = useRef(null);
-  const renderCount = useRef(0);
-  renderCount.current += 1;
 
   const {
     control,
@@ -243,7 +241,6 @@ export default function ProjectForm({ onValidityChange, onLoadingChange, editPro
 
   return (
     <form id="add-form" className={s.form} onSubmit={handleSubmit(onSubmit)}>
-      {renderCount.current > 0 && <div>Количество ре-рендеров: {renderCount.current}</div>}
       <UiMarksGrayWrap customStyles={{ display: 'flex', flexDirection: 'column', gap: '24px', padding: '32px 16px' }}>
         <Controller
           name="title"
@@ -459,7 +456,7 @@ export default function ProjectForm({ onValidityChange, onLoadingChange, editPro
 
       <div>
         <p className={s.description}>Заполните 3 значения на выбор</p>
-        <UiMarksGrayWrap customStyles={{ padding: '24px 16px 32px 16px' }}>
+        <UiMarksGrayWrap customStyles={{ padding: '32px 16px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
           {MEASUREMENT_FIELDS.map(({ name, label, measurement }) => (
             <Controller
               key={name}
@@ -478,7 +475,7 @@ export default function ProjectForm({ onValidityChange, onLoadingChange, editPro
           ))}
         </UiMarksGrayWrap>
       </div>
-      <UiMarksGrayWrap customStyles={{ padding: '24px 16px 32px 16px' }}>
+      <UiMarksGrayWrap customStyles={{ padding: '32px 16px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
         <Controller
           name="location"
           control={control}
