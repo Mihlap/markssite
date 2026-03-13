@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { UiMarksInput, UiMarksSelect, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
@@ -54,7 +54,7 @@ const toOldFormat = (block) => {
   }
 };
 
-export default function ArticlesForm({ onValidityChange, onLoadingChange, editArticleData, onSuccess }) {
+const ArticlesForm = forwardRef(function ArticlesForm({ onValidityChange, onLoadingChange, editArticleData, onSuccess, onDirtyChange }, ref) {
   const dispatch = useDispatch();
   const photoAvaRef = useRef(null);
   const dropPhotoRef = useRef(null);
@@ -65,7 +65,7 @@ export default function ArticlesForm({ onValidityChange, onLoadingChange, editAr
     control,
     handleSubmit,
     reset,
-    formState: { isValid, isSubmitting },
+    formState: { isValid, isSubmitting, isDirty },
   } = useForm({
     mode: 'onChange',
   });
@@ -86,6 +86,31 @@ export default function ArticlesForm({ onValidityChange, onLoadingChange, editAr
   useEffect(() => {
     onLoadingChange?.(isSubmitting);
   }, [isSubmitting, onLoadingChange]);
+
+  useEffect(() => {
+    onDirtyChange?.(isDirty);
+  }, [isDirty, onDirtyChange]);
+
+  useImperativeHandle(ref, () => ({
+    resetForm: () => {
+      dispatch(setArticleId(null));
+      reset({
+        title: '',
+        author: '',
+        city: '',
+        dataMonthYear: '',
+        selectCompetencies: [],
+        dropPhoto: [],
+        titleTextBlock: '',
+        descriptionArticle: '',
+        photoAva: [],
+        imageOpen: [],
+        textBlock: '',
+        imageClose: [],
+        constructorBlocks: [],
+      });
+    },
+  }), [dispatch, reset]);
 
   useEffect(() => {
     if (!editArticleData) {
@@ -178,7 +203,7 @@ export default function ArticlesForm({ onValidityChange, onLoadingChange, editAr
   };
   return (
     <form id="add-form-news" className={s.form} onSubmit={handleSubmit(onSubmit)}>
-      <UiMarksGrayWrap customStyles={{ padding: '24px 16px 32px 16px' }}>
+      <UiMarksGrayWrap customStyles={{ display: 'flex', flexDirection: 'column', gap: '24px', padding: '32px 16px' }}>
         <Controller
           name="title"
           control={control}
@@ -437,4 +462,6 @@ export default function ArticlesForm({ onValidityChange, onLoadingChange, editAr
       />
     </form>
   );
-}
+});
+
+export default ArticlesForm;
