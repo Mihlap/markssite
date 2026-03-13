@@ -25,6 +25,9 @@ export default function AddNews({ user }) {
   const [editDataForNewForm, setEditDataForNewForm] = React.useState(null);
 
   const isMountedRef = useRef(true);
+  const isFormDirtyRef = useRef(false);
+  const formRef = useRef(null);
+  const [showExitWarning, setShowExitWarning] = React.useState(false);
 
   useEffect(() => {
     dispatch(getFetchFormArticle());
@@ -84,6 +87,29 @@ export default function AddNews({ user }) {
       return () => clearTimeout(timer);
     }
   }, [isCopied]);
+
+  const handleDialogClose = useCallback(() => {
+    if (isFormDirtyRef.current) {
+      setShowExitWarning(true);
+    } else {
+      setIsOpen(false);
+      setEditDataForNewForm(null);
+      setIsFormLoading(false);
+    }
+  }, []);
+
+  const handleForceClose = useCallback(() => {
+    isFormDirtyRef.current = false;
+    setShowExitWarning(false);
+    setIsOpen(false);
+    setEditDataForNewForm(null);
+    setIsFormLoading(false);
+    formRef.current?.resetForm();
+  }, []);
+
+  const handleDirtyChange = useCallback((dirty) => {
+    isFormDirtyRef.current = dirty;
+  }, []);
 
   const toggleActive = useCallback(() => {
     dispatch(updateToggleStateForButton2Async(!isActiveForButton2));
@@ -210,19 +236,20 @@ export default function AddNews({ user }) {
       </>
       <UiMarksDialog
         isOpen={isOpen}
-        onClose={() => {
-          setIsOpen(false);
-          setEditDataForNewForm(null);
-          setIsFormLoading(false);
-        }}
+        onClose={handleDialogClose}
         title={editDataForNewForm ? 'Редактирование новости' : 'Добавить новость'}
         isSaveDisabled={!isFormValid}
         onSave={() => document.getElementById('add-form-news')?.requestSubmit()}
         isLoading={isFormLoading}
+        isExit={showExitWarning}
+        onExitConfirm={handleForceClose}
+        onExitCancel={() => setShowExitWarning(false)}
         nameSpinner="Новость">
         <ArticlesForm
+          ref={formRef}
           onValidityChange={setIsFormValid}
           onLoadingChange={setIsFormLoading}
+          onDirtyChange={handleDirtyChange}
           editArticleData={editDataForNewForm}
           onSuccess={() => {
             setIsOpen(false);
