@@ -9,6 +9,7 @@ export { default as UiMarksConstructorWrap } from './wrapConstructor/MarksConstr
 export { default as UiMarksSpinner } from './spiner/MarksSpinner';
 export { default as UiMarksSegmentedControls } from './SegmentedСontrols/MarksSegmentedСontrols';
 export { default as UiMarksAlert } from './alert/MarksAlert';
+export { default as UiMarksSwitch } from './switch/MarksSwitch';
 
 // --- ICON ---
 export { default as ClipIcon } from './icon/ClipIcon';
