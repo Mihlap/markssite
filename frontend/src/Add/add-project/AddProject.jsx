@@ -27,6 +27,9 @@ export default function AddProject({ user }) {
   const [editDataForNewForm, setEditDataForNewForm] = useState(null);
 
   const isMountedRef = useRef(true);
+  const isFormDirtyRef = useRef(false);
+  const formRef = useRef(null);
+  const [showExitWarning, setShowExitWarning] = useState(false);
 
   useEffect(() => {
     dispatch(getFetchForm());
@@ -88,6 +91,31 @@ export default function AddProject({ user }) {
       return () => clearTimeout(timer);
     }
   }, [isCopied]);
+
+  const handleDialogClose = useCallback(() => {
+    if (isFormDirtyRef.current) {
+      setShowExitWarning(true);
+    } else {
+      setIsOpen(false);
+      setEditDataForNewForm(null);
+      setIsFormLoading(false);
+    }
+  }, []);
+
+  const handleForceClose = useCallback(() => {
+    isFormDirtyRef.current = false;
+    setShowExitWarning(false);
+    setIsOpen(false);
+    setEditDataForNewForm(null);
+    setIsFormLoading(false);
+    formRef.current?.resetForm();
+  }, []);
+
+  console.log(formRef.current);
+
+  const handleDirtyChange = useCallback((dirty) => {
+    isFormDirtyRef.current = dirty;
+  }, []);
 
   const toggleActive = useCallback(() => {
     dispatch(updateToggleStateAsync(!isActiveForButton1));
@@ -232,22 +260,25 @@ export default function AddProject({ user }) {
       </div>
       <UiMarksDialog
         isOpen={isOpen}
-        onClose={() => {
-          setIsOpen(false);
-          setEditDataForNewForm(null);
-        }}
+        onClose={handleDialogClose}
         title={editDataForNewForm ? 'Редактирование проекта' : 'Новый проект'}
         isSaveDisabled={!isFormValid}
         onSave={() => document.getElementById('add-form')?.requestSubmit()}
         isLoading={isFormLoading}
+        isExit={showExitWarning}
+        onExitConfirm={handleForceClose}
+        onExitCancel={() => setShowExitWarning(false)}
         nameSpinner="Проект">
         <ProjectForm
+          ref={formRef}
           onValidityChange={setIsFormValid}
           onLoadingChange={setIsFormLoading}
+          onDirtyChange={handleDirtyChange}
           editProjectData={editDataForNewForm}
           onSuccess={() => {
             setIsOpen(false);
             setEditDataForNewForm(null);
+            setIsFormLoading(false);
           }}
         />
       </UiMarksDialog>
