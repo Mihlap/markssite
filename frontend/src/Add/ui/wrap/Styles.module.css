@@ -39,3 +39,14 @@
 .btnClose:hover::after {
     background-color: var(--salmon-light-FFBFB5);
 }
+
+
+.btnClose[data-color-status="true"]::before,
+.btnClose[data-color-status="true"]::after {
+    background-color: var(--gray-959DA6);
+}
+
+.btnClose[data-color-status="true"]:hover::before,
+.btnClose[data-color-status="true"]:hover::after {
+    background-color: var(--light-blue-D4EDFB);
+}

@@ -68,6 +68,13 @@
         color: var(--salmon-FF7F6A);
     }
 
+    &.blueDashed {
+        border: dashed 1px;
+        color: var(--blue-75BBFD);
+        border-radius: rem(6);
+        gap: 1rem;
+    }
+
     // --- Size variants ---
 
     &.large {

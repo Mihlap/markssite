@@ -6,7 +6,7 @@ import { fetchToggleStateForButton2Async, updateToggleStateForButton2Async } fro
 import cat from '../../../img/default-photo.jpeg';
 import Edit from '../../icon/Edit.svg';
 import { UiMarksButton, UiMarksDialog } from '../../ui';
-import ArticlesForm from '../form/ArticlesForm';
+import ArticlesForm from './form/ArticlesForm';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 

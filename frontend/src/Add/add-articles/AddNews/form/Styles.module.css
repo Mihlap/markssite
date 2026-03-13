@@ -7,7 +7,7 @@
 
 .selectContainer :global(.select__control) {
     margin: 0;
-    margin-top: 25px;
+    /* margin-top: 25px; */
 }
 
 .selectContainer :global(.select__menu) {

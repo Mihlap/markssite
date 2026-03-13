@@ -1,17 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch, useSelector } from 'react-redux';
-import { setFormData, uploadMarkdownFile, deleteMarkdownFile } from '../../../store/Slice/journalSlice';
-import { extractMarkdownLinks } from './utils/extractMarkdownLinks';
+import { setFormData, uploadMarkdownFile, deleteMarkdownFile } from '../../../../store/Slice/journalSlice';
+import { extractMarkdownLinks } from '../utils/extractMarkdownLinks';
 import styles from './MarkdownEditor.module.scss';
 
-import MarkdownContentRenderer from '../../../UI/MarkdownContentRenderer/MarkdownContentRenderer';
+import MarkdownContentRenderer from '../../../../UI/MarkdownContentRenderer/MarkdownContentRenderer';
 
-import full from './icons/full.svg';
-import editor from './icons/editor.svg';
-import text from './icons/text.svg';
-import full_screen from './icons/full_screen.svg';
-import collapse from './icons/collapse.svg';
+import full from '../icons/full.svg';
+import editor from '../icons/editor.svg';
+import text from '../icons/text.svg';
+import full_screen from '../icons/full_screen.svg';
+import collapse from '../icons/collapse.svg';
 
 const MarkdownEditor = ({ onTempFilesChange }) => {
   const dispatch = useDispatch();
@@ -68,7 +68,7 @@ const MarkdownEditor = ({ onTempFilesChange }) => {
     return newVal;
   }, []);
 
-   const handleDrop = useCallback(
+  const handleDrop = useCallback(
     async (e) => {
       e.preventDefault();
       const files = Array.from(e.dataTransfer.files).filter(
