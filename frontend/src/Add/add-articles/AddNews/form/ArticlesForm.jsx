@@ -1,14 +1,14 @@
 import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
-import { UiMarksInput, UiMarksSelect, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
-import { renameFile, convertOldToNewFormat } from '../../function/index';
+import { UiMarksInput, UiMarksSelect, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap } from '../../../ui';
+import { renameFile, convertOldToNewFormat } from '../../../function/index';
 import { tabFilterOptions } from './const/tabFilterSelection';
-import ConstructorMain from '../../constructor/ConstructorMain';
-import { fetchArticle, setArticleId } from '../../../store/Slice/articleSlice';
+import ConstructorMain from '../../../constructor/ConstructorMain';
+import { fetchArticle, setArticleId } from '../../../../store/Slice/articleSlice';
 
-import { publications_news_items } from '../../constructor/config/config';
-import { BLOCK_COMPONENTS } from '../../constructor/blocks';
+import { publications_news_items } from '../../../constructor/config/config';
+import { BLOCK_COMPONENTS } from '../../../constructor/blocks';
 
 import s from './Styles.module.css';
 
@@ -36,7 +36,9 @@ const toOldFormat = (block) => {
     case 'twoImages':
       return [{ type: 'file', label: 'Блок 2е вертикальные картинки', value: processFiles(block.image) }];
     case 'slider':
-      return [{ type: 'file', label: 'Слайдер *допускается загрузка 8ми изображений', value: processFiles(block.image) }];
+      return [
+        { type: 'file', label: 'Слайдер *допускается загрузка 8ми изображений', value: processFiles(block.image) },
+      ];
     case 'textWithQuill':
       return [{ type: 'textarea', label: 'Текстовый блок', value: block.textarea || '' }];
     case 'textWithFrame':
@@ -54,7 +56,10 @@ const toOldFormat = (block) => {
   }
 };
 
-const ArticlesForm = forwardRef(function ArticlesForm({ onValidityChange, onLoadingChange, editArticleData, onSuccess, onDirtyChange }, ref) {
+const ArticlesForm = forwardRef(function ArticlesForm(
+  { onValidityChange, onLoadingChange, editArticleData, onSuccess, onDirtyChange },
+  ref
+) {
   const dispatch = useDispatch();
   const photoAvaRef = useRef(null);
   const dropPhotoRef = useRef(null);
@@ -91,26 +96,30 @@ const ArticlesForm = forwardRef(function ArticlesForm({ onValidityChange, onLoad
     onDirtyChange?.(isDirty);
   }, [isDirty, onDirtyChange]);
 
-  useImperativeHandle(ref, () => ({
-    resetForm: () => {
-      dispatch(setArticleId(null));
-      reset({
-        title: '',
-        author: '',
-        city: '',
-        dataMonthYear: '',
-        selectCompetencies: [],
-        dropPhoto: [],
-        titleTextBlock: '',
-        descriptionArticle: '',
-        photoAva: [],
-        imageOpen: [],
-        textBlock: '',
-        imageClose: [],
-        constructorBlocks: [],
-      });
-    },
-  }), [dispatch, reset]);
+  useImperativeHandle(
+    ref,
+    () => ({
+      resetForm: () => {
+        dispatch(setArticleId(null));
+        reset({
+          title: '',
+          author: '',
+          city: '',
+          dataMonthYear: '',
+          selectCompetencies: [],
+          dropPhoto: [],
+          titleTextBlock: '',
+          descriptionArticle: '',
+          photoAva: [],
+          imageOpen: [],
+          textBlock: '',
+          imageClose: [],
+          constructorBlocks: [],
+        });
+      },
+    }),
+    [dispatch, reset]
+  );
 
   useEffect(() => {
     if (!editArticleData) {
@@ -148,7 +157,10 @@ const ArticlesForm = forwardRef(function ArticlesForm({ onValidityChange, onLoad
       dataMonthYear: editArticleData.dataMonthYear || '',
       selectCompetencies: parseToOptions(editArticleData.selectCompetencies),
       dropPhoto: editArticleData.imageTitle
-        ? editArticleData.imageTitle.split(',').map((f) => f.trim()).filter(Boolean)
+        ? editArticleData.imageTitle
+            .split(',')
+            .map((f) => f.trim())
+            .filter(Boolean)
         : [],
       titleTextBlock: editArticleData.titleTextBlock || '',
       descriptionArticle: editArticleData.descriptionArticle || '',

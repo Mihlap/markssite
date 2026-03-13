@@ -33,7 +33,7 @@ export default function AddArticles({ user }) {
           callback={handleFilterChange}
           controlRef={controlRef}
         />
-        <div>{selectedFilter === 'Новости' ? <AddNews user={user} /> : <AddJournal user={user} />}</div>
+        <>{selectedFilter === 'Новости' ? <AddNews user={user} /> : <AddJournal user={user} />}</>
       </div>
     </section>
   );
