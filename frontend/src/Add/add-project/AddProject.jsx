@@ -8,7 +8,7 @@ import { fetchToggleStateAsync, updateToggleStateAsync } from '../../store/Slice
 
 // import Loading from "./loading/Loading";
 import Edit from '../icon/Edit.svg';
-import { UiMarksButton, UiMarksDialog } from '../ui';
+import { UiMarksButton, UiMarksDialog, UiMarksSwitch } from '../ui';
 import ProjectForm from './form/ProjectForm';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
@@ -111,8 +111,6 @@ export default function AddProject({ user }) {
     formRef.current?.resetForm();
   }, []);
 
-  console.log(formRef.current);
-
   const handleDirtyChange = useCallback((dirty) => {
     isFormDirtyRef.current = dirty;
   }, []);
@@ -132,9 +130,7 @@ export default function AddProject({ user }) {
           <div className={styles.card_components_admin__title}>Проекты</div>
           <div className={styles.card_components_admin__hide_block}>
             <div className={styles.card_components_admin__hide_text}>Скрыть фильтрацию</div>
-            <div className={`${styles.toggleButton} ${isActiveForButton1 ? styles.active : ''}`} onClick={toggleActive}>
-              <div className={styles.circle}></div>
-            </div>
+            <UiMarksSwitch isActive={isActiveForButton1} onClick={toggleActive} />
           </div>
         </div>
         <UiMarksButton defaultStyle="blue" size="large" icon onClick={() => setIsOpen(true)}>
