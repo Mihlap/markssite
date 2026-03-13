@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { fetchProject, setProjectId } from '../../../store/Slice/projectSlice';
@@ -10,6 +10,7 @@ import {
   statusObjectOptions,
   stageAwards,
   MEASUREMENT_FIELDS,
+  EMPTY_VALUES,
 } from './const/options';
 import { renameFile, convertOldToNewFormat } from '../../function/index';
 
@@ -19,8 +20,7 @@ import ConstructorMain from '../../constructor/ConstructorMain';
 import { project_items } from '../../constructor/config/config';
 import { BLOCK_COMPONENTS } from '../../constructor/blocks';
 
-
-export default function ProjectForm({ onValidityChange, onLoadingChange, editProjectData, onSuccess }) {
+const ProjectForm = forwardRef(function ProjectForm({ onValidityChange, onLoadingChange, editProjectData, onSuccess, onDirtyChange }, ref) {
   const dispatch = useDispatch();
   const photoAvaRef = useRef(null);
   const dropPhotoRef = useRef(null);
@@ -32,7 +32,7 @@ export default function ProjectForm({ onValidityChange, onLoadingChange, editPro
     handleSubmit,
     reset,
     watch,
-    formState: { isValid, isSubmitting },
+    formState: { isValid, isSubmitting, isDirty },
   } = useForm({
     mode: 'onChange',
   });
@@ -57,43 +57,22 @@ export default function ProjectForm({ onValidityChange, onLoadingChange, editPro
     onLoadingChange?.(isSubmitting);
   }, [isSubmitting, onLoadingChange]);
 
+  useEffect(() => {
+    onDirtyChange?.(isDirty);
+  }, [isDirty, onDirtyChange]);
+
+  useImperativeHandle(ref, () => ({
+    resetForm: () => {
+      dispatch(setProjectId(null));
+      reset(EMPTY_VALUES);
+    },
+  }), [dispatch, reset]);
+
   // Populate form when editing or reset for new project
   useEffect(() => {
     if (!editProjectData) {
       dispatch(setProjectId(null));
-      reset({
-        title: '',
-        countryCity: '',
-        month: null,
-        year: null,
-        selectCompetencies: [],
-        viewConstruction: [],
-        titleTextBlock: '',
-        descriptionProject: '',
-        totalArea: '',
-        siteArea: '',
-        floors: '',
-        altitude: '',
-        constructionVolume: '',
-        numberOfLanes: '',
-        long: '',
-        location: '',
-        degreeParticipation: [],
-        statusObject: null,
-        customer: '',
-        publication: '',
-        linkToPublication: '',
-        publicationTwo: '',
-        linkToPublicationTwo: '',
-        awards: null,
-        headingTextBlock: '',
-        textBlock: '',
-        photoAva: [],
-        dropPhoto: [],
-        imageOpen: [],
-        imageClose: [],
-        constructorBlocks: [],
-      });
+      reset(EMPTY_VALUES);
       return;
     }
 
@@ -697,4 +676,6 @@ export default function ProjectForm({ onValidityChange, onLoadingChange, editPro
       />
     </form>
   );
-}
+});
+
+export default ProjectForm;
