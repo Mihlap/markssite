@@ -13,11 +13,7 @@ import {
   getVacanciesByDirection,
 } from '../../store/Slice/vacanciesSlice';
 import { UiMarksButton, UiMarksSegmentedControls, UiMarksDialog } from '../ui';
-import { Icon1, Icon2, Icon3 } from './icon';
-import Edit from '../icon/Edit.svg';
-import Look from '../icon/eye.svg';
-import noLook from '../icon/eye2.svg';
-import copyIcon from '../icon/copyIcon.svg';
+import { Icon1, Icon2, Icon3, Icon4, Icon5, Icon6, Icon7 } from './icon';
 import LoadingCircle from '../../Loading/LoadingCircle.jsx';
 import SearchVacancyMain from './SearchVacancyMain/SearchVacancyMain.jsx';
 import { arrIdVacancySelector } from './VacancySelector.js';
@@ -350,7 +346,7 @@ export default function AddHRPortal({ user }) {
                               <button className={styles.buttom_copyIcon}>
                                 <label htmlFor="copyIcon" className={styles.label}>
                                   <div className={styles.wrapper}>
-                                    <img src={copyIcon} alt={copyIcon} />
+                                    <Icon7/>
                                   </div>
                                 </label>
                               </button>
@@ -382,7 +378,7 @@ export default function AddHRPortal({ user }) {
                               <button className={styles.buttom_look}>
                                 <label htmlFor="look" className={styles.label}>
                                   <div className={styles.wrapper}>
-                                    <img src={el.hidden ? noLook : Look} alt={el.hidden ? 'No look' : 'Look'} />
+                                    {el.hidden ? <Icon6/> : <Icon5/>}
                                   </div>
                                 </label>
                               </button>
@@ -393,7 +389,7 @@ export default function AddHRPortal({ user }) {
                               <button className={styles.buttom_edit}>
                                 <label htmlFor="edit" className={styles.label}>
                                   <div className={styles.wrapper}>
-                                    <img src={Edit} alt={Edit} />
+                                    <Icon4 />
                                   </div>
                                 </label>
                               </button>
