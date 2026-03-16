@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import compressImageFile from 'browser-image-compression';
 
-import { UiMarksInput, UiMarksSelect, UiMarksGrayWrap, UiPhotoPreview, UiMarksButton } from '../../../ui';
-import MarkdownEditor from '../Markdown/MarkdownEditor';
+import { UiMarksInput, UiMarksSelect, UiMarksGrayWrap, UiPhotoPreview, UiMarksButton, UiMarksMarkDown } from '../../../ui';
 
 import {
   createJournal,
@@ -13,6 +12,8 @@ import {
   fetchJournalById,
   clearFormData,
   deleteMarkdownFile,
+  uploadMarkdownFile,
+  setFormData,
 } from '../../../../store/Slice/journalSlice';
 
 import { categoryOptions } from '../utils/journalCategoryOptions';
@@ -61,6 +62,7 @@ const JournalForm = forwardRef(function JournalForm(
   const dispatch = useDispatch();
   const markdown_content = useSelector((s) => s.journal.formData.markdown_content);
   const journals = useSelector((state) => state.journal.journals);
+  const markdown = useSelector((s) => s.journal.formData.markdown_content);
 
   const [authors, setAuthors] = useState([]);
   const [localImages, setLocalImages] = useState({});
@@ -109,6 +111,21 @@ const JournalForm = forwardRef(function JournalForm(
       setAuthors([{ id: Date.now(), number: 1, name: '', image: null, isLoading: false }]);
     }
   }, [authors.length, editJournalData]);
+
+    const handleChange = useCallback(
+      (value) => dispatch(setFormData({ name: 'markdown_content', value })),
+      [dispatch]
+    );
+  
+    const handleUpload = useCallback(
+      (file) => dispatch(uploadMarkdownFile(file)).unwrap(),
+      [dispatch]
+    );
+  
+    const handleDelete = useCallback(
+      (url) => dispatch(deleteMarkdownFile(url)).unwrap(),
+      [dispatch]
+    );
 
   const compressImage = useCallback(async (file) => {
     try {
@@ -426,8 +443,13 @@ const JournalForm = forwardRef(function JournalForm(
         Добавить город, страну
       </UiMarksButton>
       <UiMarksGrayWrap customStyles={{ padding: '16px' }}>
-        <div className={s.blockLabel}>Тело статьи</div>
-        <MarkdownEditor onTempFilesChange={(files) => (tempFilesRef.current = files)} />
+        <UiMarksMarkDown
+          value={markdown}
+          onChange={handleChange}
+          onUploadFile={handleUpload}
+          onDeleteFile={handleDelete}
+          onTempFilesChange={(files) => (tempFilesRef.current = files)}
+        />
       </UiMarksGrayWrap>
     </form>
   );

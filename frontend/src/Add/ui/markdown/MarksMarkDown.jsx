@@ -1,43 +1,48 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import { useDispatch, useSelector } from 'react-redux';
-import { setFormData, uploadMarkdownFile, deleteMarkdownFile } from '../../../../store/Slice/journalSlice';
-import { extractMarkdownLinks } from '../utils/extractMarkdownLinks';
-import styles from './MarkdownEditor.module.scss';
+import MarkdownContentRenderer from '../../../UI/MarkdownContentRenderer/MarkdownContentRenderer';
+import styles from './MarksMarkDown.module.scss';
 
-import MarkdownContentRenderer from '../../../../UI/MarkdownContentRenderer/MarkdownContentRenderer';
+import full from '../../add-articles/AddJournal/icons/full.svg';
+import editor from '../../add-articles/AddJournal/icons/editor.svg';
+import text from '../../add-articles/AddJournal/icons/text.svg';
+import full_screen from '../../add-articles/AddJournal/icons/full_screen.svg';
+import collapse from '../../add-articles/AddJournal/icons/collapse.svg';
 
-import full from '../icons/full.svg';
-import editor from '../icons/editor.svg';
-import text from '../icons/text.svg';
-import full_screen from '../icons/full_screen.svg';
-import collapse from '../icons/collapse.svg';
+const editorBg = {
+  blue: 'var(--blue-light-BADDFE)',
+  salmon: 'var(--salmon-light-FFBFB5)',
+};
 
-const MarkdownEditor = ({ onTempFilesChange }) => {
-  const dispatch = useDispatch();
-  const markdown = useSelector((s) => s.journal.formData.markdown_content);
+function extractLinks(md = '') {
+  const re = /!\[[^\]]*]\(([^)]+)\)|\[[^\]]*]\(([^)]+)\)/g;
+  const out = [];
+  let m;
+  while ((m = re.exec(md))) out.push(m[1] || m[2]);
+  return out;
+}
 
+export default function MarksMarkDown({
+  value,
+  onChange,
+  onUploadFile,
+  onDeleteFile,
+  onTempFilesChange,
+  color = 'blue',
+}) {
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [uploadedFiles, setUploadedFiles] = useState(new Map());
   const [mode, setMode] = useState('both');
+  const [uploadedFiles, setUploadedFiles] = useState(() => new Map());
 
   const editorRef = useRef(null);
-  const previewRef = useRef(null);
 
   useEffect(() => {
     onTempFilesChange?.(Array.from(uploadedFiles.keys()));
   }, [uploadedFiles, onTempFilesChange]);
 
-  const handleChange = useCallback(
-    (e) => {
-      dispatch(setFormData({ name: 'markdown_content', value: e.target.value }));
-    },
-    [dispatch]
-  );
+  const handleChange = useCallback((e) => onChange?.(e.target.value), [onChange]);
 
-  const toggleFullscreen = useCallback(() => {
-    setIsFullscreen((f) => !f);
-  }, []);
+  const toggleFullscreen = useCallback(() => setIsFullscreen((f) => !f), []);
 
   useEffect(() => {
     const onFs = () => setIsFullscreen(!!document.fullscreenElement);
@@ -53,50 +58,47 @@ const MarkdownEditor = ({ onTempFilesChange }) => {
     };
   }, []);
 
-  const handleModeChange = useCallback((m) => {
-    setMode(m);
-  }, []);
+  const handleModeChange = useCallback((m) => setMode(m), []);
 
   const insertTextAtCursor = useCallback((ta, txt) => {
-    const start = ta.selectionStart;
-    const end = ta.selectionEnd;
-    const v = ta.value;
-    const newVal = v.slice(0, start) + txt + v.slice(end);
+    const start = ta.selectionStart ?? 0;
+    const end = ta.selectionEnd ?? 0;
+    const newVal = ta.value.slice(0, start) + txt + ta.value.slice(end);
     ta.value = newVal;
-    const pos = start + txt.length;
-    ta.selectionStart = ta.selectionEnd = pos;
+    ta.selectionStart = ta.selectionEnd = start + txt.length;
     return newVal;
   }, []);
 
   const handleDrop = useCallback(
     async (e) => {
       e.preventDefault();
-      const files = Array.from(e.dataTransfer.files).filter(
+      if (!onUploadFile) return;
+      const files = Array.from(e.dataTransfer.files || []).filter(
         (f) => f.type.startsWith('image/') || f.type === 'application/pdf'
       );
       if (!files.length) return;
       const textarea = e.target.closest('textarea');
-      for (let file of files) {
+      for (const file of files) {
         try {
-          const url = await dispatch(uploadMarkdownFile(file)).unwrap();
+          const url = await onUploadFile(file);
           setUploadedFiles((prev) => {
             const m = new Map(prev);
             m.set(url, (m.get(url) || 0) + 1);
             return m;
           });
           const tag = file.type.startsWith('image/') ? `![Alt](${url})` : `[${file.name}](${url})`;
-          const newMd = textarea ? insertTextAtCursor(textarea, tag) : markdown + '\n' + tag;
-          dispatch(setFormData({ name: 'markdown_content', value: newMd }));
+          const newMd = textarea ? insertTextAtCursor(textarea, tag) : (value || '') + '\n' + tag;
+          onChange?.(newMd);
         } catch (err) {
-          console.error(err);
+          console.error('upload markdown file failed', err);
         }
       }
     },
-    [dispatch, insertTextAtCursor, markdown]
+    [onUploadFile, insertTextAtCursor, onChange, value]
   );
 
   const debouncedCheck = useDebouncedCallback(() => {
-    const links = extractMarkdownLinks(markdown);
+    const links = extractLinks(value || '');
     uploadedFiles.forEach((count, url) => {
       if (!links.includes(url)) {
         setUploadedFiles((prev) => {
@@ -105,7 +107,7 @@ const MarkdownEditor = ({ onTempFilesChange }) => {
           if (c > 1) {
             m.set(url, c - 1);
           } else {
-            dispatch(deleteMarkdownFile(url)).unwrap().catch(console.error);
+            onDeleteFile?.(url);
             m.delete(url);
           }
           return m;
@@ -116,7 +118,9 @@ const MarkdownEditor = ({ onTempFilesChange }) => {
 
   useEffect(() => {
     debouncedCheck();
-  }, [markdown, debouncedCheck]);
+  }, [value, debouncedCheck]);
+
+  const bg = editorBg[color] || editorBg.blue;
 
   return (
     <div
@@ -124,30 +128,25 @@ const MarkdownEditor = ({ onTempFilesChange }) => {
       className={`${styles['markdown-editor']} ${isFullscreen ? styles['markdown-editor--fullscreen'] : ''}`}
       onDragOver={(e) => e.preventDefault()}
       onDrop={handleDrop}>
+      <div className={styles['markdown-editor__label']}>Тело статьи</div>
       <div className={styles['markdown-editor__button-panel']}>
         <div className={styles['markdown-editor__button-panel-container']}>
           <button
             type="button"
             onClick={() => handleModeChange('both')}
-            className={`${styles['markdown-editor__button']} ${
-              mode === 'both' ? styles['markdown-editor__button--active'] : ''
-            }`}>
+            className={`${styles['markdown-editor__button']} ${mode === 'both' ? styles['markdown-editor__button--active'] : ''}`}>
             <img src={full} alt="both" />
           </button>
           <button
             type="button"
             onClick={() => handleModeChange('markdown')}
-            className={`${styles['markdown-editor__button']} ${
-              mode === 'markdown' ? styles['markdown-editor__button--active'] : ''
-            }`}>
+            className={`${styles['markdown-editor__button']} ${mode === 'markdown' ? styles['markdown-editor__button--active'] : ''}`}>
             <img src={editor} alt="markdown" />
           </button>
           <button
             type="button"
             onClick={() => handleModeChange('preview')}
-            className={`${styles['markdown-editor__button']} ${
-              mode === 'preview' ? styles['markdown-editor__button--active'] : ''
-            }`}>
+            className={`${styles['markdown-editor__button']} ${mode === 'preview' ? styles['markdown-editor__button--active'] : ''}`}>
             <img src={text} alt="preview" />
           </button>
         </div>
@@ -157,30 +156,24 @@ const MarkdownEditor = ({ onTempFilesChange }) => {
       </div>
 
       <div className={styles['markdown-editor__content']}>
-        {/* редактор */}
-        <div className={styles['markdown-editor__editor']} style={{ display: mode === 'preview' ? 'none' : 'block' }}>
+        <div
+          className={styles['markdown-editor__editor']}
+          style={{ display: mode === 'preview' ? 'none' : 'block', backgroundColor: bg }}>
           <textarea
             placeholder="Markdown"
-            value={markdown}
+            value={value || ''}
             onChange={handleChange}
             className={styles['markdown-editor__editor-textarea']}
           />
         </div>
-
-        {/* превью */}
-        <div
-          ref={previewRef}
-          className={styles['markdown-editor__preview']}
-          style={{ display: mode === 'markdown' ? 'none' : 'block' }}>
-          {markdown.trim() === '' ? (
+        <div className={styles['markdown-editor__preview']} style={{ display: mode === 'markdown' ? 'none' : 'block' }}>
+          {(value || '').trim() === '' ? (
             <div className={styles['markdown-editor__preview-placeholder']}>Предпросмотр</div>
           ) : (
-            <MarkdownContentRenderer markdown={markdown} />
+            <MarkdownContentRenderer markdown={value || ''} />
           )}
         </div>
       </div>
     </div>
   );
-};
-
-export default MarkdownEditor;
+}
