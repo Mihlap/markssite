@@ -1,4 +1,4 @@
-import { memo, forwardRef, useState, useEffect, useRef } from 'react';
+import { memo, forwardRef, useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { ClipIcon, Icon1 } from '../index.js';
 
@@ -90,6 +90,7 @@ const MarksInput = forwardRef(function MarksInput({
   measurement,
   maxLength,
   bordered = false,
+  autoGrow = false,
   className,
   color = 'blue',
   buttonText = 'Загрузить изображение',
@@ -100,6 +101,20 @@ const MarksInput = forwardRef(function MarksInput({
   error,
   info
 }, ref) {
+  const textareaRef = useRef(null);
+
+  useEffect(() => {
+    if (!autoGrow) return;
+    const el = textareaRef.current;
+    if (!el) return;
+    el.style.height = 'auto';
+    el.style.height = `${el.scrollHeight}px`;
+  }, [autoGrow, value]);
+
+  const blockEnter = useCallback((e) => {
+    if (e.key === 'Enter') e.preventDefault();
+  }, []);
+
   if (type === 'file') {
     return (
       <FileInput
@@ -121,38 +136,57 @@ const MarksInput = forwardRef(function MarksInput({
 
   const showMeasurement = measurement && value;
   const showCounter = maxLength != null;
-  const isBordered = showCounter || bordered;
+  const isBordered = showCounter || bordered || autoGrow;
   const colorClass = styles[`input__field_${color}`] || styles.input__field_blue;
+
+  const fieldClass = [
+    isBordered ? styles.input__field_bordered : styles.input__field,
+    isBordered ? colorClass : '',
+    autoGrow ? styles.input__field_autogrow : '',
+    disabled ? styles.input__field_disabled : '',
+    error ? styles.input__field_error : '',
+  ].join(' ');
 
   return (
     <div className={`${!isBordered ? styles.input : ''} ${isBordered ? styles.input_bordered : ''} ${className || ''}`}>
       {label && (
-      <label
-        htmlFor={name}
-        className={`${styles.input__label} ${isBordered ? styles.input__label_top : ''} ${disabled ? styles.input__label_disabled : ''}`}>
-        {label}
-      </label>
+        <label
+          htmlFor={name}
+          className={`${styles.input__label} ${isBordered ? styles.input__label_top : ''} ${disabled ? styles.input__label_disabled : ''}`}>
+          {label}
+        </label>
       )}
       <div className={styles.input__wrapper}>
-        <input
-          ref={ref}
-          type={type}
-          className={`${!isBordered ? styles.input__field : ''}
-            ${isBordered ? styles.input__field_bordered : ''}
-            ${isBordered ? colorClass : ''}
-            ${disabled ? styles.input__field_disabled : ''}
-            ${error ? styles.input__field_error : ''}
-            `}
-          placeholder={placeholder || name}
-          name={name}
-          id={name}
-          value={value ?? ''}
-          onChange={onChange}
-          autoComplete={autoComplete}
-          required={required}
-          disabled={disabled}
-          maxLength={maxLength}
-        />
+        {autoGrow ? (
+          <textarea
+            ref={textareaRef}
+            className={fieldClass}
+            placeholder={placeholder || name}
+            name={name}
+            id={name}
+            value={value ?? ''}
+            onChange={onChange}
+            onKeyDown={blockEnter}
+            required={required}
+            disabled={disabled}
+            rows={1}
+          />
+        ) : (
+          <input
+            ref={ref}
+            type={type}
+            className={fieldClass}
+            placeholder={placeholder || name}
+            name={name}
+            id={name}
+            value={value ?? ''}
+            onChange={onChange}
+            autoComplete={autoComplete}
+            required={required}
+            disabled={disabled}
+            maxLength={maxLength}
+          />
+        )}
         {showMeasurement && <span className={styles.input__measurement}>{measurement}</span>}
         {showCounter && <div className={styles.input__counter}>{`${(value || '').length}/${maxLength}`}</div>}
       </div>
