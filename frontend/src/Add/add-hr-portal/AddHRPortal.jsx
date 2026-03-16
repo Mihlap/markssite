@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import styles from '../style/style-card.module.scss';
-import FormEditVacancy from './FormAddEditVacancy/FormEditVacancy.jsx';
-import FormAddVacancy from './FormAddEditVacancy/FormAddVacancy.jsx';
+import VacancyForm from './form/VacancyForm.jsx';
 import AddSlideMain from './AddSlideMain/AddSlideMain.jsx';
 import AddEventMain from './AddEventMain/AddEventMain.jsx';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,16 +12,12 @@ import {
   updateVacancyLookStatusAndSaveToDB,
   getVacanciesByDirection,
 } from '../../store/Slice/vacanciesSlice';
-import { buttonsFilter } from './utils.js';
-
-// import LoadingModal from '../add-project/loading/LoadingModal';
+import { UiMarksButton, UiMarksSegmentedControls, UiMarksDialog } from '../ui';
+import { Icon1, Icon2, Icon3 } from './icon';
 import Edit from '../icon/Edit.svg';
 import Look from '../icon/eye.svg';
 import noLook from '../icon/eye2.svg';
 import copyIcon from '../icon/copyIcon.svg';
-import pencilIcon from '../add-navbar/icon/pencil.svg';
-import hr from '../add-navbar/icon/hr.svg';
-import internships from '../add-navbar/icon/internships.svg';
 import LoadingCircle from '../../Loading/LoadingCircle.jsx';
 import SearchVacancyMain from './SearchVacancyMain/SearchVacancyMain.jsx';
 import { arrIdVacancySelector } from './VacancySelector.js';
@@ -48,22 +43,28 @@ export default function AddHRPortal({ user }) {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [searchId, setSearchId] = useState('');
   const [savedId, setSavedId] = useState(null);
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [isFormLoading, setIsFormLoading] = useState(false);
+  const [showExitWarning, setShowExitWarning] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState('Вакансии');
 
   const dispatch = useDispatch();
   const { error, loading } = useSelector((state) => state.vacancies);
-  const vacanciesAdd = useSelector((state) => state.vacancies.vacancies);
-  const vacancies = useSelector((state) => state.vacancies?.vacancies);
+  const vacancies = useSelector((state) => state.vacancies.vacancies);
   const arrIdVacancy = useSelector(arrIdVacancySelector);
 
-  const isMountedRef = useRef(true);
-  const [activeButtonIndex, setActiveButtonIndex] = useState(0);
-  const [selectedFilter, setSelectedFilter] = useState('Вакансии');
+  const isFormDirtyRef = useRef(false);
+  const formRef = useRef(null);
+  const controlRef = useRef();
+  const jobRef = useRef();
+  const internshipRef = useRef();
+  const hrRef = useRef();
 
-  const buttonIcons = {
-    Вакансии: hr,
-    Стажировки: internships,
-    'Главная hr': pencilIcon,
-  };
+  const segments = [
+    { value: 'Вакансии', label: 'Вакансии', ref: jobRef, icon: <Icon1 /> },
+    { value: 'Стажировки', label: 'Стажировки', ref: internshipRef, icon: <Icon2 /> },
+    { value: 'Главная hr', label: 'Главная hr', ref: hrRef, icon: <Icon3 /> },
+  ];
 
   const updateModalBlockHeight = useCallback(() => {
     const windowHeight = window.innerHeight;
@@ -79,105 +80,92 @@ export default function AddHRPortal({ user }) {
   useEffect(() => {
     updateModalBlockHeight();
     window.addEventListener('resize', updateModalBlockHeight);
-    return () => {
-      window.removeEventListener('resize', updateModalBlockHeight);
-      isMountedRef.current = false;
-    };
+    return () => window.removeEventListener('resize', updateModalBlockHeight);
   }, [updateModalBlockHeight]);
-  
-  useEffect(() => {
-    document.body.style.overflow = isModalOpen ? 'hidden' : '';
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isModalOpen]);
+
+  const handleFilterChange = useCallback((value) => {
+    setSelectedFilter(value);
+  }, []);
 
   const handleOpenModal = useCallback(() => {
-    if (selectedFilter !== 'Главная hr') {
-      setIsModalOpen(true);
-      setEditVacancyData(null);
-    } else {
-      // noop
-    }
-  }, [selectedFilter]);
+    setIsModalOpen(true);
+    setEditVacancyData(null);
+  }, []);
 
-  const handleCloseModal = useCallback(() => {
+  const handleDialogClose = useCallback(() => {
+    if (isFormDirtyRef.current) {
+      setShowExitWarning(true);
+    } else {
+      setIsModalOpen(false);
+      setEditVacancyData(null);
+      setIsFormLoading(false);
+    }
+  }, []);
+
+  const handleForceClose = useCallback(() => {
+    isFormDirtyRef.current = false;
+    setShowExitWarning(false);
     setIsModalOpen(false);
+    setEditVacancyData(null);
+    setIsFormLoading(false);
+    formRef.current?.resetForm();
+  }, []);
+
+  const handleDirtyChange = useCallback((dirty) => {
+    isFormDirtyRef.current = dirty;
   }, []);
 
   const handleDeleteModalOpen = useCallback((id) => {
-    setDeleteModalState((prevState) => ({
-      ...prevState,
-      [id]: true,
-    }));
+    setDeleteModalState((prev) => ({ ...prev, [id]: true }));
   }, []);
 
   const handleDeleteModalClose = useCallback((id) => {
-    setDeleteModalState((prevState) => {
-      const newState = { ...prevState };
-      delete newState[id];
-      return newState;
+    setDeleteModalState((prev) => {
+      const next = { ...prev };
+      delete next[id];
+      return next;
     });
-  }, []);
-
-  const handleButtonsFilterClick = useCallback((filter) => {
-    setActiveButtonIndex(filter);
-    setSelectedFilter(buttonsFilter[filter]);
   }, []);
 
   const tryCopyToClipboard = (text) => {
     if (!navigator?.clipboard?.writeText) return;
     navigator.clipboard.writeText(String(text)).catch(() => {});
   };
- 
+
   const handleCopyClick = useCallback((id) => {
     tryCopyToClipboard(id);
-    if (isMountedRef.current) {
-      setIsCopied(true);
-      setCopiedId(id);
-    }
+    setIsCopied(true);
+    setCopiedId(id);
   }, []);
- 
+
   const handleCopyVacancyClick = useCallback(
     (id) => {
       tryCopyToClipboard(id);
-
-      if (!isMountedRef.current) return;
-      const vacancyToCopy = vacanciesAdd.find((el) => el.id === id);
+      const vacancyToCopy = vacancies.find((el) => el.id === id);
       if (!vacancyToCopy) return;
-
-      const copiedVacancy = { ...vacancyToCopy, id };
-
-      dispatch(sendCopiedVacancyToServer(copiedVacancy))
+      dispatch(sendCopiedVacancyToServer({ ...vacancyToCopy, id }))
         .then((response) => {
           const copiedId = response?.data?.copiedId;
           if (copiedId) {
             setCopiedVacancyId(copiedId);
-            setTimeout(() => {
-              setCopiedVacancyId(null);
-            }, 5000);
+            setTimeout(() => setCopiedVacancyId(null), 5000);
           }
           dispatch(getFetchForm());
         })
-        .catch(() => {
-          
-        });
+        .catch(() => {});
     },
-    [dispatch, vacanciesAdd]
+    [dispatch, vacancies]
   );
 
   const handleEditClick = useCallback(
     (id) => {
       tryCopyToClipboard(id);
-
-      if (!isMountedRef.current) return;
-      const vacancyToEdit = vacanciesAdd.find((el) => el.id === id);
+      const vacancyToEdit = vacancies.find((el) => el.id === id);
       if (!vacancyToEdit) return;
-
       setEditVacancyData(vacancyToEdit);
       setIsModalOpen(true);
     },
-    [vacanciesAdd]
+    [vacancies]
   );
 
   const handleFormDelete = useCallback(
@@ -189,64 +177,46 @@ export default function AddHRPortal({ user }) {
     [dispatch, handleDeleteModalClose]
   );
 
-  useEffect(() => {
-    if (isCopied) {
-      const timer = setTimeout(() => {
-        setIsCopied(false);
-        setCopiedId('');
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [isCopied]);
-
   const handleLookClick = useCallback(
     (id) => {
-      const vacancyToToggle = vacanciesAdd.find((vacancy) => vacancy.id === id);
-      if (!vacancyToToggle) return;
-      const updatedHiddenStatus = !vacancyToToggle.hidden;
-      dispatch(updateVacancyLookStatusAndSaveToDB({ id, hidden: updatedHiddenStatus }));
+      const vacancy = vacancies.find((v) => v.id === id);
+      if (!vacancy) return;
+      dispatch(updateVacancyLookStatusAndSaveToDB({ id, hidden: !vacancy.hidden }));
     },
-    [dispatch, vacanciesAdd]
+    [dispatch, vacancies]
   );
 
+  useEffect(() => {
+    if (!isCopied) return;
+    const timer = setTimeout(() => {
+      setIsCopied(false);
+      setCopiedId('');
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [isCopied]);
+
   const filteredVacancies = useMemo(() => {
-    return vacanciesAdd.filter((vacancy) => {
-      if (selectedFilter === 'Вакансии') {
-        return vacancy.type === 'вакансия';
-      } else if (selectedFilter === 'Стажировки') {
-        return vacancy.type === 'стажировка';
-      } else if (selectedFilter === 'Главная hr') {
-        return vacancy.type === 'главная';
-      }
+    return vacancies.filter((vacancy) => {
+      if (selectedFilter === 'Вакансии') return vacancy.type === 'вакансия';
+      if (selectedFilter === 'Стажировки') return vacancy.type === 'стажировка';
+      if (selectedFilter === 'Главная hr') return vacancy.type === 'главная';
       return false;
     });
-  }, [vacanciesAdd, selectedFilter]);
+  }, [vacancies, selectedFilter]);
 
   return (
     <section className={styles.card_components_admin}>
       <div className={styles.card_components_admin__block}>
         <div className={styles.card_components_admin__title}>HR портал</div>
-        <div className={styles.card_components_admin__buttonFilter}>
-          <div className={styles.buttonFilterStrip}>
-            {buttonsFilter.map((button, index) => (
-              <button
-                key={index}
-                className={`${styles.card_components_admin__buttonFilter__group} ${
-                  activeButtonIndex === index ? styles.activeButtonVacancy : ''
-                } ${index === 0 ? styles.noAnimation : ''}`}
-                onClick={() => handleButtonsFilterClick(index)}>
-                <img
-                  className={`${styles.card_components_admin__buttonFilter__icons} ${
-                    activeButtonIndex === index ? styles.activeIcon : ''
-                  }`}
-                  src={buttonIcons[button]}
-                  alt={button}
-                />
-                {button}
-              </button>
-            ))}
-          </div>
+        <div style={{paddingTop: '21px', paddingBottom: '24px'}}>
+        <UiMarksSegmentedControls
+          name="hr-filter"
+          segments={segments}
+          callback={handleFilterChange}
+          controlRef={controlRef}
+        />
         </div>
+
         {selectedFilter === 'Главная hr' ? (
           <>
             <AddSlideMain
@@ -289,59 +259,46 @@ export default function AddHRPortal({ user }) {
             />
           </>
         ) : (
-          <div className={styles.card_components_admin__button_block} onClick={handleOpenModal}>
-            <button className={styles.card_components_admin__button}>
-              <div>
-                <svg
-                  className={styles.card_components_admin__icon}
-                  width="41"
-                  height="40"
-                  viewBox="0 0 41 40"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <g id="icon">
-                    <circle id="Ellipse 4" cx="20.5" cy="20" r="20" fill="#F6F6F6" />
-                    <path
-                      id="Vector 10"
-                      d="M10.5 20H20.5M30.5 20H20.5M20.5 20V10M20.5 20V30"
-                      stroke="#75BBFD"
-                      strokeWidth="2"
-                      strokeLinecap="square"
-                    />
-                  </g>
-                </svg>
-              </div>
-              <div className={styles.card_components_admin__button_text}>
-                {selectedFilter === 'Вакансии'
-                  ? 'Добавить вакансию'
-                  : selectedFilter === 'Стажировки'
-                  ? 'Добавить стажировку'
-                  : 'Добавить'}
-              </div>
-            </button>
-          </div>
+          <UiMarksButton defaultStyle="blue" size="large" icon onClick={handleOpenModal}>
+            {selectedFilter === 'Вакансии' ? 'Добавить вакансию' : 'Добавить стажировку'}
+          </UiMarksButton>
         )}
-        {isModalOpen && (
-          <div className={styles.card_components_admin__modal_container}>
-            <div style={{ maxHeight: modalBlockHeight }} className={styles.card_components_admin__modal_block}>
-              {editVacancyData ? (
-                <FormEditVacancy
-                  setIsModalOpen={setIsModalOpen}
-                  editVacancyData={editVacancyData}
-                  selectedFilter={selectedFilter}
-                  className={styles.formAddProjectClass}
-                />
-              ) : (
-                <FormAddVacancy
-                  className={styles.formAddProjectClass}
-                  setIsModalOpen={setIsModalOpen}
-                  selectedFilter={selectedFilter}
-                />
-              )}
-              <button className={styles.card_components_admin__close_button} onClick={handleCloseModal}></button>
-            </div>
-          </div>
-        )}
+
+        <UiMarksDialog
+          isOpen={isModalOpen}
+          onClose={handleDialogClose}
+          title={
+            editVacancyData
+              ? selectedFilter === 'Вакансии'
+                ? 'Редактирование вакансии'
+                : 'Редактирование стажировки'
+              : selectedFilter === 'Вакансии'
+                ? 'Новая вакансия'
+                : 'Новая стажировка'
+          }
+          isSaveDisabled={!isFormValid}
+          onSave={() => document.getElementById('vacancy-form')?.requestSubmit()}
+          isLoading={isFormLoading}
+          isExit={showExitWarning}
+          onExitConfirm={handleForceClose}
+          onExitCancel={() => setShowExitWarning(false)}
+          nameSpinner={selectedFilter === 'Вакансии' ? 'Вакансия' : 'Стажировка'}>
+          <VacancyForm
+            ref={formRef}
+            onValidityChange={setIsFormValid}
+            onLoadingChange={setIsFormLoading}
+            onDirtyChange={handleDirtyChange}
+            editVacancyData={editVacancyData}
+            selectedFilter={selectedFilter}
+            selectedlabel={selectedFilter === 'Вакансии' ? 'Название вакансии' : 'Название стажировки'}
+            onSuccess={() => {
+              setIsModalOpen(false);
+              setEditVacancyData(null);
+              setIsFormLoading(false);
+            }}
+          />
+        </UiMarksDialog>
+
         <div className={styles.card_components_admin__section_map}>
           {error ? (
             <div className={styles.card_components_admin__errore_div}>
@@ -351,139 +308,131 @@ export default function AddHRPortal({ user }) {
             <LoadingCircle />
           ) : (
             <>
-              {filteredVacancies && filteredVacancies.length === 0 ? (
+              {filteredVacancies.length === 0 ? (
                 <div className={styles.card_components_admin__null_project}>
                   {selectedFilter === 'Вакансии'
                     ? 'Вакансии сейчас отсутствуют. Добавьте вакансию!'
                     : selectedFilter === 'Стажировки'
-                    ? 'Стажировки сейчас отсутствуют. Добавьте стажировку!'
-                    : ''}
+                      ? 'Стажировки сейчас отсутствуют. Добавьте стажировку!'
+                      : ''}
                 </div>
               ) : (
-                <>
-                  <div className={styles.card_components_admin__block__vacancy}>
-                    {Array.isArray(filteredVacancies) &&
-                      [...filteredVacancies].reverse().map((el) => {
-                        return (
-                          <React.Fragment key={el.id}>
+                <div className={styles.card_components_admin__block__vacancy}>
+                  {[...filteredVacancies].reverse().map((el) => (
+                    <React.Fragment key={el.id}>
+                      <div
+                        className={`${styles.cart_vacancy_container} ${
+                          copiedVacancyId === el.id ? styles.copiedVacancy : ''
+                        }`}>
+                        <div className={styles.cart_vacancy_container__content}>
+                          <span className={styles.cart_vacancy_container__title}>{el.title}</span>
+                        </div>
+                        <div className={styles.cart_vacancy_container__department}>{el.direction}</div>
+                        <div className={styles.cart_vacancy_container__id_block}>
+                          <div className={styles.cart_vacancy_container__id_text}>id: {el.id}</div>
+                          {isCopied && el.id === copiedId && (
+                            <>
+                              <div className={styles.cart_vacancy_container__copyMessage}>id скопирован</div>
+                              <div className={styles.cart_vacancy_container__copyButton_img_copy_deffalt} />
+                            </>
+                          )}
+                          <button
+                            className={styles.cart_vacancy_container__copyButton}
+                            onClick={() => handleCopyClick(el.id)}>
+                            <div className={styles.cart_vacancy_container__copyButton_img_copy_ok} />
+                          </button>
+                        </div>
+                        <div className={styles.cart_vacancy_container_buttonClick}>
+                          {user?.name === 'obezyankaa' || user?.name === 'Pokemon' || user?.name === 'hr778' ? (
                             <div
-                              key={el.id}
-                              className={`${styles.cart_vacancy_container} ${
-                                copiedVacancyId === el.id ? styles.copiedVacancy : ''
-                              }`}>
-                              <div className={styles.cart_vacancy_container__content}>
-                                <span className={styles.cart_vacancy_container__title}>{el.title}</span>
-                              </div>
-                              <div className={styles.cart_vacancy_container__department}>{el.direction}</div>
-                              <div className={styles.cart_vacancy_container__id_block}>
-                                <div className={styles.cart_vacancy_container__id_text}>id: {el.id}</div>
-                                {isCopied && el.id === copiedId && (
-                                  <>
-                                    <div className={styles.cart_vacancy_container__copyMessage}>id скопирован</div>
-                                    <div className={styles.cart_vacancy_container__copyButton_img_copy_deffalt} />
-                                  </>
-                                )}
-                                <button
-                                  className={styles.cart_vacancy_container__copyButton}
-                                  onClick={() => handleCopyClick(el.id)}>
-                                  <div className={styles.cart_vacancy_container__copyButton_img_copy_ok} />
-                                </button>
-                              </div>
-                              <div className={styles.cart_vacancy_container_buttonClick}>
-                                {user?.name === 'obezyankaa' || user?.name === 'Pokemon' || user?.name === 'hr778' ? (
-                                  <div
-                                    className={styles.copyIcon_block_vacancy}
-                                    onClick={() => handleCopyVacancyClick(el.id)}>
-                                    <button className={styles.buttom_copyIcon}>
-                                      <label htmlFor="copyIcon" className={styles.label}>
-                                        <div className={`${styles.wrapper}`}>
-                                          <img src={copyIcon} alt={copyIcon} />
-                                        </div>
-                                      </label>
-                                    </button>
+                              className={styles.copyIcon_block_vacancy}
+                              onClick={() => handleCopyVacancyClick(el.id)}>
+                              <button className={styles.buttom_copyIcon}>
+                                <label htmlFor="copyIcon" className={styles.label}>
+                                  <div className={styles.wrapper}>
+                                    <img src={copyIcon} alt={copyIcon} />
                                   </div>
-                                ) : null}
-                                {user?.name === 'obezyankaa' || user?.name === 'Pokemon' ? (
-                                  <div className={styles.del_block_vacancy}>
-                                    <button className={styles.buttom_del} onClick={() => handleDeleteModalOpen(el.id)}>
-                                      <label htmlFor="delete" className={styles.label}>
-                                        <div className={`${styles.wrapper}`}>
-                                          <div className={`${styles.lid}`}>
-                                            <div className={styles.container_vedro}>
-                                              <div className={styles.triangle_left}></div>
-                                              <div className={styles.rectangle}></div>
-                                              <div className={styles.triangle_right}></div>
-                                            </div>
-                                          </div>
-                                          <div className={`${styles.can}`}></div>
-                                          <span>delete</span>
-                                        </div>
-                                      </label>
-                                    </button>
-                                  </div>
-                                ) : null}
-                                {user?.name === 'obezyankaa' || user?.name === 'Pokemon' || user?.name === 'hr778' ? (
-                                  <div
-                                    className={`${styles.look_block_vacancy} ${el.hidden ? styles.disabled : ''}`}
-                                    onClick={() => handleLookClick(el.id)}>
-                                    <button className={styles.buttom_look}>
-                                      <label htmlFor="look" className={styles.label}>
-                                        <div className={`${styles.wrapper}`}>
-                                          <img src={el.hidden ? noLook : Look} alt={el.hidden ? 'No look' : 'Look'} />
-                                        </div>
-                                      </label>
-                                    </button>
-                                  </div>
-                                ) : null}
-
-                                {user?.name === 'obezyankaa' || user?.name === 'Pokemon' || user?.name === 'hr778' ? (
-                                  <div className={styles.edit_block_vacancy} onClick={() => handleEditClick(el.id)}>
-                                    <button className={styles.buttom_edit}>
-                                      <label htmlFor="edit" className={styles.label}>
-                                        <div className={`${styles.wrapper}`}>
-                                          <img src={Edit} alt={Edit} />
-                                        </div>
-                                      </label>
-                                    </button>
-                                  </div>
-                                ) : null}
-                              </div>
+                                </label>
+                              </button>
                             </div>
-                            {deleteModalState[el.id] && (
-                              <div className={styles.delete_modal_container}>
-                                <div className={styles.delete_modal_block}>
-                                  <div className={styles.delete_modal_block__title}>
-                                    <>Вы точно хотите удалить</>
-                                    <br />
-                                    {selectedFilter === 'Стажировки' ? 'стажировку' : 'вакансию'} «{el.title}»?
+                          ) : null}
+                          {user?.name === 'obezyankaa' || user?.name === 'Pokemon' ? (
+                            <div className={styles.del_block_vacancy}>
+                              <button className={styles.buttom_del} onClick={() => handleDeleteModalOpen(el.id)}>
+                                <label htmlFor="delete" className={styles.label}>
+                                  <div className={styles.wrapper}>
+                                    <div className={styles.lid}>
+                                      <div className={styles.container_vedro}>
+                                        <div className={styles.triangle_left}></div>
+                                        <div className={styles.rectangle}></div>
+                                        <div className={styles.triangle_right}></div>
+                                      </div>
+                                    </div>
+                                    <div className={styles.can}></div>
+                                    <span>delete</span>
                                   </div>
-                                  <p className={styles.delete_modal_block__text}>
-                                    Удаленную {selectedFilter === 'Вакансии' ? 'вакансию' : 'стажировку'} вернуть будет
-                                    невозможно
-                                  </p>
-
-                                  <div className={styles.button_block}>
-                                    <button
-                                      className={`${styles.button_block__cancel} ${styles.delete_modal_button_cancel}`}
-                                      onClick={() => handleDeleteModalClose(el.id)}
-                                    />
-                                    <button
-                                      className={`${styles.button_block__save} ${styles.delete_modal_button_delete}`}
-                                      onClick={() => handleFormDelete(el.id)}
-                                    />
+                                </label>
+                              </button>
+                            </div>
+                          ) : null}
+                          {user?.name === 'obezyankaa' || user?.name === 'Pokemon' || user?.name === 'hr778' ? (
+                            <div
+                              className={`${styles.look_block_vacancy} ${el.hidden ? styles.disabled : ''}`}
+                              onClick={() => handleLookClick(el.id)}>
+                              <button className={styles.buttom_look}>
+                                <label htmlFor="look" className={styles.label}>
+                                  <div className={styles.wrapper}>
+                                    <img src={el.hidden ? noLook : Look} alt={el.hidden ? 'No look' : 'Look'} />
                                   </div>
-
-                                  <button
-                                    className={styles.delete_modal_block__close_button}
-                                    onClick={() => handleDeleteModalClose(el.id)}></button>
-                                </div>
-                              </div>
-                            )}
-                          </React.Fragment>
-                        );
-                      })}
-                  </div>
-                </>
+                                </label>
+                              </button>
+                            </div>
+                          ) : null}
+                          {user?.name === 'obezyankaa' || user?.name === 'Pokemon' || user?.name === 'hr778' ? (
+                            <div className={styles.edit_block_vacancy} onClick={() => handleEditClick(el.id)}>
+                              <button className={styles.buttom_edit}>
+                                <label htmlFor="edit" className={styles.label}>
+                                  <div className={styles.wrapper}>
+                                    <img src={Edit} alt={Edit} />
+                                  </div>
+                                </label>
+                              </button>
+                            </div>
+                          ) : null}
+                        </div>
+                      </div>
+                      {deleteModalState[el.id] && (
+                        <div className={styles.delete_modal_container}>
+                          <div className={styles.delete_modal_block}>
+                            <div className={styles.delete_modal_block__title}>
+                              <>Вы точно хотите удалить</>
+                              <br />
+                              {selectedFilter === 'Стажировки' ? 'стажировку' : 'вакансию'} «{el.title}»?
+                            </div>
+                            <p className={styles.delete_modal_block__text}>
+                              Удаленную {selectedFilter === 'Вакансии' ? 'вакансию' : 'стажировку'} вернуть будет
+                              невозможно
+                            </p>
+                            <div className={styles.button_block}>
+                              <button
+                                className={`${styles.button_block__cancel} ${styles.delete_modal_button_cancel}`}
+                                onClick={() => handleDeleteModalClose(el.id)}
+                              />
+                              <button
+                                className={`${styles.button_block__save} ${styles.delete_modal_button_delete}`}
+                                onClick={() => handleFormDelete(el.id)}
+                              />
+                            </div>
+                            <button
+                              className={styles.delete_modal_block__close_button}
+                              onClick={() => handleDeleteModalClose(el.id)}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </React.Fragment>
+                  ))}
+                </div>
               )}
             </>
           )}
