@@ -1,17 +1,17 @@
 import { memo, useMemo } from 'react';
 import styles from './ConstructorPage.module.scss';
 
-import quoteRight from '../../add-articles/constructor/svg/icomoon-free_quotes-right.svg';
-import quoteLeft from '../../add-articles/constructor/svg/icomoon-free_quotes-right2.svg';
-import svg1 from '../../add-articles/constructor/svg/Group4650.svg';
+// import quoteRight from '../../add-articles/constructor/svg/icomoon-free_quotes-right.svg';
+// import quoteLeft from '../../add-articles/constructor/svg/icomoon-free_quotes-right2.svg';
+// import svg1 from '../../add-articles/constructor/svg/Group4650.svg';
 import svg2 from './svg/card_additional_block1.svg';
 import svg3 from './svg/card_additional_block6.svg';
 import svg6 from './svg/card_additional_block5.svg';
 import svg7 from './svg/card_additional_block4.svg';
 import svg11 from './svg/card additional block_new.svg';
 import svg12 from './svg/card additional block_item.svg';
-import svg9 from '../../add-articles/constructor/svg/Group46412.svg';
-import svg10 from '../../add-articles/constructor/svg/Group4348.svg';
+// import svg9 from '../../add-articles/constructor/svg/Group46412.svg';
+// import svg10 from '../../add-articles/constructor/svg/Group4348.svg';
 
 function ConstructorPage({ handleClick, missingBlocks = [], isHistoryForm = false }) {
   const missing = useMemo(() => new Set(missingBlocks), [missingBlocks]);
@@ -50,7 +50,7 @@ function ConstructorPage({ handleClick, missingBlocks = [], isHistoryForm = fals
           const meta = { blockId: 'frameText', requiredBlock: false };
           handleClick(inputs, meta);
         }}>
-        <img className={styles.div_conteiner__blockEight_img} src={svg10} alt="10" />
+        {/* <img className={styles.div_conteiner__blockEight_img} src={svg10} alt="10" /> */}
       </div>
 
       {/* Картинка + описание (ОБЯЗАТЕЛЬНЫЙ БЛОК) */}
@@ -65,7 +65,7 @@ function ConstructorPage({ handleClick, missingBlocks = [], isHistoryForm = fals
           const meta = { blockId: 'imageWithCaption', requiredBlock: true };
           handleClick(inputs, meta);
         }}>
-        <img src={svg1} alt="svg_one" />
+        {/* <img src={svg1} alt="svg_one" /> */}
       </div>
 
       {/* Цитата (ОБЯЗАТЕЛЬНЫЙ БЛОК) */}
@@ -88,9 +88,9 @@ function ConstructorPage({ handleClick, missingBlocks = [], isHistoryForm = fals
           handleClick(inputs, meta);
         }}>
         <div className={styles.block_quote_img}>
-          <img className={styles.div_conteiner__blockNine_imgLeft} src={quoteLeft} alt="кавычки вверх" />
-          <img src={svg10} alt="svg_10" />
-          <img src={quoteRight} className={styles.div_conteiner__blockNine_imgRight} alt="кавычки вниз" />
+          {/* <img className={styles.div_conteiner__blockNine_imgLeft} src={quoteLeft} alt="кавычки вверх" /> */}
+          {/* <img src={svg10} alt="svg_10" /> */}
+          {/* <img src={quoteRight} className={styles.div_conteiner__blockNine_imgRight} alt="кавычки вниз" /> */}
         </div>
       </div>
 
@@ -120,7 +120,7 @@ function ConstructorPage({ handleClick, missingBlocks = [], isHistoryForm = fals
           const meta = { blockId: 'callout', requiredBlock: false };
           handleClick(inputs, meta);
         }}>
-        <img src={svg9} alt="svg_9" />
+        {/* <img src={svg9} alt="svg_9" /> */}
       </div>
 
       {/* Интересный факт (ОБЯЗАТЕЛЬНЫЙ БЛОК) */}

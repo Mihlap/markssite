@@ -99,6 +99,7 @@ export default function AddSlideMain({
           </div>
           <div className={styles.card_components_admin__button_text}>Добавить слайд</div>
         </button>
+        
       </div>
 
       <SlideModalManager
