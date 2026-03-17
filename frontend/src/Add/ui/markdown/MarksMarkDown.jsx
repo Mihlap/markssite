@@ -1,16 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import MarkdownContentRenderer from '../../../UI/MarkdownContentRenderer/MarkdownContentRenderer';
+
+import { Icon1, Icon2, Icon3, Icon4, Icon5 } from './icon';
 import styles from './MarksMarkDown.module.scss';
 
-import full from '../../add-articles/AddJournal/icons/full.svg';
-import editor from '../../add-articles/AddJournal/icons/editor.svg';
-import text from '../../add-articles/AddJournal/icons/text.svg';
-import full_screen from '../../add-articles/AddJournal/icons/full_screen.svg';
-import collapse from '../../add-articles/AddJournal/icons/collapse.svg';
+const iconColors = {
+  blue: 'var(--blue-75BBFD)',
+  salmon: 'var(--salmon-FF7F6A)',
+};
 
-const editorBg = {
-  blue: 'var(--blue-light-BADDFE)',
+const lightColors = {
+  blue: 'var(--light-blue-D4EDFB)',
   salmon: 'var(--salmon-light-FFBFB5)',
 };
 
@@ -120,55 +121,57 @@ export default function MarksMarkDown({
     debouncedCheck();
   }, [value, debouncedCheck]);
 
-  const bg = editorBg[color] || editorBg.blue;
+  const iconColor = iconColors[color] || iconColors.blue;
+  const lightColor = lightColors[color] || lightColors.blue;
 
   return (
     <div
       ref={editorRef}
-      className={`${styles['markdown-editor']} ${isFullscreen ? styles['markdown-editor--fullscreen'] : ''}`}
+      className={`${styles.md} ${isFullscreen ? styles['md--fs'] : ''}`}
+      style={{ '--md-accent': iconColor, '--md-light': lightColor }}
       onDragOver={(e) => e.preventDefault()}
       onDrop={handleDrop}>
-      <div className={styles['markdown-editor__label']}>Тело статьи</div>
-      <div className={styles['markdown-editor__button-panel']}>
-        <div className={styles['markdown-editor__button-panel-container']}>
+      <div className={styles.md__label}>Тело статьи</div>
+      <div className={styles.md__toolbar}>
+        <div className={styles['md__btn-group']}>
           <button
             type="button"
             onClick={() => handleModeChange('both')}
-            className={`${styles['markdown-editor__button']} ${mode === 'both' ? styles['markdown-editor__button--active'] : ''}`}>
-            <img src={full} alt="both" />
+            className={`${styles.md__btn} ${mode === 'both' ? styles['md__btn--active'] : ''}`}>
+            <Icon1 color={iconColor} />
           </button>
           <button
             type="button"
             onClick={() => handleModeChange('markdown')}
-            className={`${styles['markdown-editor__button']} ${mode === 'markdown' ? styles['markdown-editor__button--active'] : ''}`}>
-            <img src={editor} alt="markdown" />
+            className={`${styles.md__btn} ${mode === 'markdown' ? styles['md__btn--active'] : ''}`}>
+            <Icon2 color={iconColor} />
           </button>
           <button
             type="button"
             onClick={() => handleModeChange('preview')}
-            className={`${styles['markdown-editor__button']} ${mode === 'preview' ? styles['markdown-editor__button--active'] : ''}`}>
-            <img src={text} alt="preview" />
+            className={`${styles.md__btn} ${mode === 'preview' ? styles['md__btn--active'] : ''}`}>
+            <Icon3 color={iconColor} />
           </button>
         </div>
-        <button type="button" onClick={toggleFullscreen} className={styles['markdown-editor__button']}>
-          {isFullscreen ? <img src={collapse} alt="collapse" /> : <img src={full_screen} alt="fullscreen" />}
+        <button type="button" onClick={toggleFullscreen} className={styles.md__btn}>
+          {isFullscreen ? <Icon5 color={iconColor} /> : <Icon4 color={iconColor} />}
         </button>
       </div>
 
-      <div className={styles['markdown-editor__content']}>
+      <div className={styles.md__main}>
         <div
-          className={styles['markdown-editor__editor']}
-          style={{ display: mode === 'preview' ? 'none' : 'block', backgroundColor: bg }}>
+          className={styles.md__editor}
+          style={{ display: mode === 'preview' ? 'none' : 'block' }}>
           <textarea
             placeholder="Markdown"
             value={value || ''}
             onChange={handleChange}
-            className={styles['markdown-editor__editor-textarea']}
+            className={styles.md__textarea}
           />
         </div>
-        <div className={styles['markdown-editor__preview']} style={{ display: mode === 'markdown' ? 'none' : 'block' }}>
+        <div className={styles.md__preview} style={{ display: mode === 'markdown' ? 'none' : 'block' }}>
           {(value || '').trim() === '' ? (
-            <div className={styles['markdown-editor__preview-placeholder']}>Предпросмотр</div>
+            <div className={styles.md__placeholder}>Предпросмотр</div>
           ) : (
             <MarkdownContentRenderer markdown={value || ''} />
           )}

@@ -198,6 +198,7 @@ button {
 
 input,
 textarea {
+  resize: none;
   outline: none;
   font-variant-numeric: lining-nums;
 }
