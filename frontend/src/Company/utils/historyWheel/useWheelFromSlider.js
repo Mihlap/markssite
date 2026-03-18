@@ -116,8 +116,6 @@ export function useWheelFromSlider({
         subtitleLine2Ref,
     ]);
 
-    // Mobile / tablet behaviour (<=1024): после выхода вверх из истории
-    // при прокрутке вниз снова мягко возвращаемся к заголовку истории.
     useEffect(() => {
         if (isDesktop !== false) return;
 

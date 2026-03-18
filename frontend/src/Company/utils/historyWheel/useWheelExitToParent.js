@@ -187,8 +187,7 @@ export function useWheelExitToParent({
             hasSplitTriggered.current = true;
             hasRestoreTriggered.current = false;
 
-            if (historyTagRef.current) {
-                // Скрываем таб без применения transform, только opacity
+            if (historyTagRef.current) {           
                 const tag = historyTagRef.current;
                 tag.style.opacity = '0';
                 tag.style.visibility = 'hidden';

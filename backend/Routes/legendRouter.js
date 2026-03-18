@@ -545,12 +545,27 @@ router.patch('/:id/hidden', async (req, res, next) => {
     const legend = await Legend.findByPk(req.params.id);
     if (!legend) return res.status(404).json({ message: 'Legend not found' });
 
-    await legend.update({ hidden: !!hidden });
+    const oldHidden = !!legend.hidden;
+    const newHidden = !!hidden;
+
+    await legend.update({ hidden: newHidden });
 
     const fullLegend = await Legend.findByPk(req.params.id, {
       include: LEGEND_INCLUDE,
       order: [CONSTRUCTOR_ORDER],
     });
+
+    if (req.session?.user) {
+      logResourceAction({
+        action: 'UPDATE',
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'legend',
+        resourceId: String(req.params.id),
+        resourceName: legend.title || 'Легенда',
+        hasChanges: oldHidden !== newHidden,
+      });
+    }
 
     res.json(withComputedUrls(fullLegend || legend));
   } catch (err) {

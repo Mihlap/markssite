@@ -191,9 +191,7 @@ export function useCompanyHistoryHeaderIntro({
             }
         };
 
-        const onScroll = () => {
-            // На мобильных/планшетах, когда карточки в фокусе по центру,
-            // не даём этому хуку перезапускать анимацию заголовка.
+        const onScroll = () => {         
             if (!isDesktop && cardsFocused) return;
             const headerEl = historyHeaderRef.current;
             if (!headerEl) return;
