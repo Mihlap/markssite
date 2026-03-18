@@ -1,0 +1,155 @@
+.entily {
+    font-family: var(--font-raleway);
+    border-radius: 16px;
+    background: var(--light-light-gray-EBECEE);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 0px;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+.content, .control {
+    display: flex;
+    gap: 16px;
+}
+
+.title {
+    color: var(--black-1D2E43);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.desc {
+    color: var(--dark-gray-566269);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.id {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--black-1D2E43);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 26px;
+    background-color: var(--white-F6F6F6);
+    border-radius: 2rem;
+    padding: 8px 24px;
+
+    button {
+        display: flex;
+    }
+}
+
+.copy {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.copyMessage {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-15%);
+    background: rgba(29, 46, 67, 0.40);
+    border-radius: 8px;
+    padding: 6px 12px;
+    color: var(--white-F6F6F6);
+    white-space: nowrap;
+    pointer-events: none;
+    color: var(--white-F6F6F6);    
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 20px;
+}
+
+/* Стрелка вниз */
+.copyMessage::before,
+.copyMessage::after {
+    content: '';
+    position: absolute;
+    left: 15%;
+    transform: translateX(-50%);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+}
+
+/* Граница стрелки */
+.copyMessage::before {
+    top: 100%;
+    border-top: 6px solid rgba(29, 46, 67, 0.40);
+}
+
+/* Заливка стрелки */
+.copyMessage::after {
+    top: calc(100% - 1px);
+    /* border-top: 6px solid rgba(29, 46, 67, 0.40); */
+}
+
+.wrapbtn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--blue-75BBFD);
+    transition: background-color 0.2s;
+
+    &:hover {
+       background-color: var(--dark-blue-389FFF);
+    }
+}
+
+.btnHidden {
+    background-color: var(--light-gray-C0C5CB);
+
+    &:hover {
+        background-color: var(--gray-959DA6);
+    }
+}
+
+.drag {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: grab;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.dragIsEvent {
+    margin-right: -8px;
+    padding-left: 8px;
+}
+
+.dragIsLegenda {
+    padding-left: 8px;
+}

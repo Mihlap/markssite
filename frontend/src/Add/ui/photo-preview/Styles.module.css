@@ -97,6 +97,15 @@
   position: relative;
 }
 
+.preview[data-variant='multi'] {
+  /* background-color: rebeccapurple; */
+}
+
+.preview[data-variant='multi'] .preview__img {
+  width: 80px;
+  height: 80px;
+}
+
 /* Grid 4 photos */
 .preview[data-variant='grid-4'] {
   flex-wrap: wrap;

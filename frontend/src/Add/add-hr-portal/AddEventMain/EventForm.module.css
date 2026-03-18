@@ -1,0 +1,37 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.photoUpload {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.videoRow {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.removeBtn {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  font-size: 18px;
+  color: #999;
+  line-height: 1;
+}
+
+.removeBtn:hover {
+  color: #333;
+}
+
+.loading {
+  font-size: 14px;
+  color: #999;
+}

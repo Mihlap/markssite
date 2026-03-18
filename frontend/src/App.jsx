@@ -30,6 +30,7 @@ import ButtonAdmin from './UI/ButtonAdmin/ButtonAdmin';
 import CustomCursor from './UI/CustomCursor/CustomCursor';
 import CookieComponent from './UI/CookieComponent/CookieComponent';
 import Loading from './Loading/LoadingNew';
+import MarksEntityRow from './Add/ui/EntityRow/MarksEntityRow';
 // import Loading from './UI/Loading/christmas/Loading';
 
 const Header = lazy(() => import('./Header/Header'));
@@ -146,7 +147,7 @@ export default function App() {
               <ButtonAdmin user={user} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} />
             )}
 
-            {!isAdminPage && !isNavPreviewPage && <NavBar />}
+            {/* {!isAdminPage && !isNavPreviewPage && <NavBar />} */}
 
             <Routes location={location}>
               <Route
@@ -183,6 +184,18 @@ export default function App() {
                   <PageFade>
                     <Project />
                   </PageFade>
+                }
+              />
+
+              <Route
+                path="/test"
+                element={
+                  <MarksEntityRow
+                    title="Ведущий инженер-конструктор"
+                    desc="Экспертно-аналитический отдел"
+                    id="9062234144"
+                    role='admin'
+                  />
                 }
               />
 
@@ -411,7 +424,7 @@ export default function App() {
 
             <CookieComponent />
 
-            {!isFooterFormPage && showNavbarFooter && currentPage !== 'add' && (
+            {/* {!isFooterFormPage && showNavbarFooter && currentPage !== 'add' && (
               <>
                 {isPortalPage ? (
                   <Footer
@@ -429,7 +442,7 @@ export default function App() {
                   />
                 )}
               </>
-            )}
+            )} */}
 
             {showNavbarFooter && currentPage !== 'add' && <CustomCursor />}
           </div>
