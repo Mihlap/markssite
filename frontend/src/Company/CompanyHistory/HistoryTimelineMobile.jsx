@@ -1,11 +1,14 @@
 import { useRef, useState } from 'react';
+import gsap from 'gsap';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Keyboard } from 'swiper';
-import 'swiper/swiper-bundle.min.css';
+import { Keyboard } from 'swiper/modules';
+import 'swiper/css';
 
 import HistoryCard from './HistoryCard';
 import HistoryYearPickerModal from './HistoryYearPickerModal';
 import styles from './HistoryTimeline.module.scss';
+
+import strelka from '../icons/strelka.svg';
 
 export default function HistoryTimelineMobile({
     visibleItems,
@@ -14,20 +17,24 @@ export default function HistoryTimelineMobile({
     mobileSlidesOffsetAfter,
     mobileTimelineYearsRef,
     mobileActiveYearIndex,
-    mobileIncomingYearIndex,
-    isMobileSliding,
+    cardsFocused,
     setMobileActiveYearIndex,
     setMobileIncomingYearIndex,
     setIsMobileSliding,
     yearIndexByYear,
     isDesktop,
     handleOpenChronicle,
+    onSkip,
+    onUnlockScroll,
 }) {
     const swiperRef = useRef(null);
     const [buttonYearIndex, setButtonYearIndex] = useState(
         typeof mobileActiveYearIndex === 'number' ? mobileActiveYearIndex : 0
     );
     const [isYearPickerOpen, setIsYearPickerOpen] = useState(false);
+    const isStrictMobile =
+        !isDesktop && typeof window !== 'undefined' && window.innerWidth <= 767;
+    const lastAnimatedYearRef = useRef(null);
 
     const handleYearPickerSelect = ({ index: yearIndex, year }) => {
         if (typeof yearIndex === 'number' && !Number.isNaN(yearIndex)) {
@@ -51,24 +58,46 @@ export default function HistoryTimelineMobile({
 
     const activeYearLabel =
         typeof buttonYearIndex === 'number' &&
-        buttonYearIndex >= 0 &&
-        buttonYearIndex < timelineItemsAdmin.length
+            buttonYearIndex >= 0 &&
+            buttonYearIndex < timelineItemsAdmin.length
             ? timelineItemsAdmin[buttonYearIndex]
             : null;
 
     return (
         <div className={styles.history_mobile}>
-            {activeYearLabel && (
-                <div className={styles.history_mobile_year_button_wrapper}>
-                    <button
-                        type="button"
-                        className={styles.history_mobile_year_button}
-                        onClick={() => setIsYearPickerOpen(true)}
+            {activeYearLabel &&
+                (isStrictMobile ? (
+                    <div
+                        className={styles.history_mobile_topbar}
+                        data-history-mobile-topbar="true"
                     >
-                        {activeYearLabel}
-                    </button>
-                </div>
-            )}
+                        <div
+                            className={`${styles.history_mobile_tag} ${cardsFocused ? styles.is_visible : ''}`}
+                            aria-hidden={!cardsFocused}
+                        >
+                            История MARKS GROUP
+                        </div>
+                        <div className={styles.history_mobile_year_button_wrapper}>
+                            <button
+                                type="button"
+                                className={styles.history_mobile_year_button}
+                                onClick={() => setIsYearPickerOpen(true)}
+                            >
+                                {activeYearLabel}
+                            </button>
+                        </div>
+                    </div>
+                ) : (
+                    <div className={styles.history_mobile_year_button_wrapper}>
+                        <button
+                            type="button"
+                            className={styles.history_mobile_year_button}
+                            onClick={() => setIsYearPickerOpen(true)}
+                        >
+                            {activeYearLabel}
+                        </button>
+                    </div>
+                ))}
             <HistoryYearPickerModal
                 isOpen={isYearPickerOpen}
                 onClose={() => setIsYearPickerOpen(false)}
@@ -77,8 +106,16 @@ export default function HistoryTimelineMobile({
                 activeYearIndex={buttonYearIndex}
                 onSelectYear={handleYearPickerSelect}
             />
+            {isStrictMobile && (
+                <div
+                    data-history-mobile-focus-anchor="true"
+                    className={styles.history_mobile_focus_anchor}
+                    aria-hidden="true"
+                />
+            )}
             <div
-                className={`${styles.history_mobile_swiper_wrapper} ${styles.history_mobile_swiper_wrapper_mask_left}`}
+                className={`${styles.history_mobile_swiper_wrapper} ${styles.history_mobile_swiper_wrapper_mask_left} ${isStrictMobile ? styles.history_mobile_swiper_wrapper_sticky : ''
+                    }`}
             >
                 <Swiper
                     className={styles.history_mobile_swiper}
@@ -87,18 +124,17 @@ export default function HistoryTimelineMobile({
                     spaceBetween={30}
                     slidesPerView="auto"
                     slidesPerGroup={1}
-                    slidesOffsetBefore={55}
+                    slidesOffsetBefore={isStrictMobile ? 0 : 55}
                     slidesOffsetAfter={mobileSlidesOffsetAfter}
                     watchSlidesProgress
                     onProgress={(swiper) => {
                         if (!swiper || !swiper.slides) return;
-
-                        const MAX_SHIFT = 80;
-                        const TARGET_PROGRESS = -3;
-                        const RADIUS = 0.8;
+                        const MAX_SHIFT = isStrictMobile ? 50 : 80;
+                        const TARGET_PROGRESS = isStrictMobile ? -1.5 : -3;
+                        const RADIUS = isStrictMobile ? 1.2 : 0.8;
 
                         swiper.slides.forEach((slide) => {
-                            const img = slide.querySelector('[data-card-image="true"]');
+                            const img = slide.querySelector('[data-card-image=\"true\"]');
                             if (!img) return;
 
                             const p = typeof slide.progress === 'number' ? slide.progress : 0;
@@ -142,9 +178,12 @@ export default function HistoryTimelineMobile({
                                     tx = minTx;
                                     swiper.setTranslate(tx);
                                     isClamping = false;
+
+                                    if (isStrictMobile && typeof onUnlockScroll === 'function') {
+                                        onUnlockScroll();
+                                    }
                                 }
 
-                                // вычисляем "левую" видимую карточку под кнопкой года
                                 const offsetBefore =
                                     typeof swiper.params.slidesOffsetBefore === 'number'
                                         ? swiper.params.slidesOffsetBefore
@@ -158,9 +197,8 @@ export default function HistoryTimelineMobile({
 
                                     const slideLeft = slideEl.offsetLeft ?? 0;
                                     const slideWidth = slideEl.offsetWidth ?? 0;
-                                    const slideRight = slideLeft + slideWidth;
-
-                                    if (slideRight > viewportLeft + 1) {
+                                    const threshold = slideLeft + slideWidth * 0.3;
+                                    if (threshold > viewportLeft + 1) {
                                         leftIndex = i;
                                         break;
                                     }
@@ -168,13 +206,59 @@ export default function HistoryTimelineMobile({
 
                                 const itemForButton = visibleItems[leftIndex];
                                 if (itemForButton && itemForButton.year != null) {
-                                    const idxForButton =
-                                        yearIndexByYear[String(itemForButton.year)];
+                                    const yearStr = String(itemForButton.year);
+                                    const idxForButton = yearIndexByYear[yearStr];
                                     if (
                                         typeof idxForButton === 'number' &&
                                         !Number.isNaN(idxForButton)
                                     ) {
                                         setButtonYearIndex(idxForButton);
+
+                                        if (!isDesktop) {
+                                            const yearsRoot = mobileTimelineYearsRef.current;
+                                            if (yearsRoot) {
+                                                const markers = yearsRoot.querySelectorAll(
+                                                    '[data-year-marker="true"]'
+                                                );
+
+                                                markers.forEach((m) => {
+                                                    const y = m.getAttribute('data-year');
+                                                    const dot = m.querySelector(
+                                                        '[data-year-dot="true"]'
+                                                    );
+                                                    if (!dot) return;
+
+                                                    gsap.killTweensOf(dot);
+
+                                                    if (y !== yearStr) {
+                                                        gsap.to(dot, {
+                                                            duration: 0.25,
+                                                            ease: 'power2.out',
+                                                            overwrite: 'auto',
+                                                            '--dot-scale': 1,
+                                                        });
+                                                        return;
+                                                    }
+
+                                                    const tl = gsap.timeline({
+                                                        defaults: {
+                                                            ease: 'power2.out',
+                                                            overwrite: 'auto',
+                                                        },
+                                                    });
+
+                                                    tl.to(dot, {
+                                                        duration: 0.22,
+                                                        '--dot-scale': 1.4,
+                                                    }).to(dot, {
+                                                        duration: 0.18,
+                                                        '--dot-scale': 1.2,
+                                                    });
+
+                                                    lastAnimatedYearRef.current = yearStr;
+                                                });
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -253,14 +337,7 @@ export default function HistoryTimelineMobile({
                         if (hasBottomCards) yearLabelClass = styles.year_label_bottom;
                         else if (hasTopCards) yearLabelClass = styles.year_label_top;
 
-                        let dotScale = 1;
-                        if (!isDesktop) {
-                            if (idx === mobileActiveYearIndex) {
-                                dotScale = 1.2;
-                            } else if (isMobileSliding && idx === mobileIncomingYearIndex) {
-                                dotScale = 1.4;
-                            }
-                        }
+                        const dotScale = 1;
 
                         return (
                             <div
@@ -288,6 +365,24 @@ export default function HistoryTimelineMobile({
                     })}
                 </div>
             </div>
+
+            {isStrictMobile && onSkip && (
+                <div className={styles.history_mobile_skip_wrapper}>
+                    <button
+                        type="button"
+                        className={styles.history_mobile_skip_button}
+                        onClick={onSkip}
+                    >
+                        Пропустить
+                        <img
+                            className={styles.history_mobile_skip_arrow}
+                            src={strelka}
+                            alt=""
+                            aria-hidden="true"
+                        />
+                    </button>
+                </div>
+            )}
         </div>
     );
 }

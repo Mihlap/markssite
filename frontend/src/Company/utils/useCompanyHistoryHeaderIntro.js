@@ -21,6 +21,7 @@ export function useCompanyHistoryHeaderIntro({
     headerIntroInProgressRef,
     cardsIntroTriggeredRef,
     setAnimationReady,
+    cardsFocused,
 }) {
     useEffect(() => {
         if (!inView || !isDesktop) return;
@@ -191,6 +192,9 @@ export function useCompanyHistoryHeaderIntro({
         };
 
         const onScroll = () => {
+            // На мобильных/планшетах, когда карточки в фокусе по центру,
+            // не даём этому хуку перезапускать анимацию заголовка.
+            if (!isDesktop && cardsFocused) return;
             const headerEl = historyHeaderRef.current;
             if (!headerEl) return;
 
@@ -245,6 +249,8 @@ export function useCompanyHistoryHeaderIntro({
         cardsIntroTriggeredRef,
         textAnimationReady,
         setAnimationReady,
+        isDesktop,
+        cardsFocused,
     ]);
 
     useEffect(() => {

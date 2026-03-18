@@ -6,7 +6,7 @@ const path = require('path');
 
 module.exports = {
   webpack: (config, env) => {
-    const isProd = env === 'production';    
+    const isProd = env === 'production';
 
     config.cache = {
       type: 'filesystem',
@@ -23,24 +23,24 @@ module.exports = {
       config.plugins = (config.plugins || []).filter(
         (p) => (p && p.constructor && p.constructor.name) !== 'ESLintWebpackPlugin'
       );
-   
+
       const splitChunksConfig = {
         chunks: 'all',
         cacheGroups: {
           default: false,
-          vendors: false,    
+          vendors: false,
           vendor: {
             name: 'vendor',
             chunks: 'all',
             test: /[\\/]node_modules[\\/]/,
             priority: 20,
-          },      
+          },
           react: {
             name: 'react',
             test: /[\\/]node_modules[\\/](react|react-dom|react-router)[\\/]/,
             chunks: 'all',
             priority: 30,
-          },        
+          },
           three: {
             name: 'three',
             test: /[\\/]node_modules[\\/](three|@react-three)[\\/]/,
@@ -54,8 +54,8 @@ module.exports = {
         ...config.optimization,
         minimize: true,
         splitChunks: splitChunksConfig,
-        minimizer: [      
-          new TerserPlugin({       
+        minimizer: [
+          new TerserPlugin({
             parallel: os.cpus().length - 1,
             extractComments: false,
             terserOptions: {
@@ -72,7 +72,7 @@ module.exports = {
                 comments: false,
               },
             },
-          }),        
+          }),
           new CssMinimizerPlugin({
             parallel: os.cpus().length - 1,
             minimizerOptions: {
@@ -93,7 +93,7 @@ module.exports = {
         '**/static/js/runtime-*.js',
         '**/static/js/vendors~*.js',
         '**/static/js/vendor*.js',
-        '**/*.map',     
+        '**/*.map',
         '**/static/js/*mapbox*.js',
         '**/static/js/*react-map-gl*.js',
         '**/static/js/*three*.js',

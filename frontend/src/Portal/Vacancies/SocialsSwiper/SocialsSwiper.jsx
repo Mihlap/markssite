@@ -2,7 +2,7 @@ import { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './SocialsSwiper.module.scss';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Keyboard } from 'swiper';
+import { Keyboard, Navigation } from 'swiper/modules';
 import ArrowsSwiper from '../ArrowsSwiper/ArrowsSwiper';
 
 import 'swiper/css';
