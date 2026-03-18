@@ -29,7 +29,7 @@ function uniqYears(arr) {
     return out;
 }
 
-function buildModel({ years, windowStart, windowSize = 5 }) {
+function buildModel({ years, windowStart, maxVisibleYears = 8 }) {
     const n = years.length;
 
     if (!n) {
@@ -48,7 +48,7 @@ function buildModel({ years, windowStart, windowSize = 5 }) {
         };
     }
 
-    if (n <= 7) {
+    if (n <= maxVisibleYears) {
         return {
             mode: 'all',
             first: null,
@@ -69,7 +69,9 @@ function buildModel({ years, windowStart, windowSize = 5 }) {
     const last = ys[n - 1];
 
     const minStart = 1;
-    const maxStart = Math.max(1, n - 2 - (windowSize - 1));
+    const innerYearsCount = Math.max(0, n - 2);
+    const baseCenterSize = Math.max(1, maxVisibleYears - 2);
+    const maxStart = Math.max(1, innerYearsCount - (baseCenterSize - 1));
     const ws = clamp(windowStart ?? 1, minStart, maxStart);
 
     const baseCanLeft = ws > minStart;
@@ -77,6 +79,10 @@ function buildModel({ years, windowStart, windowSize = 5 }) {
 
     const leftSlotBase = baseCanLeft ? { type: 'dots', dir: 'left' } : { type: 'year', value: ys[1] };
     const rightSlotBase = baseCanRight ? { type: 'dots', dir: 'right' } : { type: 'year', value: ys[n - 2] };
+
+    const slotYearCount =
+        (leftSlotBase.type === 'year' ? 1 : 0) + (rightSlotBase.type === 'year' ? 1 : 0);
+    const windowSize = Math.max(1, maxVisibleYears - 2 - slotYearCount);
 
     const forbidden = new Set([first, last]);
     if (leftSlotBase.type === 'year') forbidden.add(String(leftSlotBase.value));
@@ -302,11 +308,11 @@ const HistoryYearsScale = forwardRef(function HistoryYearsScale(
 
             setUiYear((prev) => (prev === y ? prev : y));
 
-            if (allYears.length > 7) {
+            if (allYears.length > 8) {
                 const idx = allYears.indexOf(y);
                 const minStart = 1;
-                const maxStart = Math.max(1, allYears.length - 2 - (5 - 1));
-                const targetWs = clamp(idx - 2, minStart, maxStart);
+                const maxStart = Math.max(1, allYears.length - 2 - (6 - 1));
+                const targetWs = clamp(idx - 3, minStart, maxStart);
                 setWindowStart((prev) => (prev === targetWs ? prev : targetWs));
             } else {
                 setWindowStart(1);
@@ -387,7 +393,7 @@ const HistoryYearsScale = forwardRef(function HistoryYearsScale(
         return buildModel({
             years: allYears,
             windowStart,
-            windowSize: 5,
+            maxVisibleYears: 8,
         });
     }, [allYears, windowStart]);
 
@@ -443,7 +449,7 @@ const HistoryYearsScale = forwardRef(function HistoryYearsScale(
             const idx = allYears.indexOf(String(nextHidden));
             if (idx < 0) return;
 
-            const targetWs = clamp(idx - 2, model.minStart, model.maxStart);
+            const targetWs = clamp(idx - 3, model.minStart, model.maxStart);
             setWindowStart(targetWs);
         },
         [model, pickNextHiddenYear, allYears]
@@ -616,6 +622,11 @@ const HistoryYearsScale = forwardRef(function HistoryYearsScale(
             </div>
 
             <div className={styles.inner}>
+                <div className={styles.skipGhost} aria-hidden="true">
+                    <button type="button" className={styles.skip} tabIndex={-1} disabled>
+                        Пропустить <img className={styles.arrow} src={strelka} alt="" aria-hidden="true" />
+                    </button>
+                </div>
                 <div ref={scaleRef} className={styles.scale}>
                     <div className={styles.rail} />
 

@@ -6,7 +6,6 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Navigation } from 'swiper';
 
 import SwiperContainer from './Swiper-Phone/SwiperContainer';
 import SwiperContainerProject from './Swiper-project/SwiperContainerProject';
@@ -29,8 +28,6 @@ import nameCompany1 from '../icons/nameCompany1.svg';
 // import nameCompany1 from '../icons/newYear1.svg';
 import img123 from './img/Главная.png';
 import mainIcon from '../icons/main.svg';
-
-SwiperCore.use([Navigation]);
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 

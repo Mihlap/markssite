@@ -35,7 +35,7 @@ export function useHorizontalWheelInCards({
         const EASE = 'power2.out';
         const DUR = 0.55;
 
-        const TARGET_DOT_X = 90;
+        const DEFAULT_TARGET_DOT_X = 90;
 
         const START_FORCE_PX = 24;
         const START_SNAP_PX = 120;
@@ -105,6 +105,13 @@ export function useHorizontalWheelInCards({
 
         const isAtEndWith = (off) => off >= getMaxOffset() - endEps;
 
+        const showYearsScaleNow = () => {
+            if (!yearsHiddenBecauseEnd) return;
+            yearsHiddenBecauseEnd = false;
+            showYearsScale?.(false, { duration: 0.35, ease: 'power2.out' });
+            showAndPlaceHistoryTag?.({ duration: 0.3, ease: 'power2.out' });
+        };
+
         const getDotCenter = (markerEl) => {
             if (!markerEl) return null;
             const dot = markerEl.querySelector('[data-year-dot="true"]');
@@ -114,6 +121,12 @@ export function useHorizontalWheelInCards({
             }
             const fallback = markerEl.offsetLeft + markerEl.offsetWidth / 2;
             return Number.isFinite(fallback) ? fallback : null;
+        };
+
+        const getAnchorDotX = () => {
+            const markers = getMarkers();
+            const c0 = markers.length ? getDotCenter(markers[0]) : null;
+            return c0 != null ? c0 : DEFAULT_TARGET_DOT_X;
         };
 
         const updateEndEps = () => {
@@ -369,7 +382,7 @@ export function useHorizontalWheelInCards({
 
             if (off <= START_SNAP_PX) return 0;
 
-            const edgeX = off + TARGET_DOT_X;
+            const edgeX = off + getAnchorDotX();
 
             let bestIdx = 0;
             let bestAbs = Infinity;
@@ -423,7 +436,7 @@ export function useHorizontalWheelInCards({
             const dotCenter = getDotCenter(el);
             if (dotCenter == null) return;
 
-            let targetOffset = dotCenter - TARGET_DOT_X;
+            let targetOffset = dotCenter - getAnchorDotX();
             if (!Number.isFinite(targetOffset)) targetOffset = 0;
 
             targetOffset = clampOffset(targetOffset);
@@ -436,12 +449,7 @@ export function useHorizontalWheelInCards({
                 emitActiveYear(year, false);
 
                 const atEnd = i >= markers.length - 1 || isAtEndWith(off);
-                if (atEnd) {
-                    if (!yearsHiddenBecauseEnd) {
-                        yearsHiddenBecauseEnd = true;
-                        hideYearsScale?.(false, { duration: 0.35, ease: 'power2.out' });
-                    }
-                } else {
+                if (!atEnd) {
                     if (yearsHiddenBecauseEnd) {
                         yearsHiddenBecauseEnd = false;
                         showYearsScale?.(false, { duration: 0.35, ease: 'power2.out' });
@@ -455,12 +463,7 @@ export function useHorizontalWheelInCards({
             });
 
             const after = targetOffset;
-            if (i >= markers.length - 1 || isAtEndWith(after)) {
-                if (!yearsHiddenBecauseEnd) {
-                    yearsHiddenBecauseEnd = true;
-                    hideYearsScale?.(false, { duration: 0.35, ease: 'power2.out' });
-                }
-            } else {
+            if (!(i >= markers.length - 1 || isAtEndWith(after))) {
                 if (yearsHiddenBecauseEnd) {
                     yearsHiddenBecauseEnd = false;
                     showYearsScale?.(false, { duration: 0.35, ease: 'power2.out' });
@@ -494,6 +497,8 @@ export function useHorizontalWheelInCards({
             if (next < 0) next = 0;
             if (next >= markers.length) next = markers.length - 1;
             if (next === cur) return;
+
+            if (dir < 0) showYearsScaleNow();
 
             swipeLocked = true;
 
@@ -626,12 +631,7 @@ export function useHorizontalWheelInCards({
             }
 
             if (raw < 0) {
-                const currentOffset = getOffset();
-                if (currentOffset > 0.1) {
-                    stopWheelHard(e);
-                    stepByWheel(-1, e);
-                    return;
-                }
+                showYearsScaleNow();
                 stepByWheel(-1, e);
             }
         };

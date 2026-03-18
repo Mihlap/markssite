@@ -1,9 +1,8 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Navigation, Pagination, Autoplay } from 'swiper';
+import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import 'swiper/swiper-bundle.css';
 import SliderItems from './SliderItem';
 import styles from './SwiperContainer.css';
 import { Link } from 'react-router-dom';
@@ -13,8 +12,6 @@ const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 export default function SwiperContainer({ article1, article2 }) {
   // const [currentIndexContainer, setCurrentIndexContainer] = useState(0);
   // const swiperContainerRef = useRef(null);
-  SwiperCore.use([Navigation, Pagination, Autoplay]);
-
   const combinedArticles = [...article1, ...article2];
 
   // const handleContainerClick = (index) => {
@@ -27,6 +24,7 @@ export default function SwiperContainer({ article1, article2 }) {
   return (
     <div className="swiper_container_wrapper">
       <Swiper
+        modules={[Navigation, Pagination, Autoplay]}
         loop={false}
         slidesPerView={1.1}
         spaceBetween={-2}

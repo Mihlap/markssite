@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import styles from './HistoryYearPickerModal.module.scss';
 
@@ -16,6 +17,27 @@ export default function HistoryYearPickerModal({
     activeYearIndex = 0,
     onSelectYear,
 }) {
+    const [isMobile, setIsMobile] = useState(() => {
+        if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return false;
+        return window.matchMedia('(max-width: 767px)').matches;
+    });
+
+    useEffect(() => {
+        if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return undefined;
+        const mql = window.matchMedia('(max-width: 767px)');
+        const onChange = (e) => setIsMobile(Boolean(e.matches));
+
+        if (typeof mql.addEventListener === 'function') {
+            mql.addEventListener('change', onChange);
+            return () => mql.removeEventListener('change', onChange);
+        }
+
+        mql.onchange = onChange;
+        return () => {
+            mql.onchange = null;
+        };
+    }, []);
+
     if (!isOpen) return null;
 
     const handleSelectYear = (idx, year) => {
@@ -50,10 +72,11 @@ export default function HistoryYearPickerModal({
                     top: 0,
                     right: 0,
                     bottom: 0,
-                    left: '50%',
+                    left: isMobile ? 0 : '50%',
                     height: '100vh',
                     maxHeight: '100vh',
-                    width: '50vw',
+                    width: isMobile ? '100vw' : '50vw',
+                    maxWidth: isMobile ? '100vw' : '50vw',
                     margin: 0,
                     padding: 0,
                     border: 'none',

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, useLayoutEffect, useCallback } from 'react';
+import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useInView } from 'react-intersection-observer';
 import gsap from 'gsap';
@@ -8,6 +8,12 @@ import HistoryYearsScale from './HistoryYearsScale';
 import HistoryTimelineDesktop from './HistoryTimelineDesktop';
 import HistoryTimelineMobile from './HistoryTimelineMobile';
 import HistoryModal from './HistoryModal';
+import { useCompanyHistoryBreakpoints } from './hooks/useCompanyHistoryBreakpoints';
+import { useCompanyHistoryModel } from './hooks/useCompanyHistoryModel';
+import { useHistoryLayoutVars } from './hooks/useHistoryLayoutVars';
+import { useHistoryHashNavigationFlag } from './hooks/useHistoryHashNavigationFlag';
+import { useHistoryMobileScrollLock } from './hooks/useHistoryMobileScrollLock';
+import { useCompanyHistoryMobileGestures } from './hooks/useCompanyHistoryMobileGestures';
 
 import { useCompanyHistoryHeaderIntro } from '../utils/useCompanyHistoryHeaderIntro';
 import { useCompanyHistoryWheelHandlers } from '../utils/historyWheel/useCompanyHistoryWheelHandlers';
@@ -59,6 +65,7 @@ export default function CompanyHistory({
 
     const cardsIntroTriggeredRef = useRef(false);
     const returnedToSliderRef = useRef(false);
+    const mobileReturnToHistoryArmedRef = useRef(false);
 
     const cardsFocusInProgressRef = useRef(false);
     const exitToParentInProgressRef = useRef(false);
@@ -68,6 +75,7 @@ export default function CompanyHistory({
     const mobileTimelineYearsRef = useRef(null);
 
     const horizontalOffsetRef = useRef(0);
+    const { lockMobileScroll, unlockMobileScroll } = useHistoryMobileScrollLock();
 
     const [animationReady, setAnimationReady] = useState(false);
     const [cardsFocused, setCardsFocused] = useState(false);
@@ -75,22 +83,12 @@ export default function CompanyHistory({
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedHistoryItem, setSelectedHistoryItem] = useState(null);
 
-    const [isDesktop, setIsDesktop] = useState(
-        () => (typeof window !== 'undefined' ? window.innerWidth > 1024 : true)
-    );
-    const [isTablet, setIsTablet] = useState(
-        () =>
-            typeof window !== 'undefined'
-                ? window.innerWidth >= 768 && window.innerWidth <= 1024
-                : false
-    );
+    const { isDesktop, isTablet, mobileSlidesOffsetAfter } = useCompanyHistoryBreakpoints();
 
     const [mobileActiveYearIndex, setMobileActiveYearIndex] = useState(0);
     const [mobileIncomingYearIndex, setMobileIncomingYearIndex] = useState(null);
     const [isMobileSliding, setIsMobileSliding] = useState(false);
-    const [mobileSlidesOffsetAfter, setMobileSlidesOffsetAfter] = useState(() =>
-        (typeof window !== 'undefined' ? window.innerWidth : 0)
-    );
+    // mobileSlidesOffsetAfter — из useCompanyHistoryBreakpoints
 
     const [viewRef, inView] = useInView({ threshold: 0.2, triggerOnce: true });
     const [timelineVisRef, timelineInView] = useInView({
@@ -102,46 +100,9 @@ export default function CompanyHistory({
         triggerOnce: false,
     });
     const prevSectionInViewRef = useRef(false);
-    const hashNavigationRef = useRef(false);
+    const hashNavigationRef = useHistoryHashNavigationFlag(['#history', '#section1']);
 
-    useEffect(() => {
-        if (typeof window === 'undefined') return;
-
-        const handleResize = () => {
-            const width = window.innerWidth;
-
-            setIsDesktop(width > 1024);
-            setIsTablet(width >= 768 && width <= 1024);
-            setMobileSlidesOffsetAfter(width <= 1024 ? width : 0);
-        };
-
-        window.addEventListener('resize', handleResize, { passive: true });
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    useEffect(() => {
-        const handleHashChange = () => {
-            if (window.location.hash === '#history' || window.location.hash === '#section1') {
-                hashNavigationRef.current = true;
-                setTimeout(() => {
-                    hashNavigationRef.current = false;
-                }, 100);
-            }
-        };
-
-        window.addEventListener('hashchange', handleHashChange);
-
-        if (window.location.hash === '#history' || window.location.hash === '#section1') {
-            hashNavigationRef.current = true;
-            setTimeout(() => {
-                hashNavigationRef.current = false;
-            }, 100);
-        }
-
-        return () => {
-            window.removeEventListener('hashchange', handleHashChange);
-        };
-    }, []);
+    // resize/hash-логика вынесена в хуки (см. useCompanyHistoryBreakpoints/useHistoryHashNavigationFlag)
 
     useEffect(() => {
         if (typeof window === 'undefined') return;
@@ -194,28 +155,13 @@ export default function CompanyHistory({
             returnedToSliderRef.current = false;
             cardsFocusInProgressRef.current = false;
             exitToParentInProgressRef.current = false;
+            unlockMobileScroll();
 
             if (sectionRef.current) sectionRef.current.removeAttribute('data-focus-layout');
         };
     }, []);
 
-    useLayoutEffect(() => {
-        const el = sectionRef.current;
-        if (!el) return;
-
-        const apply = () => {
-            const sbw = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
-            el.style.setProperty('--sbw', `${sbw}px`);
-
-            const padRight = Math.round(window.innerWidth * 0.9);
-            el.style.setProperty('--history-pad-right', `${padRight}px`);
-            el.style.setProperty('--history-pad-right-num', `${padRight}`);
-        };
-
-        apply();
-        window.addEventListener('resize', apply);
-        return () => window.removeEventListener('resize', apply);
-    }, []);
+    useHistoryLayoutVars(sectionRef);
 
     useEffect(() => {
         const root = sectionRef.current;
@@ -223,67 +169,8 @@ export default function CompanyHistory({
         if (!cardsFocused) root.removeAttribute('data-focus-layout');
     }, [cardsFocused]);
 
-    const visibleItems = useMemo(() => {
-        return [...historyItems]
-            .filter((item) => !item.hidden)
-            .sort((a, b) => {
-                const ao = a.order ?? 0;
-                const bo = b.order ?? 0;
-                if (ao !== bo) return ao - bo;
-
-                const at = a.createdAt ? new Date(a.createdAt).getTime() : 0;
-                const bt = b.createdAt ? new Date(b.createdAt).getTime() : 0;
-                if (at !== bt) return at - bt;
-
-                return String(a.id ?? '').localeCompare(String(b.id ?? ''));
-            });
-    }, [historyItems]);
-
-    const { timelineItemsAdmin, cardsByYear, scaleYearsAsc } = useMemo(() => {
-        const yearsAdmin = [];
-        const seen = new Set();
-
-        for (const item of visibleItems) {
-            if (item.year == null) continue;
-            const ys = String(item.year);
-            if (!seen.has(ys)) {
-                seen.add(ys);
-                yearsAdmin.push(ys);
-            }
-        }
-
-        const grouped = {};
-        for (const y of yearsAdmin) grouped[y] = { top: [], bottom: [] };
-
-        let globalIndex = 0;
-        for (const item of visibleItems) {
-            if (item.year == null) continue;
-            const y = String(item.year);
-
-            if (!grouped[y]) grouped[y] = { top: [], bottom: [] };
-
-            if (globalIndex % 2 === 0) grouped[y].top.push(item);
-            else grouped[y].bottom.push(item);
-
-            globalIndex += 1;
-        }
-
-        const yearsAsc = [...yearsAdmin].sort((a, b) => (Number(a) || 0) - (Number(b) || 0));
-
-        return {
-            timelineItemsAdmin: yearsAdmin,
-            cardsByYear: grouped,
-            scaleYearsAsc: yearsAsc,
-        };
-    }, [visibleItems]);
-
-    const yearIndexByYear = useMemo(() => {
-        const map = {};
-        timelineItemsAdmin.forEach((y, idx) => {
-            map[String(y)] = idx;
-        });
-        return map;
-    }, [timelineItemsAdmin]);
+    const { visibleItems, timelineItemsAdmin, cardsByYear, scaleYearsAsc, yearIndexByYear } =
+        useCompanyHistoryModel(historyItems);
 
     useEffect(() => {
         if (isDesktop) return;
@@ -322,6 +209,7 @@ export default function CompanyHistory({
         headerIntroInProgressRef,
         cardsIntroTriggeredRef,
         setAnimationReady,
+        cardsFocused,
     });
 
     const {
@@ -565,6 +453,7 @@ export default function CompanyHistory({
             const root = sectionRef.current;
             if (!root) {
                 exitToParentInProgressRef.current = false;
+                unlockMobileScroll();
                 return;
             }
 
@@ -597,6 +486,7 @@ export default function CompanyHistory({
                     if (typeof window !== 'undefined') {
                         window.__HISTORY_SKIP_LOCK_UNTIL__ = 0;
                     }
+                    unlockMobileScroll();
                 },
             });
         },
@@ -641,6 +531,28 @@ export default function CompanyHistory({
         setSelectedHistoryItem(null);
     }, []);
 
+    useCompanyHistoryMobileGestures({
+        isDesktop,
+        isModalOpen,
+        cardsFocused,
+        setCardsFocused,
+        sectionRef,
+        historyHeaderRef,
+        historyListRef,
+        marksGroupRef,
+        titleRef,
+        subtitleLineRef,
+        subtitleLine1Ref,
+        subtitleLine2Ref,
+        cardsFocusInProgressRef,
+        mobileReturnToHistoryArmedRef,
+        lockMobileScroll,
+        headerAnimateClass: headerStyles.animate,
+        onExitToParentTop,
+    });
+
+    const hasHistory = !loading && visibleItems.length > 0;
+
     return (
         <div
             id="history"
@@ -649,11 +561,14 @@ export default function CompanyHistory({
                 sectionVisibilityRef(node);
                 sectionRef.current = node;
             }}
-            className={`${layoutStyles.history_section} ${cardsFocused ? timelineStyles.cards_focus : ''}`}
+            className={`${layoutStyles.history_section} ${!hasHistory ? layoutStyles.history_section_empty : ''
+                } ${cardsFocused ? timelineStyles.cards_focus : ''}`}
         >
-            <div ref={historyTagRef} className={timelineStyles.history_tag}>
-                История MARKS GROUP
-            </div>
+            {isDesktop && (
+                <div ref={historyTagRef} className={timelineStyles.history_tag}>
+                    История MARKS GROUP
+                </div>
+            )}
 
             <div className={layoutStyles.history_content}>
                 <CompanyHistoryHeader
@@ -670,7 +585,7 @@ export default function CompanyHistory({
 
                 {loading ? (
                     <div className={layoutStyles.loading}>Загрузка...</div>
-                ) : visibleItems.length > 0 ? (
+                ) : hasHistory ? (
                     <div
                         ref={(node) => {
                             historyListRef.current = node;
@@ -698,12 +613,15 @@ export default function CompanyHistory({
                                 mobileActiveYearIndex={mobileActiveYearIndex}
                                 mobileIncomingYearIndex={mobileIncomingYearIndex}
                                 isMobileSliding={isMobileSliding}
+                                cardsFocused={cardsFocused}
                                 setMobileActiveYearIndex={setMobileActiveYearIndex}
                                 setMobileIncomingYearIndex={setMobileIncomingYearIndex}
                                 setIsMobileSliding={setIsMobileSliding}
                                 yearIndexByYear={yearIndexByYear}
                                 isDesktop={isDesktop}
                                 handleOpenChronicle={handleOpenChronicle}
+                                onSkip={skipHorizontal}
+                                onUnlockScroll={unlockMobileScroll}
                             />
                         )}
                     </div>
@@ -712,15 +630,17 @@ export default function CompanyHistory({
                 )}
             </div>
 
-            <HistoryYearsScale
-                ref={yearsScaleRef}
-                years={scaleYearsAsc}
-                timelineWrapperRef={timelineWrapperRef}
-                horizontalOffsetRef={horizontalOffsetRef}
-                visible={yearsScaleVisible && !isModalOpen}
-                onSkip={skipHorizontal}
-                isModalOpen={isModalOpen}
-            />
+            {isDesktop && (
+                <HistoryYearsScale
+                    ref={yearsScaleRef}
+                    years={scaleYearsAsc}
+                    timelineWrapperRef={timelineWrapperRef}
+                    horizontalOffsetRef={horizontalOffsetRef}
+                    visible={yearsScaleVisible && !isModalOpen}
+                    onSkip={skipHorizontal}
+                    isModalOpen={isModalOpen}
+                />
+            )}
 
             <HistoryModal
                 isOpen={isModalOpen}

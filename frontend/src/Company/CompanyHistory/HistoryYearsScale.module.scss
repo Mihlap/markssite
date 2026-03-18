@@ -61,7 +61,7 @@
     width: 100%;
     display: flex;
     align-items: flex-end;
-    justify-content: space-between;
+    justify-content: center;
     flex-wrap: nowrap;
     overflow: visible;
     padding: 0;
@@ -69,7 +69,7 @@
     background: transparent;
     backdrop-filter: none;
     box-shadow: none;
-    gap: 0;
+    gap: var(--years-gap, 90px);
 }
 
 .rowFixed {
@@ -88,6 +88,18 @@
     gap: 0;
 }
 
+@media screen and (min-width: 1025px) and (max-width: 1599px) {
+    .rowAll {
+        --years-gap: 90px;
+    }
+}
+
+@media screen and (min-width: 1600px) {
+    .rowAll {
+        --years-gap: 178px;
+    }
+}
+
 .rowAll::before,
 .rowFixed::before {
     display: none;
@@ -96,7 +108,7 @@
 .side {
     display: inline-flex;
     align-items: flex-end;
-    gap: 85px;
+    gap: var(--years-gap-window, 85px);
     flex: 0 0 auto;
 }
 
@@ -113,8 +125,38 @@
 .centerTrack {
     display: inline-flex;
     align-items: flex-end;
-    gap: 85px;
+    gap: var(--years-gap-window, 85px);
     will-change: transform;
+}
+
+@media screen and (min-width: 1025px) and (max-width: 1599px) {
+    .inner {
+        position: relative;
+        padding: 16px 27px;
+        justify-content: space-between;
+        gap: 16px;
+    }
+
+    .scale {
+        width: 100%;
+        max-width: 914px;
+        margin: 0 auto;
+    }
+
+    .skipGhost {
+        visibility: hidden;
+        pointer-events: none;
+        flex: 0 0 auto;
+    }
+
+    .rail {
+        left: -20px;
+        right: -20px;
+    }
+
+    :root {
+        --years-gap-window: 60px;
+    }
 }
 
 .tick {
@@ -239,6 +281,11 @@
     white-space: nowrap;
 }
 
+.skipGhost {
+    display: flex;
+    flex: 0 0 auto;
+}
+
 .skip:hover,
 .skip:active {
     transform: translateY(-2px);
@@ -252,9 +299,33 @@
 }
 
 @media screen and (min-width: 1600px) {
+    .inner {
+        position: relative;
+        padding: 16px 48px;
+        justify-content: space-between;
+        gap: 16px;
+    }
+
     .scale {
+        width: 100%;
+        margin: 0 auto;
         max-width: 1625px;
         --active-line-size: 296px;
+    }
+
+    .skipGhost {
+        visibility: hidden;
+        pointer-events: none;
+        flex: 0 0 auto;
+    }
+
+    .rail {
+        left: -20px;
+        right: -20px;
+    }
+
+    :root {
+        --years-gap-window: 130px;
     }
 }
 

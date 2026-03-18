@@ -82,8 +82,14 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
 
   const [startTopCounters, setStartTopCounters] = useState(false);
   const topCountersStartedRef = useRef(false);
+  const [mobileTopCountersArmed, setMobileTopCountersArmed] = useState(false);
 
   const armTopCounters = () => {
+    if (isMobile) {
+      setMobileTopCountersArmed(true);
+      return;
+    }
+
     if (topCountersStartedRef.current) return;
     topCountersStartedRef.current = true;
     setStartTopCounters(true);
@@ -195,7 +201,7 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
             </span>
             <span className={styles.span_underSlider_text2}>О&nbsp;компании</span>
 
-            {isMobile && <CounterCompanyMobile />}
+            {isMobile && <CounterCompanyMobile armed={mobileTopCountersArmed} />}
 
             {!isMobile && (
               <div className={styles.div_counter_wrapper}>
