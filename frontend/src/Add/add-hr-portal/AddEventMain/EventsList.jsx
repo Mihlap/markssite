@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Event from './Event';
+import EventItem from './EventItem';
 import styles from '../../style/style-card.module.scss';
 import { fetchEvents, updateEventsOrder, updateEventsOrderLocally } from '../../../store/Slice/vacancyEventSlice';
 
@@ -52,7 +52,7 @@ export default function EventsList({
   return (
     <div className={styles.card_components_admin__block__vacancy}>
       {events.map((el, index) => (
-        <Event
+        <EventItem
           key={`${el.id}-${index}`}
           el={el}
           index={index}

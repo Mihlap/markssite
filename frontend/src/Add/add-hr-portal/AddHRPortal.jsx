@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react'
 import styles from '../style/style-card.module.scss';
 import VacancyForm from './form/VacancyForm.jsx';
 import AddSlideMain from './AddSlideMain/AddSlideMain.jsx';
-import AddEventMain from './AddEventMain/AddEventMain.jsx';
+import AddEventMain from './AddEventMain/EventMain.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   deleteForm,
@@ -12,7 +12,7 @@ import {
   updateVacancyLookStatusAndSaveToDB,
   getVacanciesByDirection,
 } from '../../store/Slice/vacanciesSlice';
-import { UiMarksButton, UiMarksSegmentedControls, UiMarksDialog } from '../ui';
+import { UiMarksButton, UiMarksSegmentedControls, UiMarksDialog, UiMarksEntityRow } from '../ui';
 import { Icon1, Icon2, Icon3, Icon4, Icon5, Icon6, Icon7 } from './icon';
 import LoadingCircle from '../../Loading/LoadingCircle.jsx';
 import SearchVacancyMain from './SearchVacancyMain/SearchVacancyMain.jsx';
@@ -204,13 +204,13 @@ export default function AddHRPortal({ user }) {
     <section className={styles.card_components_admin}>
       <div className={styles.card_components_admin__block}>
         <div className={styles.card_components_admin__title}>HR портал</div>
-        <div style={{paddingTop: '21px', paddingBottom: '24px'}}>
-        <UiMarksSegmentedControls
-          name="hr-filter"
-          segments={segments}
-          callback={handleFilterChange}
-          controlRef={controlRef}
-        />
+        <div style={{ paddingTop: '21px', paddingBottom: '24px' }}>
+          <UiMarksSegmentedControls
+            name="hr-filter"
+            segments={segments}
+            callback={handleFilterChange}
+            controlRef={controlRef}
+          />
         </div>
 
         {selectedFilter === 'Главная hr' ? (
@@ -316,92 +316,21 @@ export default function AddHRPortal({ user }) {
                 <div className={styles.card_components_admin__block__vacancy}>
                   {[...filteredVacancies].reverse().map((el) => (
                     <React.Fragment key={el.id}>
-                      <div
-                        className={`${styles.cart_vacancy_container} ${
-                          copiedVacancyId === el.id ? styles.copiedVacancy : ''
-                        }`}>
-                        <div className={styles.cart_vacancy_container__content}>
-                          <span className={styles.cart_vacancy_container__title}>{el.title}</span>
-                        </div>
-                        <div className={styles.cart_vacancy_container__department}>{el.direction}</div>
-                        <div className={styles.cart_vacancy_container__id_block}>
-                          <div className={styles.cart_vacancy_container__id_text}>id: {el.id}</div>
-                          {isCopied && el.id === copiedId && (
-                            <>
-                              <div className={styles.cart_vacancy_container__copyMessage}>id скопирован</div>
-                              <div className={styles.cart_vacancy_container__copyButton_img_copy_deffalt} />
-                            </>
-                          )}
-                          <button
-                            className={styles.cart_vacancy_container__copyButton}
-                            onClick={() => handleCopyClick(el.id)}>
-                            <div className={styles.cart_vacancy_container__copyButton_img_copy_ok} />
-                          </button>
-                        </div>
-                        <div className={styles.cart_vacancy_container_buttonClick}>
-                          {user?.name === 'obezyankaa' || user?.name === 'Pokemon' || user?.name === 'hr778' ? (
-                            <div
-                              className={styles.copyIcon_block_vacancy}
-                              onClick={() => handleCopyVacancyClick(el.id)}>
-                              <button className={styles.buttom_copyIcon}>
-                                <label htmlFor="copyIcon" className={styles.label}>
-                                  <div className={styles.wrapper}>
-                                    <Icon7/>
-                                  </div>
-                                </label>
-                              </button>
-                            </div>
-                          ) : null}
-                          {user?.name === 'obezyankaa' || user?.name === 'Pokemon' ? (
-                            <div className={styles.del_block_vacancy}>
-                              <button className={styles.buttom_del} onClick={() => handleDeleteModalOpen(el.id)}>
-                                <label htmlFor="delete" className={styles.label}>
-                                  <div className={styles.wrapper}>
-                                    <div className={styles.lid}>
-                                      <div className={styles.container_vedro}>
-                                        <div className={styles.triangle_left}></div>
-                                        <div className={styles.rectangle}></div>
-                                        <div className={styles.triangle_right}></div>
-                                      </div>
-                                    </div>
-                                    <div className={styles.can}></div>
-                                    <span>delete</span>
-                                  </div>
-                                </label>
-                              </button>
-                            </div>
-                          ) : null}
-                          {user?.name === 'obezyankaa' || user?.name === 'Pokemon' || user?.name === 'hr778' ? (
-                            <div
-                              className={`${styles.look_block_vacancy} ${el.hidden ? styles.disabled : ''}`}
-                              onClick={() => handleLookClick(el.id)}>
-                              <button className={styles.buttom_look}>
-                                <label htmlFor="look" className={styles.label}>
-                                  <div className={styles.wrapper}>
-                                    {el.hidden ? <Icon6/> : <Icon5/>}
-                                  </div>
-                                </label>
-                              </button>
-                            </div>
-                          ) : null}
-                          {user?.name === 'obezyankaa' || user?.name === 'Pokemon' || user?.name === 'hr778' ? (
-                            <div className={styles.edit_block_vacancy} onClick={() => handleEditClick(el.id)}>
-                              <button className={styles.buttom_edit}>
-                                <label htmlFor="edit" className={styles.label}>
-                                  <div className={styles.wrapper}>
-                                    <Icon4 />
-                                  </div>
-                                </label>
-                              </button>
-                            </div>
-                          ) : null}
-                        </div>
-                      </div>
+                      <UiMarksEntityRow
+                        title={el.title}
+                        desc={el.direction}
+                        id={el.id}
+                        role={['obezyankaa', 'Pokemon'].includes(user?.name) ? 'admin' : 'manager'}
+                        hidden={el.hidden}
+                        onToggle={() => handleLookClick(el.id)}
+                        onEdit={() => handleEditClick(el.id)}
+                        onDelete={() => handleDeleteModalOpen(el.id)}
+                      />
                       {deleteModalState[el.id] && (
                         <div className={styles.delete_modal_container}>
                           <div className={styles.delete_modal_block}>
                             <div className={styles.delete_modal_block__title}>
-                              <>Вы точно хотите удалить</>
+                              Вы точно хотите удалить
                               <br />
                               {selectedFilter === 'Стажировки' ? 'стажировку' : 'вакансию'} «{el.title}»?
                             </div>
