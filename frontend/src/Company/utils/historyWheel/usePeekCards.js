@@ -22,6 +22,43 @@ function getSplitNodes(card) {
     return { left, right };
 }
 
+function setSplitInstant(nodes, { leftX, rightX }) {
+    if (!nodes?.left || !nodes?.right) return;
+
+    const l = nodes.left;
+    const r = nodes.right;
+
+    if (l.dataset.peekPrevTransition == null) l.dataset.peekPrevTransition = l.style.transition || '';
+    if (r.dataset.peekPrevTransition == null) r.dataset.peekPrevTransition = r.style.transition || '';
+
+    l.style.transition = 'none';
+    r.style.transition = 'none';
+
+    gsap.set(l, { x: leftX, force3D: true });
+    gsap.set(r, { x: rightX, force3D: true });
+
+    requestAnimationFrame(() => {
+        try {
+            l.style.transition = l.dataset.peekPrevTransition || '';
+            r.style.transition = r.dataset.peekPrevTransition || '';
+            delete l.dataset.peekPrevTransition;
+            delete r.dataset.peekPrevTransition;
+        } catch { }
+    });
+}
+
+function setSplitSmooth(nodes, { leftX, rightX }) {
+    if (!nodes?.left || !nodes?.right) return;
+    const l = nodes.left;
+    const r = nodes.right;
+
+    gsap.killTweensOf(l);
+    gsap.killTweensOf(r);
+
+    gsap.to(l, { x: leftX, duration: 0.22, ease: 'power2.out', overwrite: 'auto', force3D: true });
+    gsap.to(r, { x: rightX, duration: 0.22, ease: 'power2.out', overwrite: 'auto', force3D: true });
+}
+
 export function clearCardSplit(card) {
     const nodes = getSplitNodes(card);
     if (!nodes) return;
@@ -31,6 +68,11 @@ export function clearCardSplit(card) {
 
     gsap.set(nodes.left, { clearProps: 'transform' });
     gsap.set(nodes.right, { clearProps: 'transform' });
+
+    try {
+        delete nodes.left.dataset.peekPrevTransition;
+        delete nodes.right.dataset.peekPrevTransition;
+    } catch { }
 
     try {
         card.removeAttribute('data-peek-primed');
@@ -66,6 +108,7 @@ export function createPeekCardsManager(container) {
         for (const card of cards) {
             const r = card.getBoundingClientRect();
             const shouldBePeek = isPeekCard(r, vw);
+            const visibleW = vw - r.left;
 
             if (!shouldBePeek) {
                 try {
@@ -93,9 +136,13 @@ export function createPeekCardsManager(container) {
 
             gsap.killTweensOf(nodes.left);
             gsap.killTweensOf(nodes.right);
-
-            gsap.set(nodes.left, { x: -SHIFT_X, force3D: true });
-            gsap.set(nodes.right, { x: +SHIFT_X, force3D: true });
+          
+            const FLICKER_ZONE_PX = PEEK_MIN_VISIBLE + 18;
+            if (visibleW <= FLICKER_ZONE_PX) {
+                setSplitInstant(nodes, { leftX: -SHIFT_X, rightX: +SHIFT_X });
+            } else {
+                setSplitSmooth(nodes, { leftX: -SHIFT_X, rightX: +SHIFT_X });
+            }
 
             try {
                 card.setAttribute('data-peek-primed', 'true');
@@ -178,9 +225,8 @@ export function createPeekCardsManager(container) {
             return;
         }
 
-        if (card.getAttribute('data-peek-snapped') !== 'true') {
-            gsap.set(nodes.left, { x: -SHIFT_X, force3D: true });
-            gsap.set(nodes.right, { x: +SHIFT_X, force3D: true });
+        if (card.getAttribute('data-peek-snapped') !== 'true') {           
+            setSplitInstant(nodes, { leftX: -SHIFT_X, rightX: +SHIFT_X });
             try {
                 card.setAttribute('data-peek-primed', 'true');
             } catch { }
