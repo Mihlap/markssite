@@ -2,19 +2,14 @@ import React, { useCallback, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EventsList from './EventsList';
 import EventForm from './EventForm';
-import styles from '../../style/style-card.module.scss';
 import { deleteEvent, fetchEventById, toggleEventVisibility } from '../../../store/Slice/vacancyEventSlice';
-import { UiMarksButton, UiMarksDialog } from '../../ui';
+import { UiMarksButton, UiMarksDialog, UiMarksHeading } from '../../ui';
 
-export default function AddEventMain({
-  user,
-  isModalOpenEvent,
-  setIsModalOpenEvent,
-  editEventData,
-  setEditEventData,
-}) {
+export default function AddEventMain({ user }) {
   const dispatch = useDispatch();
   const events = useSelector((state) => state.formAddEvent.events || []);
+  const [isModalOpenEvent, setIsModalOpenEvent] = useState(false);
+  const [editEventData, setEditEventData] = useState(null);
   const [deleteModalStateEvent, setDeleteModalStateEvent] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
   const [isFormLoading, setIsFormLoading] = useState(false);
@@ -94,8 +89,9 @@ export default function AddEventMain({
   );
 
   return (
-    <div className={styles.card_components_admin__blockAddSlide}>
-      <span className={styles.card_components_admin__title}>Ведущая компания в сфере проектирования</span>
+    <div>
+      <UiMarksHeading size="3xl">Жизнь на MARKS`e</UiMarksHeading>
+
       <UiMarksButton defaultStyle="blue" size="large" icon onClick={handleOpenModalEvent}>
         Добавить мероприятие
       </UiMarksButton>
@@ -110,8 +106,7 @@ export default function AddEventMain({
         isExit={showExitWarning}
         onExitConfirm={handleForceClose}
         onExitCancel={() => setShowExitWarning(false)}
-        nameSpinner="Мероприятие"
-      >
+        nameSpinner="Мероприятие">
         <EventForm
           ref={formRef}
           onValidityChange={setIsFormValid}

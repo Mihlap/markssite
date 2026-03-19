@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
 import { UiMarksInput, UiMarksSelect, UiMarksTextarea, UiMarksGrayWrap } from '../../ui';
 import { addVacancy, editVacancy } from '../../../store/Slice/vacanciesSlice';
-import { selectBlocks } from '../utils';
+import { selectBlocks } from '../const/utils';
 
 import s from './Styles.module.css';
 

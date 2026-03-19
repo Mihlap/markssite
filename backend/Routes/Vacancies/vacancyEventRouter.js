@@ -28,7 +28,7 @@ const deleteImageIfUnused = async (imageUrl, currentEventId) => {
   }
 };
 
-router.put('/update-event/:id', fileMiddleware.fields([{ name: 'files', maxCount: 500 }]),
+router.put('/update-event/:id', fileMiddleware.fields([{ name: 'files', maxCount: 500 }, { name: 'photoFiles', maxCount: 500 }]),
   async (req, res) => {
     const { id } = req.params;
 
@@ -54,9 +54,9 @@ router.put('/update-event/:id', fileMiddleware.fields([{ name: 'files', maxCount
         event.files = event.files.filter((file) => !removedFilesArray.includes(file));
       }
 
-      if (req.files && req.files['files']) {
-        const newFilesPromises = req.files['files'].map((file) => uploadFileToS3(file, 'images/imageEvent'));
-        const newFiles = await Promise.all(newFilesPromises);
+      const incomingFiles = [...(req.files?.files || []), ...(req.files?.photoFiles || [])];
+      if (incomingFiles.length) {
+        const newFiles = await Promise.all(incomingFiles.map((file) => uploadFileToS3(file, 'images/imageEvent')));
         event.files = [...newFiles, ...oldFiles];
       }
 
@@ -104,6 +104,7 @@ router.put('/update-event-order', async (req, res) => {
 router.post('/save-event-details',
   fileMiddleware.fields([
     { name: 'files', maxCount: 500 },
+    { name: 'photoFiles', maxCount: 500 },
     { name: 'videos', maxCount: 100 },
   ]), async (req, res) => {
     let details;
@@ -120,13 +121,10 @@ router.post('/save-event-details',
     const { eventData } = details;
     const files = [];
 
-    if (req.files && req.files.files) {
-      // eslint-disable-next-line no-restricted-syntax
-      for (const file of req.files.files) {
-        // eslint-disable-next-line no-await-in-loop
-        const fileUrl = await uploadFileToS3(file, 'images/imageEvent');
-        files.push(fileUrl);
-      }
+    for (const file of [...(req.files?.files || []), ...(req.files?.photoFiles || [])]) {
+      // eslint-disable-next-line no-await-in-loop
+      const fileUrl = await uploadFileToS3(file, 'images/imageEvent');
+      files.push(fileUrl);
     }
     const { title } = req.body;
 
