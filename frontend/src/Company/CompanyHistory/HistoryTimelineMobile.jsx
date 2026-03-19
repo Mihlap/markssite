@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Keyboard } from 'swiper/modules';
@@ -28,6 +28,10 @@ export default function HistoryTimelineMobile({
     onUnlockScroll,
 }) {
     const swiperRef = useRef(null);
+    const slideImageCacheRef = useRef(new WeakMap());
+    const onProgressRafRef = useRef(0);
+    const pendingSwiperRef = useRef(null);
+    const swiperHandlersRef = useRef(null);
     const [buttonYearIndex, setButtonYearIndex] = useState(
         typeof mobileActiveYearIndex === 'number' ? mobileActiveYearIndex : 0
     );
@@ -36,7 +40,7 @@ export default function HistoryTimelineMobile({
         !isDesktop && typeof window !== 'undefined' && window.innerWidth <= 767;
     const lastAnimatedYearRef = useRef(null);
 
-    const handleYearPickerSelect = ({ index: yearIndex, year }) => {
+    const handleYearPickerSelect = useCallback(({ index: yearIndex, year }) => {
         if (typeof yearIndex === 'number' && !Number.isNaN(yearIndex)) {
             setButtonYearIndex(yearIndex);
         }
@@ -54,7 +58,7 @@ export default function HistoryTimelineMobile({
             setMobileIncomingYearIndex(idx);
             setIsMobileSliding(true);
         }
-    };
+    }, [visibleItems, yearIndexByYear, setMobileIncomingYearIndex, setIsMobileSliding]);
 
     const activeYearLabel =
         typeof buttonYearIndex === 'number' &&
@@ -62,6 +66,243 @@ export default function HistoryTimelineMobile({
             buttonYearIndex < timelineItemsAdmin.length
             ? timelineItemsAdmin[buttonYearIndex]
             : null;
+
+    const releaseSwiperHandlers = useCallback(() => {
+        const pack = swiperHandlersRef.current;
+        if (!pack?.swiper) return;
+        pack.swiper.off('setTranslate', pack.onSetTranslate);
+        pack.swiper.off('slideChangeTransitionStart', pack.onSlideChangeStart);
+        pack.swiper.off('slideChangeTransitionEnd', pack.onSlideChangeEnd);
+        swiperHandlersRef.current = null;
+    }, []);
+
+    const handleSwiperProgress = useCallback((swiper) => {
+        if (!swiper || !swiper.slides) return;
+        pendingSwiperRef.current = swiper;
+        if (onProgressRafRef.current) return;
+
+        onProgressRafRef.current = requestAnimationFrame(() => {
+            onProgressRafRef.current = 0;
+            const nextSwiper = pendingSwiperRef.current;
+            if (!nextSwiper || !nextSwiper.slides) return;
+
+            const MAX_SHIFT = isStrictMobile ? 50 : 80;
+            const TARGET_PROGRESS = isStrictMobile ? -1.5 : -2.6;
+            const RADIUS = isStrictMobile ? 1.2 : 1;
+
+            nextSwiper.slides.forEach((slide) => {
+                let img = slideImageCacheRef.current.get(slide);
+                if (img === undefined) {
+                    img = slide.querySelector('[data-card-image=\"true\"]') || null;
+                    slideImageCacheRef.current.set(slide, img);
+                }
+                if (!img) return;
+
+                const p = typeof slide.progress === 'number' ? slide.progress : 0;
+                const dist = Math.abs(p - TARGET_PROGRESS);
+                const transform =
+                    dist >= RADIUS
+                        ? ''
+                        : `translateX(${(MAX_SHIFT * (1 - dist / RADIUS)).toFixed(2)}px)`;
+
+                if (img.style.transform !== transform) {
+                    img.style.transform = transform;
+                }
+            });
+        });
+    }, [isStrictMobile]);
+
+    const handleSwiperInit = useCallback((swiper) => {
+        if (!swiper) return;
+        releaseSwiperHandlers();
+
+        swiperRef.current = swiper;
+
+        let isClamping = false;
+
+        const onSetTranslate = (translate) => {
+            if (isClamping) return;
+
+            let tx =
+                typeof translate === 'number'
+                    ? translate
+                    : swiper.translate || 0;
+
+            const slides = swiper.slides;
+            if (slides && slides.length) {
+                const lastSlide = slides[slides.length - 1];
+                const lastLeft = lastSlide?.offsetLeft ?? 0;
+                const minTx = 24 - lastLeft;
+
+                if (Number.isFinite(minTx) && tx < minTx) {
+                    isClamping = true;
+                    tx = minTx;
+                    swiper.setTranslate(tx);
+                    isClamping = false;
+
+                    if (isStrictMobile && typeof onUnlockScroll === 'function') {
+                        onUnlockScroll();
+                    }
+                }
+
+                const offsetBefore =
+                    typeof swiper.params.slidesOffsetBefore === 'number'
+                        ? swiper.params.slidesOffsetBefore
+                        : 55;
+                const viewportLeft = -tx + offsetBefore;
+
+                let leftIndex = 0;
+                for (let i = 0; i < slides.length; i += 1) {
+                    const slideEl = slides[i];
+                    if (!slideEl) continue;
+
+                    const slideLeft = slideEl.offsetLeft ?? 0;
+                    const slideWidth = slideEl.offsetWidth ?? 0;
+                    const threshold = slideLeft + slideWidth * 0.3;
+                    if (threshold > viewportLeft + 1) {
+                        leftIndex = i;
+                        break;
+                    }
+                }
+
+                const itemForButton = visibleItems[leftIndex];
+                if (itemForButton && itemForButton.year != null) {
+                    const yearStr = String(itemForButton.year);
+                    const idxForButton = yearIndexByYear[yearStr];
+                    if (
+                        typeof idxForButton === 'number' &&
+                        !Number.isNaN(idxForButton)
+                    ) {
+                        setButtonYearIndex(idxForButton);
+
+                        if (!isDesktop) {
+                            const yearsRoot = mobileTimelineYearsRef.current;
+                            if (yearsRoot) {
+                                const markers = yearsRoot.querySelectorAll(
+                                    '[data-year-marker="true"]'
+                                );
+
+                                markers.forEach((m) => {
+                                    const y = m.getAttribute('data-year');
+                                    const dot = m.querySelector(
+                                        '[data-year-dot="true"]'
+                                    );
+                                    if (!dot) return;
+
+                                    gsap.killTweensOf(dot);
+
+                                    if (y !== yearStr) {
+                                        gsap.to(dot, {
+                                            duration: 0.25,
+                                            ease: 'power2.out',
+                                            overwrite: 'auto',
+                                            '--dot-scale': 1,
+                                        });
+                                        return;
+                                    }
+
+                                    const tl = gsap.timeline({
+                                        defaults: {
+                                            ease: 'power2.out',
+                                            overwrite: 'auto',
+                                        },
+                                    });
+
+                                    tl.to(dot, {
+                                        duration: 0.22,
+                                        '--dot-scale': 1.4,
+                                    }).to(dot, {
+                                        duration: 0.18,
+                                        '--dot-scale': 1.2,
+                                    });
+
+                                    lastAnimatedYearRef.current = yearStr;
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+
+            const yearsEl = mobileTimelineYearsRef.current;
+            if (yearsEl) {
+                yearsEl.style.transform = `translate3d(${tx}px, 0, 0)`;
+            }
+        };
+
+        const onSlideChangeStart = () => {
+            const nextIndex =
+                typeof swiper.realIndex === 'number'
+                    ? swiper.realIndex
+                    : swiper.activeIndex || 0;
+
+            const nextItem = visibleItems[nextIndex];
+            if (!nextItem || nextItem.year == null) return;
+
+            const idx = yearIndexByYear[String(nextItem.year)];
+            if (typeof idx === 'number' && !Number.isNaN(idx)) {
+                setMobileIncomingYearIndex(idx);
+                setIsMobileSliding(true);
+            }
+        };
+
+        const onSlideChangeEnd = () => {
+            const activeIndex =
+                typeof swiper.realIndex === 'number'
+                    ? swiper.realIndex
+                    : swiper.activeIndex || 0;
+
+            const activeItem = visibleItems[activeIndex];
+            if (activeItem && activeItem.year != null) {
+                const idx = yearIndexByYear[String(activeItem.year)];
+                if (typeof idx === 'number' && !Number.isNaN(idx)) {
+                    setMobileActiveYearIndex(idx);
+                }
+            }
+
+            setMobileIncomingYearIndex(null);
+            setIsMobileSliding(false);
+        };
+
+        swiper.on('setTranslate', onSetTranslate);
+        swiper.on('slideChangeTransitionStart', onSlideChangeStart);
+        swiper.on('slideChangeTransitionEnd', onSlideChangeEnd);
+        swiperHandlersRef.current = {
+            swiper,
+            onSetTranslate,
+            onSlideChangeStart,
+            onSlideChangeEnd,
+        };
+
+        swiper.on('beforeDestroy', () => {
+            releaseSwiperHandlers();
+            if (onProgressRafRef.current) {
+                cancelAnimationFrame(onProgressRafRef.current);
+                onProgressRafRef.current = 0;
+            }
+        });
+    }, [
+        isDesktop,
+        isStrictMobile,
+        mobileTimelineYearsRef,
+        onUnlockScroll,
+        releaseSwiperHandlers,
+        setMobileActiveYearIndex,
+        setMobileIncomingYearIndex,
+        setIsMobileSliding,
+        visibleItems,
+        yearIndexByYear,
+    ]);
+
+    useEffect(() => {
+        return () => {
+            releaseSwiperHandlers();
+            if (onProgressRafRef.current) {
+                cancelAnimationFrame(onProgressRafRef.current);
+                onProgressRafRef.current = 0;
+            }
+        };
+    }, [releaseSwiperHandlers]);
 
     return (
         <div className={styles.history_mobile}>
@@ -127,182 +368,8 @@ export default function HistoryTimelineMobile({
                     slidesOffsetBefore={isStrictMobile ? 0 : 55}
                     slidesOffsetAfter={mobileSlidesOffsetAfter}
                     watchSlidesProgress
-                    onProgress={(swiper) => {
-                        if (!swiper || !swiper.slides) return;
-                        const MAX_SHIFT = isStrictMobile ? 50 : 80;
-                        const TARGET_PROGRESS = isStrictMobile ? -1.5 : -2.6;
-                        const RADIUS = isStrictMobile ? 1.2 : 1;
-
-                        swiper.slides.forEach((slide) => {
-                            const img = slide.querySelector('[data-card-image=\"true\"]');
-                            if (!img) return;
-
-                            const p = typeof slide.progress === 'number' ? slide.progress : 0;
-
-                            const dist = Math.abs(p - TARGET_PROGRESS);
-                            if (dist >= RADIUS) {
-                                img.style.transform = '';
-                                return;
-                            }
-
-                            const norm = dist / RADIUS;
-                            const t = 1 - norm;
-                            const shift = MAX_SHIFT * t;
-
-                            img.style.transform = `translateX(${shift}px)`;
-                        });
-                    }}
-                    onSwiper={(swiper) => {
-                        if (!swiper) return;
-
-                        swiperRef.current = swiper;
-
-                        let isClamping = false;
-
-                        swiper.on('setTranslate', (translate) => {
-                            if (isClamping) return;
-
-                            let tx =
-                                typeof translate === 'number'
-                                    ? translate
-                                    : swiper.translate || 0;
-
-                            const slides = swiper.slides;
-                            if (slides && slides.length) {
-                                const lastSlide = slides[slides.length - 1];
-                                const lastLeft = lastSlide?.offsetLeft ?? 0;
-                                const minTx = 24 - lastLeft;
-
-                                if (Number.isFinite(minTx) && tx < minTx) {
-                                    isClamping = true;
-                                    tx = minTx;
-                                    swiper.setTranslate(tx);
-                                    isClamping = false;
-
-                                    if (isStrictMobile && typeof onUnlockScroll === 'function') {
-                                        onUnlockScroll();
-                                    }
-                                }
-
-                                const offsetBefore =
-                                    typeof swiper.params.slidesOffsetBefore === 'number'
-                                        ? swiper.params.slidesOffsetBefore
-                                        : 55;
-                                const viewportLeft = -tx + offsetBefore;
-
-                                let leftIndex = 0;
-                                for (let i = 0; i < slides.length; i += 1) {
-                                    const slideEl = slides[i];
-                                    if (!slideEl) continue;
-
-                                    const slideLeft = slideEl.offsetLeft ?? 0;
-                                    const slideWidth = slideEl.offsetWidth ?? 0;
-                                    const threshold = slideLeft + slideWidth * 0.3;
-                                    if (threshold > viewportLeft + 1) {
-                                        leftIndex = i;
-                                        break;
-                                    }
-                                }
-
-                                const itemForButton = visibleItems[leftIndex];
-                                if (itemForButton && itemForButton.year != null) {
-                                    const yearStr = String(itemForButton.year);
-                                    const idxForButton = yearIndexByYear[yearStr];
-                                    if (
-                                        typeof idxForButton === 'number' &&
-                                        !Number.isNaN(idxForButton)
-                                    ) {
-                                        setButtonYearIndex(idxForButton);
-
-                                        if (!isDesktop) {
-                                            const yearsRoot = mobileTimelineYearsRef.current;
-                                            if (yearsRoot) {
-                                                const markers = yearsRoot.querySelectorAll(
-                                                    '[data-year-marker="true"]'
-                                                );
-
-                                                markers.forEach((m) => {
-                                                    const y = m.getAttribute('data-year');
-                                                    const dot = m.querySelector(
-                                                        '[data-year-dot="true"]'
-                                                    );
-                                                    if (!dot) return;
-
-                                                    gsap.killTweensOf(dot);
-
-                                                    if (y !== yearStr) {
-                                                        gsap.to(dot, {
-                                                            duration: 0.25,
-                                                            ease: 'power2.out',
-                                                            overwrite: 'auto',
-                                                            '--dot-scale': 1,
-                                                        });
-                                                        return;
-                                                    }
-
-                                                    const tl = gsap.timeline({
-                                                        defaults: {
-                                                            ease: 'power2.out',
-                                                            overwrite: 'auto',
-                                                        },
-                                                    });
-
-                                                    tl.to(dot, {
-                                                        duration: 0.22,
-                                                        '--dot-scale': 1.4,
-                                                    }).to(dot, {
-                                                        duration: 0.18,
-                                                        '--dot-scale': 1.2,
-                                                    });
-
-                                                    lastAnimatedYearRef.current = yearStr;
-                                                });
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            const yearsEl = mobileTimelineYearsRef.current;
-                            if (yearsEl) {
-                                yearsEl.style.transform = `translate3d(${tx}px, 0, 0)`;
-                            }
-                        });
-
-                        swiper.on('slideChangeTransitionStart', () => {
-                            const nextIndex =
-                                typeof swiper.realIndex === 'number'
-                                    ? swiper.realIndex
-                                    : swiper.activeIndex || 0;
-
-                            const nextItem = visibleItems[nextIndex];
-                            if (!nextItem || nextItem.year == null) return;
-
-                            const idx = yearIndexByYear[String(nextItem.year)];
-                            if (typeof idx === 'number' && !Number.isNaN(idx)) {
-                                setMobileIncomingYearIndex(idx);
-                                setIsMobileSliding(true);
-                            }
-                        });
-
-                        swiper.on('slideChangeTransitionEnd', () => {
-                            const activeIndex =
-                                typeof swiper.realIndex === 'number'
-                                    ? swiper.realIndex
-                                    : swiper.activeIndex || 0;
-
-                            const activeItem = visibleItems[activeIndex];
-                            if (activeItem && activeItem.year != null) {
-                                const idx = yearIndexByYear[String(activeItem.year)];
-                                if (typeof idx === 'number' && !Number.isNaN(idx)) {
-                                    setMobileActiveYearIndex(idx);
-                                }
-                            }
-
-                            setMobileIncomingYearIndex(null);
-                            setIsMobileSliding(false);
-                        });
-                    }}
+                    onProgress={handleSwiperProgress}
+                    onSwiper={handleSwiperInit}
                 >
                     {visibleItems.map((item) => (
                         <SwiperSlide
@@ -311,7 +378,8 @@ export default function HistoryTimelineMobile({
                         >
                             <div className={styles.history_card_wrapper}>
                                 <HistoryCard
-                                    item={{ ...item, onOpenChronicle: handleOpenChronicle }}
+                                    item={item}
+                                    onOpenChronicle={handleOpenChronicle}
                                     variant={item.img ? 1 : 2}
                                 />
                             </div>
