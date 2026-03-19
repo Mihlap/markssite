@@ -5,7 +5,7 @@ import Select from 'react-select';
 import { useDispatch } from 'react-redux';
 
 import { editVacancy } from '../../../store/Slice/vacanciesSlice.js';
-import { selectBlocks } from '../utils.js';
+import { selectBlocks } from '../const/utils.js';
 
 import customStyle from './customStyle.js';
 import styles from './FormAddVacancy.module.scss';
@@ -27,7 +27,7 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
     title: '',
     textBlock1: '',
     textBlock2: '',
-    textBlock3: '',  
+    textBlock3: '',
     department: [],
     direction: [],
     experience: [],
@@ -79,7 +79,7 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
   useEffect(() => {
     quillRefs.forEach((quillRef) => applyStylesToQuillEditor(quillRef));
   }, [applyStylesToQuillEditor, quillRefs]);
- 
+
   const attachSpaceBinding = useCallback((quillRef) => {
     const quill = quillRef.current?.getEditor?.();
     if (!quill) return;
@@ -89,7 +89,7 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
 
     quill.keyboard.addBinding({ key: 32 }, (range) => {
       if (!range) return true;
-    
+
       if (range.length) quill.deleteText(range.index, range.length, 'user');
       quill.insertText(range.index, ' ', 'user');
       quill.setSelection(range.index + 1, 0, 'silent');
@@ -129,8 +129,7 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
       return result;
     };
 
-    const getOpts = (name) =>
-      selectBlocks.find((b) => b.name === name)?.options.map((o) => o.value) || [];
+    const getOpts = (name) => selectBlocks.find((b) => b.name === name)?.options.map((o) => o.value) || [];
 
     const benefitsOptions = getOpts('benefits');
     const skillsOptions = getOpts('skills');
@@ -149,13 +148,9 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
       direction: editVacancyData.direction ? combineSplitValues(editVacancyData.direction, directionOptions) : [],
       department: editVacancyData.direction ? combineSplitValues(editVacancyData.direction, directionOptions) : [],
       experience: editVacancyData.experience ? combineSplitValues(editVacancyData.experience, experienceOptions) : [],
-      location: editVacancyData.locationStaff
-        ? combineSplitValues(editVacancyData.locationStaff, locationOptions)
-        : [],
+      location: editVacancyData.locationStaff ? combineSplitValues(editVacancyData.locationStaff, locationOptions) : [],
       busyness: editVacancyData.busyness ? combineSplitValues(editVacancyData.busyness, busynessOptions) : [],
-      workMode: editVacancyData.modeOperating
-        ? combineSplitValues(editVacancyData.modeOperating, workModeOptions)
-        : [],
+      workMode: editVacancyData.modeOperating ? combineSplitValues(editVacancyData.modeOperating, workModeOptions) : [],
       skills: editVacancyData.skills ? combineSplitValues(editVacancyData.skills, skillsOptions) : [],
       benefits: editVacancyData.advantages ? combineSplitValues(editVacancyData.advantages, benefitsOptions) : [],
     }));
@@ -216,7 +211,7 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
       [name]: selectedValues,
     }));
   }, []);
- 
+
   const onChangeTextBlock1 = useCallback((content, delta, source, editor) => {
     if (source !== 'user') return;
 
@@ -280,11 +275,12 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
             {selectBlocks.map((block, index) => (
               <div key={`${block.id}_${block.name}_${index}`} className={`${styles.group} some-unique-class`}>
                 <label
-                  className={`${styles.label1} ${isFocused[block.name] || (Array.isArray(formData[block.name]) ? formData[block.name].length : !!formData[block.name])
+                  className={`${styles.label1} ${
+                    isFocused[block.name] ||
+                    (Array.isArray(formData[block.name]) ? formData[block.name].length : !!formData[block.name])
                       ? styles.focused1
                       : ''
-                    }`}
-                >
+                  }`}>
                   <Select
                     className={`${styles.form__group} ${styles.field}`}
                     id={`${block.name}-input`}

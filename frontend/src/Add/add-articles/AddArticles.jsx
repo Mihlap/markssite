@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 import styles from '../style/style-card.module.scss';
-import { UiMarksSegmentedControls } from '../ui';
+import { UiMarksSegmentedControls, UiMarksHeading } from '../ui';
 import AddNews from './AddNews/AddNews';
 import AddJournal from './AddJournal/AddJournal';
 import { Icon1, Icon2 } from './icon';
@@ -25,7 +25,7 @@ export default function AddArticles({ user }) {
     <section className={styles.card_components_admin}>
       <div className={styles.card_components_admin__block}>
         <div className={styles.card_components_admin__block_title_btn}>
-          <div className={styles.card_components_admin__title}>Публикации</div>
+          <UiMarksHeading size="3xl">Публикации</UiMarksHeading>
         </div>
         <UiMarksSegmentedControls
           name="articles-filter"

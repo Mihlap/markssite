@@ -8,7 +8,7 @@ import { fetchToggleStateAsync, updateToggleStateAsync } from '../../store/Slice
 
 // import Loading from "./loading/Loading";
 import Edit from '../icon/Edit.svg';
-import { UiMarksButton, UiMarksDialog, UiMarksSwitch } from '../ui';
+import { UiMarksButton, UiMarksDialog, UiMarksSwitch, UiMarksHeading } from '../ui';
 import ProjectForm from './form/ProjectForm';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
@@ -127,7 +127,7 @@ export default function AddProject({ user }) {
     <section className={styles.card_components_admin}>
       <div className={styles.card_components_admin__block}>
         <div className={styles.card_components_admin__block_title_btn}>
-          <div className={styles.card_components_admin__title}>Проекты</div>
+          <UiMarksHeading size="3xl">Проекты</UiMarksHeading>
           <div className={styles.card_components_admin__hide_block}>
             <div className={styles.card_components_admin__hide_text}>Скрыть фильтрацию</div>
             <UiMarksSwitch isActive={isActiveForButton1} onClick={toggleActive} />

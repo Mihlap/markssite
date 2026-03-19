@@ -1,12 +1,17 @@
 import { useEffect, useMemo, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Slide from './Slide';
 import {
   fetchSlides,
   updateSlidesOrderLocally,
   updateSlidesOrder,
 } from '../../../store/Slice/vacancyMainSlideCardSlice';
+import { UiMarksEntityRow, UiMarksDeleteModal } from '../../ui';
 import styles from '../../style/style-card.module.scss';
+
+const getRole = (user) => {
+  if (['obezyankaa', 'Pokemon'].includes(user?.name)) return 'admin';
+  return 'manager';
+};
 
 export default function SlidesList({
   user,
@@ -39,10 +44,8 @@ export default function SlidesList({
   const handleDragStart = useCallback(
     (e, index) => {
       const item = slides[index];
-      setDraggedItem(item);     
-      try {
-        e.dataTransfer.setData('text/plain', String(item.id));
-      } catch (_) {}
+      setDraggedItem(item);
+      try { e.dataTransfer.setData('text/plain', String(item.id)); } catch (_) {}
       e.dataTransfer.effectAllowed = 'move';
     },
     [slides]
@@ -50,26 +53,20 @@ export default function SlidesList({
 
   const handleDragOver = useCallback((e) => {
     e.preventDefault();
-    try {
-      e.dataTransfer.dropEffect = 'move';
-    } catch (_) {}
+    try { e.dataTransfer.dropEffect = 'move'; } catch (_) {}
   }, []);
 
   const handleDrop = useCallback(
     async (e, index) => {
       e.preventDefault();
       if (!draggedItem) return;
-
       const draggedIndex = slides.findIndex((s) => s.id === draggedItem.id);
       if (draggedIndex === index) return;
-
       const updated = [...slides];
       const [removed] = updated.splice(draggedIndex, 1);
       updated.splice(index, 0, removed);
-      
       const reindexed = updated.map((s, i) => ({ ...s, order: i }));
-   
-      dispatch(updateSlidesOrderLocally(reindexed));     
+      dispatch(updateSlidesOrderLocally(reindexed));
       try {
         await dispatch(updateSlidesOrder(reindexed)).unwrap();
       } finally {
@@ -82,21 +79,33 @@ export default function SlidesList({
   return (
     <div className={styles.card_components_admin__block__vacancy} role="list">
       {slides.map((el, index) => (
-        <Slide
+        <div
           key={el.id}
-          el={el}
-          index={index}
-          handleDragStart={handleDragStart}
-          handleDragOver={handleDragOver}
-          handleDrop={handleDrop}
-          handleLookClick={handleLookClick}
-          handleEditClick={handleEditClick}
-          handleDeleteModalOpenSlide={handleDeleteModalOpenSlide}
-          deleteModalStateSlide={deleteModalStateSlide}
-          handleDeleteModalCloseSlide={handleDeleteModalCloseSlide}
-          handleFormDeleteSlide={handleFormDeleteSlide}
-          user={user}
-        />
+          draggable
+          onDragStart={(e) => handleDragStart(e, index)}
+          onDragOver={(e) => handleDragOver(e)}
+          onDrop={(e) => handleDrop(e, index)}>
+          <UiMarksEntityRow
+            title={`Слайд ${el.id}`}
+            id={el.id}
+            role={getRole(user)}
+            hidden={el.hidden}
+            onToggle={() => handleLookClick(el.id)}
+            onEdit={() => handleEditClick(el.id)}
+            onDelete={() => handleDeleteModalOpenSlide(el.id)}
+          />
+          <UiMarksDeleteModal
+            isOpen={!!deleteModalStateSlide[el.id]}
+            title={
+              <>
+                Вы точно хотите удалить <strong>«Слайд {el.id}»</strong>?
+              </>
+            }
+            description="Удаленный слайд вернуть будет невозможно"
+            onConfirm={() => handleFormDeleteSlide(el.id)}
+            onClose={() => handleDeleteModalCloseSlide(el.id)}
+          />
+        </div>
       ))}
     </div>
   );

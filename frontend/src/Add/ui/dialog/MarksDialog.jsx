@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { UiMarksButton, UiMarksSpinner, UiMarksAlert } from '../index.js';
+import { UiMarksButton, UiMarksSpinner, UiMarksAlert, UiMarksHeading } from '../index.js';
 
 import s from './Styles.module.css';
 
@@ -32,7 +32,7 @@ export default function MarksModal({ isOpen, onClose, onSave, isSaveDisabled = t
           )}
           <div className={s.wrap} style={isExit ? { display: 'none' } : undefined}>
             <div className={s.title}>
-              {title && title.length > 0 ? title : 'No Title'}
+              <UiMarksHeading size="2xl"> {title && title.length > 0 ? title : 'No Title'}</UiMarksHeading>
               <button className={s.close_button} onClick={onClose} />
             </div>
             <div className={s.content}>{children}</div>

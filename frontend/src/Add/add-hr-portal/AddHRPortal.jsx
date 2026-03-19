@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
-import styles from '../style/style-card.module.scss';
 import VacancyForm from './form/VacancyForm.jsx';
-import AddSlideMain from './AddSlideMain/AddSlideMain.jsx';
-import AddEventMain from './AddEventMain/EventMain.jsx';
+import SlideMain from './AddSlideMain/SlideMain.jsx';
+import EventMain from './AddEventMain/EventMain.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   deleteForm,
@@ -12,24 +11,25 @@ import {
   updateVacancyLookStatusAndSaveToDB,
   getVacanciesByDirection,
 } from '../../store/Slice/vacanciesSlice';
-import { UiMarksButton, UiMarksSegmentedControls, UiMarksDialog, UiMarksEntityRow } from '../ui';
-import { Icon1, Icon2, Icon3, Icon4, Icon5, Icon6, Icon7 } from './icon';
+import {
+  UiMarksButton,
+  UiMarksSegmentedControls,
+  UiMarksDialog,
+  UiMarksEntityRow,
+  UiMarksHeading,
+  UiMarksDeleteModal,
+} from '../ui';
+import { Icon1, Icon2, Icon3 } from './icon';
 import LoadingCircle from '../../Loading/LoadingCircle.jsx';
 import SearchVacancyMain from './SearchVacancyMain/SearchVacancyMain.jsx';
-import { arrIdVacancySelector } from './VacancySelector.js';
+import { arrIdVacancySelector } from './const/VacancySelector.js';
 
 export default function AddHRPortal({ user }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModalOpenMain, setIsModalOpenMain] = useState(false);
-  const [isModalOpenEvent, setIsModalOpenEvent] = useState(false);
   const [editVacancyData, setEditVacancyData] = useState(null);
-  const [editSlideData, setEditSlideData] = useState(null);
-  const [editEventData, setEditEventData] = useState(null);
-  const [modalBlockHeight, setModalBlockHeight] = useState('auto');
   const [deleteModalState, setDeleteModalState] = useState({});
   const [isCopied, setIsCopied] = useState(false);
   const [copiedId, setCopiedId] = useState('');
-  const [copiedVacancyId, setCopiedVacancyId] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [showError, setShowError] = useState(false);
   const [okMessage, setOkMessage] = useState('');
@@ -62,22 +62,10 @@ export default function AddHRPortal({ user }) {
     { value: 'Главная hr', label: 'Главная hr', ref: hrRef, icon: <Icon3 /> },
   ];
 
-  const updateModalBlockHeight = useCallback(() => {
-    const windowHeight = window.innerHeight;
-    const maxHeight = Math.min(windowHeight - 100, 1900);
-    setModalBlockHeight(`${maxHeight}px`);
-  }, []);
-
   useEffect(() => {
     dispatch(getFetchForm());
     dispatch(getHiddenVacanciesFromDB());
   }, [dispatch]);
-
-  useEffect(() => {
-    updateModalBlockHeight();
-    window.addEventListener('resize', updateModalBlockHeight);
-    return () => window.removeEventListener('resize', updateModalBlockHeight);
-  }, [updateModalBlockHeight]);
 
   const handleFilterChange = useCallback((value) => {
     setSelectedFilter(value);
@@ -128,31 +116,6 @@ export default function AddHRPortal({ user }) {
     navigator.clipboard.writeText(String(text)).catch(() => {});
   };
 
-  const handleCopyClick = useCallback((id) => {
-    tryCopyToClipboard(id);
-    setIsCopied(true);
-    setCopiedId(id);
-  }, []);
-
-  const handleCopyVacancyClick = useCallback(
-    (id) => {
-      tryCopyToClipboard(id);
-      const vacancyToCopy = vacancies.find((el) => el.id === id);
-      if (!vacancyToCopy) return;
-      dispatch(sendCopiedVacancyToServer({ ...vacancyToCopy, id }))
-        .then((response) => {
-          const copiedId = response?.data?.copiedId;
-          if (copiedId) {
-            setCopiedVacancyId(copiedId);
-            setTimeout(() => setCopiedVacancyId(null), 5000);
-          }
-          dispatch(getFetchForm());
-        })
-        .catch(() => {});
-    },
-    [dispatch, vacancies]
-  );
-
   const handleEditClick = useCallback(
     (id) => {
       tryCopyToClipboard(id);
@@ -201,167 +164,135 @@ export default function AddHRPortal({ user }) {
   }, [vacancies, selectedFilter]);
 
   return (
-    <section className={styles.card_components_admin}>
-      <div className={styles.card_components_admin__block}>
-        <div className={styles.card_components_admin__title}>HR портал</div>
-        <div style={{ paddingTop: '21px', paddingBottom: '24px' }}>
-          <UiMarksSegmentedControls
-            name="hr-filter"
-            segments={segments}
-            callback={handleFilterChange}
-            controlRef={controlRef}
-          />
-        </div>
+    <section>
+      <UiMarksHeading size="3xl">HR портал</UiMarksHeading>
+      <div style={{ paddingTop: '21px', paddingBottom: '24px' }}>
+        <UiMarksSegmentedControls
+          name="hr-filter"
+          segments={segments}
+          callback={handleFilterChange}
+          controlRef={controlRef}
+        />
+      </div>
 
-        {selectedFilter === 'Главная hr' ? (
-          <>
-            <AddSlideMain
-              isModalOpenMain={isModalOpenMain}
-              setIsModalOpenMain={setIsModalOpenMain}
-              editSlideData={editSlideData}
-              setEditSlideData={setEditSlideData}
-              modalBlockHeight={modalBlockHeight}
-              user={user}
-            />
-            <SearchVacancyMain
-              vacancies={vacancies}
-              arrIdVacancy={arrIdVacancy}
-              setSearchId={setSearchId}
-              setIsButtonDisabled={setIsButtonDisabled}
-              setSavedId={setSavedId}
-              searchId={searchId}
-              setOkMessage={setOkMessage}
-              setShowOk={setShowOk}
-              setErrorMessage={setErrorMessage}
-              setShowError={setShowError}
-              setReplacement={setReplacement}
-              setReplacementMessage={setReplacementMessage}
-              savedId={savedId}
-              isButtonDisabled={isButtonDisabled}
-              showError={showError}
-              errorMessage={errorMessage}
-              showOk={showOk}
-              okMessage={okMessage}
-              replacement={replacement}
-              replacementMessage={replacementMessage}
-            />
-            <AddEventMain
-              isModalOpenEvent={isModalOpenEvent}
-              setIsModalOpenEvent={setIsModalOpenEvent}
-              editEventData={editEventData}
-              setEditEventData={setEditEventData}
-              modalBlockHeight={modalBlockHeight}
-              user={user}
-            />
-          </>
+      {selectedFilter === 'Главная hr' ? (
+        <>
+          <SlideMain user={user} />
+          <SearchVacancyMain
+            vacancies={vacancies}
+            arrIdVacancy={arrIdVacancy}
+            setSearchId={setSearchId}
+            setIsButtonDisabled={setIsButtonDisabled}
+            setSavedId={setSavedId}
+            searchId={searchId}
+            setOkMessage={setOkMessage}
+            setShowOk={setShowOk}
+            setErrorMessage={setErrorMessage}
+            setShowError={setShowError}
+            setReplacement={setReplacement}
+            setReplacementMessage={setReplacementMessage}
+            savedId={savedId}
+            isButtonDisabled={isButtonDisabled}
+            showError={showError}
+            errorMessage={errorMessage}
+            showOk={showOk}
+            okMessage={okMessage}
+            replacement={replacement}
+            replacementMessage={replacementMessage}
+          />
+          <EventMain user={user} />
+        </>
+      ) : (
+        <UiMarksButton defaultStyle="blue" size="large" icon onClick={handleOpenModal}>
+          {selectedFilter === 'Вакансии' ? 'Добавить вакансию' : 'Добавить стажировку'}
+        </UiMarksButton>
+      )}
+
+      <UiMarksDialog
+        isOpen={isModalOpen}
+        onClose={handleDialogClose}
+        title={
+          editVacancyData
+            ? selectedFilter === 'Вакансии'
+              ? 'Редактирование вакансии'
+              : 'Редактирование стажировки'
+            : selectedFilter === 'Вакансии'
+              ? 'Новая вакансия'
+              : 'Новая стажировка'
+        }
+        isSaveDisabled={!isFormValid}
+        onSave={() => document.getElementById('vacancy-form')?.requestSubmit()}
+        isLoading={isFormLoading}
+        isExit={showExitWarning}
+        onExitConfirm={handleForceClose}
+        onExitCancel={() => setShowExitWarning(false)}
+        nameSpinner={selectedFilter === 'Вакансии' ? 'Вакансия' : 'Стажировка'}>
+        <VacancyForm
+          ref={formRef}
+          onValidityChange={setIsFormValid}
+          onLoadingChange={setIsFormLoading}
+          onDirtyChange={handleDirtyChange}
+          editVacancyData={editVacancyData}
+          selectedFilter={selectedFilter}
+          selectedlabel={selectedFilter === 'Вакансии' ? 'Название вакансии' : 'Название стажировки'}
+          onSuccess={() => {
+            setIsModalOpen(false);
+            setEditVacancyData(null);
+            setIsFormLoading(false);
+          }}
+        />
+      </UiMarksDialog>
+
+      <div>
+        {error ? (
+          <div>
+            Нажмите на HR Портал, <span>это позволит серверу сделать запрос ещё раз.</span>
+          </div>
+        ) : loading ? (
+          <LoadingCircle />
         ) : (
-          <UiMarksButton defaultStyle="blue" size="large" icon onClick={handleOpenModal}>
-            {selectedFilter === 'Вакансии' ? 'Добавить вакансию' : 'Добавить стажировку'}
-          </UiMarksButton>
+          <>
+            {filteredVacancies.length === 0 ? (
+              <div>
+                {selectedFilter === 'Вакансии'
+                  ? 'Вакансии сейчас отсутствуют. Добавьте вакансию!'
+                  : selectedFilter === 'Стажировки'
+                    ? 'Стажировки сейчас отсутствуют. Добавьте стажировку!'
+                    : ''}
+              </div>
+            ) : (
+              <div>
+                {[...filteredVacancies].reverse().map((el) => (
+                  <React.Fragment key={el.id}>
+                    <UiMarksEntityRow
+                      title={el.title}
+                      desc={el.direction}
+                      id={el.id}
+                      role={['obezyankaa', 'Pokemon'].includes(user?.name) ? 'admin' : 'manager'}
+                      hidden={el.hidden}
+                      onToggle={() => handleLookClick(el.id)}
+                      onEdit={() => handleEditClick(el.id)}
+                      onDelete={() => handleDeleteModalOpen(el.id)}
+                    />
+                    <UiMarksDeleteModal
+                      isOpen={!!deleteModalState[el.id]}
+                      title={
+                        <>
+                          Вы точно хотите удалить
+                          <br />
+                          {selectedFilter === 'Стажировки' ? 'стажировку' : 'вакансию'} <strong>«{el.title}»</strong>?
+                        </>
+                      }
+                      description={`Удаленную ${selectedFilter === 'Вакансии' ? 'вакансию' : 'стажировку'} вернуть будет невозможно`}
+                      onConfirm={() => handleFormDelete(el.id)}
+                      onClose={() => handleDeleteModalClose(el.id)}
+                    />
+                  </React.Fragment>
+                ))}
+              </div>
+            )}
+          </>
         )}
-
-        <UiMarksDialog
-          isOpen={isModalOpen}
-          onClose={handleDialogClose}
-          title={
-            editVacancyData
-              ? selectedFilter === 'Вакансии'
-                ? 'Редактирование вакансии'
-                : 'Редактирование стажировки'
-              : selectedFilter === 'Вакансии'
-                ? 'Новая вакансия'
-                : 'Новая стажировка'
-          }
-          isSaveDisabled={!isFormValid}
-          onSave={() => document.getElementById('vacancy-form')?.requestSubmit()}
-          isLoading={isFormLoading}
-          isExit={showExitWarning}
-          onExitConfirm={handleForceClose}
-          onExitCancel={() => setShowExitWarning(false)}
-          nameSpinner={selectedFilter === 'Вакансии' ? 'Вакансия' : 'Стажировка'}>
-          <VacancyForm
-            ref={formRef}
-            onValidityChange={setIsFormValid}
-            onLoadingChange={setIsFormLoading}
-            onDirtyChange={handleDirtyChange}
-            editVacancyData={editVacancyData}
-            selectedFilter={selectedFilter}
-            selectedlabel={selectedFilter === 'Вакансии' ? 'Название вакансии' : 'Название стажировки'}
-            onSuccess={() => {
-              setIsModalOpen(false);
-              setEditVacancyData(null);
-              setIsFormLoading(false);
-            }}
-          />
-        </UiMarksDialog>
-
-        <div className={styles.card_components_admin__section_map}>
-          {error ? (
-            <div className={styles.card_components_admin__errore_div}>
-              Нажмите на HR Портал, <span>это позволит серверу сделать запрос ещё раз.</span>
-            </div>
-          ) : loading ? (
-            <LoadingCircle />
-          ) : (
-            <>
-              {filteredVacancies.length === 0 ? (
-                <div className={styles.card_components_admin__null_project}>
-                  {selectedFilter === 'Вакансии'
-                    ? 'Вакансии сейчас отсутствуют. Добавьте вакансию!'
-                    : selectedFilter === 'Стажировки'
-                      ? 'Стажировки сейчас отсутствуют. Добавьте стажировку!'
-                      : ''}
-                </div>
-              ) : (
-                <div className={styles.card_components_admin__block__vacancy}>
-                  {[...filteredVacancies].reverse().map((el) => (
-                    <React.Fragment key={el.id}>
-                      <UiMarksEntityRow
-                        title={el.title}
-                        desc={el.direction}
-                        id={el.id}
-                        role={['obezyankaa', 'Pokemon'].includes(user?.name) ? 'admin' : 'manager'}
-                        hidden={el.hidden}
-                        onToggle={() => handleLookClick(el.id)}
-                        onEdit={() => handleEditClick(el.id)}
-                        onDelete={() => handleDeleteModalOpen(el.id)}
-                      />
-                      {deleteModalState[el.id] && (
-                        <div className={styles.delete_modal_container}>
-                          <div className={styles.delete_modal_block}>
-                            <div className={styles.delete_modal_block__title}>
-                              Вы точно хотите удалить
-                              <br />
-                              {selectedFilter === 'Стажировки' ? 'стажировку' : 'вакансию'} «{el.title}»?
-                            </div>
-                            <p className={styles.delete_modal_block__text}>
-                              Удаленную {selectedFilter === 'Вакансии' ? 'вакансию' : 'стажировку'} вернуть будет
-                              невозможно
-                            </p>
-                            <div className={styles.button_block}>
-                              <button
-                                className={`${styles.button_block__cancel} ${styles.delete_modal_button_cancel}`}
-                                onClick={() => handleDeleteModalClose(el.id)}
-                              />
-                              <button
-                                className={`${styles.button_block__save} ${styles.delete_modal_button_delete}`}
-                                onClick={() => handleFormDelete(el.id)}
-                              />
-                            </div>
-                            <button
-                              className={styles.delete_modal_block__close_button}
-                              onClick={() => handleDeleteModalClose(el.id)}
-                            />
-                          </div>
-                        </div>
-                      )}
-                    </React.Fragment>
-                  ))}
-                </div>
-              )}
-            </>
-          )}
-        </div>
       </div>
     </section>
   );

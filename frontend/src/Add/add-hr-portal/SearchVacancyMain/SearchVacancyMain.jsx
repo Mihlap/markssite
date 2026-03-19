@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
+import { UiMarksHeading } from '../../ui';
 import styles from '../../HomeAdmin/HomeAdmin.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import DraggableVacancy from '../../HomeAdmin/DraggableVacancy';
-import { arrIdVacancySelector } from '../VacancySelector';
+import { arrIdVacancySelector } from '../const/VacancySelector';
 import {
   deleteVacancy,
   getZaprosData,
@@ -124,7 +125,8 @@ export default function SearchVacancyMain() {
 
   return (
     <div className={styles.home_admin_section__section}>
-      <span className={styles.home_admin_section__sectionSpan}>Актуальные вакансии</span>
+      <UiMarksHeading size="3xl">Актуальные вакансии</UiMarksHeading>
+
       <div className={`${styles.home_admin_section__block_search} ${styles.home_admin_section__block_searchVacancy}`}>
         <div className={styles.home_admin_section__id_container}>
           {arrIdVacancy?.map((vacancy, index) => (
