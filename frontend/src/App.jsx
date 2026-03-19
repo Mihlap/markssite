@@ -194,7 +194,7 @@ export default function App() {
                     title="Ведущий инженер-конструктор"
                     desc="Экспертно-аналитический отдел"
                     id="9062234144"
-                    role='admin'
+                    role="admin"
                   />
                 }
               />

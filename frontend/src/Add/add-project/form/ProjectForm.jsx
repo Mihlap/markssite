@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { fetchProject, setProjectId } from '../../../store/Slice/projectSlice';
 import { UiMarksInput, UiMarksSelect, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
-import { monthOptions, yearOptions, typesСonstruction } from '../FormAddEditProject/utils/Time';
+import { monthOptions, yearOptions, typesСonstruction } from './const/Time';
 import {
   competenciesOptions,
   degreeParticipationOptions,

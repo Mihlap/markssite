@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteForm, getFetchForm } from '../../store/Slice/projectSlice';
 import { fetchToggleStateAsync, updateToggleStateAsync } from '../../store/Slice/toggleSlice';
 
-// import Loading from "./loading/Loading";
 import Edit from '../icon/Edit.svg';
 import { UiMarksButton, UiMarksDialog, UiMarksSwitch, UiMarksHeading } from '../ui';
 import ProjectForm from './form/ProjectForm';
@@ -124,7 +123,7 @@ export default function AddProject({ user }) {
   }, [project]);
 
   return (
-    <section className={styles.card_components_admin}>
+    <>
       <div className={styles.card_components_admin__block}>
         <div className={styles.card_components_admin__block_title_btn}>
           <UiMarksHeading size="3xl">Проекты</UiMarksHeading>
@@ -278,6 +277,6 @@ export default function AddProject({ user }) {
           }}
         />
       </UiMarksDialog>
-    </section>
+    </>
   );
 }

@@ -2,13 +2,12 @@ import { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styles from './Add.module.scss';
 import AddNavbar from './add-navbar/AddNavbar';
-// import Snowfall from './Snowfall/Snowfall';
 
 export default function Add({ user, onPageChange, handleReturn }) {
   const location = useLocation();
   const navigate = useNavigate();
   const isHr778User = user?.name === 'hr778';
- 
+
   useEffect(() => {
     if (!user) {
       navigate('/', { replace: true });
@@ -20,7 +19,7 @@ export default function Add({ user, onPageChange, handleReturn }) {
       onPageChange('add');
     }
   }, [onPageChange]);
- 
+
   useEffect(() => {
     if (isHr778User) {
       const restrictedPaths = [
@@ -33,7 +32,10 @@ export default function Add({ user, onPageChange, handleReturn }) {
         '/admin/add-a-applications',
       ];
 
-      if (restrictedPaths.includes(location.pathname) || restrictedPaths.some(path => location.pathname.startsWith(path))) {
+      if (
+        restrictedPaths.includes(location.pathname) ||
+        restrictedPaths.some((path) => location.pathname.startsWith(path))
+      ) {
         navigate('/admin/add-hr-portal', { replace: true });
       }
     }
@@ -44,12 +46,11 @@ export default function Add({ user, onPageChange, handleReturn }) {
   }
 
   return (
-    <>
-      {/* <Snowfall /> */}
-      <div className={styles.add_container}>
-        <AddNavbar handleReturn={handleReturn} user={user} />
+    <section className={styles.main}>
+      <AddNavbar handleReturn={handleReturn} user={user} />
+      <div className={styles.wrap}>
         <Outlet />
       </div>
-    </>
+    </section>
   );
 }

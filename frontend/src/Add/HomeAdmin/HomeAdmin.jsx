@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import styles from './HomeAdmin.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { arrIdProjectSelector } from './utils/HomeAdminSelectors';
 import { arrIdArticlesLeftSelector } from './utils/ArticleLeftSelectors';
@@ -10,6 +9,8 @@ import SearchPublicRight from './SearchPublicRight';
 import { getZaprosData } from '../../store/Slice/searchProjectMainSlice';
 import { searchArticleLeftGet } from '../../store/Slice/searchArticlePublicLeftSlice';
 import { searchArticleRightGet } from '../../store/Slice/searchArticlePublicRightSlice';
+
+import { UiMarksHeading, UiMarksGrayWrap, UiMarksInput, UiMarksButton } from '../ui';
 
 export default function HomeAdmin() {
   const dispatch = useDispatch();
@@ -45,9 +46,9 @@ export default function HomeAdmin() {
   }, [dispatch]);
 
   return (
-    <section className={styles.home_admin_section}>
-      <div className={styles.home_admin_section__title}>Публикации</div>
-      <div className={styles.home_admin_section__article_container}>
+    <>
+      <UiMarksHeading size="3xl">Публикации</UiMarksHeading>
+      <div>
         <SearchPublicLeft
           articles={articles}
           arrIdArticleLeft={arrIdArticleLeft}
@@ -77,9 +78,7 @@ export default function HomeAdmin() {
           isBtnDisabledPublicTwo={isBtnDisabledPublicTwo}
         />
       </div>
-
-      <div className={styles.home_admin_section__title}>Проекты</div>
-
+      <UiMarksHeading size="3xl">Проекты</UiMarksHeading>
       <SearchPublicProject
         projects={projects}
         arrIdProject={arrIdProject}
@@ -102,6 +101,6 @@ export default function HomeAdmin() {
         replacement={replacement}
         replacementMessage={replacementMessage}
       />
-    </section>
+    </>
   );
 }

@@ -55,13 +55,13 @@ const captionComponents = {
 function escapeNumberedLines(captionMd) {
   return captionMd
     .split('\n')
-    .map((line) => {    
+    .map((line) => {
       return line.replace(/^(\s*)(\d+)\.(\s?)/, '$1$2\\.$3');
     })
     .join('\n');
 }
 
-function FigureWithCaption({ src, alt, captionMd }) { 
+function FigureWithCaption({ src, alt, captionMd }) {
   const escapedCaption = captionMd ? escapeNumberedLines(captionMd.trim()) : '';
 
   return (
@@ -105,10 +105,7 @@ function PDFWithCaption({ src, captionMd }) {
 
 const isNewBlockLine = (line) => {
   const t = line.trim();
-  return (
-    /^!\[([^\]]*)\]\(([^)]+)\)$/.test(t) ||
-    /^\[([^\]]*\.pdf)\]\(([^)]+)\)$/.test(t)
-  );
+  return /^!\[([^\]]*)\]\(([^)]+)\)$/.test(t) || /^\[([^\]]*\.pdf)\]\(([^)]+)\)$/.test(t);
 };
 
 function processContent(content) {
@@ -126,7 +123,7 @@ function processContent(content) {
   for (let i = 0; i < lines.length; i++) {
     const rawLine = lines[i];
     const trimmed = rawLine.trim();
-  
+
     const imageMatch = trimmed.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
     if (imageMatch) {
       flushText();
@@ -151,7 +148,7 @@ function processContent(content) {
       });
       continue;
     }
-  
+
     const pdfMatch = trimmed.match(/^\[([^\]]*\.pdf)\]\(([^)]+)\)$/);
     if (pdfMatch) {
       flushText();
@@ -174,7 +171,7 @@ function processContent(content) {
       });
       continue;
     }
-   
+
     currentText.push(rawLine);
   }
 
@@ -328,7 +325,7 @@ export default function MarkdownContentRenderer({ markdown = '' }) {
                           h3: ({ children }) => <h3 className={styles.heading3}>{children}</h3>,
                           h4: ({ children }) => <h4 className={styles.heading4}>{children}</h4>,
                           h5: ({ children }) => <h5 className={styles.heading5}>{children}</h5>,
-                          h6: ({ children }) => <h6 className={styles.heading6}>{children}</h6>,                       
+                          h6: ({ children }) => <h6 className={styles.heading6}>{children}</h6>,
                         }}
                       />
                     );

@@ -7,10 +7,9 @@ import {
   deleteForm,
   getFetchForm,
   getHiddenVacanciesFromDB,
-  sendCopiedVacancyToServer,
   updateVacancyLookStatusAndSaveToDB,
   getVacanciesByDirection,
-} from '../../store/Slice/vacanciesSlice';
+} from '../../store/Slice/vacanciesSlice.js';
 import {
   UiMarksButton,
   UiMarksSegmentedControls,
@@ -18,8 +17,8 @@ import {
   UiMarksEntityRow,
   UiMarksHeading,
   UiMarksDeleteModal,
-} from '../ui';
-import { Icon1, Icon2, Icon3 } from './icon';
+} from '../ui/index.js';
+import { Icon1, Icon2, Icon3 } from './icon/index.js';
 import LoadingCircle from '../../Loading/LoadingCircle.jsx';
 import SearchVacancyMain from './SearchVacancyMain/SearchVacancyMain.jsx';
 import { arrIdVacancySelector } from './const/VacancySelector.js';
@@ -164,7 +163,7 @@ export default function AddHRPortal({ user }) {
   }, [vacancies, selectedFilter]);
 
   return (
-    <section>
+    <>
       <UiMarksHeading size="3xl">HR портал</UiMarksHeading>
       <div style={{ paddingTop: '21px', paddingBottom: '24px' }}>
         <UiMarksSegmentedControls
@@ -294,6 +293,6 @@ export default function AddHRPortal({ user }) {
           </>
         )}
       </div>
-    </section>
+    </>
   );
 }
