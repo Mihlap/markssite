@@ -35,3 +35,9 @@
   font-size: 14px;
   color: #999;
 }
+
+.photoBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
