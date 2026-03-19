@@ -98,12 +98,14 @@
 }
 
 .preview[data-variant='multi'] {
-  /* background-color: rebeccapurple; */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(calc(25% - 0.75rem), 1fr));
+  gap: 1rem;
 }
 
 .preview[data-variant='multi'] .preview__img {
-  width: 80px;
-  height: 80px;
+  width: 100%;
+  height: 112px;
 }
 
 /* Grid 4 photos */
