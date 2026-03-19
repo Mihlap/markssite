@@ -1,12 +1,12 @@
 @import '../../App.css';
 
 .card_components_admin {
-  height: 100vh;
-  padding-left: 17%;
-  padding-top: 7.5rem;
+  // height: 100vh;
+  // padding-left: 17%;
+  // padding-top: 7.5rem;
 
   &__block {
-    padding: 0rem 3rem;
+    // padding: 0rem 3rem;
   }
 
   &__blockAddSlide {
@@ -1192,7 +1192,7 @@
 // стили адаптив
 @media screen and (min-width: 1024px) and (max-width: 1600px) {
   .card_components_admin {
-    padding-left: 2rem;
+    // padding-left: 2rem;
 
     &__modal_container {
       left: 0%;
@@ -1208,7 +1208,7 @@
 
 @media (max-width: 1023px) {
   .card_components_admin {
-    padding-left: 4.5rem;
+    // padding-left: 4.5rem;
 
     &__modal_container {
       left: 0%;

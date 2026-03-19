@@ -1,5 +1,4 @@
 import { useCallback, useRef, useState } from 'react';
-import styles from '../style/style-card.module.scss';
 import { UiMarksSegmentedControls, UiMarksHeading } from '../ui';
 import AddNews from './AddNews/AddNews';
 import AddJournal from './AddJournal/AddJournal';
@@ -22,11 +21,8 @@ export default function AddArticles({ user }) {
   }, []);
 
   return (
-    <section className={styles.card_components_admin}>
-      <div className={styles.card_components_admin__block}>
-        <div className={styles.card_components_admin__block_title_btn}>
-          <UiMarksHeading size="3xl">Публикации</UiMarksHeading>
-        </div>
+      <>
+        <UiMarksHeading size="3xl">Публикации</UiMarksHeading>
         <UiMarksSegmentedControls
           name="articles-filter"
           segments={segments}
@@ -34,7 +30,6 @@ export default function AddArticles({ user }) {
           controlRef={controlRef}
         />
         <>{selectedFilter === 'Новости' ? <AddNews user={user} /> : <AddJournal user={user} />}</>
-      </div>
-    </section>
+      </>
   );
 }

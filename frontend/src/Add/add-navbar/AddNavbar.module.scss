@@ -1,13 +1,14 @@
 @import '../../App.css';
 
 .add_navbar_container {
-  position: fixed;
-  left: 16%;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 20%;
-  height: 100%;
+  // position: fixed;
+  // left: 16%;
+  // top: 50%;
+  // transform: translateY(-50%);
+  // width: 20%;
+  // height: 100%;
   background: var(--super-dark-blue-345374);
+  overflow-y: auto;
   z-index: 999;
 
   &__block {
@@ -349,8 +350,8 @@
 
 @media screen and (min-width: 1024px) and (max-width: 1600px) {
   .add_navbar_container {
-    left: 0;
-    width: 22%;
+    // left: 0;
+    // width: 22%;
     // max-width: 250px;
 
     &__title {

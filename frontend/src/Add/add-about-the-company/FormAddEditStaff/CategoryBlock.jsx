@@ -1,6 +1,6 @@
 import { useMemo, memo, useEffect, useRef, useState, useCallback } from 'react';
 import Select, { components } from 'react-select';
-import customStyles from '../../add-hr-portal/FormAddEditVacancy/customStyle';
+import customStyles from '../../add-hr-portal/const/customStyle';
 
 const CATEGORY_OPTIONS = [
   { value: 'Руководство', label: 'Руководство' },
@@ -24,7 +24,7 @@ export default memo(function CategoryBlock({
   const timerRef = useRef(null);
 
   const locked = Boolean(isEditing && currentCategory);
- 
+
   const options = useMemo(() => {
     if (locked) {
       const only = CATEGORY_OPTIONS.find((o) => o.value === currentCategory);
@@ -50,7 +50,7 @@ export default memo(function CategoryBlock({
     }
     return [];
   }, [locked, options, inputData?.category, currentCategory]);
- 
+
   useEffect(() => {
     if (!isEditing && currentCategory && (!inputData.category || inputData.category.length === 0)) {
       setInputData((p) => ({ ...p, category: [currentCategory] }));
@@ -142,7 +142,7 @@ export default memo(function CategoryBlock({
         boxShadow: 'none',
         outline: 'none',
         transition: 'border-color 120ms ease',
-        '&:hover': { borderBottom: `1px solid ${borderColor}` },      
+        '&:hover': { borderBottom: `1px solid ${borderColor}` },
         backgroundColor: 'transparent',
         opacity: locked ? 1 : undefined,
         cursor: locked ? 'default' : 'text',
