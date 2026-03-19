@@ -130,8 +130,8 @@ export default function HistoryTimelineMobile({
                     onProgress={(swiper) => {
                         if (!swiper || !swiper.slides) return;
                         const MAX_SHIFT = isStrictMobile ? 50 : 80;
-                        const TARGET_PROGRESS = isStrictMobile ? -1.5 : -3;
-                        const RADIUS = isStrictMobile ? 1.2 : 0.8;
+                        const TARGET_PROGRESS = isStrictMobile ? -1.5 : -2.6;
+                        const RADIUS = isStrictMobile ? 1.2 : 1;
 
                         swiper.slides.forEach((slide) => {
                             const img = slide.querySelector('[data-card-image=\"true\"]');
