@@ -25,6 +25,11 @@ function HistoryCard({ item, variant = 1, isBottom = false, onOpenChronicle }) {
             openChronicle(item);
         }
     };
+  
+    const handleCardClickStop = (e) => {
+        e?.stopPropagation?.();
+        handleCardClick(e);
+    };
 
     return (
         <div
@@ -55,11 +60,29 @@ function HistoryCard({ item, variant = 1, isBottom = false, onOpenChronicle }) {
 
                 <div className={styles.split_right} data-split-right="true">
                     {hasImage ? (
-                        <div className={styles.card_image} data-card-image="true">
-                            <img src={previewImgSrc} alt={item?.title || ''} />
+                        <div
+                            className={styles.card_image}
+                            data-card-image="true"
+                            onClick={handleCardClickStop}
+                            role="button"
+                            tabIndex={-1}
+                        >
+                            <img
+                                src={previewImgSrc}
+                                alt={item?.title || ''}
+                                draggable={false}
+                                onDragStart={(e) => e.preventDefault()}
+                                onClick={handleCardClickStop}
+                            />
                         </div>
                     ) : (
-                        <div className={styles.card_image_placeholder} aria-hidden="true" />
+                        <div
+                            className={styles.card_image_placeholder}
+                            aria-hidden="true"
+                            onClick={handleCardClickStop}
+                            role="button"
+                            tabIndex={-1}
+                        />
                     )}
                 </div>
             </div>
