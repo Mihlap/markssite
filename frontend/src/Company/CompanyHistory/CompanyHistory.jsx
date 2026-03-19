@@ -27,6 +27,7 @@ import cityVector from '../icons/cityVector.svg';
 import { normalizeConstructorGroups } from '../utils/historyModalUtils';
 
 gsap.registerPlugin(ScrollToPlugin);
+const HISTORY_HASHES = ['#history', '#section1'];
 
 export default function CompanyHistory({
     parentStartRef,
@@ -100,9 +101,7 @@ export default function CompanyHistory({
         triggerOnce: false,
     });
     const prevSectionInViewRef = useRef(false);
-    const hashNavigationRef = useHistoryHashNavigationFlag(['#history', '#section1']);
-
-    // resize/hash-логика вынесена в хуки (см. useCompanyHistoryBreakpoints/useHistoryHashNavigationFlag)
+    const hashNavigationRef = useHistoryHashNavigationFlag(HISTORY_HASHES);   
 
     useEffect(() => {
         if (typeof window === 'undefined') return;

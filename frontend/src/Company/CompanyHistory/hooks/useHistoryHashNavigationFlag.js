@@ -2,11 +2,13 @@ import { useEffect, useRef } from 'react';
 
 export function useHistoryHashNavigationFlag(hashes = ['#history', '#section1']) {
     const hashNavigationRef = useRef(false);
+    const hashesKey = Array.isArray(hashes) ? hashes.join('|') : '';
 
     useEffect(() => {
         if (typeof window === 'undefined') return;
+        const watchedHashes = Array.isArray(hashes) ? [...hashes] : [];
 
-        const isWatched = (hash) => hashes.includes(hash);
+        const isWatched = (hash) => watchedHashes.includes(hash);
 
         const mark = () => {
             hashNavigationRef.current = true;
@@ -25,7 +27,7 @@ export function useHistoryHashNavigationFlag(hashes = ['#history', '#section1'])
         return () => {
             window.removeEventListener('hashchange', handleHashChange);
         };
-    }, [hashes]);
+    }, [hashesKey]);
 
     return hashNavigationRef;
 }

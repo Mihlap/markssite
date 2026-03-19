@@ -33,7 +33,8 @@ export default function HistoryTimelineDesktop({
                             {itemsToRender.map((item) => (
                                 <div key={item.id} className={styles.history_card_wrapper}>
                                     <HistoryCard
-                                        item={{ ...item, onOpenChronicle: handleOpenChronicle }}
+                                        item={item}
+                                        onOpenChronicle={handleOpenChronicle}
                                         variant={item.img ? 1 : 2}
                                     />
                                 </div>
@@ -94,7 +95,8 @@ export default function HistoryTimelineDesktop({
                                 {cardsByYear[year]?.bottom.map((item) => (
                                     <div key={item.id} className={styles.history_card_wrapper}>
                                         <HistoryCard
-                                            item={{ ...item, onOpenChronicle: handleOpenChronicle }}
+                                            item={item}
+                                            onOpenChronicle={handleOpenChronicle}
                                             variant={item.img ? 1 : 2}
                                             isBottom
                                         />

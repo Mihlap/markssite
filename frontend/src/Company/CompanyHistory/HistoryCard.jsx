@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import styles from './HistoryCard.module.scss';
 
 const bucket_url = (process.env.REACT_APP_S3_BUCKET_URL || '').replace(/\/+$/, '');
@@ -10,16 +11,18 @@ const toSrc = (raw) => {
     return `${bucket_url}/${String(raw).replace(/^\/+/, '')}`;
 };
 
-export default function HistoryCard({ item, variant = 1, isBottom = false }) {
+function HistoryCard({ item, variant = 1, isBottom = false, onOpenChronicle }) {
     const previewImgSrc = item?.previewImageUrl ? toSrc(item.previewImageUrl) : toSrc(item?.img);
     const hasImage = variant === 1 && !!previewImgSrc;
 
     const avatarSrc = item?.avatarUrl ? toSrc(item.avatarUrl) : toSrc(item?.avatar);
     const hasAvatar = !!avatarSrc;
 
+    const openChronicle = onOpenChronicle ?? item?.onOpenChronicle;
+
     const handleCardClick = (e) => {
-        if (item?.onOpenChronicle) {
-            item.onOpenChronicle(item);
+        if (openChronicle) {
+            openChronicle(item);
         }
     };
 
@@ -29,7 +32,7 @@ export default function HistoryCard({ item, variant = 1, isBottom = false }) {
                 }`}
             data-history-card-root="true"
             onClick={handleCardClick}
-            style={{ cursor: item?.onOpenChronicle ? 'pointer' : 'default' }}
+            style={{ cursor: openChronicle ? 'pointer' : 'default' }}
         >
             <div className={styles.card_split} data-card-split="true">
                 <div className={styles.split_left} data-split-left="true">
@@ -63,3 +66,5 @@ export default function HistoryCard({ item, variant = 1, isBottom = false }) {
         </div>
     );
 }
+
+export default memo(HistoryCard);
