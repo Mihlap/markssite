@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styles from './Add.module.scss';
-import AddNavbar from './add-navbar/AddNavbar';
+import Navbar from './navbar/Navbar';
 
 export default function Add({ user, onPageChange, handleReturn }) {
   const location = useLocation();
@@ -47,7 +47,7 @@ export default function Add({ user, onPageChange, handleReturn }) {
 
   return (
     <section className={styles.main}>
-      <AddNavbar handleReturn={handleReturn} user={user} />
+      <Navbar user={user} />
       <div className={styles.wrap}>
         <Outlet />
       </div>
