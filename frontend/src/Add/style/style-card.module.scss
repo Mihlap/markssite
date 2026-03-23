@@ -1148,7 +1148,28 @@
 
 .card_components_admin__buttonFilter {
   display: flex;
-  flex-wrap: nowrap;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.categorySwitchRow {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.categorySwitchItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.categorySwitchLabel {
+  font-family: var(--font-raleway);
+  font-size: 14px;
+  font-weight: var(--fw-400);
+  line-height: 20px;
+  color: var(--black-4E4E4E);
 }
 
 .buttonFilterItem {

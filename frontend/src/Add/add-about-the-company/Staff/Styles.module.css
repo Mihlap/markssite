@@ -1,0 +1,60 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    font-family: var(--font-raleway);
+}
+
+.selectContainer :global(.select__control) {
+    margin: 0;
+}
+
+.selectContainer :global(.select__menu) {
+    color: var(--gray-959DA6);
+    background-color: var(--light-light-gray-EBECEE);
+    border-radius: 0;
+    box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.08);
+    z-index: 100;
+}
+
+
+.list {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    padding-top: 32px;
+}
+
+.wrapImg {
+    position: relative;
+}
+
+.iconDrag {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+}
+
+.wrapBtn {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+}
+
+.itemImg {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 333px;
+    object-position: center;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.itemName {
+    color: var(--black-4E4E4E);
+    font-family: var(--font-raleway);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 20px;
+}

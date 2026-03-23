@@ -1,6 +1,7 @@
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styles from '../../style/style-card.module.scss';
+import { useAdminUser } from '../../hooks/useAdminUser';
 
 import HistoryModalManager from './HistoryModalManager';
 import HistoryList from './HistoryList';
@@ -14,10 +15,7 @@ function AddCompanyHistory({ user }) {
   const [editHistoryData, setEditHistoryData] = useState(null);
   const [modalBlockHeight, setModalBlockHeight] = useState('auto');
 
-  const canAddHistory = useMemo(() => {
-    const uname = String(user?.name ?? user?.userName ?? '').trim();
-    return uname !== 'hr778';
-  }, [user]);
+  const { canAdd: canAddHistory } = useAdminUser(user);
 
   const updateHeight = useCallback(() => {
     const windowHeight = window.innerHeight;

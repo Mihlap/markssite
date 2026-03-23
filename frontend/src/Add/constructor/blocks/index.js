@@ -8,6 +8,10 @@ import TextWithQuill from './TextWithQuill';
 import TextWithFrame from './TextWithFrame';
 import TextWithSelection from './TextWithSelection';
 import Quote from './Quote';
+import InterestingFact from './InterestingFact';
+import TextWithBackg from './TextWithBackg';
+import TextWithPoint from './TextWithPoint';
+import MarkDown from './MarkDown';
 
 
 export const BLOCK_COMPONENTS = {
@@ -21,4 +25,8 @@ export const BLOCK_COMPONENTS = {
   textWithFrame: TextWithFrame,
   textWithSelection: TextWithSelection,
   quote: Quote,
+  interestingFact: InterestingFact,
+  textWithBackg: TextWithBackg,
+  textWithPoint: TextWithPoint,
+  markDown: MarkDown,
 };

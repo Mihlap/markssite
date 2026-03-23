@@ -9,6 +9,10 @@ export { default as Icon8 } from './Icon8';
 export { default as Icon9 } from './Icon9';
 export { default as Icon10 } from './Icon10';
 export { default as Icon11 } from './Icon11';
+export { default as Icon12 } from './Icon12';
+export { default as Icon13 } from './Icon13';
+export { default as Icon14 } from './Icon14';
+export { default as Icon15 } from './Icon15';
 
 
 
