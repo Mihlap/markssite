@@ -5,7 +5,7 @@
   /* Растягиваем на всю высоту экрана */
   height: 100vh;
   transition: grid-template-columns 0.3s ease-in-out;
-
+  position: relative;
   @media screen and (min-width: 1440px) {
     max-width: 1386px;
     margin-left: auto;
@@ -26,4 +26,13 @@
   padding-left: 26px;
   padding-right: 26px;
   padding-top: 120px;
+}
+
+.btn {
+  position: absolute;
+  top: 41px;
+  right: 16px;
+  width: 180px;
+  height: 56px;
+  z-index: 9;
 }

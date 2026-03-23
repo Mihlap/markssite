@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import styles from './Add.module.scss';
 import Navbar from './navbar/Navbar';
+import { UiMarksButton } from './ui';
+import styles from './Add.module.scss';
 
 export default function Add({ user, onPageChange, handleReturn }) {
   const location = useLocation();
@@ -47,6 +48,9 @@ export default function Add({ user, onPageChange, handleReturn }) {
 
   return (
     <section className={styles.main}>
+        <UiMarksButton className={styles.btn} onClick={() => navigate('/')}>
+          Предпросмотр
+        </UiMarksButton>
       <Navbar user={user} />
       <div className={styles.wrap}>
         <Outlet />
