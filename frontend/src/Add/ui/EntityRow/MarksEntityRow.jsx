@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Icon1, Icon2, Icon3, Icon4, Icon6, Icon7 } from './icon';
+import { Icon6, Icon7 } from './icon';
+import MarksEntityActions from './MarksEntityActions';
 import s from './Styles.module.css';
 
 // role === manager он видит все блоки кроме кнопки delete
@@ -39,23 +40,7 @@ export default function MarksEntityRow({ title, desc, id, role, visible, hidden 
             </button>
           </div>
         )}
-        <div className={s.wrapbtn}>
-          <button
-            title={`${hidden ? 'показать' : 'скрыть'}`}
-            className={`${s.btn} ${hidden ? s.btnHidden : ''}`}
-            type="button"
-            onClick={onToggle}>
-            {hidden ? <Icon2 /> : <Icon3 />}
-          </button>
-          <button title="редактировать" className={s.btn} type="button" onClick={onEdit}>
-            <Icon1 />
-          </button>
-          {role === 'admin' && (
-            <button title="удалить" className={s.btn} type="button" onClick={onDelete}>
-              <Icon4 />
-            </button>
-          )}
-              </div>
+        <MarksEntityActions canDelete={role === 'admin'} hidden={hidden} onEdit={onEdit} onToggle={onToggle} onDelete={onDelete} />
         {(isEvent || isLegenda) && (
             <button
               title="перетащить"

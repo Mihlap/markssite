@@ -9,7 +9,7 @@ export default function UIGrayWrap({ customStyles, colorStatus, children, btnClo
       }}
       className={s.bg}>
       {btnClose && (
-        <button type="button" data-color-status={colorStatus} onClick={() => handlerClick()} className={s.btnClose} />
+        <button title='удалить' type="button" data-color-status={colorStatus} onClick={() => handlerClick()} className={s.btnClose} />
       )}
       {children}
     </div>

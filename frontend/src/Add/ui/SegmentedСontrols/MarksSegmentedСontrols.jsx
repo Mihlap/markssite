@@ -1,7 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
 import s from './Styles.module.css';
 
-export default function MarksSegmentedСontrols({ name, segments, callback, controlRef, defaultIndex = 0 }) {
+export default function MarksSegmentedСontrols({
+  name,
+  mesh = false,
+  segments,
+  callback,
+  controlRef,
+  defaultIndex = 0,
+  customStyles,
+}) {
   const [activeIndex, setActiveIndex] = useState(defaultIndex);
   const componentReady = useRef();
 
@@ -19,15 +27,21 @@ export default function MarksSegmentedСontrols({ name, segments, callback, cont
   }, [activeIndex, callback, controlRef, segments]);
 
   const onInputChange = (value, index) => {
+    if (segments[index].disabled) return; // не двигаем
     setActiveIndex(index);
     callback(value, index);
   };
 
   return (
-    <div className={s.controlsContainer} ref={controlRef}>
+    <div className={s.controlsContainer} ref={controlRef} style={customStyles}>
       <div className={`${s.controls}${componentReady.current ? ` ${s.ready}` : ''}`}>
         {segments?.map((item, i) => (
-          <div key={item.value} className={`${s.segment}${i === activeIndex ? ` ${s.active}` : ''}`} ref={item.ref}>
+          <div
+            key={item.value}
+            className={`${s.segment}${i === activeIndex ? ` ${s.active}` : ''}`}
+            ref={item.ref}
+            data-parent={mesh || undefined}
+            data-disabled={item.disabled || undefined}>
             <input
               type="radio"
               value={item.value}
@@ -37,7 +51,7 @@ export default function MarksSegmentedСontrols({ name, segments, callback, cont
               checked={i === activeIndex}
             />
             <label htmlFor={item.label}>
-              {item.icon && item.icon}
+              {item.icon && <span className={s.segmentIcon}>{item.icon}</span>}
               {item.label}
             </label>
           </div>

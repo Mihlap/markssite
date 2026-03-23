@@ -58,8 +58,30 @@
     transition: color 0.2s ease;
 }
 
+.segment[data-parent] label {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+}
+
 .segment:hover {
     color: var(--white-F6F6F6);
+}
+
+.segment[data-disabled] {
+    cursor: not-allowed;
+}
+
+.segment[data-disabled] input {
+    cursor: not-allowed;
+}
+
+.segment[data-disabled] label {
+    cursor: not-allowed;
+}
+
+.segmentIcon {
+    position: relative;
+    z-index: 2;
 }
 
 .segment.active label {

@@ -10,37 +10,6 @@ export default function Quote({ control, index, onRemove }) {
       handlerClick={onRemove}
       customStyles={{ padding: '38px 1rem 32px 1rem', display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <Controller
-        name={`constructorBlocks.${index}.title`}
-        control={control}
-        render={({ field }) => (
-          <UiMarksInput
-            color="salmon"
-            name={`constructorBlocks.${index}.title`}
-            label="Заголовок"
-            placeholder="Не более 56 символов"
-            onChange={(e) => {
-              if (e.target.value.length <= 56) field.onChange(e.target.value);
-            }}
-            value={field.value}
-            maxLength={56}
-          />
-        )}
-      />
-      <Controller
-        name={`constructorBlocks.${index}.textarea`}
-        control={control}
-        render={({ field }) => (
-          <UiMarksTextarea
-            name={`constructorBlocks.${index}.textarea`}
-            label="Текстовый блок"
-            placeholder="Нет ограничения по символам"
-            richText
-            color="salmon"
-            {...field}
-          />
-        )}
-      />
-      <Controller
         name={`constructorBlocks.${index}.image`}
         control={control}
         render={({ field: { onChange, value } }) =>
@@ -48,7 +17,7 @@ export default function Quote({ control, index, onRemove }) {
             <UiPhotoPreview
               files={value}
               variant="single"
-              label="Загрузите изображение"
+              label="Автор цитаты"
               color="salmon"
               onRemove={() => {
                 onChange([]);
@@ -59,8 +28,9 @@ export default function Quote({ control, index, onRemove }) {
             <UiMarksInput
               type="file"
               color="salmon"
+              info
               name={`constructorBlocks.${index}.image`}
-              label="Загрузите изображение"
+              label="Автор цитаты"
               accept="image/*"
               inputRef={imageRef}
               onChange={(e) => {
@@ -70,6 +40,34 @@ export default function Quote({ control, index, onRemove }) {
             />
           )
         }
+      />
+      <Controller
+        name={`constructorBlocks.${index}.description`}
+        control={control}
+        render={({ field }) => (
+          <UiMarksInput
+            autoGrow
+            color="salmon"
+            name={`constructorBlocks.${index}.description`}
+            placeholder="ФИО/Описание"
+            bordered
+            {...field}
+          />
+        )}
+      />
+      <Controller
+        name={`constructorBlocks.${index}.textarea`}
+        control={control}
+        render={({ field }) => (
+          <UiMarksTextarea
+            name={`constructorBlocks.${index}.textarea`}
+            label="Цитата"
+            placeholder="Нет ограничения по символам"
+            richText
+            color="salmon"
+            {...field}
+          />
+        )}
       />
     </UiMarksGrayWrap>
   );

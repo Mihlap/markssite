@@ -20,7 +20,10 @@ import ConstructorMain from '../../constructor/ConstructorMain';
 import { project_items } from '../../constructor/config/config';
 import { BLOCK_COMPONENTS } from '../../constructor/blocks';
 
-const ProjectForm = forwardRef(function ProjectForm({ onValidityChange, onLoadingChange, editProjectData, onSuccess, onDirtyChange }, ref) {
+const ProjectForm = forwardRef(function ProjectForm(
+  { onValidityChange, onLoadingChange, editProjectData, onSuccess, onDirtyChange },
+  ref
+) {
   const dispatch = useDispatch();
   const photoAvaRef = useRef(null);
   const dropPhotoRef = useRef(null);
@@ -61,12 +64,16 @@ const ProjectForm = forwardRef(function ProjectForm({ onValidityChange, onLoadin
     onDirtyChange?.(isDirty);
   }, [isDirty, onDirtyChange]);
 
-  useImperativeHandle(ref, () => ({
-    resetForm: () => {
-      dispatch(setProjectId(null));
-      reset(EMPTY_VALUES);
-    },
-  }), [dispatch, reset]);
+  useImperativeHandle(
+    ref,
+    () => ({
+      resetForm: () => {
+        dispatch(setProjectId(null));
+        reset(EMPTY_VALUES);
+      },
+    }),
+    [dispatch, reset]
+  );
 
   // Populate form when editing or reset for new project
   useEffect(() => {
