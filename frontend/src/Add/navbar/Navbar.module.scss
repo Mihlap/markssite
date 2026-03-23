@@ -1,0 +1,111 @@
+@import '../../App.css';
+
+.navbar {
+  display: flex;
+  flex-direction: column;
+  background: var(--super-dark-blue-345374);
+  overflow-y: auto;
+  z-index: 999;
+  padding-top: 40px;
+  padding-bottom: 40px;
+
+  @media screen and (min-width: 1440px) {
+    margin-top: 41px;
+    margin-bottom: 41px;
+    border-radius: 6px;
+  }
+}
+
+.list {
+  position: relative;
+  flex: 1;
+  padding-top: 130px;
+}
+
+.logo {
+  padding-left: 40px;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: var(--font-raleway);
+  font-weight: var(--fw-600);
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  padding-left: 40px;
+  // padding: 1.5rem 2.2rem;
+  padding-top: 26px;
+  padding-bottom: 26px;
+  white-space: nowrap;
+  color: var(--gray-959DA6);
+  transition: color 0.4s ease-in-out, background-color 0.4s ease-in-out, opacity 0.4s ease-in-out;
+
+  @media screen and (max-width: 1024px) {
+    padding-left: 24px;
+    gap: 1.2rem;
+  }
+
+  svg {
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+  }
+
+  &:not(.active) {
+    opacity: 0.3;
+  }
+
+  &.active {
+    background-color: var(--dark-FFFFFF1A);
+    color: var(--white-F6F6F6);
+  }
+
+  &:hover {
+    background-color: var(--dark-FFFFFF1A);
+    opacity: 1;
+  }
+}
+
+.logout {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 1.75rem;
+  padding-left: 40px;
+  font-weight: var(--fw-600);
+  white-space: nowrap;
+  color: var(--gray-959DA6);
+  transition: color 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  opacity: 0.3;
+
+  &:hover {
+    color: var(--white-F6F6F6);
+    opacity: 1;
+  }
+
+  svg {
+    flex-shrink: 0;
+    width: 25px;
+    height: 25px;
+  }
+
+  @media screen and (max-width: 1024px) {
+    padding-left: 24px;
+    gap: 1.5rem;
+  }
+}
+
+.indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 60px;
+  width: 8px;
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  background-color: var(--white-F6F6F6);
+  transition: top 0.2s ease;
+}

@@ -7,8 +7,8 @@ import { UiMarksButton, UiMarksDialog } from '../../ui';
 import JournalForm from './form/JournalForm';
 
 import Edit from '../../icon/Edit.svg';
-import one from '../../add-navbar/icon/one.png';
-import two from '../../add-navbar/icon/two.png';
+import one from './icons/one.png';
+import two from './icons/two.png';
 
 export default function AddJournal({ user }) {
   const dispatch = useDispatch();
