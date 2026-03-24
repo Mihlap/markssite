@@ -28,6 +28,38 @@ const processFilesForMeta = (files) => {
   return files.map((f) => (f instanceof File ? f.name : f));
 };
 
+const toFileArray = (val) => {
+  if (!val) return [];
+  if (Array.isArray(val)) return val.filter(Boolean);
+  return [val];
+};
+
+const fromOldFormat = (inputs) => {
+  if (!Array.isArray(inputs) || !inputs.length) return null;
+  const [a, b, c, d] = inputs;
+  switch (a?.label) {
+    case 'Текстовый блок в рамке':
+      return { type: 'textWithFrame', textarea: a.value || '' };
+    case 'Текстовый блок выделенный':
+      return { type: 'textWithSelection', textarea: a.value || '' };
+    case 'Текстовый блок с фоном':
+      return { type: 'textWithBackg', textarea: a.value || '' };
+    case 'Текстовый блок с точкой':
+      return { type: 'textWithPoint', textarea: a.value || '' };
+    case 'Тело статьи':
+      return { type: 'markDown', textarea: a.value || '' };
+    case 'Изображение':
+      if (b?.label === 'Описание')
+        return { type: 'imageWithDesc', image: toFileArray(a.value), description: b.value || '' };
+      return { type: 'interestingFact', image: toFileArray(a.value), textarea: b?.value || '', ava: toFileArray(c?.value), description: d?.value || '' };
+    case 'Автор цитаты':
+      return { type: 'quote', image: toFileArray(a.value), description: b?.value || '', textarea: c?.value || '' };
+    default:
+      if (a?.type === 'markdown') return { type: 'markDown', textarea: a.value || '' };
+      return null;
+  }
+};
+
 const toOldFormat = (block) => {
   switch (block.type) {
     case 'textWithFrame':
@@ -132,6 +164,7 @@ const StaffForm = forwardRef(function StaffForm(
       description: editStaffData.description || '',
       category: (editStaffData.category || []).map((c) => ({ value: c, label: c })),
       photoAva: editStaffData.img ? [editStaffData.img] : [],
+      constructorBlocks: (editStaffData.dynamicBlocks || []).map(fromOldFormat).filter(Boolean),
     });
   }, [editStaffData, reset]);
 
