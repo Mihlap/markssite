@@ -125,7 +125,9 @@ export default function SearchVacancyMain() {
 
   return (
     <div className={styles.home_admin_section__section}>
-      <UiMarksHeading size="3xl">Актуальные вакансии</UiMarksHeading>
+      <UiMarksHeading size="3xl" pb="lg" pt='60px'>
+        Актуальные вакансии
+      </UiMarksHeading>
 
       <div className={`${styles.home_admin_section__block_search} ${styles.home_admin_section__block_searchVacancy}`}>
         <div className={styles.home_admin_section__id_container}>

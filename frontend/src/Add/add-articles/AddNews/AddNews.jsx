@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from '../../style/style-card.module.scss';
 import { deleteFormArticle, getFetchFormArticle } from '../../../store/Slice/articleSlice';
-import { fetchToggleStateForButton2Async, updateToggleStateForButton2Async } from '../../../store/Slice/toggleSlice';
+import { fetchToggleStateForButton2Async } from '../../../store/Slice/toggleSlice';
 import cat from '../../../img/default-photo.jpeg';
 import Edit from '../../icon/Edit.svg';
 import { UiMarksButton, UiMarksDialog } from '../../ui';
@@ -15,7 +15,6 @@ export default function AddNews({ user }) {
   const article = useSelector((state) => state.article.article);
   const loading = useSelector((state) => state.article.loading);
   const error = useSelector((state) => state.article.error);
-  const isActiveForButton2 = useSelector((state) => state.toggle.isActiveForButton2);
   const [isCopied, setIsCopied] = useState(false);
   const [copiedId, setCopiedId] = useState('');
   const [deleteModalState, setDeleteModalState] = useState({});
@@ -111,18 +110,8 @@ export default function AddNews({ user }) {
     isFormDirtyRef.current = dirty;
   }, []);
 
-  const toggleActive = useCallback(() => {
-    dispatch(updateToggleStateForButton2Async(!isActiveForButton2));
-  }, [dispatch, isActiveForButton2]);
-
   return (
     <>
-      <div className={`${styles.card_components_admin__hide_block} ${styles.card_components_admin__hide_block_top}`}>
-        <div className={styles.card_components_admin__hide_text}>Скрыть фильтрацию</div>
-        <div className={`${styles.toggleButton} ${isActiveForButton2 ? styles.active : ''}`} onClick={toggleActive}>
-          <div className={styles.circle}></div>
-        </div>
-      </div>
       <>
         <UiMarksButton defaultStyle="blue" size="large" icon onClick={() => setIsOpen(true)}>
           Добавить новость

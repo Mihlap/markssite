@@ -19,3 +19,15 @@
   font-size: 20px;
   line-height: 28px;
 }
+
+.pt_none { padding-top: 0; }
+.pt_sm   { padding-top: 8px; }
+.pt_md   { padding-top: 16px; }
+.pt_lg   { padding-top: 24px; }
+.pt_xl   { padding-top: 32px; }
+
+.pb_none { padding-bottom: 0; }
+.pb_sm   { padding-bottom: 8px; }
+.pb_md   { padding-bottom: 16px; }
+.pb_lg   { padding-bottom: 24px; }
+.pb_xl   { padding-bottom: 32px; }

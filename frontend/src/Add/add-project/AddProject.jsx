@@ -10,6 +10,8 @@ import Edit from '../icon/Edit.svg';
 import { UiMarksButton, UiMarksDialog, UiMarksSwitch, UiMarksHeading } from '../ui';
 import ProjectForm from './form/ProjectForm';
 
+import s from './styles.module.css';
+
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 export default function AddProject({ user }) {
@@ -124,11 +126,13 @@ export default function AddProject({ user }) {
 
   return (
     <>
-      <div className={styles.card_components_admin__block}>
-        <div className={styles.card_components_admin__block_title_btn}>
-          <UiMarksHeading size="3xl">Проекты</UiMarksHeading>
-          <div className={styles.card_components_admin__hide_block}>
-            <div className={styles.card_components_admin__hide_text}>Скрыть фильтрацию</div>
+      <>
+        <div className={s.wrapHeading}>
+          <UiMarksHeading size="3xl">
+            Проекты
+          </UiMarksHeading>
+          <div className={s.wrapHide}>
+            <p className={s.name}>Скрыть фильтрацию</p>
             <UiMarksSwitch isActive={isActiveForButton1} onClick={toggleActive} />
           </div>
         </div>
@@ -252,7 +256,7 @@ export default function AddProject({ user }) {
             </>
           )}
         </div>
-      </div>
+      </>
       <UiMarksDialog
         isOpen={isOpen}
         onClose={handleDialogClose}

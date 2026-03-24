@@ -90,7 +90,9 @@ export default function AddEventMain({ user }) {
 
   return (
     <div>
-      <UiMarksHeading size="3xl">Жизнь на MARKS`e</UiMarksHeading>
+      <UiMarksHeading size="3xl" pb="xl" pt="60px">
+        Жизнь на MARKS`e
+      </UiMarksHeading>
 
       <UiMarksButton defaultStyle="blue" size="large" icon onClick={handleOpenModalEvent}>
         Добавить мероприятие

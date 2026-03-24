@@ -10,7 +10,7 @@ import { getZaprosData } from '../../store/Slice/searchProjectMainSlice';
 import { searchArticleLeftGet } from '../../store/Slice/searchArticlePublicLeftSlice';
 import { searchArticleRightGet } from '../../store/Slice/searchArticlePublicRightSlice';
 
-import { UiMarksHeading, UiMarksGrayWrap, UiMarksInput, UiMarksButton } from '../ui';
+import { UiMarksHeading } from '../ui';
 
 export default function HomeAdmin() {
   const dispatch = useDispatch();
@@ -48,8 +48,10 @@ export default function HomeAdmin() {
   return (
     <section>
       <div>
-        <UiMarksHeading size="3xl">Публикации</UiMarksHeading>
-        <div style={{ display: 'flex', gap: '32px', paddingTop: '32px' }}>
+        <UiMarksHeading size="3xl" pb="xl">
+          Публикации
+        </UiMarksHeading>
+        <div style={{ display: 'flex', gap: '32px' }}>
           <SearchPublicLeft
             articles={articles}
             arrIdArticleLeft={arrIdArticleLeft}
@@ -80,8 +82,10 @@ export default function HomeAdmin() {
           />
         </div>
       </div>
-      <div style={{paddingTop: '147px'}}>
-        <UiMarksHeading size="3xl">Проекты</UiMarksHeading>
+      <div style={{ paddingTop: '147px' }}>
+        <UiMarksHeading size="3xl" pb="xl">
+          Проекты
+        </UiMarksHeading>
         <SearchPublicProject
           projects={projects}
           arrIdProject={arrIdProject}

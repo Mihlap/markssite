@@ -1,15 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {fetchStaffAsync} from '../../store/Slice/StaffSliceNew';
+import { fetchStaffAsync } from '../../store/Slice/StaffSliceNew';
 import { fetchStaffCategoryTogglesAsync, updateStaffCategoryToggleAsync } from '../../store/Slice/toggleSlice';
-import { UiMarksSegmentedControls, UiMarksSwitch, UiMarksHeading } from '../ui';
+import { UiMarksHeading, UiMarksSegmentedControls, UiMarksSwitch } from '../ui';
 
-import AddCompanyHistory from './CompanyHistory/AddCompanyHistory';
+import HistoryMain from './CompanyHistory/HistoryMain';
 import { useAdminUser } from '../hooks/useAdminUser';
 import StaffMain from './Staff/StaffMain';
 
 const CAT_KEYS = { Руководство: 'leadership', 'Научное сопровождение': 'science', HR: 'hr' };
-
 
 export default function AddCompany({ user }) {
   const dispatch = useDispatch();
@@ -76,7 +75,6 @@ export default function AddCompany({ user }) {
     dispatch(fetchStaffCategoryTogglesAsync());
   }, [dispatch]);
 
-
   const toggleCategory = useCallback(
     (cat) => {
       const key = CAT_KEYS[cat];
@@ -94,22 +92,20 @@ export default function AddCompany({ user }) {
   });
 
   return (
-    <section>
-      <AddCompanyHistory user={user} />
-      <UiMarksHeading size="3xl">
+    <>
+      <HistoryMain user={user} />
+      <UiMarksHeading size="3xl" padding="lg">
         Сотрудники
       </UiMarksHeading>
-
       <UiMarksSegmentedControls
         name="staff-filter"
         mesh
         segments={segments}
         controlRef={controlRef}
         callback={(value) => setCurrentCategory(value)}
-        customStyles={{padding: '24px 0px'}}
+        customStyles={{ padding: '24px 0px' }}
       />
-
       <StaffMain items={filtered} user={user} />
-    </section>
+    </>
   );
 }

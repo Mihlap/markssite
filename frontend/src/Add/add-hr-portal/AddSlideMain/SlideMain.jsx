@@ -98,7 +98,9 @@ export default function AddSlideMain({ user }) {
 
   return (
     <>
-      <UiMarksHeading size="3xl" customStyles={{paddingBottom: '32px'}}>Ведущая компания в сфере проектирования</UiMarksHeading>
+      <UiMarksHeading size="3xl" pb="xl" pt="40px">
+        Ведущая компания в сфере проектирования
+      </UiMarksHeading>
       <UiMarksButton defaultStyle="blue" size="large" icon onClick={handleOpenModal}>
         Добавить слайд
       </UiMarksButton>
