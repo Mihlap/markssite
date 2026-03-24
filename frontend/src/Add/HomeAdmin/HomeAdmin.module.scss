@@ -23,10 +23,6 @@
     padding-bottom: 6rem;
   }
 
-  &__section {
-    padding-top: 2rem;
-  }
-
   &__sectionSpan {
     font-family: var(--font-unbounded);
     color: var(--black-1D2E43);
@@ -46,7 +42,7 @@
   }
 
   &__block_searchVacancy {
-    margin-top: 2rem;
+    // margin-top: 2rem;
   }
 
   &__button_container_project {

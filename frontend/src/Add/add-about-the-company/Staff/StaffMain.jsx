@@ -1,13 +1,12 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { fetchStaffAsync, deleteStaffAsync, toggleVisibilityStaffAsync, reorderStaffAsync } from '../../../store/Slice/StaffSliceNew';
-import { UiMarksButton, UiMarksDialog, UiMarksDeleteModal } from '../../ui';
+import { UiMarksButton, UiMarksDialog, UiMarksDeleteModal, UiMarksHeading } from '../../ui';
 import StaffForm from './StaffForm';
 import { useAdminUser } from '../../hooks/useAdminUser';
 import StaffList from './StaffList';
 import { DragDropContext } from '@hello-pangea/dnd';
 
-const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 export default function StaffMain({ items, user }) {
   const dispatch = useDispatch();
@@ -123,7 +122,7 @@ export default function StaffMain({ items, user }) {
         isOpen={!!deleteTarget}
         title={
           <>
-            Вы точно хотите удалить <br/> сотрудника <strong>«{deleteTarget?.name}»</strong>?
+            Вы точно хотите удалить <br /> сотрудника <strong>«{deleteTarget?.name}»</strong>?
           </>
         }
         description="Удалённого сотрудника вернуть будет невозможно"

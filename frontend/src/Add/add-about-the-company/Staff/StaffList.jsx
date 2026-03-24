@@ -30,7 +30,8 @@ export default function StaffList({ items, canDelete, canEdit, canDrag, onEdit, 
                         transition: snapshot.isDropAnimating
                           ? 'all 0.3s ease'
                           : provided.draggableProps.style?.transition,
-                      }}>
+                      }}
+                    >
                       <div {...provided.dragHandleProps}>
                         <div className={s.wrapImg}>
                           <div className={s.iconDrag}>

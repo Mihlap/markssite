@@ -112,7 +112,7 @@ export default function AddJournal({ user }) {
   }, [isCopied]);
 
   return (
-    <section style={{ paddingTop: '24px' }}>
+    <section>
       <UiMarksButton
         defaultStyle="blue"
         size="large"

@@ -58,8 +58,9 @@
   &__block_title_btn {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding-bottom: 33px;
+    gap: 1rem;
+    // justify-content: space-between;
+    // padding-bottom: 33px;
   }
 
 

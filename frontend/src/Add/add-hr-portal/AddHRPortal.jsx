@@ -23,6 +23,8 @@ import LoadingCircle from '../../Loading/LoadingCircle.jsx';
 import SearchVacancyMain from './SearchVacancyMain/SearchVacancyMain.jsx';
 import { arrIdVacancySelector } from './const/VacancySelector.js';
 
+import s from './styles.module.css'
+
 export default function AddHRPortal({ user }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editVacancyData, setEditVacancyData] = useState(null);
@@ -164,15 +166,17 @@ export default function AddHRPortal({ user }) {
 
   return (
     <>
-      <UiMarksHeading size="3xl">HR портал</UiMarksHeading>
-      <div style={{ paddingTop: '21px', paddingBottom: '24px' }}>
+      <UiMarksHeading size="3xl" pb="21px">
+        HR портал
+      </UiMarksHeading>
+
         <UiMarksSegmentedControls
           name="hr-filter"
           segments={segments}
           callback={handleFilterChange}
-          controlRef={controlRef}
+        controlRef={controlRef}
+        customStyles={{paddingBottom: '24px'}}
         />
-      </div>
 
       {selectedFilter === 'Главная hr' ? (
         <>
@@ -242,7 +246,7 @@ export default function AddHRPortal({ user }) {
         />
       </UiMarksDialog>
 
-      <div>
+      <>
         {error ? (
           <div>
             Нажмите на HR Портал, <span>это позволит серверу сделать запрос ещё раз.</span>
@@ -260,7 +264,7 @@ export default function AddHRPortal({ user }) {
                     : ''}
               </div>
             ) : (
-              <div>
+              <div className={s.list}>
                 {[...filteredVacancies].reverse().map((el) => (
                   <React.Fragment key={el.id}>
                     <UiMarksEntityRow
@@ -292,7 +296,7 @@ export default function AddHRPortal({ user }) {
             )}
           </>
         )}
-      </div>
+      </>
     </>
   );
 }

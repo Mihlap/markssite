@@ -48,9 +48,9 @@ export default function Add({ user, onPageChange, handleReturn }) {
 
   return (
     <section className={styles.main}>
-        <UiMarksButton className={styles.btn} onClick={() => navigate('/')}>
-          Предпросмотр
-        </UiMarksButton>
+      <UiMarksButton className={styles.btn} onClick={() => navigate('/')}>
+        Предпросмотр
+      </UiMarksButton>
       <Navbar user={user} />
       <div className={styles.wrap}>
         <Outlet />

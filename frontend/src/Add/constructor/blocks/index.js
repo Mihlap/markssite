@@ -12,6 +12,8 @@ import InterestingFact from './InterestingFact';
 import TextWithBackg from './TextWithBackg';
 import TextWithPoint from './TextWithPoint';
 import MarkDown from './MarkDown';
+import PersonYear from './PersonYear';
+import PosterPerson from './PosterPerson';
 
 
 export const BLOCK_COMPONENTS = {
@@ -29,4 +31,6 @@ export const BLOCK_COMPONENTS = {
   textWithBackg: TextWithBackg,
   textWithPoint: TextWithPoint,
   markDown: MarkDown,
+  personYear: PersonYear,
+  posterPerson: PosterPerson
 };

@@ -13,6 +13,6 @@ export { default as Icon12 } from './Icon12';
 export { default as Icon13 } from './Icon13';
 export { default as Icon14 } from './Icon14';
 export { default as Icon15 } from './Icon15';
-
+export { default as Icon16 } from './Icon16';
 
 
