@@ -75,19 +75,26 @@ export default function StaffMain({ items, user }) {
   }, []);
 
   const handleDragEnd = useCallback((result) => {
-    if (!result.destination) return;
+    const { source, destination } = result;
+    if (!destination) return;
+    if (source.droppableId === destination.droppableId && source.index === destination.index) return;
 
     const COLS = 3;
-    const srcRow = parseInt(result.source.droppableId.split('-')[1]);
-    const dstRow = parseInt(result.destination.droppableId.split('-')[1]);
-    const srcFlat = srcRow * COLS + result.source.index;
-    const dstFlat = dstRow * COLS + result.destination.index;
+    const columns = [[], [], []];
+    orderedItems.forEach((item, i) => columns[i % COLS].push(item));
 
-    if (srcFlat === dstFlat) return;
+    const srcCol = parseInt(source.droppableId.split('-')[1]);
+    const dstCol = parseInt(destination.droppableId.split('-')[1]);
+    const [moved] = columns[srcCol].splice(source.index, 1);
+    columns[dstCol].splice(destination.index, 0, moved);
 
-    const next = Array.from(orderedItems);
-    const [moved] = next.splice(srcFlat, 1);
-    next.splice(dstFlat, 0, moved);
+    const next = [];
+    const maxRows = Math.max(...columns.map((c) => c.length));
+    for (let row = 0; row < maxRows; row++) {
+      for (let col = 0; col < COLS; col++) {
+        if (columns[col][row] !== undefined) next.push(columns[col][row]);
+      }
+    }
 
     setOrderedItems(next);
     dispatch(reorderStaffAsync(next.map((it, i) => ({ id: it.id, sortIndex: i }))));
@@ -111,10 +118,14 @@ export default function StaffMain({ items, user }) {
           onDelete={handleDelete}
         />
       </DragDropContext>
-      
+
       <UiMarksDeleteModal
         isOpen={!!deleteTarget}
-        title={<>Вы точно хотите удалить <strong>«{deleteTarget?.name}»</strong>?</>}
+        title={
+          <>
+            Вы точно хотите удалить <br/> сотрудника <strong>«{deleteTarget?.name}»</strong>?
+          </>
+        }
         description="Удалённого сотрудника вернуть будет невозможно"
         onConfirm={handleDeleteConfirm}
         onClose={() => setDeleteTarget(null)}
