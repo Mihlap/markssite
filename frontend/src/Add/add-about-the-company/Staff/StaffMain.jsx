@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchStaffAsync, deleteStaffAsync, toggleVisibilityStaffAsync } from '../../../store/Slice/StaffSliceNew';
+import { fetchStaffAsync, deleteStaffAsync, toggleVisibilityStaffAsync, reorderStaffAsync } from '../../../store/Slice/StaffSliceNew';
 import { UiMarksButton, UiMarksDialog, UiMarksDeleteModal } from '../../ui';
 import StaffForm from './StaffForm';
 import { useAdminUser } from '../../hooks/useAdminUser';
 import StaffList from './StaffList';
+import { DragDropContext } from '@hello-pangea/dnd';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
@@ -21,6 +22,11 @@ export default function StaffMain({ items, user }) {
 
   const { canDelete, canAdd, canEdit, canDrag } = useAdminUser(user);
   const [deleteTarget, setDeleteTarget] = useState(null);
+  const [orderedItems, setOrderedItems] = useState(items || []);
+
+  useEffect(() => {
+    setOrderedItems(items || []);
+  }, [items]);
 
   const handleEdit = useCallback((el) => {
     setEditData(el);
@@ -68,6 +74,25 @@ export default function StaffMain({ items, user }) {
     isFormDirtyRef.current = dirty;
   }, []);
 
+  const handleDragEnd = useCallback((result) => {
+    if (!result.destination) return;
+
+    const COLS = 3;
+    const srcRow = parseInt(result.source.droppableId.split('-')[1]);
+    const dstRow = parseInt(result.destination.droppableId.split('-')[1]);
+    const srcFlat = srcRow * COLS + result.source.index;
+    const dstFlat = dstRow * COLS + result.destination.index;
+
+    if (srcFlat === dstFlat) return;
+
+    const next = Array.from(orderedItems);
+    const [moved] = next.splice(srcFlat, 1);
+    next.splice(dstFlat, 0, moved);
+
+    setOrderedItems(next);
+    dispatch(reorderStaffAsync(next.map((it, i) => ({ id: it.id, sortIndex: i }))));
+  }, [orderedItems, dispatch]);
+
   return (
     <>
       {canAdd && (
@@ -75,16 +100,17 @@ export default function StaffMain({ items, user }) {
           Добавить сотрудника
         </UiMarksButton>
       )}
-
-      <StaffList
-        items={items}
-        canDelete={canDelete}
-        canEdit={canEdit}
-        canDrag={canDrag}
-        onEdit={handleEdit}
-        onToggle={handleToggle}
-        onDelete={handleDelete}
-      />
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <StaffList
+          items={orderedItems}
+          canDelete={canDelete}
+          canEdit={canEdit}
+          canDrag={canDrag}
+          onEdit={handleEdit}
+          onToggle={handleToggle}
+          onDelete={handleDelete}
+        />
+      </DragDropContext>
       
       <UiMarksDeleteModal
         isOpen={!!deleteTarget}
