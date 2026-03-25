@@ -40,6 +40,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    font-family: var(--font-raleway);
     color: var(--black-1D2E43);
     font-size: 18px;
     font-style: normal;

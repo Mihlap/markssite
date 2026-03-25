@@ -6,7 +6,7 @@ import {
   updateSlidesOrder,
 } from '../../../store/Slice/vacancyMainSlideCardSlice';
 import { UiMarksEntityRow, UiMarksDeleteModal } from '../../ui';
-import styles from '../../style/style-card.module.scss';
+import styles from './styles.module.css';
 
 const getRole = (user) => {
   if (['obezyankaa', 'Pokemon'].includes(user?.name)) return 'admin';
@@ -77,7 +77,7 @@ export default function SlidesList({
   );
 
   return (
-    <div className={styles.card_components_admin__block__vacancy} role="list">
+    <div className={styles.list} role="list">
       {slides.map((el, index) => (
         <div
           key={el.id}

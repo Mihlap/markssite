@@ -135,7 +135,7 @@ export default function HistoryMain({ user }) {
       <UiMarksDialog
         isOpen={isOpen}
         onClose={handleDialogClose}
-        title={editData ? 'Редактирование записи' : 'Добавить запись'}
+        title={editData ? 'Редактировать год' : 'Новый год'}
         isSaveDisabled={!isFormValid}
         onSave={() => document.getElementById('add-form-history')?.requestSubmit()}
         isLoading={isFormLoading}

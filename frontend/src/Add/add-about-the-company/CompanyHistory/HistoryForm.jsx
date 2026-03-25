@@ -1,11 +1,14 @@
 import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
-import { UiMarksInput, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
+import { UiMarksInput, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap, UiMarksSelect } from '../../ui';
 import { createHistoryItem, updateHistoryItem } from '../../../store/Slice/companyHistorySlice';
 import ConstructorMain from '../../constructor/ConstructorMain';
 import { history_items } from '../../constructor/config/config';
 import { BLOCK_COMPONENTS } from '../../constructor/blocks';
+
+import s from './HistoryList.module.css';
+import { yearOptions } from './const/year';
 
 const EMPTY_VALUES = {
   year: '',
@@ -45,6 +48,13 @@ const toOldFormat = (block) => {
         { type: 'file', label: 'Портрет сотрудника', value: processFilesForMeta(block.ava) },
         { type: 'text', label: 'ФИО/Описание', value: block.description || '' },
       ];
+    case 'personYear':
+      return [{ type: 'file', label: 'Человек года', value: processFilesForMeta(block.image) }];
+    case 'posterPerson':
+      return [
+        { type: 'file', label: 'Портрет сотрудника', value: processFilesForMeta(block.image) },
+        { type: 'text', label: 'ФИО/Описание', value: block.description || '' },
+      ];
     case 'textWithBackg':
       return [{ type: 'textarea', label: 'Текстовый блок с фоном', value: block.textarea || '' }];
     case 'markDown':
@@ -56,6 +66,10 @@ const toOldFormat = (block) => {
 
 const getBlockFiles = (block, inputIndex) => {
   switch (block.type) {
+    case 'personYear':
+      return inputIndex === 0 ? block.image : null;
+    case 'posterPerson':
+      return inputIndex === 0 ? block.image : null;
     case 'imageWithDesc':
       return inputIndex === 0 ? block.image : null;
     case 'quote':
@@ -87,6 +101,10 @@ const fromOldFormat = (inputs) => {
       return { type: 'textWithBackg', textarea: a.value || '' };
     case 'Тело статьи':
       return { type: 'markDown', textarea: a.value || '' };
+    case 'Человек года':
+      return { type: 'personYear', image: toFileArray(a.value) };
+    case 'Портрет сотрудника':
+      return { type: 'posterPerson', image: toFileArray(a.value), description: b?.value || '' };
     case 'Изображение':
       if (b?.label === 'Описание')
         return { type: 'imageWithDesc', image: toFileArray(a.value), description: b.value || '' };
@@ -119,14 +137,24 @@ const HistoryForm = forwardRef(function HistoryForm(
     formState: { isValid, isSubmitting, isDirty },
   } = useForm({ mode: 'onChange' });
 
-  const { fields: constructorBlocks, append, remove } = useFieldArray({
+  const {
+    fields: constructorBlocks,
+    append,
+    remove,
+  } = useFieldArray({
     control,
     name: 'constructorBlocks',
   });
 
-  useEffect(() => { onValidityChange?.(isValid); }, [isValid, onValidityChange]);
-  useEffect(() => { onLoadingChange?.(isSubmitting); }, [isSubmitting, onLoadingChange]);
-  useEffect(() => { onDirtyChange?.(isDirty); }, [isDirty, onDirtyChange]);
+  useEffect(() => {
+    onValidityChange?.(isValid);
+  }, [isValid, onValidityChange]);
+  useEffect(() => {
+    onLoadingChange?.(isSubmitting);
+  }, [isSubmitting, onLoadingChange]);
+  useEffect(() => {
+    onDirtyChange?.(isDirty);
+  }, [isDirty, onDirtyChange]);
 
   useImperativeHandle(ref, () => ({ resetForm: () => reset(EMPTY_VALUES) }), [reset]);
 
@@ -190,20 +218,22 @@ const HistoryForm = forwardRef(function HistoryForm(
   };
 
   return (
-    <form id="add-form-history" onSubmit={handleSubmit(onSubmit)}>
-      <UiMarksGrayWrap customStyles={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px' }}>
+    <form id="add-form-history" className={s.form} onSubmit={handleSubmit(onSubmit)}>
+      <UiMarksGrayWrap customStyles={{ display: 'flex', flexDirection: 'column', gap: '24px', padding: '32px 16px' }}>
         <Controller
           name="year"
           control={control}
-          rules={{ required: true, validate: (v) => !isNaN(Number(v)) && Number(v) > 0 }}
-          render={({ field, fieldState }) => (
-            <UiMarksInput
-              type="number"
-              name="year"
-              bordered
+          render={({ field }) => (
+            <UiMarksSelect
+              label="Год"
               placeholder="Год"
-              error={fieldState.error && 'Обязательное поле'}
-              {...field}
+              name="year"
+              customStyles={{
+                container: s.selectContainer,
+              }}
+              options={yearOptions}
+              value={yearOptions.find((opt) => opt.value === field.value) || null}
+              onChange={(opt) => field.onChange(opt ? opt.value : '')}
             />
           )}
         />
@@ -214,8 +244,7 @@ const HistoryForm = forwardRef(function HistoryForm(
           render={({ field, fieldState }) => (
             <UiMarksInput
               name="title"
-              bordered
-              placeholder="Заголовок"
+              label="Заголовок года"
               error={fieldState.error && 'Обязательное поле'}
               {...field}
             />
@@ -223,7 +252,7 @@ const HistoryForm = forwardRef(function HistoryForm(
         />
       </UiMarksGrayWrap>
 
-      <UiMarksGrayWrap customStyles={{ padding: '16px' }}>
+      <UiMarksGrayWrap customStyles={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '16px' }}>
         <Controller
           name="previewImage"
           control={control}
@@ -234,7 +263,7 @@ const HistoryForm = forwardRef(function HistoryForm(
                 <UiPhotoPreview
                   files={value}
                   variant="single"
-                  label="Превью изображение"
+                  label="Превью *для отображения в хронике"
                   onRemove={() => {
                     onChange([]);
                     if (previewImageRef.current) previewImageRef.current.value = '';
@@ -247,7 +276,7 @@ const HistoryForm = forwardRef(function HistoryForm(
                   accept="image/*"
                   info
                   inputRef={previewImageRef}
-                  label="Превью изображение"
+                  label="Превью *для отображения в хронике"
                   color="blue"
                   onChange={(e) => {
                     const file = e.target.files[0];
@@ -258,34 +287,24 @@ const HistoryForm = forwardRef(function HistoryForm(
             </>
           )}
         />
-      </UiMarksGrayWrap>
-
-      <UiMarksGrayWrap customStyles={{ padding: '1rem' }}>
         <Controller
           name="previewText"
           control={control}
           rules={{ required: true }}
           render={({ field, fieldState }) => (
             <UiMarksTextarea
+              richText
               name="previewText"
               label="Текст превью"
               placeholder="Не более 160 символов"
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value.length <= 160) {
+                  field.onChange(value);
+                }
+              }}
+              maxLength={160}
               error={fieldState.error && 'Обязательное поле'}
-              {...field}
-            />
-          )}
-        />
-      </UiMarksGrayWrap>
-
-      <UiMarksGrayWrap customStyles={{ padding: '1rem' }}>
-        <Controller
-          name="description"
-          control={control}
-          render={({ field }) => (
-            <UiMarksTextarea
-              name="description"
-              label="Описание"
-              placeholder="Нет ограничения по символам"
               {...field}
             />
           )}

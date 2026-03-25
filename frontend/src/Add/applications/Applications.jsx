@@ -2,26 +2,17 @@ import { useEffect, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchToggleStateForButton3Async, updateToggleStateForButton3Async } from '../../store/Slice/toggleSlice';
 import { deleteUser, getAllUserNames } from '../../store/Slice/authSlice';
+import { UiMarksDeleteModal, UiMarksSwitch } from '../ui';
+import { useAdminUser } from '../hooks/useAdminUser';
 
 import styles from './Applications.module.scss';
-import cardStyles from '../style/style-card.module.scss';
-
-function ToggleButton({ isActive, onClick }) {
-  return (
-    <div className={`${styles.toggleButton} ${isActive ? styles.active : ''}`} onClick={onClick}>
-      <div className={styles.circle}></div>
-    </div>
-  );
-}
 
 function UsersList({ users, onAskDelete, deleteModalState, onClose, onConfirm }) {
   return (
     <ul className={styles.Applications__list_text}>
       {users.map((user) => (
         <li key={user.id} className={styles.Applications__hideTextWrapper}>
-          <span className={styles.Applications__item_text}>
-           {user.userName}
-          </span>
+          <span className={styles.Applications__item_text}>{user.userName}</span>
 
           {user.userName !== 'Pokemon' && user.userName !== 'obezyankaa' && (
             <>
@@ -31,30 +22,18 @@ function UsersList({ users, onAskDelete, deleteModalState, onClose, onConfirm })
                 onClick={() => onAskDelete(user.id, user.userName)}>
                 Удалить
               </button>
-         
-              {deleteModalState[user.id]?.open && (
-                <div className={cardStyles.delete_modal_container}>
-                  <div className={cardStyles.delete_modal_block}>
-                    <div className={cardStyles.delete_modal_block__title}>
-                      Вы точно хотите удалить пользователя <br /> «{deleteModalState[user.id].name}»?
-                    </div>
-                    <p className={cardStyles.delete_modal_block__text}>Удалённого пользователя нельзя будет вернуть</p>
 
-                    <div className={cardStyles.button_block}>
-                      <button
-                        className={`${cardStyles.button_block__cancel} ${cardStyles.delete_modal_button_cancel}`}
-                        onClick={() => onClose(user.id)}
-                      />
-                      <button
-                        className={`${cardStyles.button_block__save} ${cardStyles.delete_modal_button_delete}`}
-                        onClick={() => onConfirm(user.id)}
-                      />
-                    </div>
-
-                    <button className={cardStyles.delete_modal_block__close_button} onClick={() => onClose(user.id)} />
-                  </div>
-                </div>
-              )}
+              <UiMarksDeleteModal
+                isOpen={!!deleteModalState[user.id]?.open}
+                title={
+                  <>
+                    Вы точно хотите удалить пользователя <br /> <strong>«{deleteModalState[user.id]?.name}»</strong>?
+                  </>
+                }
+                description="Удалённого пользователя нельзя будет вернуть"
+                onConfirm={() => onConfirm(user.id)}
+                onClose={() => onClose(user.id)}
+              />
             </>
           )}
         </li>
@@ -66,6 +45,7 @@ function UsersList({ users, onAskDelete, deleteModalState, onClose, onConfirm })
 export default function Applications() {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.auth.user);
+  const { role } = useAdminUser(currentUser);
   const isActiveForButton3 = useSelector((state) => state.toggle.isActiveForButton3);
   const userNames = useSelector((state) => state.auth.userNames);
   const [deleteModalState, setDeleteModalState] = useState({});
@@ -110,10 +90,10 @@ const handleConfirmDeleteUser = useCallback(
     <section className={styles.Applications}>
       <div className={styles.Applications__titleBlock}>
         <div className={styles.Applications__title}>Управление</div>
-        {/* <div className={styles.Applications__hide_block}>
-          <div className={styles.Applications__hide_text}>Открыть окно для регистрации</div>
-          <ToggleButton isActive={isActiveForButton3} onClick={toggleActive} />
-        </div> */}
+        <div className={styles.Applications__hide_block}>
+          <div className={styles.Applications__hide_text}>Открыть окно регистрации</div>
+          <UiMarksSwitch isActive={isActiveForButton3} onClick={toggleActive} />
+        </div>
       </div>
 
       <div className={styles.Applications__container}>
@@ -122,7 +102,7 @@ const handleConfirmDeleteUser = useCallback(
             <>
               <span className={styles.Applications__text}>Текущий пользователь в админке:</span>
               <div className={styles.Applications__status_block}>
-                <span className={styles.Applications__item_statusText}>{currentUser.name}</span>
+                <span className={styles.Applications__item_statusText}>{role}</span>
                 <div className={styles.Applications__status} />
               </div>
             </>

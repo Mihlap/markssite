@@ -1,4 +1,4 @@
-import { memo, useMemo, forwardRef } from 'react';
+import { memo, useMemo, useCallback, forwardRef } from 'react';
 import ReactQuill, { Quill } from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 import { Icon1, Icon2, Icon3 } from './icon';
@@ -14,13 +14,33 @@ icons['list'] = Icon3;
 
 const quillFormats = ['bold', 'underline', 'list'];
 
-const MarksTextarea = forwardRef(function MarksTextarea({ name, label, value, onChange, placeholder, color = 'blue', error, richText = false, quillRef }, ref) {
+const MarksTextarea = forwardRef(function MarksTextarea(
+  { name, label, value, onChange, placeholder, color = 'blue', error, richText = false, quillRef, maxLength },
+  ref
+) {
   const toolbarId = `toolbar-${name.replaceAll('.', '-')}`;
+  const showCounter = maxLength != null;
 
-  const quillModules = useMemo(() => ({
-    toolbar: { container: `#${toolbarId}` },
-    clipboard: { matchVisual: false },
-  }), [toolbarId]);
+  const textLength = useMemo(() => {
+    if (!showCounter) return 0;
+    if (!richText) return (value || '').length;
+    const div = document.createElement('div');
+    div.innerHTML = value || '';
+    return div.textContent.length;
+  }, [showCounter, richText, value]);
+
+  const handleQuillChange = useCallback((content, _delta, _source, editor) => {
+    if (maxLength != null && editor.getText().length - 1 > maxLength) return;
+    onChange(content);
+  }, [maxLength, onChange]);
+
+  const quillModules = useMemo(
+    () => ({
+      toolbar: { container: `#${toolbarId}` },
+      clipboard: { matchVisual: false },
+    }),
+    [toolbarId]
+  );
 
   return (
     <div className={s.textarea__wrap}>
@@ -37,28 +57,35 @@ const MarksTextarea = forwardRef(function MarksTextarea({ name, label, value, on
               <Icon3 />
             </button>
           </div>
-          <ReactQuill
-            ref={quillRef}
-            modules={quillModules}
-            formats={quillFormats}
-            className={`${s.quill} ${s[`quill_${color}`] || ''} ${error ? s.quill_error : ''}`}
+          <div className={s.textarea__field_wrap}>
+            <ReactQuill
+              ref={quillRef}
+              modules={quillModules}
+              formats={quillFormats}
+              className={`${s.quill} ${s[`quill_${color}`] || ''} ${error ? s.quill_error : ''}`}
+              name={name}
+              id={name}
+              value={value ?? ''}
+              onChange={handleQuillChange}
+              placeholder={placeholder || name}
+            />
+            {showCounter && <div className={s.textarea__counter}>{`${textLength}/${maxLength}`}</div>}
+          </div>
+        </>
+      ) : (
+        <div className={s.textarea__field_wrap}>
+          <textarea
+            ref={ref}
+            className={`${s.textarea} ${s[`textarea_${color}`] || ''} ${error ? s.textarea_error : ''}`}
             name={name}
             id={name}
             value={value ?? ''}
             onChange={onChange}
             placeholder={placeholder || name}
+            maxLength={maxLength}
           />
-        </>
-      ) : (
-        <textarea
-          ref={ref}
-          className={`${s.textarea} ${s[`textarea_${color}`] || ''} ${error ? s.textarea_error : ''}`}
-          name={name}
-          id={name}
-          value={value ?? ''}
-          onChange={onChange}
-          placeholder={placeholder || name}
-        />
+          {showCounter && <div className={s.textarea__counter}>{`${textLength}/${maxLength}`}</div>}
+        </div>
       )}
       <label htmlFor={name} className={s.textarea__label}>
         {label}
