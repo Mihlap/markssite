@@ -120,6 +120,11 @@ const NavBar = () => {
   // Закрытие бургер-меню
   const closeMenu = () => setIsMenuOpen(false);
 
+  useEffect(() => {
+    document.body.style.overflow = isMenuOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [isMenuOpen]);
+
   // Навигация с учетом хеша и возможной прокрутки
   const navigateWithHash = (path) => {
     if (!path) return;
