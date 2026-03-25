@@ -22,7 +22,7 @@ const publications_news_items = [
 ];
 
 const history_items = [
-  { id: 'personYear', icon: Icon7, label: 'Человек года' },
+  { id: 'personYear', icon: Icon7, label: 'Человек года', color: 'blue' },
   { id: 'textWithFrame', icon: Icon8, label: 'Текстовый блок в рамке' },
   { id: 'imageWithDesc', icon: Icon1, label: 'Картинка с описанием' },
   { id: 'quote', icon: Icon10, label: 'Цитата' },

@@ -12,6 +12,7 @@ export { default as UiMarksAlert } from './alert/MarksAlert';
 export { default as UiMarksSwitch } from './switch/MarksSwitch';
 export { default as UiMarksMarkDown } from './markdown/MarksMarkDown';
 export { default as UiMarksEntityRow } from './EntityRow/MarksEntityRow';
+export { default as MarksCopyId } from './EntityRow/MarksCopyId';
 export { default as UiMarksHeading } from './headings/MarksHeading';
 export { default as UiMarksDeleteModal } from './delete-modal/MarksDeleteModal';
 

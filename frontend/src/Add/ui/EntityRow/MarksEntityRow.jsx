@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Icon6, Icon7 } from './icon';
+import React from 'react';
+import { Icon6 } from './icon';
 import MarksEntityActions from './MarksEntityActions';
+import MarksCopyId from './MarksCopyId';
 import s from './Styles.module.css';
 
 // role === manager он видит все блоки кроме кнопки delete
@@ -11,18 +12,6 @@ import s from './Styles.module.css';
 export default function MarksEntityRow({ title, desc, id, role, visible, hidden = false, onEdit, onToggle, onDelete }) {
   const isEvent = visible === 'event';
   const isLegenda = visible === 'legenda';
-  const [isCopied, setIsCopied] = useState(false);
-
-  useEffect(() => {
-    if (!isCopied) return;
-    const timer = setTimeout(() => setIsCopied(false), 3000);
-    return () => clearTimeout(timer);
-  }, [isCopied]);
-
-  const handleCopyId = useCallback(() => {
-    navigator?.clipboard?.writeText(String(id)).catch(() => {});
-    setIsCopied(true);
-  }, [id]);
 
   return (
     <div className={s.entily}>
@@ -31,15 +20,7 @@ export default function MarksEntityRow({ title, desc, id, role, visible, hidden 
         {!isEvent && desc && <div className={s.desc}>{desc}</div>}
       </div>
       <div className={s.control}>
-        {!isLegenda && id !== undefined && (
-          <div className={s.id}>
-            <div>id: {id}</div>
-            <button title="скопировать id" className={s.copy} type="button" onClick={handleCopyId}>
-              {isCopied && <div className={s.copyMessage}>id скопирован</div>}
-              <Icon7 />
-            </button>
-          </div>
-        )}
+        {!isLegenda && id !== undefined && <MarksCopyId id={id} />}
         <MarksEntityActions canDelete={role === 'admin'} hidden={hidden} onEdit={onEdit} onToggle={onToggle} onDelete={onDelete} />
         {(isEvent || isLegenda) && (
             <button

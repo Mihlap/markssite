@@ -2,11 +2,13 @@ import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteJournal, fetchJournals } from '../../../store/Slice/journalSlice';
 import { fetchToggleStateForButton4Async } from '../../../store/Slice/toggleSlice';
-import styles from '../../style/style-card.module.scss';
-import { UiMarksButton, UiMarksDialog } from '../../ui';
+import styles from './styles.module.css';
+import { UiMarksButton, UiMarksDialog, UiMarksDeleteModal } from '../../ui';
+import MarksEntityActions from '../../ui/EntityRow/MarksEntityActions';
+import MarksCopyId from '../../ui/EntityRow/MarksCopyId';
+import { useAdminUser } from '../../hooks/useAdminUser';
 import JournalForm from './form/JournalForm';
 
-import Edit from '../../icon/Edit.svg';
 import one from './icons/one.png';
 import two from './icons/two.png';
 
@@ -16,8 +18,6 @@ export default function AddJournal({ user }) {
   const loading = useSelector((state) => state.journal.loading);
   const error = useSelector((state) => state.journal.error);
 
-  const [isCopied, setIsCopied] = useState(false);
-  const [copiedId, setCopiedId] = useState('');
   const [deleteModalState, setDeleteModalState] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
@@ -29,6 +29,7 @@ export default function AddJournal({ user }) {
   const formRef = useRef(null);
 
   const imageMap = { one, two };
+  const { canDelete, canEdit } = useAdminUser(user);
 
   useEffect(() => {
     if (!journals.length) {
@@ -47,16 +48,6 @@ export default function AddJournal({ user }) {
       delete next[id];
       return next;
     });
-  }, []);
-
-  const handleCopyClick = useCallback(async (id) => {
-    try {
-      await navigator.clipboard.writeText(id);
-      setIsCopied(true);
-      setCopiedId(id);
-    } catch (err) {
-      console.error('Unable to copy to clipboard:', err);
-    }
   }, []);
 
   const handleEditClick = useCallback(
@@ -101,16 +92,6 @@ export default function AddJournal({ user }) {
     isFormDirtyRef.current = dirty;
   }, []);
 
-  useEffect(() => {
-    if (isCopied) {
-      const timer = setTimeout(() => {
-        setIsCopied(false);
-        setCopiedId('');
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [isCopied]);
-
   return (
     <section>
       <UiMarksButton
@@ -127,97 +108,43 @@ export default function AddJournal({ user }) {
       {loading ? (
         <p>загрузка. . . </p>
       ) : error ? (
-        <div className={styles.card_components_admin__errore_div}>Ошибка загрузки данных.</div>
+        <p>Ошибка загрузки данных.</p>
       ) : journals && journals.length === 0 ? (
-        <div className={styles.card_components_admin__null_project}>Публикаций пока нет.</div>
+        <p>Публикаций пока нет.</p>
       ) : (
-        <div className={styles.card_components_admin__block_map}>
+        <div className={styles.grid}>
           {journals?.map((el) => {
             const photoSrc = imageMap[el.imageKey] || one;
 
             return (
               <React.Fragment key={el.id}>
-                <div className={`${styles.cart_project_container} ${styles.cart_journal_container}`}>
-                  <div className={styles.cart_project_container__imageContainer}>
-                    <img
-                      className={styles.cart_journal_container__img}
-                      loading="lazy"
-                      src={photoSrc}
-                      alt="photo_journal"
-                    />
-                    {user && ['obezyankaa', 'Pokemon'].includes(user?.name) && (
-                      <div className={styles.del_block}>
-                        <button className={styles.buttom_del} onClick={() => handleDeleteModalOpen(el.id)}>
-                          <label htmlFor="delete" className={styles.label}>
-                            <div className={styles.wrapper}>
-                              <div className={styles.lid}>
-                                <div className={styles.container_vedro}>
-                                  <div className={styles.triangle_left}></div>
-                                  <div className={styles.rectangle}></div>
-                                  <div className={styles.triangle_right}></div>
-                                </div>
-                              </div>
-                              <div className={styles.can}></div>
-                              <span>delete</span>
-                            </div>
-                          </label>
-                        </button>
-                      </div>
-                    )}
-                    {user && ['obezyankaa', 'manager', 'Pokemon'].includes(user.name) && (
-                      <div className={styles.edit_block}>
-                        <button className={styles.buttom_edit} onClick={() => handleEditClick(el.id)}>
-                          <label htmlFor="edit" className={styles.label}>
-                            <div className={styles.wrapper}>
-                              <img src={Edit} alt={Edit} />
-                            </div>
-                          </label>
-                        </button>
+                <div className={styles.card}>
+                  <div className={styles.imageWrap}>
+                    <img className={styles.image} loading="lazy" src={photoSrc} alt="photo_journal" />
+                    {canEdit && (
+                      <div className={styles.actions}>
+                        <MarksEntityActions
+                          canDelete={canDelete}
+                          onEdit={() => handleEditClick(el.id)}
+                          onDelete={() => handleDeleteModalOpen(el.id)}
+                        />
                       </div>
                     )}
                   </div>
-                  <div className={styles.cart_project__content}>
-                    <span className={styles.cart_project_container__title}>{el.title}</span>
-                  </div>
-                  <div className={styles.cart_project_container__id_block}>
-                    <div className={styles.cart_project_container__id_text}>id: {el.id}</div>
-                    {isCopied && el.id === copiedId && (
-                      <>
-                        <div className={styles.cart_project_container__copyMessage}>id скопирован</div>
-                        <div className={styles.cart_project_container__copyButton_img_copu_deffalt} />
-                      </>
-                    )}
-                    <button
-                      className={styles.cart_project_container__copyButton}
-                      onClick={() => handleCopyClick(el.id)}>
-                      <div className={styles.cart_project_container__copyButton_img_copu_ok} />
-                    </button>
-                  </div>
+                  <p className={styles.title}>{el.title}</p>
+                  <MarksCopyId id={el.id} className={styles.copy} />
                 </div>
-                {deleteModalState[el.id] && (
-                  <div className={styles.delete_modal_container}>
-                    <div className={styles.delete_modal_block}>
-                      <div className={styles.delete_modal_block__title}>
-                        Вы точно хотите удалить публикацию
-                        <br /> «{el.title}»
-                      </div>
-                      <p className={styles.delete_modal_block__text}>Удаленную публикацию нельзя будет вернуть</p>
-                      <div className={styles.button_block}>
-                        <button
-                          className={`${styles.button_block__cancel} ${styles.delete_modal_button_cancel}`}
-                          onClick={() => handleDeleteModalClose(el.id)}
-                        />
-                        <button
-                          className={`${styles.button_block__save} ${styles.delete_modal_button_delete}`}
-                          onClick={() => handleFormDelete(el.id)}
-                        />
-                      </div>
-                      <button
-                        className={styles.card_components_admin__close_button}
-                        onClick={() => handleDeleteModalClose(el.id)}></button>
-                    </div>
-                  </div>
-                )}
+                <UiMarksDeleteModal
+                  isOpen={!!deleteModalState[el.id]}
+                  title={
+                    <>
+                      Вы точно хотите удалить публикацию <br /> <strong>«{el.title}»</strong>?
+                    </>
+                  }
+                  description="Удалённую публикацию нельзя будет вернуть"
+                  onConfirm={() => handleFormDelete(el.id)}
+                  onClose={() => handleDeleteModalClose(el.id)}
+                />
               </React.Fragment>
             );
           })}

@@ -5,6 +5,23 @@
     font-family: var(--font-raleway);
 }
 
+.textarea__field_wrap {
+    position: relative;
+    order: 2;
+}
+
+.textarea__counter {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    color: var(--gray-959DA6);
+    font-family: var(--font-raleway);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+}
+
 .textarea {
     background: var(--white-F6F6F6);
     color: var(--black-1D2E43);
@@ -19,7 +36,6 @@
     font-weight: 400;
     line-height: 20px;
     outline: 0;
-    order: 2;
     transition: border-color 0.2s;
 }
 
@@ -112,7 +128,6 @@
 
 
 .quill {
-    order: 2;
     border-radius: 6px;
     font-family: var(--font-raleway);
     font-size: 16px;
