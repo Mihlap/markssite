@@ -131,3 +131,5 @@ dist
 
 # webpack cache
 .webpack-cache/
+
+build/*
