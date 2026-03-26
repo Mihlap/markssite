@@ -198,7 +198,7 @@ const companyHistorySlice = createSlice({
       })
 
       .addCase(deleteHistoryItem.fulfilled, (state, action) => {
-        const id = action.payload;
+        const id = Number(action.payload);
         state.items = state.items.filter((x) => x.id !== id);
       })
       .addCase(deleteHistoryItem.rejected, (state, action) => {
