@@ -138,7 +138,7 @@ router.post(
   },
   ]),
   async (req, res) => {
-    try {     
+    try {
       const userInfo = req.session?.user ? {
         userName: req.session.user.name,
         userId: req.session.user.id.toString(),
@@ -274,7 +274,7 @@ router.put(
       const {
         projectId
       } = req.params;
-      
+
       const userInfo = req.session?.user ? {
         userName: req.session.user.name,
         userId: req.session.user.id.toString(),
@@ -524,7 +524,7 @@ router.put(
       }
 
       await syncProjectMain(projectId);
-      
+
       if (req.session?.user) {
         logResourceAction({
           action: 'UPDATE',
@@ -652,7 +652,7 @@ router.delete('/deletezapros/:id', async (req, res) => {
     const {
       id
     } = req.params;
- 
+
     const userInfo = req.session?.user ? {
       userName: req.session.user.name,
       userId: req.session.user.id.toString(),
