@@ -8,6 +8,7 @@ export default function TextWithFrame({ control, index, onRemove }) {
       <Controller
         name={`constructorBlocks.${index}.textarea`}
         control={control}
+        rules={{ required: true }}
         render={({ field }) => (
           <UiMarksTextarea
             name={`constructorBlocks.${index}.textarea`}

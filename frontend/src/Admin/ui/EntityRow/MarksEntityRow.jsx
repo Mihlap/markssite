@@ -16,8 +16,8 @@ export default function MarksEntityRow({ title, desc, id, role, visible, hidden 
   return (
     <div className={s.entily}>
       <div className={s.content}>
-        <div className={s.title}>{title}</div>
         {!isEvent && desc && <div className={s.desc}>{desc}</div>}
+        <div className={s.title}>{title}</div>
       </div>
       <div className={s.control}>
         {!isLegenda && id !== undefined && <MarksCopyId id={id} />}

@@ -20,8 +20,8 @@
     color: var(--black-1D2E43);
     font-size: 16px;
     font-style: normal;
-    font-weight: 700;
     line-height: 24px;
+    font-weight: 400;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
@@ -30,7 +30,7 @@
     color: var(--dark-gray-566269);
     font-size: 16px;
     font-style: normal;
-    font-weight: 400;
+    font-weight: 700;
     line-height: 24px;
     text-overflow: ellipsis;
     white-space: nowrap;

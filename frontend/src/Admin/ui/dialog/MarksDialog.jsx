@@ -37,10 +37,10 @@ export default function MarksModal({ isOpen, onClose, onSave, isSaveDisabled = t
             </div>
             <div className={s.content}>{children}</div>
             <div className={s.buttons}>
-              <UiMarksButton disabled={isSaveDisabled || isLoading} onClick={onSave}>
+              <UiMarksButton color='blue' size='normal' disabled={isSaveDisabled || isLoading} onClick={onSave}>
                 Сохранить
               </UiMarksButton>
-              <UiMarksButton defaultStyle="gray" disabled={isLoading} onClick={onClose}>
+              <UiMarksButton color="gray" size='normal' disabled={isLoading} onClick={onClose}>
                 Отмена
               </UiMarksButton>
             </div>

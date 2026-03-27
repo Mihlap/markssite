@@ -1,24 +1,44 @@
 import React from 'react';
-import {Icon0} from '../index.js';
+import clsx from 'clsx';
+import { Icon0 } from '../index.js';
 import styles from './Styles.module.scss';
 
-export default function MarksButton({ className, defaultStyle = 'blue', blueDashed = false, icon = false, size = 'normal', iconSize = 'normal', disabled = false, onClick, children, type = 'button' }) {
-  const colorClass = disabled ? `${defaultStyle}-disabled` : defaultStyle;
-  const sizeClass = size !== 'normal' ? styles[size] : '';
+const ICON_COLOR = {
+  'dashed-orange': 'orange',
+  'dashed-blue': 'blue',
+};
 
-  let iconColor = 'var(--white-F6F6F6)';
-  if (blueDashed) iconColor = 'var(--blue-75BBFD)';
-  else if (defaultStyle === 'constructor') iconColor = 'var(--salmon-FF7F6A)';
+export default function MarksButton({
+  variant = '', // 'dashed-orange' | 'dashed-blue'
+  color = '', // 'blue' | 'gray' | 'los'
+  size = 'normal', // 'normal' | 'large' | 'card'
+  icon = false,
+  iconSize = 'normal',
+  disabled = false,
+  onClick,
+  children,
+  type = 'button',
+  className,
+}) {
+  const cls = clsx(
+    styles.button,
+    styles[variant],
+    styles[color],
+    styles[size],
+    disabled && styles.disabled,
+    className,
+  );
+
+  const iconColor = ICON_COLOR[variant];
 
   return (
-    <button
-      className={`${styles.button} ${blueDashed ? styles.blueDashed : styles[colorClass]} ${sizeClass} ${className || ''}`}
-      disabled={disabled}
-      type={type}
-      onClick={onClick}
-    >
-      {icon && <Icon0 color={iconColor} size={iconSize} />}
-      {children}
+    <button className={cls} disabled={disabled} type={type} onClick={onClick}>
+      {icon && (
+        <span className={styles.icon}>
+          <Icon0 size={iconSize} color={iconColor} />
+        </span>
+      )}
+      {children && <span className={styles.label}>{children}</span>}
     </button>
   );
 }

@@ -13,7 +13,7 @@ export default function MarksDeleteModal({ isOpen, title, description, onConfirm
         </div>
         <div className={s.wrapBtn}>
           <UiMarksButton onClick={onConfirm}>Удалить</UiMarksButton>
-          <UiMarksButton defaultStyle="gray" onClick={onClose}>
+          <UiMarksButton color="gray" onClick={onClose}>
             Отмена
           </UiMarksButton>
         </div>

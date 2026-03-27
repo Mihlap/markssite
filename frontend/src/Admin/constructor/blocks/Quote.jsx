@@ -12,6 +12,7 @@ export default function Quote({ control, index, onRemove }) {
       <Controller
         name={`constructorBlocks.${index}.image`}
         control={control}
+        rules={{ required: true }}
         render={({ field: { onChange, value } }) =>
           value?.length > 0 ? (
             <UiPhotoPreview
@@ -44,6 +45,7 @@ export default function Quote({ control, index, onRemove }) {
       <Controller
         name={`constructorBlocks.${index}.description`}
         control={control}
+        rules={{ required: true }}
         render={({ field }) => (
           <UiMarksInput
             autoGrow
@@ -58,6 +60,7 @@ export default function Quote({ control, index, onRemove }) {
       <Controller
         name={`constructorBlocks.${index}.textarea`}
         control={control}
+        rules={{ required: true }}
         render={({ field }) => (
           <UiMarksTextarea
             name={`constructorBlocks.${index}.textarea`}

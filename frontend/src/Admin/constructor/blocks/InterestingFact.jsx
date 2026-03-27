@@ -44,6 +44,7 @@ export default function InterestingFact({ control, index, onRemove }) {
       <Controller
         name={`constructorBlocks.${index}.textarea`}
         control={control}
+        rules={{ required: true }}
         render={({ field }) => (
           <UiMarksTextarea
             name={`constructorBlocks.${index}.textarea`}

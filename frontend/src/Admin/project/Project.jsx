@@ -104,7 +104,7 @@ export default function Project({ user }) {
           <UiMarksSwitch isActive={isActiveForButton1} onClick={toggleActive} />
         </div>
       </div>
-      <UiMarksButton defaultStyle="blue" size="large" icon onClick={() => setIsOpen(true)}>
+      <UiMarksButton color="blue" size="large" icon onClick={() => setIsOpen(true)}>
         Добавить новый проект
       </UiMarksButton>
       <>

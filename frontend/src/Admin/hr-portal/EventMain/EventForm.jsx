@@ -226,7 +226,7 @@ const EventForm = forwardRef(function EventForm(
           )}
         </UiMarksGrayWrap>
       ))}
-      <UiMarksButton icon iconSize="small" blueDashed onClick={addPhotoField}>
+      <UiMarksButton variant="dashed-blue" icon iconSize='small' onClick={addPhotoField}>
         Добавить фотографии
       </UiMarksButton>
       {videoUrls.map((url, i) => (
@@ -243,7 +243,7 @@ const EventForm = forwardRef(function EventForm(
           />
         </UiMarksGrayWrap>
       ))}
-      <UiMarksButton icon iconSize="small" blueDashed onClick={addVideoField}>
+      <UiMarksButton variant="dashed-blue" icon iconSize='small' onClick={addVideoField}>
         Добавить видео
       </UiMarksButton>
     </form>
