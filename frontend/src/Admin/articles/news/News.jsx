@@ -89,7 +89,7 @@ export default function News({ user }) {
 
   return (
     <>
-      <UiMarksButton defaultStyle="blue" size="large" icon onClick={() => setIsOpen(true)}>
+      <UiMarksButton color="blue" size="large" icon onClick={() => setIsOpen(true)}>
         Добавить новость
       </UiMarksButton>
       {loading ? (

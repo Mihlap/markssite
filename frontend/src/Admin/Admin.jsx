@@ -68,7 +68,7 @@ export default function Admin({ user, onPageChange, handleReturn }) {
   return (
     <section className={styles.main}>
       {previewUrl && (
-        <UiMarksButton className={styles.btn} onClick={() => navigate(previewUrl)}>
+        <UiMarksButton color='blue' className={styles.btn} onClick={() => navigate(previewUrl)}>
           Предпросмотр
         </UiMarksButton>
       )}

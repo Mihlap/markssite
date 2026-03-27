@@ -96,7 +96,7 @@ export default function Journal({ user }) {
   return (
     <section>
       <UiMarksButton
-        defaultStyle="blue"
+        color="blue"
         size="large"
         icon
         onClick={() => {

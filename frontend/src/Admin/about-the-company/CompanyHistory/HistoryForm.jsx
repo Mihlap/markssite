@@ -11,7 +11,7 @@ import s from './HistoryList.module.css';
 import { yearOptions } from './const/year';
 
 const EMPTY_VALUES = {
-  year: '',
+  year: String(new Date().getFullYear()),
   title: '',
   description: '',
   previewText: '',
@@ -182,7 +182,7 @@ const HistoryForm = forwardRef(function HistoryForm(
 
     const form = new FormData();
     const meta = {
-      year: Number(data.year),
+      year: Number(data.year || new Date().getFullYear()),
       title: data.title || '',
       description: data.description || '',
       previewText: data.previewText || '',
@@ -222,6 +222,7 @@ const HistoryForm = forwardRef(function HistoryForm(
       <UiMarksGrayWrap customStyles={{ display: 'flex', flexDirection: 'column', gap: '24px', padding: '32px 16px' }}>
         <Controller
           name="year"
+          rules={{ required: true }}
           control={control}
           render={({ field }) => (
             <UiMarksSelect

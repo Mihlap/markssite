@@ -91,6 +91,7 @@ export default function Company({ user }) {
     return cats.includes(currentCategory);
   });
 
+
   return (
     <>
       <HistoryMain user={user} />

@@ -208,7 +208,7 @@ export default function HRPortal({ user }) {
           <EventMain user={user} />
         </>
       ) : (
-        <UiMarksButton defaultStyle="blue" size="large" icon onClick={handleOpenModal}>
+        <UiMarksButton color="blue" size="large" icon onClick={handleOpenModal}>
           {selectedFilter === 'Вакансии' ? 'Добавить вакансию' : 'Добавить стажировку'}
         </UiMarksButton>
       )}

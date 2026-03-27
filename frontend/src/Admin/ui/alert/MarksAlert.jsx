@@ -15,7 +15,7 @@ export default function MarksAlert({ title, desc, isDelete, onConfirm, onCancel 
         <UiMarksButton onClick={onConfirm}>
           {isDelete ? 'Удалить' : 'Не сохранять'}
         </UiMarksButton>
-        <UiMarksButton defaultStyle="gray" onClick={onCancel}>
+        <UiMarksButton color="gray" onClick={onCancel}>
           Отмена
         </UiMarksButton>
       </div>
