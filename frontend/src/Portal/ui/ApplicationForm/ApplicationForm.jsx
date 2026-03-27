@@ -174,11 +174,12 @@ const ApplicationForm = ({ variant: variantProp = 'full', initialDirection }) =>
                   render={({ field }) => (
                     <UiMarksSelect
                       {...field}
+                      variant="compact"
                       options={directionOptions}
                       placeholder="Указанное направление"
                       isClearable
                       isSearchable={false}
-                      variant={variantProp}
+                      // variant={variantProp}
                     />
                   )}
                 />

@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import ReactSelect, { components } from 'react-select';
 import styles from './styles.module.css';
 import Icon0 from '../icon/Icon0';
-import Icon1 from '../icon/Icon1';
+// import Icon1 from '../icon/Icon1';
 
 function DropdownIndicator(props) {
   const { isFocused } = props;
@@ -35,7 +35,7 @@ function DropdownIndicator(props) {
 function MultiValueRemove(props) {
   return (
     <components.MultiValueRemove {...props}>
-      <Icon1 />
+      {/* <Icon1 /> */}
     </components.MultiValueRemove>
   );
 }
