@@ -76,6 +76,7 @@ export default function Journal({ user }) {
       setIsOpen(false);
       setEditJournalData(null);
       setIsFormLoading(false);
+      formRef.current?.resetForm();
     }
   }, []);
 

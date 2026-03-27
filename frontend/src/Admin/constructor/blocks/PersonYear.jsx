@@ -18,7 +18,7 @@ export default function PersonYear({ control, index, onRemove }) {
           value?.length > 0 ? (
             <UiPhotoPreview
               files={value}
-              variant="single"
+              variant="portrait"
               label="Человек года *для отображения в хронике"
               color="blue"
               onRemove={() => {

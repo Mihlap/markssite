@@ -222,9 +222,9 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
       <div className={styles.main_project_card}>
         <ProjectCardSlider slidesCard={[project]} />
 
-        <div className={styles.all_button_div} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        {/* <div className={styles.all_button_div} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           <AllProjectsButton />
-        </div>
+        </div> */}
 
         <div className={styles.section_project__block__card}>
           <div className={styles.cart_project__block__card}>

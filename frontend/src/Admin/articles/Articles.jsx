@@ -1,4 +1,5 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateToggleStateForButton2Async } from '../../store/Slice/toggleSlice';
 import { UiMarksSegmentedControls, UiMarksHeading, UiMarksSwitch } from '../ui';
@@ -12,6 +13,7 @@ export default function Articles({ user }) {
   const dispatch = useDispatch();
   const isActiveForButton2 = useSelector((state) => state.toggle.isActiveForButton2);
   const [selectedFilter, setSelectedFilter] = useState('Новости');
+  const { setArticlesPreview } = useOutletContext() || {};
 
   const controlRef = useRef();
   const newsRef = useRef();
@@ -22,9 +24,14 @@ export default function Articles({ user }) {
     { value: 'Marks Journal', label: 'Marks Journal', ref: journalRef, icon: <Icon2 /> },
   ];
 
+  useEffect(() => {
+    setArticlesPreview?.('/publication');
+  }, [setArticlesPreview]);
+
   const handleFilterChange = useCallback((value) => {
     setSelectedFilter(value);
-  }, []);
+    setArticlesPreview?.(value === 'Marks Journal' ? '/journalPage' : '/publication');
+  }, [setArticlesPreview]);
 
   const toggleActive = useCallback(() => {
     dispatch(updateToggleStateForButton2Async(!isActiveForButton2));

@@ -64,7 +64,8 @@ const JournalForm = forwardRef(function JournalForm(
   const journals = useSelector((state) => state.journal.journals);
   const markdown = useSelector((s) => s.journal.formData.markdown_content);
 
-  const [authors, setAuthors] = useState([]);
+  const defaultAuthor = () => [{ id: Date.now(), number: 1, name: '', image: null, isLoading: false }];
+  const [authors, setAuthors] = useState(defaultAuthor);
   const [localImages, setLocalImages] = useState({});
   const [isLoadingData, setIsLoadingData] = useState(false);
   const tempFilesRef = useRef([]);
@@ -95,8 +96,8 @@ const JournalForm = forwardRef(function JournalForm(
   });
 
   useEffect(() => {
-    onValidityChange?.(isValid && authors.length > 0);
-  }, [isValid, authors.length, onValidityChange]);
+    onValidityChange?.(isValid && authors.length > 0 && !!markdown_content?.trim());
+  }, [isValid, authors.length, markdown_content, onValidityChange]);
 
   useEffect(() => {
     onLoadingChange?.(isSubmitting);
@@ -106,13 +107,7 @@ const JournalForm = forwardRef(function JournalForm(
     onDirtyChange?.(isDirty);
   }, [isDirty, onDirtyChange]);
 
-  useEffect(() => {
-    if (authors.length === 0 && !editJournalData) {
-      setAuthors([{ id: Date.now(), number: 1, name: '', image: null, isLoading: false }]);
-    }
-  }, [authors.length, editJournalData]);
-
-    const handleChange = useCallback(
+  const handleChange = useCallback(
       (value) => dispatch(setFormData({ name: 'markdown_content', value })),
       [dispatch]
     );
@@ -192,7 +187,7 @@ const JournalForm = forwardRef(function JournalForm(
     () => ({
       resetForm: () => {
         dispatch(clearFormData());
-        setAuthors([]);
+        setAuthors(defaultAuthor());
         setLocalImages({});
         reset(EMPTY_VALUES);
       },
@@ -203,7 +198,7 @@ const JournalForm = forwardRef(function JournalForm(
   useEffect(() => {
     if (!editJournalData) {
       dispatch(clearFormData());
-      setAuthors([]);
+      setAuthors(defaultAuthor());
       setLocalImages({});
       reset(EMPTY_VALUES);
       return;
@@ -376,13 +371,17 @@ const JournalForm = forwardRef(function JournalForm(
             type="file"
             label="Фото автора"
             accept="image/*"
+            rules={{ required: true }}
             onChange={(e) => handleFileChange(author.id, e.target.files?.[0])}
           />
-          {author.image && <UiPhotoPreview files={[author.image]} onRemove={() => handleRemoveImage(author.id)} />}
+          {author.image && (
+            <UiPhotoPreview variant="portrait" files={[author.image]} onRemove={() => handleRemoveImage(author.id)} />
+          )}
           <UiMarksInput
             // label="ФИО"
             placeholder="ФИО"
             value={author.name || ''}
+            rules={{ required: true }}
             maxLength={150}
             onChange={(e) => handleUpdateAuthorBlock(author.id, { name: e.target.value })}
           />
@@ -401,12 +400,14 @@ const JournalForm = forwardRef(function JournalForm(
           <Controller
             name={`universities.${index}.value`}
             control={control}
-            render={({ field: f }) => (
+            rules={{ required: true }}
+            render={({ field: f, fieldState }) => (
               <UiMarksInput
                 label="Университет или организация"
                 name={`universities.${index}.value`}
                 placeholder="Нет ограничений по символам"
                 bordered
+                error={fieldState.error && 'Обязательное поле'}
                 {...f}
               />
             )}
@@ -427,12 +428,14 @@ const JournalForm = forwardRef(function JournalForm(
           <Controller
             name={`locations.${index}.value`}
             control={control}
-            render={({ field: f }) => (
+            rules={{ required: true }}
+            render={({ field: f, fieldState }) => (
               <UiMarksInput
                 label="Город, Страна"
                 name={`locations.${index}.value`}
                 placeholder="Нет ограничений по символам"
                 bordered
+                error={fieldState.error && 'Обязательное поле'}
                 {...f}
               />
             )}
@@ -444,6 +447,7 @@ const JournalForm = forwardRef(function JournalForm(
       </UiMarksButton>
       <UiMarksGrayWrap customStyles={{ padding: '16px' }}>
         <UiMarksMarkDown
+          rules={{ required: true }}
           value={markdown}
           onChange={handleChange}
           onUploadFile={handleUpload}

@@ -97,6 +97,16 @@
   position: relative;
 }
 
+/* Portrait photo (person) — fixed 220px height, natural width */
+.preview[data-variant='portrait'] {
+  /* flex-direction: column; */
+}
+
+.preview[data-variant='portrait'] .preview__img {
+  height: 220px;
+  width: auto;
+}
+
 .preview[data-variant='multi'] {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(calc(25% - 0.75rem), 1fr));
@@ -165,7 +175,7 @@
 
 .preview[data-variant='grid-2'] .preview__img{
       width: 100%;
-      height: 179px;
+      height: 240px;
       position: relative;
 }
 
