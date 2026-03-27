@@ -103,8 +103,6 @@ const NextArrow = ({ props, onClick, onMouseEnter, onMouseLeave }) => (
 );
 
 export default function ConstructorBlockRenderer({ block, handleMouseEnter, handleMouseLeave }) {
-
-  console.log(block);
   const [activeSlide, setActiveSlide] = useState(0);
   const [dotsVisible, setDotsVisible] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -144,7 +142,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
     };
   }, []);
 
-  const isFullUrl = (url) => url.startsWith('http://') || url.startsWith('https://');
+  const isFullUrl = (url) => url && (url.startsWith('http://') || url.startsWith('https://'));
 
   const renderImageWithDescription = (block) => {
     let imageUrl = '';
@@ -272,7 +270,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
   };
 
   const renderImageSlider = (block) => {
-    const images = block[0].value;
+    const images = block[0]?.value?.filter(Boolean) ?? [];
 
     const sliderImageContainerStyle = {
       borderRadius: '1rem',

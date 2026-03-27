@@ -16,7 +16,7 @@ export default function ButtonAdmin({ user, handleMouseEnter, handleMouseLeave }
           className={styles.preview_mode}
           to={`/admin/${data}`}
         >
-          <div className={styles.preview_title}>Режим предпросмотра</div>
+          <div className={styles.preview_title}>Режим редактирования</div>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g id="icon / 24 /  arrow /  actively">
               <rect x="24" width="24" height="24" rx="12" transform="rotate(90 24 0)" fill="#F6F6F6" />

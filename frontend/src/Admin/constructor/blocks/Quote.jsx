@@ -16,7 +16,7 @@ export default function Quote({ control, index, onRemove }) {
           value?.length > 0 ? (
             <UiPhotoPreview
               files={value}
-              variant="single"
+              variant="portrait"
               label="Автор цитаты"
               color="salmon"
               onRemove={() => {

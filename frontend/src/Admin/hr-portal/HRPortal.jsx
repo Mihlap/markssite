@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import PositionForm from './Position/PositionForm.jsx';
 import SlideMain from './SlideMain/SlideMain.jsx';
 import EventMain from './EventMain/EventMain.jsx';
@@ -25,6 +26,12 @@ import { arrIdVacancySelector } from './const/VacancySelector.js';
 
 import s from './styles.module.css'
 
+const HR_PREVIEW_MAP = {
+  'Вакансии': '/hr/vacancies',
+  'Стажировки': '/hr/internships',
+  'Главная hr': '/hr/home',
+};
+
 export default function HRPortal({ user }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editVacancyData, setEditVacancyData] = useState(null);
@@ -42,6 +49,7 @@ export default function HRPortal({ user }) {
   const [isFormLoading, setIsFormLoading] = useState(false);
   const [showExitWarning, setShowExitWarning] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState('Вакансии');
+  const { setHrPortalPreview } = useOutletContext() || {};
 
   const dispatch = useDispatch();
   const { error, loading } = useSelector((state) => state.vacancies);
@@ -66,9 +74,14 @@ export default function HRPortal({ user }) {
     dispatch(getHiddenVacanciesFromDB());
   }, [dispatch]);
 
+  useEffect(() => {
+    setHrPortalPreview?.(HR_PREVIEW_MAP['Вакансии']);
+  }, [setHrPortalPreview]);
+
   const handleFilterChange = useCallback((value) => {
     setSelectedFilter(value);
-  }, []);
+    setHrPortalPreview?.(HR_PREVIEW_MAP[value]);
+  }, [setHrPortalPreview]);
 
   const handleOpenModal = useCallback(() => {
     setIsModalOpen(true);

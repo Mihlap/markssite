@@ -86,8 +86,6 @@ export const {
 export const fetchArticle = createAsyncThunk('article/fetchArticle', async (formattedData, { dispatch, getState }) => {
   dispatch(fetchArticleStart());
 
-  console.log(formattedData, 'получил с формы данные');
-
   const formData = new FormData();
   const articleId = getState().article.articleId;
 
@@ -148,7 +146,6 @@ export const fetchArticle = createAsyncThunk('article/fetchArticle', async (form
 
      
           formData.append('dynamicBlocksJSON', JSON.stringify(cloneDynamicBlocks));
-          console.log(cloneDynamicBlocks, '<----cloneDynamicBlocks');
 
           photosArray.forEach((photo) => {
             formData.append('dynamicImages', photo);
@@ -163,8 +160,6 @@ export const fetchArticle = createAsyncThunk('article/fetchArticle', async (form
       }
     }
   }
-  console.log(formData, 'на отправку данные');
-  console.log(requestMethod, 'method');
   try {
     await axios({
       method: requestMethod,

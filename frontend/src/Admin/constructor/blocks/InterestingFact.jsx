@@ -63,7 +63,7 @@ export default function InterestingFact({ control, index, onRemove }) {
             value?.length > 0 ? (
               <UiPhotoPreview
                 files={value}
-                variant="single"
+                variant="portrait"
                 label="Портрет сотрудника "
                 color="salmon"
                 onRemove={() => {

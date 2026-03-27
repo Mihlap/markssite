@@ -7,7 +7,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import AllArticlesButton from '../UI/ButtonsArticles/AllArticlesButton';
 import ArticleCardSlider from '../UI/ArticleCardSlider.jsx/ArticleCardSlider';
 import SliderContainerArticleCard from '../UI/Project&ArticleCardSlider/SlideContainerArticleCard';
 
@@ -186,7 +185,7 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
   }, [verticalHandler, wheelHandler, scrollHandler]);
 
   if (!article) return null;
-
+  
   return (
     <>
       <Helmet>
@@ -196,10 +195,6 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
 
       <div className={`${styles.main_article_card} article-card`}>
         <ArticleCardSlider slidesCard={[article]} />
-
-        <div className={styles.all_button_div} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-          <AllArticlesButton />
-        </div>
 
         <div className={styles.section_article__block__card}>
           <div className={styles.cart_article__block__card}>
