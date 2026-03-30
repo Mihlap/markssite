@@ -108,19 +108,17 @@ const JournalForm = forwardRef(function JournalForm(
   }, [isDirty, onDirtyChange]);
 
   const handleChange = useCallback(
-      (value) => dispatch(setFormData({ name: 'markdown_content', value })),
-      [dispatch]
-    );
-  
-    const handleUpload = useCallback(
-      (file) => dispatch(uploadMarkdownFile(file)).unwrap(),
-      [dispatch]
-    );
-  
-    const handleDelete = useCallback(
-      (url) => dispatch(deleteMarkdownFile(url)).unwrap(),
-      [dispatch]
-    );
+    (value) => dispatch(setFormData({ name: 'markdown_content', value })),
+    [dispatch]
+  );
+  const handleUpload = useCallback(
+    (file) => dispatch(uploadMarkdownFile(file)).unwrap(),
+    [dispatch]
+  );
+  const handleDelete = useCallback(
+    (url) => dispatch(deleteMarkdownFile(url)).unwrap(),
+    [dispatch]
+  );
 
   const compressImage = useCallback(async (file) => {
     try {

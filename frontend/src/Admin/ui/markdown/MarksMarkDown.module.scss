@@ -11,7 +11,29 @@
   }
 
   &--fs {
-    // полный режим сделаю потом
+    position: fixed;
+    top: 2.5dvh;
+    left: 0;
+    right: 0;
+    bottom: 2.5dvh;
+    width: 80%;
+    height: -webkit-fill-available;
+    z-index: 1001;
+    background: var(--white-F6F6F6);
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    border-radius: 10px;
+    overflow: hidden;
+
+    .md__main {
+      flex: 1;
+      height: auto;
+    }
+
+    .md__toolbar {
+      padding: 11px 16px;
+    }
   }
 
   &__toolbar {
