@@ -147,7 +147,7 @@ export default function App() {
               <ButtonAdmin user={user} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} />
             )}
 
-            {/* {!isAdminPage && !isNavPreviewPage && <NavBar />} */}
+            {!isAdminPage && !isNavPreviewPage && <NavBar />}
 
             <Routes location={location}>
               <Route
@@ -428,7 +428,7 @@ export default function App() {
 
             <CookieComponent />
 
-            {/* {!isFooterFormPage && showNavbarFooter && currentPage !== 'add' && (
+            {!isFooterFormPage && showNavbarFooter && currentPage !== 'add' && (
               <>
                 {isPortalPage ? (
                   <Footer
@@ -446,7 +446,7 @@ export default function App() {
                   />
                 )}
               </>
-            )} */}
+            )}
 
             {showNavbarFooter && currentPage !== 'add' && <CustomCursor />}
           </div>
