@@ -103,7 +103,6 @@ const NextArrow = ({ props, onClick, onMouseEnter, onMouseLeave }) => (
 );
 
 export default function ConstructorBlockRenderer({ block, handleMouseLeave, handleMouseEnter }) {
-  console.log(block);
   const [activeSlide, setActiveSlide] = useState(0);
   const [dotsVisible, setDotsVisible] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);

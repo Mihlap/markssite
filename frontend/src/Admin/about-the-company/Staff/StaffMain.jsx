@@ -104,7 +104,7 @@ export default function StaffMain({ items, user }) {
   return (
     <>
       {canAdd && (
-        <UiMarksButton defaultStyle="blue" size="large" icon onClick={() => setIsOpen(true)}>
+        <UiMarksButton color="blue" size="large" icon onClick={() => setIsOpen(true)}>
           Добавить сотрудника
         </UiMarksButton>
       )}
@@ -143,7 +143,7 @@ export default function StaffMain({ items, user }) {
       <UiMarksDialog
         isOpen={isOpen}
         onClose={handleDialogClose}
-        title={editData ? 'Редактирование сотрудника' : 'Добавить сотрудника'}
+        title={editData ? 'Редактировать сотрудника' : 'Добавить сотрудника'}
         isSaveDisabled={!isFormValid}
         onSave={() => document.getElementById('add-form-staff')?.requestSubmit()}
         isLoading={isFormLoading}

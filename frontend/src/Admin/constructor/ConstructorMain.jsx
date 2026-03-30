@@ -17,14 +17,23 @@ export default function ConstructorMain({ items, onSelect, children }) {
           {items?.map((el) => {
             const Icon = el.icon;
             return (
-              <button title={el.label} key={el.id} className={el.color === 'blue' ? s.buttonBlue : s.button} type="button" onClick={() => handleSelect(el)}>
+              <button
+                title={el.label}
+                key={el.id}
+                className={el.color === 'blue' ? s.buttonBlue : s.button}
+                type="button"
+                onClick={() => handleSelect(el)}>
                 <Icon />
               </button>
             );
           })}
         </UiMarksConstructorWrap>
       ) : (
-        <UiMarksButton defaultStyle="constructor" size="large" icon onClick={() => setPickerOpen(true)}>
+        <UiMarksButton
+          variant="dashed-orange"
+          size="large"
+          icon
+          onClick={() => setPickerOpen(true)}>
           Добавить блок из библиотеки
         </UiMarksButton>
       )}

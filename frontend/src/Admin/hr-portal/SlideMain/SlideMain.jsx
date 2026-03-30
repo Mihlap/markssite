@@ -101,7 +101,7 @@ export default function AddSlideMain({ user }) {
       <UiMarksHeading size="3xl" pb="xl" pt="40px">
         Ведущая компания в сфере проектирования
       </UiMarksHeading>
-      <UiMarksButton defaultStyle="blue" size="large" icon onClick={handleOpenModal}>
+      <UiMarksButton color="blue" size="large" icon onClick={handleOpenModal}>
         Добавить слайд
       </UiMarksButton>
 

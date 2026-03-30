@@ -94,7 +94,7 @@ export default function AddEventMain({ user }) {
         Жизнь на MARKS`e
       </UiMarksHeading>
 
-      <UiMarksButton defaultStyle="blue" size="large" icon onClick={handleOpenModalEvent}>
+      <UiMarksButton color="blue" size="large" icon onClick={handleOpenModalEvent}>
         Добавить мероприятие
       </UiMarksButton>
 

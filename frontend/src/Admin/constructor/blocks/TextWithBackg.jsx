@@ -4,7 +4,10 @@ import { UiMarksTextarea, UiMarksGrayWrap } from '../../ui';
 
 export default function TextWithBackg({ control, index, onRemove }) {
   return (
-    <UiMarksGrayWrap btnClose={true} handlerClick={onRemove} customStyles={{ padding: '38px 1rem 32px 1rem' }}>
+    <UiMarksGrayWrap
+      btnClose={true}
+      handlerClick={onRemove}
+      customStyles={{ padding: '38px 1rem 32px 1rem' }}>
       <Controller
         name={`constructorBlocks.${index}.textarea`}
         control={control}

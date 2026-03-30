@@ -25,7 +25,7 @@ export default function HistoryList({ items, canDelete, canEdit, canDrag, onEdit
                       desc={String(el.year)}
                       role={canDelete ? 'admin' : canEdit ? 'manager' : ''}
                       hidden={el.hidden}
-                      visible="event"
+                      visible="legenda"
                       onEdit={() => onEdit(el)}
                       onToggle={() => onToggle(el)}
                       onDelete={() => onDelete(el)}

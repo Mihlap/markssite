@@ -79,7 +79,7 @@ const convertOldToNewFormat = (oldBlocks) => {
         case 'Автор цитаты ( ФИО должность )':
           return {
             type: 'quote',
-            title: block[0]?.value || '',
+            description: block[0]?.value || '',
             textarea: block[1]?.value || '',
             image: block[2]?.value || [],
           };

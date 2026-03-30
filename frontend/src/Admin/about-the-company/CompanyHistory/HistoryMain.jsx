@@ -8,15 +8,19 @@ import {
   updateHistoryOrder,
   updateHistoryOrderLocally,
 } from '../../../store/Slice/companyHistorySlice';
-import { UiMarksButton, UiMarksDialog, UiMarksDeleteModal, UiMarksHeading } from '../../ui';
+import { UiMarksButton, UiMarksDialog, UiMarksDeleteModal, UiMarksHeading, IconChevron } from '../../ui';
 import { useAdminUser } from '../../hooks/useAdminUser';
 import HistoryList from './HistoryList';
 import HistoryForm from './HistoryForm';
+import s from './HistoryMain.module.css';
 
 export default function HistoryMain({ user }) {
   const dispatch = useDispatch();
   const items = useSelector((state) => state.companyHistory.items);
+  const loading = useSelector((state) => state.companyHistory.loading);
+  const error = useSelector((state) => state.companyHistory.error);
 
+  const [showAll, setShowAll] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
   const [isFormLoading, setIsFormLoading] = useState(false);
@@ -49,9 +53,12 @@ export default function HistoryMain({ user }) {
     setIsOpen(true);
   }, []);
 
-  const handleToggle = useCallback((el) => {
-    dispatch(toggleHistoryVisibility({ id: el.id, hidden: !el.hidden }));
-  }, [dispatch]);
+  const handleToggle = useCallback(
+    (el) => {
+      dispatch(toggleHistoryVisibility({ id: el.id, hidden: !el.hidden }));
+    },
+    [dispatch]
+  );
 
   const handleDelete = useCallback((el) => {
     setDeleteTarget({ id: el.id, name: String(el.year) });
@@ -86,19 +93,22 @@ export default function HistoryMain({ user }) {
     isFormDirtyRef.current = dirty;
   }, []);
 
-  const handleDragEnd = useCallback((result) => {
-    const { source, destination } = result;
-    if (!destination) return;
-    if (source.index === destination.index) return;
+  const handleDragEnd = useCallback(
+    (result) => {
+      const { source, destination } = result;
+      if (!destination) return;
+      if (source.index === destination.index) return;
 
-    const next = Array.from(orderedItems);
-    const [moved] = next.splice(source.index, 1);
-    next.splice(destination.index, 0, moved);
+      const next = Array.from(orderedItems);
+      const [moved] = next.splice(source.index, 1);
+      next.splice(destination.index, 0, moved);
 
-    const reindexed = next.map((it, i) => ({ ...it, order: i }));
-    dispatch(updateHistoryOrderLocally(reindexed));
-    dispatch(updateHistoryOrder(reindexed.map(({ id, order }) => ({ id, order }))));
-  }, [orderedItems, dispatch]);
+      const reindexed = next.map((it, i) => ({ ...it, order: i }));
+      dispatch(updateHistoryOrderLocally(reindexed));
+      dispatch(updateHistoryOrder(reindexed.map(({ id, order }) => ({ id, order }))));
+    },
+    [orderedItems, dispatch]
+  );
 
   return (
     <>
@@ -106,21 +116,31 @@ export default function HistoryMain({ user }) {
         История MARKS GROUP
       </UiMarksHeading>
       {canAdd && (
-        <UiMarksButton defaultStyle="blue" size="large" icon onClick={() => setIsOpen(true)}>
+        <UiMarksButton color="blue" size="large" icon onClick={() => setIsOpen(true)}>
           Добавить запись
         </UiMarksButton>
       )}
-      <DragDropContext onDragEnd={handleDragEnd}>
-        <HistoryList
-          items={orderedItems}
-          canDelete={canDelete}
-          canEdit={canEdit}
-          canDrag={canDrag}
-          onEdit={handleEdit}
-          onToggle={handleToggle}
-          onDelete={handleDelete}
-        />
-      </DragDropContext>
+      {loading && <p className={s.loading}>Загрузка...</p>}
+      {!loading && error && <p className={s.error}>{error}</p>}
+      {!loading && !error && orderedItems.length === 0 && <p className={s.empty}>История компании пока не добавлена</p>}
+      {!loading && !error && orderedItems.length > 0 && (
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <HistoryList
+            items={showAll ? orderedItems : orderedItems.slice(0, 4)}
+            canDelete={canDelete}
+            canEdit={canEdit}
+            canDrag={canDrag && showAll}
+            onEdit={handleEdit}
+            onToggle={handleToggle}
+            onDelete={handleDelete}
+          />
+        </DragDropContext>
+      )}
+      <div className={s.showWrap}>
+      {orderedItems.length > 4 && (
+      <UiMarksButton color='gray' size='small' className={s.showBtn} suffixIcon={<IconChevron rotated={showAll} />} onClick={() => setShowAll((v) => !v)}>{showAll ? 'Свернуть' : 'Смотреть все'}</UiMarksButton>
+      )}
+      </div>
       <UiMarksDeleteModal
         isOpen={!!deleteTarget}
         title={

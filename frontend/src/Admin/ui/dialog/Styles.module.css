@@ -1,14 +1,22 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: var(--black-1D2E43);
+  opacity: 0.43;
+  z-index: 999;
+}
+
 .dialog {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  inset: 0;
+  margin: auto;
   width: 766px;
+  height: fit-content;
   border-radius: 1rem;
   padding-left: 32px;
   padding-right: 32px;
   background-color: var(--white-F6F6F6);
-  /* overflow: clip; */
+  z-index: 1000;
 }
 
 .wrap {
@@ -28,10 +36,6 @@
     padding: 0;
 }
 
-.dialog::backdrop {
-background-color: var(--black-1D2E43);
-opacity: 0.43;
-}
 
 .close_button {
     position: absolute;
