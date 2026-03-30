@@ -47,7 +47,7 @@ const toOldFormat = (block) => {
       return [{ type: 'textarea', label: 'Текстовый блок выделенный', value: block.textarea || '' }];
     case 'quote':
       return [
-        { type: 'text', label: 'Автор цитаты ( ФИО должность )', value: block.title || '' },
+        { type: 'text', label: 'Автор цитаты ( ФИО должность )', value: block.description || '' },
         { type: 'textarea', label: 'Текст цитаты', value: block.textarea || '' },
         { type: 'file', label: 'Фото автора статьи', value: processFiles(block.image) },
       ];

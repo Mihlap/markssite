@@ -44,6 +44,7 @@ export default function InterestingFact({ control, index, onRemove }) {
       <Controller
         name={`constructorBlocks.${index}.textarea`}
         control={control}
+        rules={{ required: true }}
         render={({ field }) => (
           <UiMarksTextarea
             name={`constructorBlocks.${index}.textarea`}
@@ -63,7 +64,7 @@ export default function InterestingFact({ control, index, onRemove }) {
             value?.length > 0 ? (
               <UiPhotoPreview
                 files={value}
-                variant="single"
+                variant="portrait"
                 label="Портрет сотрудника "
                 color="salmon"
                 onRemove={() => {

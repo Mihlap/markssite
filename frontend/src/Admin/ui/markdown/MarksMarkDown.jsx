@@ -1,9 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
+import { gsap } from 'gsap';
+import { Flip } from 'gsap/Flip';
 import MarkdownContentRenderer from '../../../UI/MarkdownContentRenderer/MarkdownContentRenderer';
 
 import { Icon1, Icon2, Icon3, Icon4, Icon5 } from './icon';
 import styles from './MarksMarkDown.module.scss';
+
+gsap.registerPlugin(Flip);
 
 const iconColors = {
   blue: 'var(--blue-75BBFD)',
@@ -29,13 +33,16 @@ export default function MarksMarkDown({
   onUploadFile,
   onDeleteFile,
   onTempFilesChange,
+  onFullscreenChange,
   color = 'blue',
 }) {
+
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [mode, setMode] = useState('both');
   const [uploadedFiles, setUploadedFiles] = useState(() => new Map());
 
   const editorRef = useRef(null);
+  const flipStateRef = useRef(null);
 
   useEffect(() => {
     onTempFilesChange?.(Array.from(uploadedFiles.keys()));
@@ -43,7 +50,24 @@ export default function MarksMarkDown({
 
   const handleChange = useCallback((e) => onChange?.(e.target.value), [onChange]);
 
-  const toggleFullscreen = useCallback(() => setIsFullscreen((f) => !f), []);
+  const toggleFullscreen = useCallback(() => {
+    flipStateRef.current = Flip.getState(editorRef.current);
+    setIsFullscreen((f) => {
+      const next = !f;
+      onFullscreenChange?.(next);
+      return next;
+    });
+  }, [onFullscreenChange]);
+
+  useEffect(() => {
+    if (!flipStateRef.current) return;
+    Flip.from(flipStateRef.current, {
+      duration: 0.45,
+      ease: 'power2.inOut',
+      props: 'borderRadius',
+    });
+    flipStateRef.current = null;
+  }, [isFullscreen]);
 
   useEffect(() => {
     const onFs = () => setIsFullscreen(!!document.fullscreenElement);
@@ -131,37 +155,38 @@ export default function MarksMarkDown({
       style={{ '--md-accent': iconColor, '--md-light': lightColor }}
       onDragOver={(e) => e.preventDefault()}
       onDrop={handleDrop}>
-      <div className={styles.md__label}>Тело статьи</div>
+      {!isFullscreen && <div className={styles.md__label}>Тело статьи</div>}
       <div className={styles.md__toolbar}>
         <div className={styles['md__btn-group']}>
           <button
+            title="открыть оба режима"
             type="button"
             onClick={() => handleModeChange('both')}
             className={`${styles.md__btn} ${mode === 'both' ? styles['md__btn--active'] : ''}`}>
             <Icon1 color={iconColor} />
           </button>
           <button
+            title="открыть режим редактирования"
             type="button"
             onClick={() => handleModeChange('markdown')}
             className={`${styles.md__btn} ${mode === 'markdown' ? styles['md__btn--active'] : ''}`}>
             <Icon2 color={iconColor} />
           </button>
           <button
+            title="открыть режим предпросмотра"
             type="button"
             onClick={() => handleModeChange('preview')}
             className={`${styles.md__btn} ${mode === 'preview' ? styles['md__btn--active'] : ''}`}>
             <Icon3 color={iconColor} />
           </button>
         </div>
-        <button type="button" onClick={toggleFullscreen} className={styles.md__btn}>
+        <button title="открыть полноэкранный режим" type="button" onClick={toggleFullscreen} className={styles.md__btn}>
           {isFullscreen ? <Icon5 color={iconColor} /> : <Icon4 color={iconColor} />}
         </button>
       </div>
 
       <div className={styles.md__main}>
-        <div
-          className={styles.md__editor}
-          style={{ display: mode === 'preview' ? 'none' : 'block' }}>
+        <div className={styles.md__editor} style={{ display: mode === 'preview' ? 'none' : 'block' }}>
           <textarea
             placeholder="Markdown"
             value={value || ''}

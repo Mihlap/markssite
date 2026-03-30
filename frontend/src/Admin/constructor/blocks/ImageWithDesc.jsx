@@ -20,6 +20,7 @@ export default function ImageWithDesc({ control, index, onRemove }) {
       <Controller
         name={`constructorBlocks.${index}.image`}
         control={control}
+        rules={{ required: true }}
         render={({ field: { onChange, value } }) =>
           value?.length > 0 ? (
             <UiPhotoPreview

@@ -20,8 +20,8 @@
     color: var(--black-1D2E43);
     font-size: 16px;
     font-style: normal;
-    font-weight: 700;
     line-height: 24px;
+    font-weight: 700;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
@@ -30,8 +30,8 @@
     color: var(--dark-gray-566269);
     font-size: 16px;
     font-style: normal;
-    font-weight: 400;
     line-height: 24px;
+    font-weight: 400;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
@@ -153,4 +153,17 @@
 
 .dragIsLegenda {
     padding-left: 8px;
+}
+
+.contentLegenda {
+    gap: 50px;
+    flex-direction: row-reverse;
+}
+
+.titleLegenda {
+    font-weight: 400;
+}
+
+.descLegenda {
+    font-weight: 700;
 }

@@ -91,10 +91,11 @@ export default function Company({ user }) {
     return cats.includes(currentCategory);
   });
 
+
   return (
     <>
       <HistoryMain user={user} />
-      <UiMarksHeading size="3xl" padding="lg">
+      <UiMarksHeading size="3xl" pt="64px">
         Сотрудники
       </UiMarksHeading>
       <UiMarksSegmentedControls

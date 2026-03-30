@@ -76,6 +76,7 @@ export default function Journal({ user }) {
       setIsOpen(false);
       setEditJournalData(null);
       setIsFormLoading(false);
+      formRef.current?.resetForm();
     }
   }, []);
 
@@ -95,7 +96,7 @@ export default function Journal({ user }) {
   return (
     <section>
       <UiMarksButton
-        defaultStyle="blue"
+        color="blue"
         size="large"
         icon
         onClick={() => {
