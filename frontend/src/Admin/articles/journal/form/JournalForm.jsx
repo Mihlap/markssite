@@ -387,7 +387,7 @@ const JournalForm = forwardRef(function JournalForm(
           />
         </UiMarksGrayWrap>
       ))}
-      <UiMarksButton variant="dashed" color="blue" size="largeSmall" icon onClick={handleAddAuthorBlock}>
+      <UiMarksButton variant="dashed-blue" icon iconSize="small" onClick={handleAddAuthorBlock}>
         Добавить автора
       </UiMarksButton>
       {universityFields.map((field, index) => (
@@ -415,7 +415,7 @@ const JournalForm = forwardRef(function JournalForm(
         </UiMarksGrayWrap>
       ))}
 
-      <UiMarksButton variant="dashed" color="blue" size="largeSmall" icon onClick={() => appendUniversity({ value: '' })}>
+      <UiMarksButton variant="dashed-blue" icon iconSize="small" onClick={() => appendUniversity({ value: '' })}>
         Добавить университет или организацию
       </UiMarksButton>
       {locationFields.map((field, index) => (
@@ -442,7 +442,7 @@ const JournalForm = forwardRef(function JournalForm(
           />
         </UiMarksGrayWrap>
       ))}
-      <UiMarksButton variant="dashed" color="blue" size="largeSmall" icon onClick={() => appendLocation({ value: '' })}>
+      <UiMarksButton variant="dashed-blue" icon iconSize="small" onClick={() => appendLocation({ value: '' })}>
         Добавить город, страну
       </UiMarksButton>
       <UiMarksGrayWrap customStyles={{ padding: '16px' }}>

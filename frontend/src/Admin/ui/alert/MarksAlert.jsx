@@ -12,7 +12,7 @@ export default function MarksAlert({ title, desc, isDelete, onConfirm, onCancel 
         <div className={s.desc}>{desc}</div>
       </div>
       <div className={s.wrapBtn}>
-        <UiMarksButton onClick={onConfirm}>
+        <UiMarksButton color='blue' onClick={onConfirm}>
           {isDelete ? 'Удалить' : 'Не сохранять'}
         </UiMarksButton>
         <UiMarksButton color="gray" onClick={onCancel}>

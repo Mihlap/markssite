@@ -1,6 +1,15 @@
 .button {
     font-family: var(--font-raleway);
     width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.suffixIcon {
+    display: flex;
+    align-items: center;
 }
 
 .blue {
@@ -43,6 +52,7 @@
     transition: all 0.3s;
 
     &:hover {
+        color: var(--white-F6F6F6);
         background-color: var(--light-gray-C0C5CB);
     }
 

@@ -1,7 +1,7 @@
 const SIZES = { normal: 40, small: 24 };
 const COLOR = { blue: 'var(--blue-75BBFD)', orange: 'var(--salmon-FF7F6A)' };
 
-const Icon0 = ({ name, size = 'normal', color = 'var(--white-F6F6F6)' }) => {
+const IconDefault = ({ name, size = 'normal', color = 'var(--white-F6F6F6)' }) => {
   const px = SIZES[size] ?? 40;
   const colorSvg = COLOR[color] ?? color;
   return (
@@ -14,4 +14,4 @@ const Icon0 = ({ name, size = 'normal', color = 'var(--white-F6F6F6)' }) => {
   );
 };
 
-export default Icon0;
+export default IconDefault;
