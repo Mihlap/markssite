@@ -15,21 +15,33 @@ export default function MarksEntityRow({ title, desc, id, role, visible, hidden 
 
   return (
     <div className={s.entily}>
-      <div className={s.content}>
-        {!isEvent && desc && <div className={s.desc}>{desc}</div>}
-        <div className={s.title}>{title}</div>
+      <div className={`${s.content} ${isLegenda ? s.contentLegenda : ''}`}>
+        {!isEvent && desc && (
+          <div className={`${s.title} ${isLegenda ? s.titleLegenda : ''}`}>
+            {title}
+          </div>
+        )}
+        <div className={`${s.desc} ${isLegenda ? s.descLegenda : ''}`}>
+          {desc}
+        </div>
       </div>
       <div className={s.control}>
         {!isLegenda && id !== undefined && <MarksCopyId id={id} />}
-        <MarksEntityActions canDelete={role === 'admin'} hidden={hidden} onEdit={onEdit} onToggle={onToggle} onDelete={onDelete} />
+        <MarksEntityActions
+          canDelete={role === 'admin'}
+          hidden={hidden}
+          onEdit={onEdit}
+          onToggle={onToggle}
+          onDelete={onDelete}
+        />
         {(isEvent || isLegenda) && (
-            <button
-              title="перетащить"
-              className={`${s.drag} ${isEvent ? s.dragIsEvent : ''} ${isLegenda ? s.dragIsLegenda : ''}`}
-              type="button">
-              <Icon6 />
-            </button>
-          )}
+          <button
+            title="перетащить"
+            className={`${s.drag} ${isEvent ? s.dragIsEvent : ''} ${isLegenda ? s.dragIsLegenda : ''}`}
+            type="button">
+            <Icon6 />
+          </button>
+        )}
       </div>
     </div>
   );

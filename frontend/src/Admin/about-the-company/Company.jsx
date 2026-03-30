@@ -95,7 +95,7 @@ export default function Company({ user }) {
   return (
     <>
       <HistoryMain user={user} />
-      <UiMarksHeading size="3xl" padding="lg">
+      <UiMarksHeading size="3xl" pt="64px">
         Сотрудники
       </UiMarksHeading>
       <UiMarksSegmentedControls

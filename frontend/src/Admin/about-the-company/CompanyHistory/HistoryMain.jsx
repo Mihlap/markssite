@@ -8,7 +8,7 @@ import {
   updateHistoryOrder,
   updateHistoryOrderLocally,
 } from '../../../store/Slice/companyHistorySlice';
-import { UiMarksButton, UiMarksDialog, UiMarksDeleteModal, UiMarksHeading } from '../../ui';
+import { UiMarksButton, UiMarksDialog, UiMarksDeleteModal, UiMarksHeading, IconChevron } from '../../ui';
 import { useAdminUser } from '../../hooks/useAdminUser';
 import HistoryList from './HistoryList';
 import HistoryForm from './HistoryForm';
@@ -20,6 +20,7 @@ export default function HistoryMain({ user }) {
   const loading = useSelector((state) => state.companyHistory.loading);
   const error = useSelector((state) => state.companyHistory.error);
 
+  const [showAll, setShowAll] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
   const [isFormLoading, setIsFormLoading] = useState(false);
@@ -125,16 +126,21 @@ export default function HistoryMain({ user }) {
       {!loading && !error && orderedItems.length > 0 && (
         <DragDropContext onDragEnd={handleDragEnd}>
           <HistoryList
-            items={orderedItems}
+            items={showAll ? orderedItems : orderedItems.slice(0, 4)}
             canDelete={canDelete}
             canEdit={canEdit}
-            canDrag={canDrag}
+            canDrag={canDrag && showAll}
             onEdit={handleEdit}
             onToggle={handleToggle}
             onDelete={handleDelete}
           />
         </DragDropContext>
       )}
+      <div className={s.showWrap}>
+      {orderedItems.length > 4 && (
+      <UiMarksButton color='gray' size='small' className={s.showBtn} suffixIcon={<IconChevron rotated={showAll} />} onClick={() => setShowAll((v) => !v)}>{showAll ? 'Свернуть' : 'Смотреть все'}</UiMarksButton>
+      )}
+      </div>
       <UiMarksDeleteModal
         isOpen={!!deleteTarget}
         title={

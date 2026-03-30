@@ -18,5 +18,6 @@ export { default as UiMarksDeleteModal } from './delete-modal/MarksDeleteModal';
 
 // --- ICON ---
 export { default as ClipIcon } from './icon/ClipIcon';
-export { default as Icon0 } from './icon/Icon0';
+export { default as IconDefault } from './icon/IconDefault';
 export { default as Icon1 } from './icon/Icon1';
+export { default as IconChevron } from './icon/IconChevron';

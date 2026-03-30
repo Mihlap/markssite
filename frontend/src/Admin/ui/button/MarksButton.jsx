@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Icon0 } from '../index.js';
+import { IconDefault } from '../index.js';
 import styles from './Styles.module.scss';
 
 const ICON_COLOR = {
@@ -14,6 +14,7 @@ export default function MarksButton({
   size = 'normal', // 'normal' | 'large' | 'card'
   icon = false,
   iconSize = 'normal',
+  suffixIcon = null,
   disabled = false,
   onClick,
   children,
@@ -35,10 +36,11 @@ export default function MarksButton({
     <button className={cls} disabled={disabled} type={type} onClick={onClick}>
       {icon && (
         <span className={styles.icon}>
-          <Icon0 size={iconSize} color={iconColor} />
+          <IconDefault size={iconSize} color={iconColor} />
         </span>
       )}
       {children && <span className={styles.label}>{children}</span>}
+      {suffixIcon && <span className={styles.suffixIcon}>{suffixIcon}</span>}
     </button>
   );
 }
