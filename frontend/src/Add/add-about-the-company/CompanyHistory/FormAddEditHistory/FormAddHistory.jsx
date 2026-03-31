@@ -257,6 +257,29 @@ export default function FormAddHistory({ initial = null, onClose, registerCloseG
     [dispatch, inputData, validateTopFields, validateForSubmit, onClose]
   );
 
+  const saveDisabled = (() => {
+    const hasTopLevelData =
+      String(inputData.year || '').trim() !== '' ||
+      String(inputData.title || '').trim() !== '' ||
+      String(inputData.description || '').trim() !== '' ||
+      String(inputData.previewText || '').trim() !== '' ||
+      String(inputData.previewImageUrl || '').trim() !== '' ||
+      inputData.previewImageFile instanceof File ||
+      String(inputData.img || '').trim() !== '' ||
+      Boolean(inputData.hidden);
+
+    if (hasTopLevelData) return false;
+
+    return !(dynamicDataRef.current || []).some((block) =>
+      (block || []).some((inp) => {
+        const v = inp?.value;
+        if (Array.isArray(v)) return v.length > 0;
+        if (v instanceof File) return true;
+        return String(v ?? '').trim() !== '';
+      })
+    );
+  })();
+
   return (
     <div className={styles.form_container}>
       {showNotification && (
@@ -312,6 +335,17 @@ export default function FormAddHistory({ initial = null, onClose, registerCloseG
               cancel: styles.form_container__button_cancel,
             }}
             onCancel={() => setShowExitConfirm(true)}
+            saveDisabled={saveDisabled}
+            saveProps={
+              saveDisabled
+                ? {
+                    style: {
+                      backgroundColor: 'var(--light-blue-D4EDFB)',
+                      cursor: 'not-allowed',
+                    },
+                  }
+                : undefined
+            }
           />
         </form>
 
