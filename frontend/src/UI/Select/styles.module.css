@@ -142,6 +142,12 @@
     color: var(--white-F6F6F6);
 }
 
+.select[data-wheel-select] :global(.select__option--is-focused:not(.select__option--is-selected)) {
+    background: transparent;
+    color: var(--gray-959DA6);
+    cursor: pointer;
+}
+
 .select :global(.select__indicator-separator) {
     display: none;
 }
@@ -178,7 +184,7 @@
 }
 
 .select :global(.select__menu-list) {
-    max-height: 160px;
+    max-height: 283px;
     scrollbar-width: thin;
     scrollbar-color: var(--white-F6F6F6) transparent;
 }

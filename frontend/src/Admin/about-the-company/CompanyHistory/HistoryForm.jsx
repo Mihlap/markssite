@@ -229,6 +229,8 @@ const HistoryForm = forwardRef(function HistoryForm(
               label="Год"
               placeholder="Год"
               name="year"
+              middle
+              wheelSelect
               customStyles={{
                 container: s.selectContainer,
               }}
