@@ -1,10 +1,17 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
+import { Controller, useWatch } from 'react-hook-form';
 import { UiMarksTextarea, UiMarksGrayWrap, UiPhotoPreview, UiMarksInput } from '../../ui';
 
 export default function InterestingFact({ control, index, onRemove }) {
-    const imageRef = React.useRef(null);
-    const avaRef = React.useRef(null);
+  const imageRef = React.useRef(null);
+  const avaRef = React.useRef(null);
+  
+
+  const imageValue = useWatch({ control, name: `constructorBlocks.${index}.ava` });
+  const descriptionValue = useWatch({ control, name: `constructorBlocks.${index}.description` });
+  
+  const hasImage = imageValue?.length > 0;
+  const hasDescription = descriptionValue?.length > 0;
   return (
     <UiMarksGrayWrap
       btnClose={true}
@@ -44,7 +51,13 @@ export default function InterestingFact({ control, index, onRemove }) {
       <Controller
         name={`constructorBlocks.${index}.textarea`}
         control={control}
-        rules={{ required: true }}
+        rules={{
+          validate: (v) => {
+            const d = document.createElement('div');
+            d.innerHTML = v || '';
+            return d.textContent.trim().length > 0;
+          },
+        }}
         render={({ field }) => (
           <UiMarksTextarea
             name={`constructorBlocks.${index}.textarea`}
@@ -60,7 +73,8 @@ export default function InterestingFact({ control, index, onRemove }) {
         <Controller
           name={`constructorBlocks.${index}.ava`}
           control={control}
-          render={({ field: { onChange, value } }) =>
+          rules={{ validate: (v) => !hasDescription || v?.length > 0 || 'Требуется фото' }}
+          render={({ field: { onChange, value }, fieldState }) =>
             value?.length > 0 ? (
               <UiPhotoPreview
                 files={value}
@@ -81,6 +95,8 @@ export default function InterestingFact({ control, index, onRemove }) {
                 label="Портрет сотрудника "
                 accept="image/*"
                 inputRef={avaRef}
+                required={!!fieldState.error}
+                hint="Обязательно для загрузки"
                 onChange={(e) => {
                   const file = e.target.files[0];
                   onChange(file ? [file] : []);
@@ -93,6 +109,7 @@ export default function InterestingFact({ control, index, onRemove }) {
         <Controller
           name={`constructorBlocks.${index}.description`}
           control={control}
+          rules={{ validate: (v) => !hasImage || v?.length > 0 || 'Требуется ФИО/Описание' }}
           render={({ field }) => (
             <UiMarksInput
               autoGrow

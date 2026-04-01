@@ -9,7 +9,7 @@ export default function PosterPerson({ control, index, onRemove }) {
     <UiMarksGrayWrap
       btnClose={true}
       handlerClick={onRemove}
-      customStyles={{ padding: '38px 1rem 32px 1rem', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      customStyles={{ padding: '38px 1rem 32px 1rem', display: 'flex', flexDirection: 'column', gap: '12px' }}>
       <Controller
         name={`constructorBlocks.${index}.image`}
         control={control}
