@@ -8,7 +8,7 @@ export default function TextWithSelection({ control, index, onRemove }) {
       <Controller
         name={`constructorBlocks.${index}.textarea`}
         control={control}
-        rules={{ required: true }}
+        rules={{ validate: (v) => { const d = document.createElement('div'); d.innerHTML = v || ''; return d.textContent.trim().length > 0; } }}
         render={({ field }) => (
           <UiMarksTextarea
             name={`constructorBlocks.${index}.textarea`}

@@ -1,6 +1,7 @@
 import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
+import { DevTool } from '@hookform/devtools';
 import { UiMarksInput, UiMarksSelect, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
 import { createStaffAsync, updateStaffAsync } from '../../../store/Slice/StaffSliceNew';
 import s from './Styles.module.css';
@@ -121,6 +122,7 @@ const StaffForm = forwardRef(function StaffForm(
     control,
     handleSubmit,
     reset,
+    trigger,
     formState: { isValid, isSubmitting, isDirty },
   } = useForm({ mode: 'onChange' });
 
@@ -156,6 +158,7 @@ const StaffForm = forwardRef(function StaffForm(
   useEffect(() => {
     if (!editStaffData) {
       reset(EMPTY_VALUES);
+      trigger();
       return;
     }
     reset({
@@ -166,7 +169,8 @@ const StaffForm = forwardRef(function StaffForm(
       photoAva: editStaffData.img ? [editStaffData.img] : [],
       constructorBlocks: (editStaffData.dynamicBlocks || []).map(fromOldFormat).filter(Boolean),
     });
-  }, [editStaffData, reset]);
+    trigger();
+  }, [editStaffData, reset, trigger]);
 
   const onSubmit = async (data) => {
     const photoAvaNew = (data.photoAva || []).filter((f) => f instanceof File);
@@ -213,6 +217,7 @@ const StaffForm = forwardRef(function StaffForm(
   };
 
   return (
+    <>
     <form id="add-form-staff" className={s.form} onSubmit={handleSubmit(onSubmit)}>
       <UiMarksGrayWrap customStyles={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px' }}>
         <Controller
@@ -224,7 +229,7 @@ const StaffForm = forwardRef(function StaffForm(
               {value?.length > 0 ? (
                 <UiPhotoPreview
                   files={value}
-                  variant="single"
+                  variant="portrait"
                   onRemove={() => {
                     onChange([]);
                     if (photoAvaRef.current) photoAvaRef.current.value = '';
@@ -308,6 +313,8 @@ const StaffForm = forwardRef(function StaffForm(
         return <Component key={block.id} control={control} index={index} onRemove={() => remove(index)} />;
       })}
     </form>
+    <DevTool control={control} placement="top-right" />
+    </>
   );
 });
 
