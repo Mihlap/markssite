@@ -50,7 +50,7 @@ export default function StaffList({ items, canDelete, canEdit, canDrag, onEdit, 
                         </div>
                         <div className={s.itemName}>
                           {el.name}
-                          {el.position ? ` — ${el.position}` : ''}
+                          {/* {el.position ? ` — ${el.position}` : ''} */}
                         </div>
                       </div>
                     </div>

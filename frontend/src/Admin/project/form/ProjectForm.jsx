@@ -123,7 +123,7 @@ const ProjectForm = forwardRef(function ProjectForm(
       linkToPublication: editProjectData.linkToPublication || '',
       publicationTwo: editProjectData.publicationTwo || '',
       linkToPublicationTwo: editProjectData.linkToPublicationTwo || '',
-      awards: editProjectData.awards ? { value: editProjectData.awards, label: editProjectData.awards } : null,
+      awards: parseToOptions(editProjectData.awards),
       headingTextBlock: editProjectData.headingTextBlock || '',
       textBlock: editProjectData.textBlock || '',
       photoAva: editProjectData.imageProject ? [editProjectData.imageProject] : [],
@@ -210,7 +210,7 @@ const ProjectForm = forwardRef(function ProjectForm(
       linkToPublication: data.linkToPublication || '',
       publicationTwo: data.publicationTwo || '',
       linkToPublicationTwo: data.linkToPublicationTwo || '',
-      awards: data.awards?.label || '',
+      awards: Array.isArray(data.awards) ? data.awards.map((o) => o.label).join(',') : '',
       headingTextBlock: data.headingTextBlock || '',
       textBlock: data.textBlock || '',
       photoAva: data.photoAva || [],
@@ -556,6 +556,7 @@ const ProjectForm = forwardRef(function ProjectForm(
           control={control}
           render={({ field }) => (
             <UiMarksSelect
+              isMulti
               label="Выберите стадию"
               placeholder="Выберите стадию"
               name="awards"
