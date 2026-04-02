@@ -1,5 +1,11 @@
 const tableData = [
   {
+    title: 'Urban Design & Architecture Design Awards 2026',
+    nomination: 'Архитектура объектов культуры',
+    prize: 'Победитель',
+    year: '/_2026/',
+  },
+  {
     title: 'Международный конкурс на Terraviva Competitions',
     nomination: 'Bodegas Vinival',
     prize: 'Финалист',

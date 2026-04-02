@@ -39,7 +39,7 @@ const CounterCompanyMobile = ({ armed }) => {
       if (countProjectM < 200 && activeCounter === 1) {
         setCountProjectM(countProjectM + 5);
       }
-      if (countHumanM < 19 && activeCounter === 2) {
+      if (countHumanM < 20 && activeCounter === 2) {
         setCountHumanM(countHumanM + 1);
       }
     }, 50);
