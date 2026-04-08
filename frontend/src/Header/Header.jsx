@@ -6,7 +6,8 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Navigation } from 'swiper';
+import SwiperCore from 'swiper';
+import { Navigation } from 'swiper/modules';
 
 import SwiperContainer from './Swiper-Phone/SwiperContainer';
 import SwiperContainerProject from './Swiper-project/SwiperContainerProject';
