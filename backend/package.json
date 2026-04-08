@@ -32,7 +32,7 @@
     "morgan": "^1.10.0",
     "multer": "^2.1.1",
     "multer-s3": "^3.0.1",
-    "nodemailer": "^7.0.11",
+    "nodemailer": "^8.0.5",
     "pg": "^8.11.1",
     "pg-hstore": "^2.3.4",
     "pino": "^9.7.0",
@@ -48,18 +48,22 @@
     "nodemon": "^3.1.14"
   },
   "overrides": {
-    "fast-xml-parser": "^5.3.8",
-    "tar": "^7.5.11",
+    "fast-xml-parser": "5.5.10",
+    "tar": "7.5.13",
     "minimatch": "^9.0.8",
     "nodemon": {
       "minimatch": "9.0.9"
     },
-    "flatted": "^3.4.0",
+    "flatted": "3.4.2",
     "ajv": "^8.18.0",
     "form-data": "4.0.4",
     "on-headers": "1.1.0",
     "fast-redact": "^3.5.0",
     "validator": "^13.15.20",
-    "qs": ">=6.14.1"
+    "qs": "~6.14.2",
+    "brace-expansion": "2.0.3",
+    "path-to-regexp": "0.1.13",
+    "picomatch": "2.3.2",
+    "lodash": "4.18.1"
   }
 }
