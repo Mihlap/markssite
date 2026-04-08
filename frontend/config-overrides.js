@@ -129,6 +129,23 @@ module.exports = {
   devServer: (configFunction) => {
     return (proxy, allowedHost) => {
       const config = configFunction(proxy, allowedHost);
+    
+      const onBeforeSetupMiddleware = config.onBeforeSetupMiddleware;
+      const onAfterSetupMiddleware = config.onAfterSetupMiddleware;
+      if (onBeforeSetupMiddleware || onAfterSetupMiddleware) {
+        config.setupMiddlewares = (middlewares, devServer) => {
+          if (typeof onBeforeSetupMiddleware === 'function') {
+            onBeforeSetupMiddleware(devServer);
+          }
+          if (typeof onAfterSetupMiddleware === 'function') {
+            onAfterSetupMiddleware(devServer);
+          }
+          return middlewares;
+        };
+        delete config.onBeforeSetupMiddleware;
+        delete config.onAfterSetupMiddleware;
+      }
+
       config.allowedHosts = 'all';
       config.client = { ...(config.client || {}), overlay: false };
       return config;
