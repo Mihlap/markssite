@@ -198,11 +198,8 @@ const Header = React.memo(
               <img className={styles.mainIcon} src={mainIcon} alt="" aria-hidden="true" />
               <div className={styles.heroBadgeTextWrapper}>
                 <span className={styles.heroBadgeText}>
-                  Лучший
-                  <br />
-                  проектировщик
-                  <br />
-                  жилья в России
+                  <span className={styles.heroBadgeLine}>Лучший проектировщик</span>
+                  <span className={styles.heroBadgeLine}>жилья в России</span>
                 </span>
                 <div className={styles.heroBadgeDivider} aria-hidden="true" />
                 <span className={`${styles.heroBadgeText} ${styles.heroBadgeTextSingleLine}`}>BIM-компания года</span>
