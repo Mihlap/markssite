@@ -227,7 +227,7 @@ const ArticlesForm = forwardRef(function ArticlesForm(
         <Controller
           name="author"
           control={control}
-          rules={{ required: true }}
+          // rules={{ required: true }}
           render={({ field, fieldState }) => (
             <UiMarksInput label="Автор" name="author" error={fieldState.error && 'Обязательное поле'} {...field} />
           )}
@@ -280,6 +280,7 @@ const ArticlesForm = forwardRef(function ArticlesForm(
         <Controller
           name="dropPhoto"
           control={control}
+          rules={{ required: true }}
           render={({ field: { onChange, value } }) => (
             <>
               {value?.length !== 4 && (
@@ -310,7 +311,8 @@ const ArticlesForm = forwardRef(function ArticlesForm(
                   const next = (value || []).filter((_, i) => i !== index);
                   onChange(next);
                 }}
-                label="Слайдер *допускается загрузка 4х&nbsp;изображений"
+                // label="Слайдер *допускается загрузка 4х&nbsp;изображений"
+                label={value?.length === 4 ? 'Слайдер *допускается загрузка 4х изображений' : ''}
               />
             </>
           )}
@@ -320,6 +322,7 @@ const ArticlesForm = forwardRef(function ArticlesForm(
         <Controller
           name="titleTextBlock"
           control={control}
+          rules={{ required: true }}
           render={({ field }) => (
             <UiMarksInput
               {...field}
@@ -355,7 +358,7 @@ const ArticlesForm = forwardRef(function ArticlesForm(
             {value?.length > 0 ? (
               <UiPhotoPreview
                 files={value}
-                variant="single"
+                variant="portrait"
                 onRemove={() => {
                   onChange([]);
                   if (photoAvaRef.current) {

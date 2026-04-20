@@ -11,7 +11,7 @@ const project_items = [
 
 const publications_news_items = [
   { id: 'titleWithDesc', icon: Icon2, label: 'Заголовок с описанием' },
-  { id: 'textWithQuill', icon: Icon9, label: 'Текстовый блок' },
+  { id: 'textWithQuill', icon: Icon9, label: 'Блок описание' },
   { id: 'textWithFrame', icon: Icon8, label: 'Текстовый блок в рамке' },
   { id: 'imageWithDesc', icon: Icon1, label: 'Картинка с описанием' },
   { id: 'quote', icon: Icon10, label: 'Цитата' },

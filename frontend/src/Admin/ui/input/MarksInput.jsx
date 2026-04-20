@@ -4,12 +4,36 @@ import { ClipIcon, Icon1 } from '../index.js';
 
 import styles from './Styles.module.css';
 
+const DISALLOWED_TYPES = ['image/webp'];
+
+function validateFiles(files) {
+  for (const file of files) {
+    if (DISALLOWED_TYPES.includes(file.type)) {
+      return `Формат ${file.type} не поддерживается. Используйте JPEG, PNG.`;
+    }
+  }
+  return null;
+}
+
 function FileInput({ name, label, color = 'blue', buttonText = 'Загрузить изображение', accept, multiple, inputRef, onChange, required, hint, info, className }) {
   const [open, setOpen] = useState(false);
+  const [formatError, setFormatError] = useState(null);
   const popoverRef = useRef(null);
   const wrapperRef = useRef(null);
   const colorClass = styles[`file__button_${color}`] || styles.file__button_blue;
   const infoHref = typeof info === 'string' ? info : '#';
+
+  function handleChange(e) {
+    const files = Array.from(e.target.files || []);
+    const error = validateFiles(files);
+    if (error) {
+      setFormatError(error);
+      e.target.value = '';
+      return;
+    }
+    setFormatError(null);
+    onChange?.(e);
+  }
 
   useEffect(() => {
     if (!open) return;
@@ -40,7 +64,7 @@ function FileInput({ name, label, color = 'blue', buttonText = 'Загрузит
       )}
       <div className={styles.file__row}>
         <label className={`${styles.file__button} ${colorClass}`}>
-          <input type="file" name={name} accept={accept} multiple={multiple} ref={inputRef} onChange={onChange} />
+          <input type="file" name={name} accept={accept} multiple={multiple} ref={inputRef} onChange={handleChange} />
           <ClipIcon />
           <span className={styles.file__button_text}>{buttonText}</span>
         </label>
@@ -72,7 +96,8 @@ function FileInput({ name, label, color = 'blue', buttonText = 'Загрузит
           </div>
         )}
       </div>
-      {required && hint !== false && <div className={styles.file__hint}>{hint || 'Обязательно для заполнения'}</div>}
+      {formatError && <div className={styles.file__hint}>{formatError}</div>}
+      {!formatError && required && hint !== false && <div className={styles.file__hint}>{hint || 'Обязательно для заполнения'}</div>}
     </div>
   );
 }
