@@ -4,17 +4,15 @@ import { UiMarksTextarea, UiMarksGrayWrap } from '../../ui';
 
 export default function TextWithQuill({ control, index, onRemove }) {
   return (
-    <UiMarksGrayWrap
-      btnClose={true}
-      handlerClick={onRemove}
-      customStyles={{ padding: '38px 1rem 32px 1rem' }}>
+    <UiMarksGrayWrap btnClose={true} handlerClick={onRemove} customStyles={{ padding: '38px 1rem 32px 1rem' }}>
       <Controller
         name={`constructorBlocks.${index}.textarea`}
         control={control}
+        rules={{ required: true }}
         render={({ field }) => (
           <UiMarksTextarea
             name={`constructorBlocks.${index}.textarea`}
-            label="Текстовый блок"
+            label="Блок описание"
             placeholder="Нет ограничения по символам"
             richText
             color="salmon"

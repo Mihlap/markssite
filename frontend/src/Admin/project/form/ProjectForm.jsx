@@ -329,42 +329,42 @@ const ProjectForm = forwardRef(function ProjectForm(
         />
       </UiMarksGrayWrap>
 
-      <div className={s.photoUpload}>
-        <Controller
-          name="photoAva"
-          control={control}
-          render={({ field: { onChange, value } }) => (
-            <>
-              {value?.length > 0 ? (
-                <UiPhotoPreview
-                  files={value}
-                  variant="single"
-                  onRemove={() => {
-                    onChange([]);
-                    if (photoAvaRef.current) {
-                      photoAvaRef.current.value = '';
-                    }
-                  }}
-                  label="Загрузите фото превью *для отображения на&nbsp;странице &laquo;Проекты&raquo;"
-                />
-              ) : (
-                <UiMarksInput
-                  type="file"
-                  name="photoAva"
-                  accept="image/*"
-                  inputRef={photoAvaRef}
-                  label="Загрузите фото превью *для отображения на&nbsp;странице &laquo;Проекты&raquo;"
-                  color="grey"
-                  onChange={(e) => {
-                    const file = e.target.files[0];
-                    onChange(file ? [file] : []);
-                  }}
-                />
-              )}
-            </>
-          )}
-        />
+      <Controller
+        name="photoAva"
+        control={control}
+        render={({ field: { onChange, value } }) => (
+          <>
+            {value?.length > 0 ? (
+              <UiPhotoPreview
+                files={value}
+                variant="single"
+                onRemove={() => {
+                  onChange([]);
+                  if (photoAvaRef.current) {
+                    photoAvaRef.current.value = '';
+                  }
+                }}
+                label="Загрузите фото превью *для отображения на&nbsp;странице &laquo;Проекты&raquo;"
+              />
+            ) : (
+              <UiMarksInput
+                type="file"
+                name="photoAva"
+                accept="image/*"
+                inputRef={photoAvaRef}
+                label="Загрузите фото превью *для отображения на&nbsp;странице &laquo;Проекты&raquo;"
+                color="grey"
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  onChange(file ? [file] : []);
+                }}
+              />
+            )}
+          </>
+        )}
+      />
 
+      <div className={s.photoUpload}>
         <Controller
           name="dropPhoto"
           control={control}
@@ -398,7 +398,8 @@ const ProjectForm = forwardRef(function ProjectForm(
                   const next = (value || []).filter((_, i) => i !== index);
                   onChange(next);
                 }}
-                label="Слайдер *допускается загрузка 4х&nbsp;изображений"
+                // label="Слайдер *допускается загрузка 4х&nbsp;изображений"
+                label={value?.length === 4 ? 'Слайдер *допускается загрузка 4х изображений' : ''}
               />
             </>
           )}
@@ -409,6 +410,7 @@ const ProjectForm = forwardRef(function ProjectForm(
         <Controller
           name="titleTextBlock"
           control={control}
+          rules={{ required: true }}
           render={({ field }) => (
             <UiMarksInput
               name="titleTextBlock"
@@ -428,6 +430,7 @@ const ProjectForm = forwardRef(function ProjectForm(
         <Controller
           name="descriptionProject"
           control={control}
+          rules={{ required: true }}
           render={({ field }) => (
             <UiMarksTextarea
               name="descriptionProject"

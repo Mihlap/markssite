@@ -3,7 +3,8 @@ import { Controller } from 'react-hook-form';
 import { UiMarksInput, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
 
 export default function TwoImages({ control, index, onRemove }) {
-   const imageRef = useRef(null);
+  const imageRef = useRef(null);
+
     return (
       <UiMarksGrayWrap
         btnClose={true}
@@ -12,6 +13,7 @@ export default function TwoImages({ control, index, onRemove }) {
         <Controller
           name={`constructorBlocks.${index}.image`}
           control={control}
+          rules={{ validate: (v) => (Array.isArray(v) && v.length === 2) || 'Загрузите две картинки' }}
           render={({ field: { onChange, value } }) => {
             const currentCount = value?.length || 0;
             const remaining = 2 - currentCount;
