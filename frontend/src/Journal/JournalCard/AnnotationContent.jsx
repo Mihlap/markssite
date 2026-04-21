@@ -4,8 +4,8 @@ import remarkBreaks from 'remark-breaks';
 import remarkMath from 'remark-math';
 import rehypeRaw from 'rehype-raw';
 import rehypeKatex from 'rehype-katex';
-import rehypePdfEmbedder from '../../Admin/articles/journal/utils/rehypePdfEmbedder';
-import rehypeUniqueHeadingIds from '../../Admin/articles/journal/utils/rehypeUniqueHeadingIds';
+import rehypePdfEmbedder from '../../UI/MarkdownContentRenderer/utils/rehypePdfEmbedder';
+import rehypeUniqueHeadingIds from '../../UI/MarkdownContentRenderer/utils/rehypeUniqueHeadingIds';
 import { BlockMath, InlineMath } from 'react-katex';
 import styles from './JournalCard.module.scss';
 
