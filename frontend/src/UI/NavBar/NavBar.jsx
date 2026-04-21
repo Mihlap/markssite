@@ -1,10 +1,11 @@
-import { useState, useRef, lazy, Suspense } from 'react';
+import { useState, useRef, lazy, Suspense, useEffect, useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { useGSAP } from '@gsap/react';
-import { NavLink, useLocation, useNavigate, matchPath, Link } from 'react-router-dom';
+import { NavLink, useNavigate, Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { useNavLinks } from './hooks/useNavLinks';
+import { useHrNavMeta } from './hooks/useHrNavMeta';
 
 import styles from './style.module.scss';
 import Logo from './logo/Logo';
@@ -15,46 +16,57 @@ gsap.registerPlugin(useGSAP, ScrollToPlugin);
 
 const NavBar = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { pathname, hash } = location;
-  const isCompany = pathname.startsWith('/company');
+
   const [linkChildren, setLinkChildren] = useState(false);
   const [openDropDownId, setOpenDropDownId] = useState(null);
   const [showDropdownContent, setShowDropdownContent] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { primary, cta } = useNavLinks();
+  const [isNavbarHidden, setIsNavbarHidden] = useState(false);
   const container = useRef();
-  // Derive back link/text robustly from query and route
-  const search = new URLSearchParams(location.search);
-  const isInternship = search.get('type') === 'internship';
-  const isVacancyDetail = !!matchPath({ path: '/hr/vacancies/:id', end: true }, pathname);
-  const linkBack = isInternship ? '/hr/internships' : '/hr/vacancies';
-  const textBack = isInternship ? 'стажировки' : 'вакансии';
 
-  // Smoothly navigate to a section on the Company page (hash-aware)
-  const goToCompanySection = (hashOrId) => {
-    if (!hashOrId) return;
-    const hash = hashOrId.startsWith('#') ? hashOrId : `#${hashOrId}`;
+  // сustom hooks 
+  const { pathname, hash, isCompany, isVacancyDetail, isInternship, linkBack, textBack, isHrPortal } = useHrNavMeta();
+  const { primary, cta } = useNavLinks();
 
-    const doScroll = () => {
-      // close dropdown first, then scroll
-      gsap.to(window, {
-        duration: 0.6,
-        ease: 'power2.out',
-        scrollTo: { y: hash, offsetY: 120 },
-      });
-    };
+  // Прокрутка к якорю или элементу на странице
+  const scrollToAnchor = (hashOrId) => {
+    if (!hashOrId || typeof window === 'undefined') return false;
+    const targetHash = hashOrId.startsWith('#') ? hashOrId : `#${hashOrId}`;
+    const target = document.querySelector(targetHash);
+    if (!target) return false;
 
-    if (location.pathname !== '/company') {
-      // navigate to Company with hash; Company component will also honor the hash
-      closeDropdown(() => navigate(`/company${hash}`));
-      return;
-    }
-    // Already on /company: close dropdown and scroll
-    closeDropdown(doScroll);
+    gsap.to(window, {
+      duration: 0.6,
+      ease: 'power2.out',
+      scrollTo: { y: target, offsetY: 120 },
+    });
+    return true;
   };
 
-  const closeDropdown = (afterClose) => {
+  // Делим путь на базовый маршрут и хеш
+  const getPathParts = (path) => {
+    if (typeof path !== 'string') return { basePath: '', hash: '' };
+    const [basePath, rawHash] = path.split('#');
+    return { basePath, hash: rawHash ? `#${rawHash}` : '' };
+  };
+
+  // Переход к нужному разделу компании с учетом текущей страницы
+  const goToCompanySection = (hashOrId) => {
+    if (!hashOrId) return;
+    const targetHash = hashOrId.startsWith('#') ? hashOrId : `#${hashOrId}`;
+
+    if (pathname !== '/company') {
+      closeDropdown(() => navigate(`/company${targetHash}`));
+      return;
+    }
+    closeDropdown(() => {
+      navigate({ pathname, hash: targetHash }, { replace: true });
+      scrollToAnchor(targetHash);
+    });
+  };
+
+  // Закрытие дропдауна с плавной анимацией
+  const closeDropdown = useCallback((afterClose) => {
     const finish = () => {
       setShowDropdownContent(false);
       setLinkChildren(false);
@@ -63,7 +75,7 @@ const NavBar = () => {
         afterClose();
       }
     };
-    const FADE_MS = 100; // keep in sync with CSS opacity transition
+    const FADE_MS = 100;
     setShowDropdownContent(false);
 
     if (!container.current) {
@@ -78,14 +90,16 @@ const NavBar = () => {
       height: 60,
       onComplete: finish,
     });
-  };
+  }, []);
 
+  // Открываем дропдаун по id
   const openDropdown = (id) => {
     setOpenDropDownId(id);
     setLinkChildren(true);
     setShowDropdownContent(false);
   };
 
+  // Переоткрываем дропдаун после закрытия для плавного перехода
   const reopenDropdown = (id) => {
     const reopen = () => openDropdown(id);
     if (typeof window !== 'undefined' && typeof window.requestAnimationFrame === 'function') {
@@ -95,6 +109,7 @@ const NavBar = () => {
     }
   };
 
+  // Навигация по ссылкам с предварительным закрытием меню
   const handlerLink = (path) => {
     if (!path) return;
     closeDropdown(() => {
@@ -102,39 +117,127 @@ const NavBar = () => {
     });
   };
 
+  // Закрытие бургер-меню
   const closeMenu = () => setIsMenuOpen(false);
 
+  // Навигация с учетом хеша и возможной прокрутки
+  const navigateWithHash = (path) => {
+    if (!path) return;
+    const { basePath, hash: targetHash } = getPathParts(path);
+    const sameRoute = !basePath || basePath === pathname;
+    if (targetHash && sameRoute && hash === targetHash) {
+      scrollToAnchor(targetHash);
+      return;
+    }
+    navigate(path);
+  };
+
+  // Навигация из сайдбара
   const handleSidebarNavigate = (path) => {
     if (!path) return;
     closeMenu();
-    handlerLink(path);
+    navigateWithHash(path);
   };
 
+  // Переход к разделам компании из сайдбара
   const handleSidebarCompanySection = (hashOrId) => {
     if (!hashOrId) return;
     closeMenu();
     goToCompanySection(hashOrId);
   };
 
+  const NAV_CLOSED_HEIGHT = 60;
+  const dropdownRef = useRef(null);
+
+  // Рассчитываем высоту раскрытого меню для анимации
+  const getOpenHeight = () => {
+    const dropdownHeight = dropdownRef.current?.getBoundingClientRect().height ?? 0;
+    if (!dropdownHeight) {
+      return openDropDownId === 3 ? 240 : 284; // fallback
+    }
+    return Math.ceil(NAV_CLOSED_HEIGHT + dropdownHeight);
+  };
+
+  // Анимируем изменение высоты навбара при раскрытии дропдауна
   useGSAP(
     () => {
-      if (!container.current) return;
+      if (!container.current || !linkChildren) return;
 
-      if (linkChildren) {
-        // Показать и опустить вниз
-        gsap.to(container.current, {
-          duration: 0.3,
-          height: `${openDropDownId === 3 ? '216px' : '260px'}`,
-          ease: 'none',
-          onStart: () => setShowDropdownContent(false),
-          onComplete: () => setShowDropdownContent(true),
-        });
-      }
+      gsap.to(container.current, {
+        duration: 0.3,
+        height: getOpenHeight(),
+        ease: 'none',
+        onStart: () => setShowDropdownContent(false),
+        onComplete: () => setShowDropdownContent(true),
+      });
     },
-    { dependencies: [linkChildren] }
+    { dependencies: [linkChildren, openDropDownId] }
   );
+
+  // Прокручиваем к форме после загрузки, если в адресе есть #form
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (hash !== '#form') return;
+    let attempts = 0;
+    let retryId;
+    const tryScroll = () => {
+      if (scrollToAnchor(hash) || attempts >= 5) return;
+      attempts += 1;
+      retryId = window.setTimeout(tryScroll, 150);
+    };
+    tryScroll();
+    return () => window.clearTimeout(retryId);
+  }, [hash, pathname]);
+
+  // Закрываем дропдаун при клике или тапе вне него
+  useEffect(() => {
+    if (openDropDownId === null) return;
+
+    const handleClickOutside = (event) => {
+      const dropdownEl = dropdownRef.current;
+      if (dropdownEl && dropdownEl.contains(event.target)) return;
+      closeDropdown();
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [closeDropdown, openDropDownId]);
+
+
+  // Прячем/показываем навбар при прокрутке (кроме страниц вакансии/стажировки)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (isVacancyDetail || isInternship) {
+      setIsNavbarHidden(false);
+      return;
+    }
+    let lastScrollY = window.scrollY;
+    const MIN_DELTA = 4;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (Math.abs(currentScrollY - lastScrollY) < MIN_DELTA) return;
+      const nextDirection = currentScrollY > lastScrollY ? 'down' : 'up';
+      setIsNavbarHidden(nextDirection === 'down');
+      lastScrollY = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isVacancyDetail, isInternship]);
+
   return (
-    <nav ref={container} className={styles['navbar']}>
+    <nav
+      ref={container}
+      className={clsx(
+        styles['navbar'],
+        isNavbarHidden && styles['navbar--hidden']
+      )}>
       <div className={styles['navbar-top']}>
         {isVacancyDetail ? (
           <Link className={styles['navbar-link_back']} to={linkBack}>
@@ -181,13 +284,17 @@ const NavBar = () => {
                   </button>
                   {openDropDownId === item.id && (
                     <ul
+                      ref={dropdownRef}
                       className={styles['navbar-dropdown']}
                       style={{ opacity: showDropdownContent ? 1 : 0, transition: 'opacity 200ms ease' }}>
-                      {item.children.map((el) => (
-                        <li className={styles['navbar-dropdown-item']} key={el.id} role="menuitem">
-                          <NavLink
-                            to={el.path}
-                            onClick={(event) =>
+                      {item.children.map((el) => {
+                        const isDropdownActive = isRouteActive(pathname, hash, el.path);
+
+                        return (
+                          <li key={el.id} role="menuitem">
+                            <NavLink
+                              to={el.path}
+                              onClick={(event) =>
                               handleCompanyAwareNavigation({
                                 event,
                                 path: el.path,
@@ -197,22 +304,26 @@ const NavBar = () => {
                                 goToCompanySection,
                               })
                             }
-                            className={({ isActive }) => (isActive ? `${styles['navbar-item-active']}` : undefined)}>
-                            <div className={styles['navbar-dropdown-item_label']}>{el.label}</div>
-                            <div className={styles['navbar-dropdown-item_description']}>
-                              {el.description.includes('ведущих') ? (
-                                <>
-                                  {el.description.split('ведущих')[0]}
-                                  <span className={styles['break']}>ведущих</span>
-                                  {el.description.split('ведущих')[1]}
-                                </>
-                              ) : (
-                                el.description
-                              )}
-                            </div>
-                          </NavLink>
-                        </li>
-                      ))}
+                              className={clsx(
+                                styles['navbar-dropdown-item'],
+                                isDropdownActive && styles['navbar-item-active']
+                              )}>
+                              <div className={styles['navbar-dropdown-item_label']}>{el.label}</div>
+                              <div className={styles['navbar-dropdown-item_description']}>
+                                {el.description.includes('ведущих') ? (
+                                  <>
+                                    {el.description.split('ведущих')[0]}
+                                    <span className={styles['break']}>ведущих</span>
+                                    {el.description.split('ведущих')[1]}
+                                  </>
+                                ) : (
+                                  el.description
+                                )}
+                              </div>
+                            </NavLink>
+                          </li>
+                        );
+                      })}
                     </ul>
                   )}
                 </li>
@@ -221,9 +332,18 @@ const NavBar = () => {
               return (
                 <li className={styles['navbar-item']} key={item.id}>
                   {item.external ? (
-                    <a href={item.path} target="_blank" rel="noreferrer">
-                      {item.label}
-                    </a>
+                    item.path.startsWith('/hr/') && isHrPortal ? (
+                      <NavLink
+                        className={({ isActive }) => (isActive ? `${styles['navbar-item-active']}` : undefined)}
+                        to={item.path}
+                        end>
+                        {item.label}
+                      </NavLink>
+                    ) : (
+                      <a href={item.path} target="_blank" rel="noreferrer">
+                        {item.label}
+                      </a>
+                    )
                   ) : (
                     <NavLink
                       to={item.path}
@@ -247,13 +367,15 @@ const NavBar = () => {
                   {label}
                 </a>
               ) : (
-                <NavLink
+                  // кнопка тут
+                <button
                   style={{ opacity: `${isVacancyDetail ? 0 : 1}` }}
                   key={id}
-                  to={path}
-                  className={({ isActive }) => clsx(baseClasses, isActive && styles['navbar-link--active'])}>
+                  className={clsx(baseClasses, styles['navbar-link--active'])}
+                  type="button"
+                  onClick={() => closeDropdown(() => navigateWithHash(path))}>
                   {label}
-                </NavLink>
+                </button>
               );
             })}
           </div>

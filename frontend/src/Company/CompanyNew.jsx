@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+// import { useLocation } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './Company.module.scss';
@@ -18,15 +18,15 @@ import {
   incrementScienceDegree,
 } from '../store/Slice/counterSlice';
 
-import LoadingCircle from '../Loading/LoadingCircle';
+// import LoadingCircle from '../Loading/LoadingCircle';
 
 import bracket from '../icons/bracket.svg';
 import bracket_dark from '../icons/bracket_dark.svg';
-import CompanyFormContacts from '../UI/CompanyFormContacts/CompanyFormContacts';
+// import CompanyFormContacts from '../UI/CompanyFormContacts/CompanyFormContacts';
 import CounterCompanyMobile from '../UI/CounterCompanyMobile';
 import CounterCompanyMobile2 from '../UI/CounterCompanyMobile2';
 import CompanySlider from './CompanySlider/CompanySlider';
-import ModalVacancyFormSend from '../UI/VacancyFormContact/ModalVacancyFormSend';
+// import ModalVacancyFormSend from '../UI/VacancyFormContact/ModalVacancyFormSend';
 import CompanyStaffPublic from './CompanyStaffPublic';
 import { useHashScroll } from './CompanyGroupSlider/hooks/useHashScroll';
 
@@ -51,13 +51,13 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
   const [countHuman, setCountHuman] = useState(0);
   const [countProject, setCountProject] = useState(0);
 
-  const [videoSrc, setVideoSrc] = useState(null);
+  // const [videoSrc, setVideoSrc] = useState(null);
   const [videoSrc2, setVideoSrc2] = useState(null);
 
-  const [isLoadingFormContacts, setIsLoadingFormContacts] = useState(false);
-  const [modalOpenFormContacts, setModalOpenFormContacts] = useState(false);
-  const [isLoadingSubscription] = useState(false);
-  const [modalOpenSubscription, setModalOpenSubscription] = useState(false);
+  // const [isLoadingFormContacts, setIsLoadingFormContacts] = useState(false);
+  // const [modalOpenFormContacts, setModalOpenFormContacts] = useState(false);
+  // const [isLoadingSubscription] = useState(false);
+  // const [modalOpenSubscription, setModalOpenSubscription] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -92,13 +92,13 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
       const screenWidth = window.innerWidth;
       if (screenWidth >= 1025) {
         setVideoSrc2(VIDEO_SOURCE2.large);
-        setVideoSrc(VIDEO_SOURCE.large);
+        // setVideoSrc(VIDEO_SOURCE.large);
       } else if (screenWidth >= 768 && screenWidth <= 1024) {
         setVideoSrc2(VIDEO_SOURCE2.medium);
-        setVideoSrc(VIDEO_SOURCE.medium);
+        // setVideoSrc(VIDEO_SOURCE.medium);
       } else {
         setVideoSrc2(VIDEO_SOURCE2.small);
-        setVideoSrc(VIDEO_SOURCE.medium);
+        // setVideoSrc(VIDEO_SOURCE.medium);
       }
     };
 
@@ -111,7 +111,7 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
     const timer1 = setTimeout(() => {
       if (countPercent < 1300) setCountPercent(countPercent + 20);
       if (countProject < 200) setCountProject(countProject + 5);
-      if (countHuman < 19) setCountHuman(countHuman + 1);
+      if (countHuman < 20) setCountHuman(countHuman + 1);
     }, 50);
     return () => clearTimeout(timer1);
   }, [countPercent, countHuman, countProject]);
@@ -364,7 +364,7 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
             handleMouseHover={handleMouseHover}
           />
         </section>
-        <div className={styles.fon}>
+        {/* <div className={styles.fon}>
           <div className={styles.video_wrapper}>
             {videoSrc && (
               <video playsInline preload="metadata" webkitplaysinline="true" autoPlay muted loop id="bg-video_2">
@@ -480,9 +480,9 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
               </div>
             )}
 
-            {/* <div className={styles.companySubscriptionForm_wrapper}>место под форму подписки</div> */}
+            <div className={styles.companySubscriptionForm_wrapper}>место под форму подписки</div>
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );

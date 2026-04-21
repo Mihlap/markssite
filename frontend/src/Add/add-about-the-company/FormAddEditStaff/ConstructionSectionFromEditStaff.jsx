@@ -7,10 +7,10 @@ import InfoTooltip from './InfoTooltip';
 
 import { useInfoTooltip } from '../utils/useInfoTooltip';
 import { PORTRAIT_CONTAINER_STYLE, PORTRAIT_IMG_STYLE, isPortraitLabel } from '../utils/portraitPreview';
+import { toBucketSrc as utilsToBucketSrc, isFullUrl as utilsIsFullUrl } from '../utils/imageUtils';
 
 const REQUIRED_TEXT_MSG = 'Обязательно для заполнения';
 const REQUIRED_FILE_MSG = 'Обязательно для загрузки';
-
 
 const normalize = (s = '') =>
   String(s)
@@ -46,13 +46,19 @@ function ConstructionSectionFromEditStaff({
   mdUpload,
   mdDelete,
   fieldErrors = {},
+  isHistory = false,
 }) {
   const isFullUrl = (url = '') => /^https?:\/\//i.test(url);
   const toArray = (v) => (Array.isArray(v) ? v : v ? [v] : []);
 
   const toBucketSrc = (val) => {
     if (!val) return '';
-    if (typeof val === 'string' && (val.startsWith('blob:') || isFullUrl(val))) return val;
+    if (typeof val === 'string' && (val.startsWith('blob:') || utilsIsFullUrl(val))) return val;
+    
+    if (isHistory) {
+      return utilsToBucketSrc(val);
+    }
+    
     const base = String(bucket_url || '').replace(/\/+$/, '');
     const key = String(val).replace(/^\/+/, '');
     const normalized = key.startsWith('images/') ? key : `images/imageStaff/imagesFolder/${key}`;
@@ -73,7 +79,7 @@ function ConstructionSectionFromEditStaff({
       if (typeof removed === 'string' && removed.startsWith('blob:')) {
         try {
           URL.revokeObjectURL(removed);
-        } catch {}
+        } catch { }
       }
 
       const newArr = arr.slice(0, previewIndex).concat(arr.slice(previewIndex + 1));
@@ -143,16 +149,23 @@ function ConstructionSectionFromEditStaff({
         ? dynamicPreviews[blockIndex][inputIndex]
         : toArray(dynamicData?.[blockIndex]?.[inputIndex]?.value)) || [];
 
-    const showHelp = labelSafe === 'Портрет сотрудника' || labelSafe === 'Автор цитаты';
+    const showHelp = labelSafe === 'Портрет сотрудника' || labelSafe === 'Автор цитаты' || labelSafe === 'Человек года';
+
     const errKey = `${blockIndex}-${inputIndex}`;
     const hasError = !!fieldErrors[errKey];
     const required = !!dynamicData?.[blockIndex]?.[inputIndex]?.required;
     const blockRequired = !!dynamicData?.[blockIndex]?.[inputIndex]?.blockRequired;
 
     const errorText = inputType === 'file' ? REQUIRED_FILE_MSG : REQUIRED_TEXT_MSG;
- 
+
     const rawVal = dynamicData?.[blockIndex]?.[inputIndex]?.value ?? '';
     const effectiveType = inputType && String(inputType).trim() ? inputType : hasListHtml(rawVal) ? 'textarea' : 'text';
+
+    const isPersonWithNameBlock =
+      effectiveType === 'file' &&
+      normalize(labelSafe) === 'портрет сотрудника' &&
+      dynamicData?.[blockIndex]?.[inputIndex + 1]?.type === 'text' &&
+      normalize(dynamicData[blockIndex][inputIndex + 1]?.label || '') === 'фио/описание';
 
     const isDot = isDotListLabel(labelSafe) || (effectiveType === 'textarea' && hasListHtml(rawVal));
 
@@ -164,9 +177,8 @@ function ConstructionSectionFromEditStaff({
             style={{ position: 'relative', paddingBottom: hasError ? 22 : 0 }}>
             <input
               type="text"
-              className={`${styles.form_container__heading_block_input} ${styles.orange_color} ${
-                hasError ? styles.input_error : ''
-              }`}
+              className={`${styles.form_container__heading_block_input} ${styles.orange_color} ${hasError ? styles.input_error : ''
+                }`}
               placeholder={(placeholderText || labelSafe || '').trim()}
               value={typeof value === 'string' ? value : Array.isArray(value) ? value.join(', ') : String(value ?? '')}
               aria-invalid={hasError ? 'true' : 'false'}
@@ -203,19 +215,67 @@ function ConstructionSectionFromEditStaff({
 
         {effectiveType === 'file' && (
           <div>
-            <div className={styles.form_container__checkbox_block_constructor}>
-              <div>
-                {labelSafe}
-                {required ? ' *' : ''}
+            <div
+              className={styles.form_container__checkbox_block_constructor}
+              style={{
+                display: 'flex',
+                flexDirection: normalize(labelSafe) === 'человек года' ? 'column' : 'row',
+                alignItems: normalize(labelSafe) === 'человек года' ? 'flex-start' : 'center',
+                gap: 8,
+              }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <div>
+                  {labelSafe}
+                  {required ? ' *' : ''}
+                </div>
+                {normalize(labelSafe) === 'человек года' && (
+                  <span
+                    style={{
+                      color: 'var(--blue-A8DBF6, #75BBFD)',
+                      fontVariantNumeric: 'lining-nums proportional-nums',
+                      fontFamily: 'Raleway',
+                      fontSize: '12px',
+                      fontStyle: 'normal',
+                      fontWeight: 400,
+                      lineHeight: '16px',
+                    }}>
+                    *для отображения в хронике
+                  </span>
+                )}
               </div>
             </div>
 
             <label
-              className={`${styles.slider_container__customFileUploadOrangeColor} ${
-                hasError ? styles.input_error : ''
-              }`}
+              className={`${styles.slider_container__customFileUploadOrangeColor} ${hasError ? styles.input_error : ''
+                }`}
               aria-invalid={hasError ? 'true' : 'false'}
-              aria-describedby={hasError ? `err-${errKey}` : undefined}>
+              aria-describedby={hasError ? `err-${errKey}` : undefined}
+              style={
+                normalize(labelSafe) === 'человек года'
+                  ? {
+                    margin: '8px 0 0 0',
+                    backgroundColor: '#BADDFE',
+                  }
+                  : isPersonWithNameBlock
+                    ? {
+                      marginBottom: 8,
+                    }
+                    : undefined
+              }
+              onMouseEnter={
+                normalize(labelSafe) === 'человек года'
+                  ? (e) => {
+                    e.currentTarget.style.backgroundColor = '#9BCDFD';
+                  }
+                  : undefined
+              }
+              onMouseLeave={
+                normalize(labelSafe) === 'человек года'
+                  ? (e) => {
+                    e.currentTarget.style.backgroundColor = '#BADDFE';
+                  }
+                  : undefined
+              }>
               <input
                 type="file"
                 accept={isVideo ? 'video/*' : undefined}
@@ -252,7 +312,16 @@ function ConstructionSectionFromEditStaff({
             {showHelp && <HelpButton />}
 
             {hasError && (
-              <div id={`err-${errKey}`} className={styles.required_hint} style={{ marginTop: -10 }}>
+              <div
+                id={`err-${errKey}`}
+                className={styles.required_hint}
+                style={
+                  normalize(labelSafe) === 'человек года'
+                    ? { marginTop: 2 }
+                    : isPersonWithNameBlock && normalize(labelSafe) === 'портрет сотрудника'
+                      ? { marginTop: 0 }
+                      : { marginTop: -10 }
+                }>
                 {REQUIRED_FILE_MSG}
               </div>
             )}
@@ -329,19 +398,20 @@ function ConstructionSectionFromEditStaff({
                     ? arrToUl(value)
                     : value || ''
                   : typeof value === 'string'
-                  ? value
-                  : Array.isArray(value)
-                  ? value.join('\n')
-                  : String(value ?? '')
+                    ? value
+                    : Array.isArray(value)
+                      ? value.join('\n')
+                      : String(value ?? '')
               }
               onChange={(v) => {
-                handleDynamicInputChange(blockIndex, inputIndex, v);
+                const cleanValue = String(v || '').trim();
+                const isEmpty = !cleanValue || cleanValue === '<p><br></p>' || cleanValue === '<p></p>';
+                handleDynamicInputChange(blockIndex, inputIndex, isEmpty ? '' : v);
               }}
               placeholder={(placeholderText || labelSafe || 'Нет ограничения по символам').trim()}
               scopeKey={`${blockIndex}-${inputIndex}`}
               labelStyle={normalize(labelSafe) === 'цитата' ? { paddingTop: 16 } : undefined}
               showToolbar={isDot ? true : normalize(labelSafe) !== 'текстовый блок выделенный'}
-              defaultList={isDot ? 'bullet' : undefined}
               classNameInput={`${hasError ? styles.input_error : ''}`}
               error={hasError}
               ariaInvalid={hasError ? 'true' : 'false'}
@@ -374,8 +444,23 @@ function ConstructionSectionFromEditStaff({
 
   const renderInputs = (inputs, blockIndex) => {
     if (!Array.isArray(inputs)) return null;
+
+    const firstInput = inputs[0];
+    const isPersonOfYearBlock =
+      firstInput?.type === 'file' &&
+      normalize(firstInput?.label || '') === 'человек года';
+    const isPersonWithNameBlock =
+      firstInput?.type === 'file' &&
+      normalize(firstInput?.label || '') === 'портрет сотрудника' &&
+      inputs[1]?.type === 'text' &&
+      normalize(inputs[1]?.label || '') === 'фио/описание';
+    const isHistorySpecialBlock = isPersonOfYearBlock || isPersonWithNameBlock;
+
     return (
-      <div key={blockIndex} className={styles.blockContainer}>
+      <div
+        key={blockIndex}
+        className={styles.blockContainer}
+        style={isHistorySpecialBlock ? { paddingTop: 16 } : undefined}>
         {inputs.map((input, inputIndex) =>
           renderInputWithLabel(
             input.type,

@@ -1,0 +1,314 @@
+@import '../../../App.css';
+
+.blockHistory {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.itemsWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px 0 0;
+}
+
+.item {
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  height: 4.625rem;
+  border-radius: 1rem;
+
+  &.draggable {
+    cursor: grab;
+  }
+
+  .dragHandle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-left: 24px;
+  }
+
+  .year {
+    min-width: 64px;
+    max-width: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-family: var(--font-raleway);
+    font-style: normal;
+    font-weight: var(--fw-700);
+    font-size: 16px;
+    color: var(--black-1D2E43);
+    line-height: 24px;
+  }
+
+  .body {
+    flex: 1 1 auto;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    border-radius: 12px;
+    background: var(--light-light-gray-EBECEE);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .title {
+    font-family: var(--font-raleway);
+    font-weight: var(--fw-400);
+    font-size: 16px;
+    color: var(--black-1D2E43);
+    line-height: 24px;
+    font-style: normal;
+    text-align: left;
+    max-width: 80%;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.3s ease;
+  }
+
+  .text {
+    font-family: var(--font-raleway);
+    font-size: 16px;
+    line-height: 1.4;
+    color: var(--dark-gray-566269);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    transition: color 0.3s ease;
+  }
+
+  .buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+.lookBlock,
+.editBlock,
+.deleteBlock {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: var(--blue-75BBFD);
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: var(--dark-blue-389FFF);
+  }
+
+  &.disabled {
+    background-color: var(--light-gray-C0C5CB);
+    cursor: default;
+
+    &:hover {
+      background-color: var(--light-gray-C0C5CB);
+    }
+  }
+}
+
+.nullHistory {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 25vh;
+  text-align: center;
+  font-family: var(--font-unbounded);
+  font-size: 1rem;
+  line-height: 2.5rem;
+  font-weight: 300;
+  color: var(--light-gray-C0C5CB);
+}
+
+.toggleWrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.toggleButton {
+  display: inline-flex;
+  padding: 8px 16px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 34px;
+  background: var(--light-light-gray-EBECEE);
+  border: none;
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: var(--fw-400);
+  line-height: 20px;
+  color: var(--black-1D2E43);
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+
+
+.toggleButton:hover {
+  border-radius: 34px;
+  background: var(--light-gray-C0C5CB, #C0C5CB);
+  color: var(--white-F6F6F6, #F6F6F6);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: var(--fw-400);
+  line-height: 20px;
+}
+
+.toggleButton:active {
+  transform: scale(0.98);
+}
+
+.toggleIcon {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.35s ease, filter 0.3s ease;
+}
+
+.toggleButton:hover .toggleIcon {
+  filter: brightness(0) invert(1);
+}
+
+.toggleIconRotated {
+  transform: rotate(180deg);
+}
+
+.historyHeaderBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.historyHeaderLabel {
+  color: var(--gray-959DA6);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: Raleway;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.historyPreviewCard {
+  margin-top: 16px;
+  padding: 36px 15px 32px 15px;
+  border-radius: 6px;
+  background-color: var(--light-light-gray-EBECEE);
+}
+
+.historyPreviewHeader {
+  display: flex;
+  flex-direction: column;
+}
+
+.historyPreviewTitleRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.historyPreviewSub {
+  color: var(--blue-75BBFD);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: var(--fw-400);
+  line-height: 16px;
+}
+
+.historyPreviewActions {
+  display: inline-flex;
+  gap: 8px;
+}
+
+.yearMenuList {
+  position: relative;
+}
+
+.yearMenuHighlight {
+  position: sticky;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 32px;
+  background-color: var(--light-blue-D4EDFB);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.historyPreviewQuill {
+  border-radius: 6px;
+  border: 1px solid var(--light-blue-D4EDFB);
+  background: var(--white-F6F6F6);
+}
+
+.historyPreviewQuill_error {
+  border-color: var(--crimson-E00747);
+}
+
+.historyPreviewBody {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.historyPreviewTextWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+
+  :global(.qlScope-historyPreviewText) {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    .ql-container {
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    .ql-editor {
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+  }
+}

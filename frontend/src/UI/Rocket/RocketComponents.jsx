@@ -1,10 +1,32 @@
-import React, { useRef, useState, useEffect, useCallback, Suspense } from 'react';
+import React, { useRef, useState, useEffect, useCallback, Suspense, Component } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { EffectComposer, N8AO, ToneMapping } from '@react-three/postprocessing';
 import Show, { preloadShoeModel } from './Show';
 import Planet from './Planet';
 
 preloadShoeModel();
+
+class ErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('Canvas Error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return null;
+    }
+    return this.props.children;
+  }
+}
 
 function isWebGLAvailable() {
   if (typeof window === 'undefined') return false;
@@ -19,6 +41,7 @@ function isWebGLAvailable() {
 
 const Rocket = () => {
   const light = useRef();
+  const resizeRaf = useRef();
 
   const [containerStyle, setContainerStyle] = useState({
     position: 'fixed',
@@ -30,10 +53,11 @@ const Rocket = () => {
   });
 
   const [webglSupported, setWebglSupported] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   const handleResize = useCallback(() => {
     const screenWidth = window.innerWidth;
-    let width = '25%';   
+    let width = '25%';
 
     if (screenWidth >= 3500) width = '40%';
     else if (screenWidth >= 3000) width = '45%';
@@ -52,15 +76,26 @@ const Rocket = () => {
 
   useEffect(() => {
     setWebglSupported(isWebGLAvailable());
+    // Отложенная инициализация Canvas для избежания ошибки registerRenderer
+    const timer = setTimeout(() => {
+      setMounted(true);
+    }, 100);
 
-    window.addEventListener('resize', handleResize);
+    const onResize = () => {
+      if (resizeRaf.current) cancelAnimationFrame(resizeRaf.current);
+      resizeRaf.current = requestAnimationFrame(handleResize);
+    };
+
+    window.addEventListener('resize', onResize);
     handleResize();
     return () => {
-      window.removeEventListener('resize', handleResize);
+      clearTimeout(timer);
+      window.removeEventListener('resize', onResize);
+      if (resizeRaf.current) cancelAnimationFrame(resizeRaf.current);
     };
   }, [handleResize]);
 
-  if (!webglSupported) {
+  if (!webglSupported || !mounted) {
     return (
       <div style={containerStyle}>
         <div
@@ -76,13 +111,16 @@ const Rocket = () => {
 
   return (
     <div style={containerStyle}>
-      <Canvas
-        flat
-        shadows
-        gl={{ preserveDrawingBuffer: true, alpha: true }}
-        camera={{ position: [0, 0, 80], fov: 30, near: 1, far: 3000 }}>
+      <ErrorBoundary>
+        <Canvas
+          key={`rocket-canvas-${webglSupported}-${mounted}`}
+          flat
+          shadows
+          dpr={[1, 1.5]}
+          gl={{ preserveDrawingBuffer: false, alpha: true }}
+          camera={{ position: [0, 0, 80], fov: 30, near: 1, far: 3000 }}>
         <ambientLight intensity={2} color="#91c8fc" />
-        <directionalLight castShadow position={[-10, -20, 50]} intensity={2.4} shadow-mapSize={1024} />
+        <directionalLight castShadow position={[-10, -20, 50]} intensity={2.4} shadow-mapSize={512} />
         <pointLight ref={light} intensity={1400} color="#389FFF" decay={2} distance={600} position={[-10, 4, 45]} />
         <pointLight ref={light} intensity={14000} color="#8d3e10" distance={600} position={[20, -15, 36]} />
         <pointLight ref={light} intensity={0} color="white" decay={2} distance={600} position={[12, 3, 38]} />
@@ -92,11 +130,12 @@ const Rocket = () => {
           <Show />
         </Suspense>
 
-        <EffectComposer>
-          {typeof N8AO === 'function' && <N8AO aoRadius={1.5} intensity={5} color="grey" quality="ultra" />}
-          <ToneMapping />
-        </EffectComposer>
-      </Canvas>
+          <EffectComposer>
+            {typeof N8AO === 'function' && <N8AO aoRadius={1.2} intensity={3} color="grey" quality="performance" />}
+            <ToneMapping />
+          </EffectComposer>
+        </Canvas>
+      </ErrorBoundary>
     </div>
   );
 };

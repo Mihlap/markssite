@@ -5,6 +5,13 @@
   flex-direction: column;
   height: 100%;
   width: 100%;
+  padding-bottom: 60px;
+}
+
+@media screen and (max-width: 1024px) {
+  .company_main {
+    padding-bottom: 40px;
+  }
 }
 
 .company_intro {
@@ -778,7 +785,7 @@
   .modal_wrapper {
     width: 29rem;
     height: auto;
-    top: 51px;
+    // top: 51px;
   }
 
   .modal_context {
@@ -1104,7 +1111,7 @@
     width: 100%;
     height: auto;
     overflow-y: scroll;
-    top: 51px;
+    // top: 51px;
   }
 
   .modal_context {

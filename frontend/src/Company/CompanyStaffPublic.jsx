@@ -19,7 +19,7 @@ const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 const CAT_META = [
   { name: 'Руководство', key: 'leadership' },
   { name: 'Научно-техническое сопровождение', key: 'science' },
-  // { name: 'HR', key: 'hr' },
+  { name: 'HR', key: 'hr' },
 ];
 
 const norm = (s) =>
@@ -84,11 +84,14 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
 
   const [category, setCategory] = useState(null);
   const [activeButton, setActiveButton] = useState(null);
+  const [isSwitchingCategory, setIsSwitchingCategory] = useState(false);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
 
   const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth <= 767 : false);
+
+  const showSkeleton = loading || isSwitchingCategory;
 
   useEffect(() => {
     dispatch(fetchStaffCategoryTogglesAsync());
@@ -193,10 +196,26 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
     document.body.classList.remove('modal-open');
   }, []);
 
-  const onCategoryClick = useCallback((cat) => {
-    setActiveButton(cat);
-    setCategory(cat);
-  }, []);
+  const onCategoryClick = useCallback(
+    (cat) => {
+      if (cat === category) return;
+
+      setIsSwitchingCategory(true);
+      setActiveButton(cat);
+      setCategory(cat);
+    },
+    [category]
+  );
+
+  useEffect(() => {
+    if (!loading && isSwitchingCategory) {
+      const t = setTimeout(() => {
+        setIsSwitchingCategory(false);
+      }, 150);
+
+      return () => clearTimeout(t);
+    }
+  }, [loading, isSwitchingCategory]);
 
   return (
     <>
@@ -240,11 +259,13 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
         )}
       </div>
 
-      <div className={styles.card_container} style={{ opacity: loading ? 0.4 : 1, transition: 'opacity 0.3s ease' }}>
+      <div
+        className={styles.card_container}
+        style={{ opacity: showSkeleton ? 0.4 : 1, transition: 'opacity 0.3s ease' }}>
         <ul className={styles.card_container_ul}>
           {error ? (
             <div className={styles.error}>Ошибка: {String(error)}</div>
-          ) : loading ? (
+          ) : showSkeleton ? (
             <SkeletonLoader itemCount={8} />
           ) : ordered?.length ? (
             ordered.map((el) => (
@@ -280,7 +301,7 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
 
       {isMobile && (
         <div className={styles.slider_card_wrapper}>
-          {loading ? (
+          {showSkeleton ? (
             <SkeletonLoaderSlider itemCount={8} isMobile />
           ) : (
             <Swiper
@@ -316,10 +337,9 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
           )}
         </div>
       )}
-
       {!isMobile && (
         <div className={styles.slider_card_wrapper}>
-          {loading ? (
+          {showSkeleton ? (
             <SkeletonLoaderSlider itemCount={8} isMobile={false} />
           ) : (
             <Swiper
@@ -355,7 +375,6 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
           )}
         </div>
       )}
-
       {isModalOpen && selectedCard && (
         <Modal
           className={styles.modal_wrapper}

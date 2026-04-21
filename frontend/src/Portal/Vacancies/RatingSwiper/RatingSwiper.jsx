@@ -4,7 +4,7 @@ import { fetchSlides } from '../../../store/Slice/vacancyMainSlideCardSlice';
 import styles from './RatingSwiper.module.scss';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper';
+import { Navigation } from 'swiper/modules';
 import ArrowsSwiper from '../ArrowsSwiper/ArrowsSwiper';
 import 'swiper/css';
 import 'swiper/css/navigation';

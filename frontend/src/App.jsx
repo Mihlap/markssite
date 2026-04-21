@@ -29,7 +29,8 @@ import PageFade from './UI/PageFade/PageFade';
 import ButtonAdmin from './UI/ButtonAdmin/ButtonAdmin';
 import CustomCursor from './UI/CustomCursor/CustomCursor';
 import CookieComponent from './UI/CookieComponent/CookieComponent';
-import LoadingNew from './Loading/LoadingNew';
+import Loading from './Loading/LoadingNew';
+// import Loading from './UI/Loading/christmas/Loading';
 
 const Header = lazy(() => import('./Header/Header'));
 const Contacts = lazy(() => import('./Contacts/Contacts'));
@@ -66,7 +67,6 @@ const AddHRPortal = lazy(() => import('./Add/add-hr-portal/AddHRPortal'));
 const AddCompany = lazy(() => import('./Add/add-about-the-company/AddCompany'));
 const Applications = lazy(() => import('./Add/applications/Applications'));
 
-const LoadingModal = lazy(() => import('./Add/add-project/loading/LoadingModal'));
 const NotFound = lazy(() => import('./NotFound/NotFound'));
 
 export default function App() {
@@ -370,15 +370,6 @@ export default function App() {
                 }
               />
 
-              <Route
-                path="/test"
-                element={
-                  <PageFade>
-                    <LoadingModal />
-                  </PageFade>
-                }
-              />
-
               {user && (
                 <Route
                   path="/admin/*"
@@ -392,7 +383,18 @@ export default function App() {
                   <Route path="add-a-project" element={<AddProject user={user} />} />
                   <Route path="add-a-articles" element={<AddArticles user={user} />} />
                   <Route path="add-hr-portal" element={<AddHRPortal user={user} />} />
-                  <Route path="add-a-company" element={<AddCompany user={user} />} />
+                  <Route
+                    path="add-a-company"
+                    element={
+                      user?.name === 'hr778' ? (
+                        <PageFade>
+                          <AddHRPortal user={user} />
+                        </PageFade>
+                      ) : (
+                        <AddCompany user={user} />
+                      )
+                    }
+                  />
                   <Route path="add-a-applications" element={<Applications />} />
                 </Route>
               )}
@@ -435,7 +437,7 @@ export default function App() {
 
         {shouldShowGlobalLoader && (
           <div className="app-shell__loaderOverlay">
-            <LoadingNew isReady={isReady} onFinish={() => setLoading(false)} />
+            <Loading isReady={isReady} onFinish={() => setLoading(false)} />
           </div>
         )}
       </div>

@@ -6,7 +6,8 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Navigation } from 'swiper';
+import SwiperCore from 'swiper';
+import { Navigation } from 'swiper/modules';
 
 import SwiperContainer from './Swiper-Phone/SwiperContainer';
 import SwiperContainerProject from './Swiper-project/SwiperContainerProject';
@@ -46,6 +47,7 @@ const Header = React.memo(
 
     const [, setCurrentSlideIndex] = useState(0);
     const [videoSrc, setVideoSrc] = useState(null);
+    const [isDesktopRewardsTitle, setIsDesktopRewardsTitle] = useState(window.innerWidth >= 1025);
     const sliderCardRef = useRef(null);
 
     const { error } = useSelector((state) => state.article);
@@ -68,6 +70,8 @@ const Header = React.memo(
     useEffect(() => {
       const handleResize = () => {
         const screenWidth = window.innerWidth;
+        setIsDesktopRewardsTitle(screenWidth >= 1025);
+
         if (screenWidth >= 1025) {
           setVideoSrc(videoSource.large);
         } else if (screenWidth >= 768 && screenWidth <= 1024) {
@@ -192,13 +196,14 @@ const Header = React.memo(
             </div>
             <div className={styles.heroBadge}>
               <img className={styles.mainIcon} src={mainIcon} alt="" aria-hidden="true" />
-              <span className={styles.heroBadgeText}>
-                Лучший
-                <br />
-                проектировщик
-                <br />
-                жилья в России
-              </span>
+              <div className={styles.heroBadgeTextWrapper}>
+                <span className={styles.heroBadgeText}>
+                  <span className={styles.heroBadgeLine}>Лучший проектировщик</span>
+                  <span className={styles.heroBadgeLine}>жилья в России</span>
+                </span>
+                <div className={styles.heroBadgeDivider} aria-hidden="true" />
+                <span className={`${styles.heroBadgeText} ${styles.heroBadgeTextSingleLine}`}>BIM-компания года</span>
+              </div>
             </div>
             <div className={styles.nameCompanyContainer}>
               <img src={imageSrc} alt={nameCompany} />
@@ -208,10 +213,13 @@ const Header = React.memo(
           </div>
 
           <div className={styles.header_desctop_block}>
-            <h1 className={styles.desctop_title}>Награды и&nbsp;публикации</h1>
+            <h1 className={styles.desctop_title}>
+              {isDesktopRewardsTitle ? 'Награды и публикации' : 'Награды проектов'}
+            </h1>
             <div className={styles.desctop_test}>
               Наша компания участвует в&nbsp;многочисленных выставках, конференциях
-              <br /> и&nbsp;конкурсах. Предлагаем ознакомиться с&nbsp;некоторыми докладами
+              <br className={styles.textBreak} />
+              {" "}и&nbsp;конкурсах. Предлагаем ознакомиться с&nbsp;некоторыми докладами.
             </div>
           </div>
 
@@ -497,9 +505,8 @@ const Header = React.memo(
                   <SwiperSlide
                     key={`${project.IdProject}-${index}`}
                     id="slider_container_item_card"
-                    className={`${styles.slider_container_item_card} ${
-                      index === 0 ? styles.slider_container_item_card_first : ''
-                    }`}
+                    className={`${styles.slider_container_item_card} ${index === 0 ? styles.slider_container_item_card_first : ''
+                      }`}
                     style={index % 2 === 1 ? { paddingTop: '10rem' } : {}}>
                     <Link to={`/projects/${project.id}`} key={`${project.IdProject}-${index}`}>
                       <div className={styles.wrapper_container_item_card}>
@@ -511,9 +518,8 @@ const Header = React.memo(
                           src={
                             project.imageProject?.includes('https')
                               ? project.imageProject
-                              : `${bucket_url}/images/imageAdd/${
-                                  project.imageProject ? project.imageProject : project.imageTitle
-                                }`
+                              : `${bucket_url}/images/imageAdd/${project.imageProject ? project.imageProject : project.imageTitle
+                              }`
                           }
                           alt={project.imageProject ? project.imageProject : project.imageTitle}
                           onError={(e) => {

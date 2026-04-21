@@ -1,11 +1,13 @@
-import React, { useRef, useState, useEffect, useMemo } from 'react';
+import React, { useRef, useState, useEffect, useMemo, lazy, Suspense } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import clsx from 'clsx';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import clsx from 'clsx';
-import { Link, NavLink, useLocation } from 'react-router-dom';
-
-import styles from '../style.module.scss';
 import { handleCompanyAwareNavigation, isRouteActive } from '../utils/navigation';
+import { useHrNavMeta } from '../hooks/useHrNavMeta';
+import styles from '../style.module.scss';
+
+const Logo = lazy(() => import('../logo/Logo'));
 
 export default function SideBar({
   isMenuOpen,
@@ -17,8 +19,11 @@ export default function SideBar({
   onCloseMenu,
 }) {
   const sidebarRef = useRef(null);
-  const { pathname, hash } = useLocation();
   const [openDropdownId, setOpenDropdownId] = useState(null);
+
+  // сustom hooks
+  const { pathname, hash, isVacancyDetail, linkBack, textBack, showSidebarLogo, isHrPortal } = useHrNavMeta();
+  const contactEmail = isHrPortal ? 'hr@marksgroup.ru' : 'mail@marksgroup.ru';
 
   const activeDropdownId = useMemo(() => {
     const dropdown = primary.find(
@@ -47,7 +52,6 @@ export default function SideBar({
         );
       } else {
         gsap.to(sidebarRef.current, {
-          zIndex: 1,
           x: '-100%',
           autoAlpha: 0,
           duration: 0.3,
@@ -89,14 +93,20 @@ export default function SideBar({
       className={clsx(styles['navbar-sidebar'], isMenuOpen && styles['navbar-sidebar--visible'])}
       aria-hidden={!isMenuOpen}>
       <div className={styles['navbar-sidebar-content']}>
+        <Suspense fallback={<>loading...</>}>
+          <Logo isSideBar={true} />
+        </Suspense>
         <nav className={styles['navbar-sidebar-nav']}>
-          <ul className={styles['navbar-sidebar-list']}>
+          <ul className={clsx(styles['navbar-sidebar-list'], isHrPortal && styles['navbar-sidebar-list--with-logo'])}>
             {primary.map((item) => {
               const hasChildren = Array.isArray(item.children) && item.children.length > 0;
               const parentActive =
                 hasChildren && item.children.some((child) => isRouteActive(pathname, hash, child.path))
                   ? true
                   : isRouteActive(pathname, hash, item.path);
+              const openInNewTab =
+                item?.external && !(isHrPortal && typeof item.path === 'string' && item.path.startsWith('/hr/'));
+              const isActive = isRouteActive(pathname, hash, item.path);
 
               if (hasChildren) {
                 return (
@@ -129,14 +139,16 @@ export default function SideBar({
                     {openDropdownId === item.id && (
                       <ul className={styles['navbar-sidebar-sublist']}>
                         {item.children.map((child) => {
+                          const isChildActive = isRouteActive(pathname, hash, child.path);
                           const cut = child.description.replace(/(статьи).*/i, '$1');
                           return (
                             <li key={child.id} className={styles['navbar-sidebar-subitem']}>
                               <NavLink
                                 to={child.path}
-                                className={({ isActive }) =>
-                                  clsx(styles['navbar-sidebar-link'], isActive && styles['navbar-sidebar-link--active'])
-                                }
+                                className={clsx(
+                                  styles['navbar-sidebar-link'],
+                                  isChildActive && styles['navbar-sidebar-link--active']
+                                )}
                                 onClick={handleChildNavigate(child)}>
                                 <div className={styles['navbar-sidebar-linkLabel']}>{child.label}</div>
 
@@ -149,6 +161,21 @@ export default function SideBar({
                         })}
                       </ul>
                     )}
+                  </li>
+                );
+              }
+
+              if (openInNewTab) {
+                return (
+                  <li key={item.id} className={styles['navbar-sidebar-item']}>
+                    <a
+                      href={item.path}
+                      className={clsx(styles['navbar-sidebar-link'], isActive && styles['navbar-sidebar-link--active'])}
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={handleExternalClick}>
+                      {item.label}
+                    </a>
                   </li>
                 );
               }
@@ -175,18 +202,58 @@ export default function SideBar({
               if (external) {
                 return (
                   <ul key={id} className={styles['navbar-sidebar-cta--contact-list']}>
+                    {!isVacancyDetail && (
+                      <li className={styles['navbar-sidebar-cta--contact-item']}>
+                        <a href={path} target="_blank" rel="noreferrer" onClick={handleExternalClick}>
+                          {label}
+                        </a>
+                      </li>
+                    )}
                     <li className={styles['navbar-sidebar-cta--contact-item']}>
-                      <a href={path} target="_blank" rel="noreferrer" onClick={handleExternalClick}>
-                        {label}
-                      </a>
-                    </li>
-                    <li className={styles['navbar-sidebar-cta--contact-item']}>
-                      <a href="mailto:mail@marksgroup.ru">mail@marksgroup.ru</a>
+                      <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
                     </li>
                     <li className={styles['navbar-sidebar-cta--contact-item']}>
                       <a href="tel:+74951201226">+7 (495) 120-12-26</a>
                     </li>
                   </ul>
+                );
+              }
+              // вот эта кнопка
+              if (isVacancyDetail) {
+                return (
+                  <React.Fragment key={id}>
+                    <Link to={linkBack} className={styles['navbar-link_back']} onClick={handleNavigate(linkBack)}>
+                      Все {textBack}
+                    </Link>
+                    <ul className={styles['navbar-sidebar-cta--contact-list']}>
+                      <li className={styles['navbar-sidebar-cta--contact-item']}>
+                        <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+                      </li>
+                      <li className={styles['navbar-sidebar-cta--contact-item']}>
+                        <a href="tel:+74951201226">+7 (495) 120-12-26</a>
+                      </li>
+                    </ul>
+                  </React.Fragment>
+                );
+              } else if (showSidebarLogo) {
+                return (
+                  <React.Fragment key={id}>
+                    <Link
+                      key={id}
+                      to={path}
+                      className={styles['navbar-sidebar-cta--btn']}
+                      onClick={handleNavigate(path)}>
+                      {label}
+                    </Link>
+                    <ul className={styles['navbar-sidebar-cta--contact-list']}>
+                      <li className={styles['navbar-sidebar-cta--contact-item']}>
+                        <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+                      </li>
+                      <li className={styles['navbar-sidebar-cta--contact-item']}>
+                        <a href="tel:+74951201226">+7 (495) 120-12-26</a>
+                      </li>
+                    </ul>
+                  </React.Fragment>
                 );
               }
 

@@ -1,1 +1,6 @@
 node_modules
+.cursor/
+
+# webpack cache
+frontend/.webpack-cache/
+
