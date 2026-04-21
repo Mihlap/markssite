@@ -242,7 +242,8 @@ const JournalForm = forwardRef(function JournalForm(
   useEffect(() => {
     return () => {
       tempFilesRef.current.forEach((url) => {
-        dispatch(deleteMarkdownFile(url)).unwrap().catch(console.error);
+        // dispatch(deleteMarkdownFile(url)).unwrap().catch(console.error);
+        console.log('here');
       });
       dispatch(clearFormData());
     };
@@ -279,6 +280,10 @@ const JournalForm = forwardRef(function JournalForm(
       }
     });
 
+    // Clear before await: the dialog unmounts JournalForm during loading (isSubmitting → isFormLoading),
+    // which triggers the cleanup effect. Clearing here prevents it from deleting uploaded S3 files.
+    tempFilesRef.current = [];
+
     if (editJournalData) {
       await dispatch(updateJournal({ journalId: editJournalData.id, formData: formDataToSend })).unwrap();
     } else {
@@ -288,7 +293,6 @@ const JournalForm = forwardRef(function JournalForm(
 
     reset(EMPTY_VALUES);
     dispatch(clearFormData());
-    tempFilesRef.current = [];
     onSuccess?.();
   };
 
