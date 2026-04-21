@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import compressImageFile from 'browser-image-compression';
 
-import { UiMarksInput, UiMarksSelect, UiMarksGrayWrap, UiPhotoPreview, UiMarksButton } from '../../../ui';
-import MarkdownEditor from '../../../../UI/MarkdownEditor/MarkdownEditor';
+import { UiMarksInput, UiMarksSelect, UiMarksGrayWrap, UiPhotoPreview, UiMarksButton, UiMarksMarkDown } from '../../../ui';
+// import MarkdownEditor from '../../../../UI/MarkdownEditor/MarkdownEditor';
 
 import {
   createJournal,
@@ -239,15 +239,6 @@ const JournalForm = forwardRef(function JournalForm(
     };
   }, [editJournalData, dispatch, reset]);
 
-  useEffect(() => {
-    return () => {
-      tempFilesRef.current.forEach((url) => {
-        // dispatch(deleteMarkdownFile(url)).unwrap().catch(console.error);
-        console.log('here');
-      });
-      dispatch(clearFormData());
-    };
-  }, [dispatch]);
 
   const onSubmit = async (data) => {
     const formDataToSend = new FormData();
@@ -449,8 +440,15 @@ const JournalForm = forwardRef(function JournalForm(
         Добавить город, страну
       </UiMarksButton>
       <UiMarksGrayWrap customStyles={{ padding: '16px' }}>
-        <MarkdownEditor
+        {/* <MarkdownEditor
           value={markdown}
+          onChange={handleChange}
+          onUploadFile={handleUpload}
+          onDeleteFile={handleDelete}
+          onTempFilesChange={(files) => (tempFilesRef.current = files)}
+        /> */}
+        <UiMarksMarkDown
+        value={markdown}
           onChange={handleChange}
           onUploadFile={handleUpload}
           onDeleteFile={handleDelete}
