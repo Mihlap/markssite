@@ -1,9 +1,9 @@
-import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { DevTool } from '@hookform/devtools';
 import { UiMarksInput, UiMarksSelect, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
-import { createStaffAsync, updateStaffAsync } from '../../../store/Slice/StaffSliceNew';
+import { createStaffAsync, updateStaffAsync, uploadStaffMarkdownFile } from '../../../store/Slice/StaffSliceNew';
 import s from './Styles.module.css';
 import ConstructorMain from '../../constructor/ConstructorMain';
 import { staff_items } from '../../constructor/config/config';
@@ -117,6 +117,11 @@ const StaffForm = forwardRef(function StaffForm(
 ) {
   const dispatch = useDispatch();
   const photoAvaRef = useRef(null);
+
+  const handleMarkdownUpload = useCallback(
+    (file) => dispatch(uploadStaffMarkdownFile(file)).unwrap(),
+    [dispatch]
+  );
 
   const {
     control,
@@ -310,7 +315,7 @@ const StaffForm = forwardRef(function StaffForm(
       {constructorBlocks.map((block, index) => {
         const Component = BLOCK_COMPONENTS[block.type];
         if (!Component) return null;
-        return <Component key={block.id} control={control} index={index} onRemove={() => remove(index)} />;
+        return <Component key={block.id} control={control} index={index} onRemove={() => remove(index)} onUploadFile={handleMarkdownUpload} />;
       })}
     </form>
     <DevTool control={control} placement="top-right" />

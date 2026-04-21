@@ -1,8 +1,8 @@
-import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { UiMarksInput, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap, UiMarksSelect } from '../../ui';
-import { createHistoryItem, updateHistoryItem } from '../../../store/Slice/companyHistorySlice';
+import { createHistoryItem, updateHistoryItem, uploadHistoryMarkdownFile } from '../../../store/Slice/companyHistorySlice';
 import ConstructorMain from '../../constructor/ConstructorMain';
 import { history_items } from '../../constructor/config/config';
 import { BLOCK_COMPONENTS } from '../../constructor/blocks';
@@ -129,6 +129,11 @@ const HistoryForm = forwardRef(function HistoryForm(
 ) {
   const dispatch = useDispatch();
   const previewImageRef = useRef(null);
+
+  const handleMarkdownUpload = useCallback(
+    (file) => dispatch(uploadHistoryMarkdownFile(file)).unwrap(),
+    [dispatch]
+  );
 
   const {
     control,
@@ -319,7 +324,7 @@ const HistoryForm = forwardRef(function HistoryForm(
       {constructorBlocks.map((block, index) => {
         const Component = BLOCK_COMPONENTS[block.type];
         if (!Component) return null;
-        return <Component key={block.id} control={control} index={index} onRemove={() => remove(index)} />;
+        return <Component key={block.id} control={control} index={index} onRemove={() => remove(index)} onUploadFile={handleMarkdownUpload} />;
       })}
     </form>
   );
