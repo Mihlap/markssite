@@ -6,7 +6,8 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Navigation } from 'swiper';
+import SwiperCore from 'swiper';
+import { Navigation } from 'swiper/modules';
 
 import SwiperContainer from './Swiper-Phone/SwiperContainer';
 import SwiperContainerProject from './Swiper-project/SwiperContainerProject';
@@ -197,11 +198,8 @@ const Header = React.memo(
               <img className={styles.mainIcon} src={mainIcon} alt="" aria-hidden="true" />
               <div className={styles.heroBadgeTextWrapper}>
                 <span className={styles.heroBadgeText}>
-                  Лучший
-                  <br />
-                  проектировщик
-                  <br />
-                  жилья в России
+                  <span className={styles.heroBadgeLine}>Лучший проектировщик</span>
+                  <span className={styles.heroBadgeLine}>жилья в России</span>
                 </span>
                 <div className={styles.heroBadgeDivider} aria-hidden="true" />
                 <span className={`${styles.heroBadgeText} ${styles.heroBadgeTextSingleLine}`}>BIM-компания года</span>
