@@ -899,26 +899,33 @@ module.exports = {
       },
     ];
 
-    const rows = SEED.map((row, idx) => {
-      const catArray = Array.isArray(row.category)
-        ? row.category
-        : row.category
-        ? [row.category]
-        : [];
-      return {
-        ...row,
-        category: asJsonb(catArray),
-        isVisible: typeof row.isVisible === 'boolean' ? row.isVisible : true,
-        sortIndex: Number.isFinite(row.sortIndex) ? row.sortIndex : idx,
-        createdAt: row.createdAt || new Date(),
-        updatedAt: row.updatedAt || new Date(),
-      };
-    });
+    const existingStaff = await queryInterface.sequelize.query(
+      `SELECT name FROM "StaffNews"`,
+      { type: Sequelize.QueryTypes.SELECT }
+    );
 
-    await queryInterface.bulkInsert({ tableName: 'StaffNews', schema: 'public' }, rows, {});
+    const existingNames = new Set(existingStaff.map(s => s.name));  
+    const staffToInsert = SEED.filter(row => !existingNames.has(row.name));
+
+    if (staffToInsert.length === 0) {
+      console.log('Нет новых сотрудников для добавления');
+      return;
+    }
+ 
+    const rows = staffToInsert.map((row, idx) => ({
+      ...row,
+      category: asJsonb(Array.isArray(row.category) ? row.category : row.category ? [row.category] : []),
+      isVisible: true,
+      sortIndex: idx,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }));
+
+    await queryInterface.bulkInsert('StaffNews', rows, {});
+    console.log(`Добавлено ${rows.length} новых сотрудников`);
   },
-
-  async down(queryInterface) {
-    await queryInterface.bulkDelete({ tableName: 'StaffNews', schema: 'public' }, null, {});
+ 
+  async down(queryInterface, Sequelize) {
+    console.log('⚠️ Откат миграции StaffNews пропущен — данные сохранены');
   },
 };
