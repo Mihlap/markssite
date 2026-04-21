@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import compressImageFile from 'browser-image-compression';
 
-import { UiMarksInput, UiMarksSelect, UiMarksGrayWrap, UiPhotoPreview, UiMarksButton, UiMarksMarkDown } from '../../../ui';
+import { UiMarksInput, UiMarksSelect, UiMarksGrayWrap, UiPhotoPreview, UiMarksButton } from '../../../ui';
+import MarkdownEditor from '../../../../UI/MarkdownEditor/MarkdownEditor';
 
 import {
   createJournal,
@@ -444,8 +445,7 @@ const JournalForm = forwardRef(function JournalForm(
         Добавить город, страну
       </UiMarksButton>
       <UiMarksGrayWrap customStyles={{ padding: '16px' }}>
-        <UiMarksMarkDown
-          rules={{ required: true }}
+        <MarkdownEditor
           value={markdown}
           onChange={handleChange}
           onUploadFile={handleUpload}
