@@ -3,10 +3,10 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    const asJsonb = (val) => {
-      const json = JSON.stringify(val ?? []).replace(/'/g, "''");
-      return Sequelize.literal(`'${json}'::jsonb`);
-    };
+    // const asJsonb = (val) => {
+    //   const json = JSON.stringify(val ?? []).replace(/'/g, "''");
+    //   return Sequelize.literal(`'${json}'::jsonb`);
+    // };
 
     const SEED = [
       {
@@ -904,28 +904,44 @@ module.exports = {
       { type: Sequelize.QueryTypes.SELECT }
     );
 
-    const existingNames = new Set(existingStaff.map(s => s.name));  
+    const existingNames = new Set(existingStaff.map(s => s.name));
     const staffToInsert = SEED.filter(row => !existingNames.has(row.name));
 
     if (staffToInsert.length === 0) {
       console.log('Нет новых сотрудников для добавления');
       return;
     }
- 
+
+    const maxSort = await queryInterface.sequelize.query(
+      `SELECT COALESCE(MAX("sortIndex"), -1) as max FROM "StaffNews"`,
+      { type: Sequelize.QueryTypes.SELECT }
+    );
+
+    const startIndex = Number(maxSort[0].max) + 1;
+
     const rows = staffToInsert.map((row, idx) => ({
       ...row,
-      category: asJsonb(Array.isArray(row.category) ? row.category : row.category ? [row.category] : []),
+      category: Array.isArray(row.category)
+        ? row.category
+        : row.category
+          ? [row.category]
+          : [],
+
+      visibilityByCategory: {},
+
       isVisible: true,
-      sortIndex: idx,
+      sortIndex: startIndex + idx,
+
       createdAt: new Date(),
       updatedAt: new Date(),
     }));
 
     await queryInterface.bulkInsert('StaffNews', rows, {});
+
     console.log(`Добавлено ${rows.length} новых сотрудников`);
   },
- 
+
   async down(queryInterface, Sequelize) {
-    console.log('⚠️ Откат миграции StaffNews пропущен — данные сохранены');
+    console.log('⚠️ Откат пропущен');
   },
 };
