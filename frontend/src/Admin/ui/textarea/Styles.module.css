@@ -79,8 +79,8 @@
 
 
 .textarea__error {
-    position: absolute;
-    bottom: -18px;
+    order: 2;
+    margin-top: -6px;
     color: var(--crimson-E00747);
     font-size: 10px;
     font-style: normal;
@@ -171,6 +171,11 @@
     border-top: 1px solid var(--salmon-light-FFBFB5);
 }
 
-.quill_error {
-    /* border-color: var(--crimson-E00747); */
+.quill_error :global(.ql-container) {
+    border: 1px solid var(--crimson-E00747);
+    caret-color: var(--crimson-E00747);
+}
+
+.quill_error :global(.ql-toolbar.ql-snow+.ql-container.ql-snow) {
+    border-top: 1px solid var(--crimson-E00747);
 }

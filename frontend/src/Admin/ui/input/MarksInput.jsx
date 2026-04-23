@@ -15,7 +15,7 @@ function validateFiles(files) {
   return null;
 }
 
-function FileInput({ name, label, color = 'blue', buttonText = 'Загрузить изображение', accept, multiple, inputRef, onChange, required, hint, info, className }) {
+function FileInput({ name, label, color = 'blue', buttonText = 'Загрузить изображение', accept, multiple, inputRef, onChange, required, hint, info, className, error }) {
   const [open, setOpen] = useState(false);
   const [formatError, setFormatError] = useState(null);
   const popoverRef = useRef(null);
@@ -97,7 +97,8 @@ function FileInput({ name, label, color = 'blue', buttonText = 'Загрузит
         )}
       </div>
       {formatError && <div className={styles.file__hint}>{formatError}</div>}
-      {!formatError && required && hint !== false && <div className={styles.file__hint}>{hint || 'Обязательно для заполнения'}</div>}
+      {!formatError && error && <span className={styles.input__error_file}>{error}</span>}
+      {!formatError && !error && required && hint !== false && <div className={styles.file__hint}>{hint || 'Обязательно для заполнения'}</div>}
     </div>
   );
 }
@@ -155,6 +156,7 @@ const MarksInput = forwardRef(function MarksInput({
         hint={hint}
         info={info}
         className={className}
+        error={error}
       />
     );
   }
@@ -169,7 +171,7 @@ const MarksInput = forwardRef(function MarksInput({
     isBordered ? colorClass : '',
     autoGrow ? styles.input__field_autogrow : '',
     disabled ? styles.input__field_disabled : '',
-    error ? styles.input__field_error : '',
+    error ? (isBordered ? styles.input__field_bordered_error : styles.input__field_error) : '',
   ].join(' ');
 
   return (
@@ -214,8 +216,8 @@ const MarksInput = forwardRef(function MarksInput({
         )}
         {showMeasurement && <span className={styles.input__measurement}>{measurement}</span>}
         {showCounter && <div className={styles.input__counter}>{`${(value || '').length}/${maxLength}`}</div>}
+        {error && <span className={isBordered ? styles.input__error_bordered : styles.input__error}>{error}</span>}
       </div>
-      {error && <span className={styles.input__error}>{error}</span>}
     </div>
   );
 });

@@ -128,6 +128,8 @@ const StaffForm = forwardRef(function StaffForm(
     handleSubmit,
     reset,
     trigger,
+    setError,
+    clearErrors,
     formState: { isValid, isSubmitting, isDirty },
   } = useForm({ mode: 'onChange' });
 
@@ -178,6 +180,66 @@ const StaffForm = forwardRef(function StaffForm(
   }, [editStaffData, reset, trigger]);
 
   const onSubmit = async (data) => {
+    let hasBlockError = false;
+    if (!data.photoAva?.length) {
+      setError('photoAva', { type: 'custom', message: 'Обязательно для загрузки' });
+      hasBlockError = true;
+    }
+    if (!data.name?.trim()) {
+      setError('name', { type: 'custom', message: 'Обязательно для заполнения' });
+      hasBlockError = true;
+    }
+    if (!data.description?.trim()) {
+      setError('description', { type: 'custom', message: 'Обязательно для заполнения ' });
+      hasBlockError = true;
+    }
+    (data.constructorBlocks || []).forEach((block, i) => {
+       if (block.type === 'imageWithDesc') {
+         if (!block.image?.length) {
+           setError(`constructorBlocks.${i}.image`, { type: 'custom', message: 'Обязательно для загрузки' });
+           hasBlockError = true;
+         }
+         return;
+       }
+      if (block.type === 'interestingFact') {
+        const hasAva = block.ava?.length > 0;
+        const hasDesc = block.description?.length > 0;
+        const d = document.createElement('div');
+        d.innerHTML = block.textarea || '';
+        if (!d.textContent.trim()) {
+          setError(`constructorBlocks.${i}.textarea`, { type: 'custom', message: 'Обязательно для заполнения' });
+          hasBlockError = true;
+        }
+        if (hasAva && !hasDesc) {
+          setError(`constructorBlocks.${i}.description`, { type: 'custom', message: 'Обязательно для заполнения' });
+          hasBlockError = true;
+        }
+        if (hasDesc && !hasAva) {
+          setError(`constructorBlocks.${i}.ava`, { type: 'custom', message: 'Обязательно для загрузки' });
+          hasBlockError = true;
+        }
+        return;
+      }
+      if (block.type !== 'quote') return;
+      const hasImg = block.image?.length > 0;
+      const hasDesc = block.description?.length > 0;
+      const d = document.createElement('div');
+      d.innerHTML = block.textarea || '';
+      if (!d.textContent.trim()) {
+        setError(`constructorBlocks.${i}.textarea`, { type: 'custom', message: 'Обязательно для заполнения' });
+        hasBlockError = true;
+      }
+      if (hasImg && !hasDesc) {
+        setError(`constructorBlocks.${i}.description`, { type: 'custom', message: 'Обязательно для заполнения' });
+        hasBlockError = true;
+      }
+      if (hasDesc && !hasImg) {
+        setError(`constructorBlocks.${i}.image`, { type: 'custom', message: 'Обязательно для загрузки' });
+        hasBlockError = true;
+      }
+    });
+    if (hasBlockError) return;
+
     const photoAvaNew = (data.photoAva || []).filter((f) => f instanceof File);
     const photoAvaExisting = (data.photoAva || []).find((f) => !(f instanceof File)) || '';
 
@@ -228,8 +290,7 @@ const StaffForm = forwardRef(function StaffForm(
         <Controller
           name="photoAva"
           control={control}
-          rules={{ required: true, validate: (v) => Array.isArray(v) && v.length > 0 }}
-          render={({ field: { onChange, value } }) => (
+          render={({ field: { onChange, value }, fieldState }) => (
             <>
               {value?.length > 0 ? (
                 <UiPhotoPreview
@@ -250,9 +311,11 @@ const StaffForm = forwardRef(function StaffForm(
                   inputRef={photoAvaRef}
                   label="Портрет сотрудника "
                   color="blue"
+                  error={fieldState.error?.message}
                   onChange={(e) => {
                     const file = e.target.files[0];
                     onChange(file ? [file] : []);
+                    if (file) clearErrors('photoAva');
                   }}
                 />
               )}
@@ -262,14 +325,17 @@ const StaffForm = forwardRef(function StaffForm(
         <Controller
           name="name"
           control={control}
-          rules={{ required: true }}
           render={({ field, fieldState }) => (
             <UiMarksInput
               name="name"
               bordered
               placeholder="ФИО"
-              error={fieldState.error && 'Обязательное поле'}
+              error={fieldState.error?.message}
               {...field}
+              onChange={(e) => {
+                field.onChange(e);
+                if (e.target.value.trim()) clearErrors('name');
+              }}
             />
           )}
         />
@@ -278,7 +344,6 @@ const StaffForm = forwardRef(function StaffForm(
         <Controller
           name="category"
           control={control}
-          rules={{ required: true, validate: (v) => Array.isArray(v) && v.length > 0 }}
           render={({ field }) => (
             <UiMarksSelect
               isMulti
@@ -297,14 +362,17 @@ const StaffForm = forwardRef(function StaffForm(
         <Controller
           name="description"
           control={control}
-          rules={{ required: true }}
           render={({ field, fieldState }) => (
             <UiMarksTextarea
               name="description"
               label="Описание"
               placeholder="Нет ограничения по символам"
-              error={fieldState.error && 'Обязательное поле'}
+              error={fieldState.error?.message}
               {...field}
+              onChange={(e) => {
+                field.onChange(e);
+                if (e.target.value.trim()) clearErrors('description');
+              }}
             />
           )}
         />
@@ -315,7 +383,7 @@ const StaffForm = forwardRef(function StaffForm(
       {constructorBlocks.map((block, index) => {
         const Component = BLOCK_COMPONENTS[block.type];
         if (!Component) return null;
-        return <Component key={block.id} control={control} index={index} onRemove={() => remove(index)} onUploadFile={handleMarkdownUpload} />;
+        return <Component key={block.id} control={control} index={index} onRemove={() => remove(index)} onUploadFile={handleMarkdownUpload} clearErrors={clearErrors} />;
       })}
     </form>
     <DevTool control={control} placement="top-right" />
