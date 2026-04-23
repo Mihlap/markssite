@@ -34,6 +34,7 @@ const ProjectForm = forwardRef(function ProjectForm(
     control,
     handleSubmit,
     reset,
+    setError,
     watch,
     formState: { isValid, isSubmitting, isDirty },
   } = useForm({
@@ -181,6 +182,17 @@ const ProjectForm = forwardRef(function ProjectForm(
   };
 
   const onSubmit = async (data) => {
+      let hasBlockError = false;
+      (data.constructorBlocks || []).forEach((block, i) => {
+        if (block.type === 'imageWithDesc') {
+          if (!block.image?.length) {
+            setError(`constructorBlocks.${i}.image`, { type: 'custom', message: 'Обязательно для загрузки' });
+            hasBlockError = true;
+          }
+          return;
+        }
+      });
+      if (hasBlockError) return;
     const oldFormatBlocks = (data.constructorBlocks || []).map(toOldFormat);
 
     const formattedData = {

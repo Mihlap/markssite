@@ -139,6 +139,8 @@ const HistoryForm = forwardRef(function HistoryForm(
     control,
     handleSubmit,
     reset,
+    setError,
+    clearErrors,
     formState: { isValid, isSubmitting, isDirty },
   } = useForm({ mode: 'onChange' });
 
@@ -179,6 +181,84 @@ const HistoryForm = forwardRef(function HistoryForm(
   }, [editData, reset]);
 
   const onSubmit = async (data) => {
+    let hasBlockError = false;
+    if (!data.year) {
+      setError('year', { type: 'custom', message: 'Обязательно для заполнения' });
+      hasBlockError = true;
+    }
+    if (!data.title?.trim()) {
+      setError('title', { type: 'custom', message: 'Обязательно для заполнения' });
+      hasBlockError = true;
+    }
+    if (!data.previewImage?.length) {
+      setError('previewImage', { type: 'custom', message: 'Обязательно для загрузки' });
+      hasBlockError = true;
+    }
+    if (!data.previewText?.trim()) {
+      setError('previewText', { type: 'custom', message: 'Обязательно для заполнения' });
+      hasBlockError = true;
+    }
+    (data.constructorBlocks || []).forEach((block, i) => {
+      if (block.type === 'personYear') {
+        if (!block.image?.length) {
+          setError(`constructorBlocks.${i}.image`, { type: 'custom', message: 'Обязательно для загрузки' });
+          hasBlockError = true;
+        }
+        return;
+      }
+      if (block.type === 'posterPerson') {
+        if (!block.image?.length) {
+          setError(`constructorBlocks.${i}.image`, { type: 'custom', message: 'Обязательно для загрузки' });
+          hasBlockError = true;
+        }
+        return;
+      }
+      if (block.type === 'imageWithDesc') {
+        if (!block.image?.length) {
+          setError(`constructorBlocks.${i}.image`, { type: 'custom', message: 'Обязательно для загрузки' });
+          hasBlockError = true;
+        }
+        return;
+      }
+      if (block.type === 'interestingFact') {
+        const hasAva = block.ava?.length > 0;
+        const hasDesc = block.description?.length > 0;
+        const d = document.createElement('div');
+        d.innerHTML = block.textarea || '';
+        if (!d.textContent.trim()) {
+          setError(`constructorBlocks.${i}.textarea`, { type: 'custom', message: 'Обязательно для заполнения' });
+          hasBlockError = true;
+        }
+        if (hasAva && !hasDesc) {
+          setError(`constructorBlocks.${i}.description`, { type: 'custom', message: 'Обязательно для заполнения' });
+          hasBlockError = true;
+        }
+        if (hasDesc && !hasAva) {
+          setError(`constructorBlocks.${i}.ava`, { type: 'custom', message: 'Обязательно для загрузки' });
+          hasBlockError = true;
+        }
+        return;
+      }
+      if (block.type !== 'quote') return;
+      const hasImg = block.image?.length > 0;
+      const hasDesc = block.description?.length > 0;
+      const d = document.createElement('div');
+      d.innerHTML = block.textarea || '';
+      if (!d.textContent.trim()) {
+        setError(`constructorBlocks.${i}.textarea`, { type: 'custom', message: 'Обязательно для заполнения' });
+        hasBlockError = true;
+      }
+      if (hasImg && !hasDesc) {
+        setError(`constructorBlocks.${i}.description`, { type: 'custom', message: 'Обязательно для заполнения' });
+        hasBlockError = true;
+      }
+      if (hasDesc && !hasImg) {
+        setError(`constructorBlocks.${i}.image`, { type: 'custom', message: 'Обязательно для загрузки' });
+        hasBlockError = true;
+      }
+    });
+    if (hasBlockError) return;
+
     const previewImageNew = (data.previewImage || []).filter((f) => f instanceof File);
     const previewImageExisting = (data.previewImage || []).find((f) => !(f instanceof File)) || '';
 
@@ -227,7 +307,6 @@ const HistoryForm = forwardRef(function HistoryForm(
       <UiMarksGrayWrap customStyles={{ display: 'flex', flexDirection: 'column', gap: '24px', padding: '32px 16px' }}>
         <Controller
           name="year"
-          rules={{ required: true }}
           control={control}
           render={({ field }) => (
             <UiMarksSelect
@@ -248,13 +327,16 @@ const HistoryForm = forwardRef(function HistoryForm(
         <Controller
           name="title"
           control={control}
-          rules={{ required: true }}
           render={({ field, fieldState }) => (
             <UiMarksInput
               name="title"
               label="Заголовок года"
-              error={fieldState.error && 'Обязательное поле'}
+              error={fieldState.error?.message}
               {...field}
+              onChange={(e) => {
+                field.onChange(e);
+                if (e.target.value.trim()) clearErrors('title');
+              }}
             />
           )}
         />
@@ -264,8 +346,7 @@ const HistoryForm = forwardRef(function HistoryForm(
         <Controller
           name="previewImage"
           control={control}
-          rules={{ required: true, validate: (v) => Array.isArray(v) && v.length > 0 }}
-          render={({ field: { onChange, value } }) => (
+          render={({ field: { onChange, value }, fieldState }) => (
             <>
               {value?.length > 0 ? (
                 <UiPhotoPreview
@@ -286,9 +367,11 @@ const HistoryForm = forwardRef(function HistoryForm(
                   inputRef={previewImageRef}
                   label="Превью *для отображения в хронике"
                   color="blue"
+                  error={fieldState.error?.message}
                   onChange={(e) => {
                     const file = e.target.files[0];
                     onChange(file ? [file] : []);
+                    if (file) clearErrors('previewImage');
                   }}
                 />
               )}
@@ -298,22 +381,21 @@ const HistoryForm = forwardRef(function HistoryForm(
         <Controller
           name="previewText"
           control={control}
-          rules={{ required: true }}
           render={({ field, fieldState }) => (
             <UiMarksTextarea
               richText
               name="previewText"
               label="Текст превью"
               placeholder="Не более 160 символов"
-              onChange={(e) => {
-                const value = e.target.value;
-                if (value.length <= 160) {
-                  field.onChange(value);
-                }
-              }}
               maxLength={160}
-              error={fieldState.error && 'Обязательное поле'}
+              error={fieldState.error?.message}
               {...field}
+              onChange={(v) => {
+                field.onChange(v);
+                const d = document.createElement('div');
+                d.innerHTML = v || '';
+                if (d.textContent.trim()) clearErrors('previewText');
+              }}
             />
           )}
         />
@@ -324,7 +406,7 @@ const HistoryForm = forwardRef(function HistoryForm(
       {constructorBlocks.map((block, index) => {
         const Component = BLOCK_COMPONENTS[block.type];
         if (!Component) return null;
-        return <Component key={block.id} control={control} index={index} onRemove={() => remove(index)} onUploadFile={handleMarkdownUpload} />;
+        return <Component key={block.id} control={control} index={index} onRemove={() => remove(index)} onUploadFile={handleMarkdownUpload} clearErrors={clearErrors} />;
       })}
     </form>
   );

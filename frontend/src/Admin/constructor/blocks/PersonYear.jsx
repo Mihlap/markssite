@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { Controller } from 'react-hook-form';
 import { UiMarksInput, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
 
-export default function PersonYear({ control, index, onRemove }) {
+export default function PersonYear({ control, index, onRemove, clearErrors }) {
   const imageRef = useRef(null);
 
   return (
@@ -13,7 +13,6 @@ export default function PersonYear({ control, index, onRemove }) {
       <Controller
         name={`constructorBlocks.${index}.image`}
         control={control}
-        rules={{ required: true, validate: (v) => Array.isArray(v) && v.length > 0 }}
         render={({ field: { onChange, value }, fieldState }) =>
           value?.length > 0 ? (
             <UiPhotoPreview
@@ -35,11 +34,11 @@ export default function PersonYear({ control, index, onRemove }) {
               label="Человек года *для отображения в хронике"
               accept="image/*"
               inputRef={imageRef}
-              required={!!fieldState.error}
-              hint="Обязательно для загрузки"
+              error={fieldState.error?.message}
               onChange={(e) => {
                 const file = e.target.files[0];
                 onChange(file ? [file] : []);
+                if (file) clearErrors?.(`constructorBlocks.${index}.image`);
               }}
             />
           )
