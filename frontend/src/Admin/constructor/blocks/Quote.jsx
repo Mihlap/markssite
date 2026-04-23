@@ -1,15 +1,9 @@
 import React from 'react';
-import { Controller, useWatch } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { UiMarksTextarea, UiMarksGrayWrap, UiMarksInput, UiPhotoPreview } from '../../ui';
 
-export default function Quote({ control, index, onRemove }) {
+export default function Quote({ control, index, onRemove, clearErrors }) {
   const imageRef = React.useRef(null);
-
-  const imageValue = useWatch({ control, name: `constructorBlocks.${index}.image` });
-  const descriptionValue = useWatch({ control, name: `constructorBlocks.${index}.description` });
-
-  const hasImage = imageValue?.length > 0;
-  const hasDescription = descriptionValue?.length > 0;
 
   return (
     <UiMarksGrayWrap
@@ -19,8 +13,7 @@ export default function Quote({ control, index, onRemove }) {
       <Controller
         name={`constructorBlocks.${index}.image`}
         control={control}
-        rules={{ validate: (v) => !hasDescription || v?.length > 0 || 'Требуется фото' }}
-        render={({ field: { onChange, value } }) =>
+        render={({ field: { onChange, value }, fieldState }) =>
           value?.length > 0 ? (
             <UiPhotoPreview
               files={value}
@@ -41,9 +34,11 @@ export default function Quote({ control, index, onRemove }) {
               label="Автор цитаты"
               accept="image/*"
               inputRef={imageRef}
+              error={fieldState.error?.message}
               onChange={(e) => {
                 const file = e.target.files[0];
                 onChange(file ? [file] : []);
+                if (file) clearErrors?.(`constructorBlocks.${index}.image`);
               }}
             />
           )
@@ -52,30 +47,40 @@ export default function Quote({ control, index, onRemove }) {
       <Controller
         name={`constructorBlocks.${index}.description`}
         control={control}
-        rules={{ validate: (v) => !hasImage || v?.length > 0 || 'Требуется ФИО/Описание' }}
-        render={({ field }) => (
+        render={({ field, fieldState }) => (
           <UiMarksInput
             autoGrow
             color="salmon"
             name={`constructorBlocks.${index}.description`}
             placeholder="ФИО/Описание"
             bordered
+            error={fieldState.error?.message}
             {...field}
+            onChange={(e) => {
+              field.onChange(e);
+              if (e.target.value) clearErrors?.(`constructorBlocks.${index}.description`);
+            }}
           />
         )}
       />
       <Controller
         name={`constructorBlocks.${index}.textarea`}
         control={control}
-        rules={{ validate: (v) => { const d = document.createElement('div'); d.innerHTML = v || ''; return d.textContent.trim().length > 0; } }}
-        render={({ field }) => (
+        render={({ field, fieldState }) => (
           <UiMarksTextarea
             name={`constructorBlocks.${index}.textarea`}
             label="Цитата"
             placeholder="Нет ограничения по символам"
             richText
             color="salmon"
+            error={fieldState.error?.message}
             {...field}
+            onChange={(v) => {
+              field.onChange(v);
+              const d = document.createElement('div');
+              d.innerHTML = v || '';
+              if (d.textContent.trim()) clearErrors?.(`constructorBlocks.${index}.textarea`);
+            }}
           />
         )}
       />

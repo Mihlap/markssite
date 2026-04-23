@@ -70,6 +70,8 @@ const ArticlesForm = forwardRef(function ArticlesForm(
     control,
     handleSubmit,
     reset,
+    setError,
+    clearErrors,
     formState: { isValid, isSubmitting, isDirty },
   } = useForm({
     mode: 'onChange',
@@ -177,6 +179,35 @@ const ArticlesForm = forwardRef(function ArticlesForm(
   }, [editArticleData, dispatch, reset]);
 
   const onSubmit = async (data) => {
+    let hasBlockError = false;
+    (data.constructorBlocks || []).forEach((block, i) => {
+      if (block.type === 'imageWithDesc') {
+        if (!block.image?.length) {
+          setError(`constructorBlocks.${i}.image`, { type: 'custom', message: 'Обязательно для загрузки' });
+          hasBlockError = true;
+        }
+        return;
+      }
+      if (block.type !== 'quote') return;
+      const hasImg = block.image?.length > 0;
+      const hasDesc = block.description?.length > 0;
+      const d = document.createElement('div');
+      d.innerHTML = block.textarea || '';
+      if (!d.textContent.trim()) {
+        setError(`constructorBlocks.${i}.textarea`, { type: 'custom', message: 'Обязательно для загрузки' });
+        hasBlockError = true;
+      }
+      if (hasImg && !hasDesc) {
+        setError(`constructorBlocks.${i}.description`, { type: 'custom', message: 'Обязательно для заполнения' });
+        hasBlockError = true;
+      }
+      if (hasDesc && !hasImg) {
+        setError(`constructorBlocks.${i}.image`, { type: 'custom', message: 'Обязательно для заполнения' });
+        hasBlockError = true;
+      }
+    });
+    if (hasBlockError) return;
+
     const oldFormatBlocks = (data.constructorBlocks || []).map(toOldFormat);
 
     // Separate new File uploads from existing URL strings
@@ -227,7 +258,7 @@ const ArticlesForm = forwardRef(function ArticlesForm(
         <Controller
           name="author"
           control={control}
-          rules={{ required: true }}
+          // rules={{ required: true }}
           render={({ field, fieldState }) => (
             <UiMarksInput label="Автор" name="author" error={fieldState.error && 'Обязательное поле'} {...field} />
           )}
@@ -280,6 +311,7 @@ const ArticlesForm = forwardRef(function ArticlesForm(
         <Controller
           name="dropPhoto"
           control={control}
+          rules={{ required: true }}
           render={({ field: { onChange, value } }) => (
             <>
               {value?.length !== 4 && (
@@ -310,7 +342,8 @@ const ArticlesForm = forwardRef(function ArticlesForm(
                   const next = (value || []).filter((_, i) => i !== index);
                   onChange(next);
                 }}
-                label="Слайдер *допускается загрузка 4х&nbsp;изображений"
+                // label="Слайдер *допускается загрузка 4х&nbsp;изображений"
+                label={value?.length === 4 ? 'Слайдер *допускается загрузка 4х изображений' : ''}
               />
             </>
           )}
@@ -320,6 +353,7 @@ const ArticlesForm = forwardRef(function ArticlesForm(
         <Controller
           name="titleTextBlock"
           control={control}
+          rules={{ required: true }}
           render={({ field }) => (
             <UiMarksInput
               {...field}
@@ -355,7 +389,7 @@ const ArticlesForm = forwardRef(function ArticlesForm(
             {value?.length > 0 ? (
               <UiPhotoPreview
                 files={value}
-                variant="single"
+                variant="portrait"
                 onRemove={() => {
                   onChange([]);
                   if (photoAvaRef.current) {
@@ -436,7 +470,7 @@ const ArticlesForm = forwardRef(function ArticlesForm(
       {constructorBlocks.map((block, index) => {
         const Component = BLOCK_COMPONENTS[block.type];
         if (!Component) return null;
-        return <Component key={block.id} control={control} index={index} onRemove={() => remove(index)} />;
+        return <Component key={block.id} control={control} index={index} onRemove={() => remove(index)} clearErrors={clearErrors} />;
       })}
       <Controller
         name="imageClose"

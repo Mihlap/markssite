@@ -75,6 +75,11 @@
   line-height: 20px;
 }
 
+.input__field_bordered_error {
+  border: 1px solid var(--crimson-E00747);
+  caret-color: var(--crimson-E00747);
+}
+
 /* Auto-grow textarea — stacks on top of bordered styles */
 .input__field_autogrow {
   resize: none;
@@ -94,7 +99,27 @@
 
 .input__error {
   position: absolute;
+  left: 0;
   bottom: -18px;
+  color: var(--crimson-E00747);
+  font-family: var(--font-raleway);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 14px;
+}
+
+.input__error_bordered {
+  color: var(--crimson-E00747);
+  font-family: var(--font-raleway);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 14px;
+}
+
+.input__error_file {
+  margin-top: 2px;
   color: var(--crimson-E00747);
   font-family: var(--font-raleway);
   font-size: 10px;

@@ -16,6 +16,7 @@ export default function Video({ control, index, onRemove }) {
       <Controller
         name={`constructorBlocks.${index}.description`}
         control={control}
+        rules={{required: true}}
         render={({ field }) => (
           <UiMarksInput
             color="salmon"
