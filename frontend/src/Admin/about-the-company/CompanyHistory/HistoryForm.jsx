@@ -1,14 +1,17 @@
-import React, { forwardRef, useImperativeHandle, useRef, useEffect, useCallback } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect, useCallback, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
-import { UiMarksInput, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap, UiMarksSelect } from '../../ui';
+import Select from 'react-select';
+import { UiMarksInput, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
 import { createHistoryItem, updateHistoryItem, uploadHistoryMarkdownFile } from '../../../store/Slice/companyHistorySlice';
 import ConstructorMain from '../../constructor/ConstructorMain';
 import { history_items } from '../../constructor/config/config';
 import { BLOCK_COMPONENTS } from '../../constructor/blocks';
+import YearDropdownIndicator from '../utils/YearDropdownIndicator';
+import YearMenuList from '../utils/YearMenuList';
+import { buildYearSelectStyles } from '../utils/yearSelectStyles';
 
 import s from './HistoryList.module.css';
-import { yearOptions } from './const/year';
 
 const EMPTY_VALUES = {
   year: String(new Date().getFullYear()),
@@ -129,6 +132,17 @@ const HistoryForm = forwardRef(function HistoryForm(
 ) {
   const dispatch = useDispatch();
   const previewImageRef = useRef(null);
+
+  const currentYear = new Date().getFullYear();
+  const yearOptions = useMemo(() => {
+    const from = currentYear - 25;
+    const to = currentYear + 25;
+    const result = [];
+    for (let y = to; y >= from; y -= 1) {
+      result.push({ value: String(y), label: String(y) });
+    }
+    return result;
+  }, [currentYear]);
 
   const handleMarkdownUpload = useCallback(
     (file) => dispatch(uploadHistoryMarkdownFile(file)).unwrap(),
@@ -308,21 +322,36 @@ const HistoryForm = forwardRef(function HistoryForm(
         <Controller
           name="year"
           control={control}
-          render={({ field }) => (
-            <UiMarksSelect
-              label="Год"
-              placeholder="Год"
-              name="year"
-              middle
-              wheelSelect
-              customStyles={{
-                container: s.selectContainer,
-              }}
-              options={yearOptions}
-              value={yearOptions.find((opt) => opt.value === field.value) || null}
-              onChange={(opt) => field.onChange(opt ? opt.value : '')}
-            />
-          )}
+          render={({ field, fieldState }) => {
+            const selectedYear = yearOptions.find((opt) => String(opt.value) === String(field.value)) || null;
+            const pivotYear = selectedYear?.value || currentYear;
+            const yearSelectStyles = buildYearSelectStyles(!!fieldState.error);
+            return (
+              <div className={s.yearSelectWrap}>
+                <Select
+                  inputId="historyYear"
+                  name="year"
+                  styles={yearSelectStyles}
+                  value={selectedYear}
+                  onChange={(option) => field.onChange(option ? option.value : '')}
+                  options={yearOptions}
+                  placeholder="Год"
+                  components={{
+                    DropdownIndicator: YearDropdownIndicator,
+                    MenuList: YearMenuList,
+                    IndicatorSeparator: null,
+                  }}
+                  pivotYear={pivotYear}
+                  menuPlacement="auto"
+                  isSearchable={false}
+                  onBlur={field.onBlur}
+                />
+                {fieldState.error && (
+                  <span className={s.errorText}>{fieldState.error.message}</span>
+                )}
+              </div>
+            );
+          }}
         />
         <Controller
           name="title"

@@ -1,6 +1,6 @@
 import { components } from 'react-select';
 import { useRef, useEffect } from 'react';
-import historyStyles from '../CompanyHistory/CompanyHistory.module.scss';
+import historyStyles from '../CompanyHistory/HistoryMain.module.css';
 
 export default function YearMenuList(props) {
     const menuRef = useRef(null);
