@@ -26,3 +26,17 @@
     width: 144px;
     height: 36px;
 }
+
+.yearMenuList {
+    position: relative;
+}
+
+.yearMenuHighlight {
+    position: sticky;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 32px;
+    background-color: var(--light-blue-D4EDFB);
+    pointer-events: none;
+    z-index: 0;
+}
