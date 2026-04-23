@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { Controller } from 'react-hook-form';
 import { UiMarksInput, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
 
-export default function ImageWithDesc({ control, index, onRemove }) {
+export default function ImageWithDesc({ control, index, onRemove, clearErrors }) {
   const imageRef = useRef(null);
 
   return (
@@ -20,8 +20,7 @@ export default function ImageWithDesc({ control, index, onRemove }) {
       <Controller
         name={`constructorBlocks.${index}.image`}
         control={control}
-        rules={{ required: true }}
-        render={({ field: { onChange, value } }) =>
+        render={({ field: { onChange, value }, fieldState }) =>
           value?.length > 0 ? (
             <UiPhotoPreview
               files={value}
@@ -41,9 +40,11 @@ export default function ImageWithDesc({ control, index, onRemove }) {
               label="Загрузите изображение"
               accept="image/*"
               inputRef={imageRef}
+              error={fieldState.error?.message}
               onChange={(e) => {
                 const file = e.target.files[0];
                 onChange(file ? [file] : []);
+                if (file) clearErrors?.(`constructorBlocks.${index}.image`);
               }}
             />
           )

@@ -15,6 +15,11 @@ const iconColors = {
 };
 
 const lightColors = {
+  blue: 'var(--md-blue)',
+  salmon: 'var(--md-orange)',
+};
+
+const borderColors = {
   blue: 'var(--light-blue-D4EDFB)',
   salmon: 'var(--salmon-light-FFBFB5)',
 };
@@ -147,12 +152,13 @@ export default function MarksMarkDown({
 
   const iconColor = iconColors[color] || iconColors.blue;
   const lightColor = lightColors[color] || lightColors.blue;
+  const borderColor = borderColors[color] || borderColors.blue;
 
   return (
     <div
       ref={editorRef}
       className={`${styles.md} ${isFullscreen ? styles['md--fs'] : ''}`}
-      style={{ '--md-accent': iconColor, '--md-light': lightColor }}
+      style={{ '--md-accent': iconColor, '--md-light': lightColor, '--md-border': borderColor }}
       onDragOver={(e) => e.preventDefault()}
       onDrop={handleDrop}>
       {!isFullscreen && <div className={styles.md__label}>Тело статьи</div>}

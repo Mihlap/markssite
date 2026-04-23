@@ -5,10 +5,10 @@ import remarkBreaks from 'remark-breaks';
 import remarkMath from 'remark-math';
 import rehypeRaw from 'rehype-raw';
 import rehypeKatex from 'rehype-katex';
-import rehypePdfEmbedder from '../../Admin/articles/journal/utils/rehypePdfEmbedder';
-import rehypeUniqueHeadingIds from '../../Admin/articles/journal/utils/rehypeUniqueHeadingIds';
+import rehypePdfEmbedder from './utils/rehypePdfEmbedder';
+import rehypeUniqueHeadingIds from './utils/rehypeUniqueHeadingIds';
 import { BlockMath, InlineMath } from 'react-katex';
-import { parseChapters } from '../../Journal/JournalArticlePage/ArticleTableOfContents';
+import { parseChapters } from './utils/parseChapters';
 import styles from '../../Journal/JournalArticlePage/ArticleJournalPage.module.scss';
 
 const remarkPlugins = [remarkGfm, remarkMath, remarkBreaks];

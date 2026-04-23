@@ -4,6 +4,7 @@ import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import compressImageFile from 'browser-image-compression';
 
 import { UiMarksInput, UiMarksSelect, UiMarksGrayWrap, UiPhotoPreview, UiMarksButton, UiMarksMarkDown } from '../../../ui';
+// import MarkdownEditor from '../../../../UI/MarkdownEditor/MarkdownEditor';
 
 import {
   createJournal,
@@ -238,14 +239,6 @@ const JournalForm = forwardRef(function JournalForm(
     };
   }, [editJournalData, dispatch, reset]);
 
-  useEffect(() => {
-    return () => {
-      tempFilesRef.current.forEach((url) => {
-        dispatch(deleteMarkdownFile(url)).unwrap().catch(console.error);
-      });
-      dispatch(clearFormData());
-    };
-  }, [dispatch]);
 
   const onSubmit = async (data) => {
     const formDataToSend = new FormData();
@@ -278,6 +271,10 @@ const JournalForm = forwardRef(function JournalForm(
       }
     });
 
+    // Clear before await: the dialog unmounts JournalForm during loading (isSubmitting → isFormLoading),
+    // which triggers the cleanup effect. Clearing here prevents it from deleting uploaded S3 files.
+    tempFilesRef.current = [];
+
     if (editJournalData) {
       await dispatch(updateJournal({ journalId: editJournalData.id, formData: formDataToSend })).unwrap();
     } else {
@@ -287,7 +284,6 @@ const JournalForm = forwardRef(function JournalForm(
 
     reset(EMPTY_VALUES);
     dispatch(clearFormData());
-    tempFilesRef.current = [];
     onSuccess?.();
   };
 
@@ -444,9 +440,15 @@ const JournalForm = forwardRef(function JournalForm(
         Добавить город, страну
       </UiMarksButton>
       <UiMarksGrayWrap customStyles={{ padding: '16px' }}>
-        <UiMarksMarkDown
-          rules={{ required: true }}
+        {/* <MarkdownEditor
           value={markdown}
+          onChange={handleChange}
+          onUploadFile={handleUpload}
+          onDeleteFile={handleDelete}
+          onTempFilesChange={(files) => (tempFilesRef.current = files)}
+        /> */}
+        <UiMarksMarkDown
+        value={markdown}
           onChange={handleChange}
           onUploadFile={handleUpload}
           onDeleteFile={handleDelete}
