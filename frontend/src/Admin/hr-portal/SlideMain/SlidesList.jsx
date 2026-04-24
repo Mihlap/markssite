@@ -93,7 +93,8 @@ export default function SlidesList({
           onDrop={(e) => handleDrop(e, index)}>
           <UiMarksEntityRow
             title={`Слайд ${el.id}`}
-            id={el.id}
+            // id={el.id}
+            visible='slide'
             role={getRole(user)}
             hidden={el.hidden}
             onToggle={() => handleLookClick(el.id)}

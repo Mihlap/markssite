@@ -9,6 +9,14 @@ import ConstructorMain from '../../constructor/ConstructorMain';
 import { staff_items } from '../../constructor/config/config';
 import { BLOCK_COMPONENTS } from '../../constructor/blocks';
 
+const S3_URL = (process.env.REACT_APP_S3_BUCKET_URL || '').replace(/\/+$/, '');
+
+const toStaffImgUrl = (img) => {
+  if (!img) return null;
+  if (img.startsWith('http')) return img;
+  return `${S3_URL}/images/imageStaff/${img}`;
+};
+
 const CATEGORY_OPTIONS = [
   { value: 'Руководство', label: 'Руководство' },
   { value: 'Научное сопровождение', label: 'Научное сопровождение' },
@@ -173,7 +181,7 @@ const StaffForm = forwardRef(function StaffForm(
       position: editStaffData.position || '',
       description: editStaffData.description || '',
       category: (editStaffData.category || []).map((c) => ({ value: c, label: c })),
-      photoAva: editStaffData.img ? [editStaffData.img] : [],
+      photoAva: editStaffData.img ? [toStaffImgUrl(editStaffData.img)] : [],
       constructorBlocks: (editStaffData.dynamicBlocks || []).map(fromOldFormat).filter(Boolean),
     });
     trigger();

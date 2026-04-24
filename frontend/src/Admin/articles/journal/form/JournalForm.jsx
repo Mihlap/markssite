@@ -266,7 +266,7 @@ const JournalForm = forwardRef(function JournalForm(
     authors.forEach((author) => {
       const file = localImages[author.id];
       if (file) {
-        const uniqueName = `${Date.now()}_${file.name}`;
+        const uniqueName = `${author.id}_${Date.now()}_${file.name}`;
         formDataToSend.append('authorImages', file, uniqueName);
       }
     });

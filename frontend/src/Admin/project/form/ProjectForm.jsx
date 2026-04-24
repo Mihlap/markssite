@@ -168,6 +168,8 @@ const ProjectForm = forwardRef(function ProjectForm(
         ];
       case 'video':
         return [{ type: 'text', label: 'Ссылка на видеоролик', value: block.description || '' }];
+      case 'videoUpload':
+        return [{ type: 'file', label: 'Видео файл', value: processFiles(block.video || []) }];
       case 'threeImages':
         return [{ type: 'file', label: 'Блок 3 картинки', value: processFiles(block.image) }];
       case 'twoImages':
