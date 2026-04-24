@@ -12,11 +12,11 @@ const normalizeCategory = (val) =>
   Array.isArray(val)
     ? val
     : val
-    ? String(val)
+      ? String(val)
         .split(',')
         .map((s) => s.trim())
         .filter(Boolean)
-    : [];
+      : [];
 
 const pickDynamicBlocks = (it) => {
   if (Array.isArray(it?.dynamicBlocks) && it.dynamicBlocks.length) return it.dynamicBlocks;
@@ -31,11 +31,11 @@ const normalizeStaffItem = (it) => ({
   category: Array.isArray(it?.category)
     ? it.category
     : it?.category
-    ? String(it.category)
+      ? String(it.category)
         .split(',')
         .map((v) => v.trim())
         .filter(Boolean)
-    : [],
+      : [],
   visibilityByCategory: it?.visibilityByCategory || {},
   dynamicBlocks: pickDynamicBlocks(it),
 });
