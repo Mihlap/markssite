@@ -919,26 +919,63 @@ module.exports = {
 
     const startIndex = Number(maxSort[0].max) + 1;
 
-    const rows = staffToInsert.map((row, idx) => ({
-      ...row,
-      category: Array.isArray(row.category)
-        ? row.category
-        : row.category
-          ? [row.category]
-          : [],
+    for (let i = 0; i < staffToInsert.length; i++) {
+      const row = staffToInsert[i];
+      const sortIndex = startIndex + i;
 
-      visibilityByCategory: {},
+      let categoryArray = [];
+      if (Array.isArray(row.category)) {
+        categoryArray = row.category;
+      } else if (row.category) {
+        categoryArray = [row.category];
+      }
 
-      isVisible: true,
-      sortIndex: startIndex + idx,
+      const categoryJson = JSON.stringify(categoryArray);
+      const visibilityByCategoryJson = JSON.stringify({});
 
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }));
+      await queryInterface.sequelize.query(
+        `INSERT INTO "StaffNews" (
+          "name", 
+          "img", 
+          "description", 
+          "category", 
+          "position", 
+          "isVisible", 
+          "visibilityByCategory", 
+          "sortIndex", 
+          "createdAt", 
+          "updatedAt"
+        ) VALUES (
+          :name,
+          :img,
+          :description,
+          :category::jsonb,
+          :position,
+          :isVisible,
+          :visibilityByCategory::jsonb,
+          :sortIndex,
+          :createdAt,
+          :updatedAt
+        )`,
+        {
+          replacements: {
+            name: row.name,
+            img: row.img ?? null,
+            description: row.description ?? null,
+            category: categoryJson,
+            position: row.position ?? null,
+            isVisible: true,
+            visibilityByCategory: visibilityByCategoryJson,
+            sortIndex: sortIndex,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          },
+          type: Sequelize.QueryTypes.INSERT
+        }
+      );
+    }
 
-    await queryInterface.bulkInsert('StaffNews', rows, {});
-
-    console.log(`Добавлено ${rows.length} новых сотрудников`);
+    console.log(`Добавлено ${staffToInsert.length} новых сотрудников`);
   },
 
   async down(queryInterface, Sequelize) {
