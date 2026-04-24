@@ -534,6 +534,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
     case 'Слайдер *допускается загрузка 8ми изображений':
       return renderImageSlider(block);
     case 'Видеоролик':
+    case 'Видео файл':
       return renderVideoBlock(block);
     case 'Ссылка на видеоролик':
       return renderVideoLinkBlock(block);
