@@ -114,10 +114,11 @@ router.post(
           req.files.authorImages.map(async (file) => uploadFileToS3(file, 'images/imageJournal')),
         );
 
-        const updatedParsedAuthors = parsedAuthors.map((author, i) => {
+        const updatedParsedAuthors = parsedAuthors.map((author) => {
           const updatedAuthor = { ...author };
-          if (uploadedFiles[i]) {
-            updatedAuthor.image = uploadedFiles[i];
+          const matchedUrl = uploadedFiles.find((url) => url.includes(`/${String(author.id)}_`));
+          if (matchedUrl) {
+            updatedAuthor.image = matchedUrl;
           }
           return updatedAuthor;
         });
@@ -214,7 +215,7 @@ router.put(
       }
 
       const updatedAuthors = parsedAuthors.map((author) => {
-        const file = uploadedFiles.find((uploadedFile) => uploadedFile.includes(author.id));
+        const file = uploadedFiles.find((url) => url.includes(`/${String(author.id)}_`));
         const updatedImage = file || author.image;
 
         if (!updatedImage) return { ...author, image: null };

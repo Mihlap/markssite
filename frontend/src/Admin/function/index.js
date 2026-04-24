@@ -43,6 +43,11 @@ const convertOldToNewFormat = (oldBlocks) => {
             type: 'video',
             description: block[0]?.value || '',
           };
+        case 'Видео файл':
+          return {
+            type: 'videoUpload',
+            video: block[0]?.value || [],
+          };
         case 'Блок 3 картинки':
           return {
             type: 'threeImages',

@@ -2,6 +2,7 @@ export { default as UiMarksButton } from './button/MarksButton';
 export { default as UiMarksInput } from './input/MarksInput';
 export { default as UiMarksDialog } from './dialog/MarksDialog';
 export { default as UiPhotoPreview } from './photo-preview/PhotoPreview';
+export { default as UiVideoPreview } from './video-preview/VideoPreview';
 export { default as UiMarksSelect } from '../../UI/Select/MarksSelect';
 export { default as UiMarksTextarea } from './textarea/MarksTextarea';
 export { default as UiMarksGrayWrap } from './wrap/MarksGrayWrap';

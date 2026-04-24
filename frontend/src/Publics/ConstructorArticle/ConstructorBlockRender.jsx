@@ -702,6 +702,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
     case 'Текстовый блок выделенный':
       return renderNoteBlock(block);
     case 'Видеоролик':
+    case 'Видео файл':
       return renderVideoBlock(block);
     case 'Ссылка на видеоролик':
       return renderVideoLinkBlock(block);
