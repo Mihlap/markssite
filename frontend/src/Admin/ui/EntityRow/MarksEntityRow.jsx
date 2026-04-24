@@ -12,18 +12,14 @@ import s from './Styles.module.css';
 export default function MarksEntityRow({ title, desc, id, role, visible, hidden = false, onEdit, onToggle, onDelete }) {
   const isEvent = visible === 'event';
   const isLegenda = visible === 'legenda';
+  const isSlide = visible === 'slide';
 
+  console.log(title);
   return (
     <div className={s.entily}>
       <div className={`${s.content} ${isLegenda ? s.contentLegenda : ''}`}>
-        {!isEvent && desc && (
-          <div className={`${s.title} ${isLegenda ? s.titleLegenda : ''}`}>
-            {title}
-          </div>
-        )}
-        <div className={`${s.desc} ${isLegenda ? s.descLegenda : ''}`}>
-          {desc}
-        </div>
+        {title && <div className={`${s.title} ${isLegenda ? s.titleLegenda : ''}`}>{title}</div>}
+        <div className={`${s.desc} ${isLegenda ? s.descLegenda : ''}`}>{desc}</div>
       </div>
       <div className={s.control}>
         {!isLegenda && id !== undefined && <MarksCopyId id={id} />}
@@ -34,7 +30,7 @@ export default function MarksEntityRow({ title, desc, id, role, visible, hidden 
           onToggle={onToggle}
           onDelete={onDelete}
         />
-        {(isEvent || isLegenda) && (
+        {(isEvent || isLegenda || isSlide) && (
           <button
             title="перетащить"
             className={`${s.drag} ${isEvent ? s.dragIsEvent : ''} ${isLegenda ? s.dragIsLegenda : ''}`}

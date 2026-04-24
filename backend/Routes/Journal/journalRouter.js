@@ -383,8 +383,10 @@ router.delete('/deletezapros/:id', async (req, res) => {
 
       await Promise.all(
         uniqueUrls.map(async (fileName) => {
+          const extracted = extractFileNameAndFolderFromUrl(fileName);
+          if (!extracted) return;
           // eslint-disable-next-line prefer-const
-          let { fileName: extractedFileName, folder } = extractFileNameAndFolderFromUrl(fileName);
+          let { fileName: extractedFileName, folder } = extracted;
           if (isMarkdown) {
             folder = 'images/imageJournal/imageMarkdown';
           } else if (isPdf) {
@@ -400,9 +402,17 @@ router.delete('/deletezapros/:id', async (req, res) => {
       );
     };
 
-    if (post.attachments) {
-      const attachmentUrls = post.attachments;
-      await extractAndDeleteFiles(attachmentUrls, false, false);
+    const authorImageUrls = new Set();
+    if (Array.isArray(post.attachments)) {
+      post.attachments.filter(Boolean).forEach((url) => authorImageUrls.add(url));
+    }
+    if (Array.isArray(post.authors)) {
+      post.authors.forEach((author) => {
+        if (author.image) authorImageUrls.add(author.image);
+      });
+    }
+    if (authorImageUrls.size > 0) {
+      await extractAndDeleteFiles([...authorImageUrls], false, false);
     }
 
     const markdownLinks = extractMarkdownLinks(post.markdown_content || '');
