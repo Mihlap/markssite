@@ -4,7 +4,7 @@
     background: var(--light-light-gray-EBECEE);
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     gap: 16px;
     padding: 16px 0px;
     padding-left: 24px;
@@ -16,12 +16,22 @@
     gap: 16px;
 }
 
+.content {
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.control {
+    margin-left: auto;
+}
+
 .title {
     color: var(--black-1D2E43);
     font-size: 16px;
     font-style: normal;
     line-height: 24px;
     font-weight: 700;
+    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
@@ -32,6 +42,7 @@
     font-style: normal;
     line-height: 24px;
     font-weight: 400;
+    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
@@ -158,6 +169,7 @@
 .contentLegenda {
     gap: 50px;
     flex-direction: row-reverse;
+    justify-content: flex-end;
 }
 
 .titleLegenda {

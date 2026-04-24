@@ -1,11 +1,21 @@
-import { memo, useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import styles from './Styles.module.css';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
+const resolveStringUrl = (file) => {
+  if (typeof file !== 'string') return null;
+  return file.startsWith('http') ? file : `${bucket_url}/images/imageAdd/${file}`;
+};
+
 function PhotoPreview({ files, variant = 'single', onRemove, color = 'blue', label, customStyles }) {
-  const [previews, setPreviews] = useState([]);
   const urlMapRef = useRef(new Map());
+  const [blobPreviews, setBlobPreviews] = useState([]);
+
+  const stringPreviews = useMemo(() => {
+    if (!files) return [];
+    return Array.from(files).map(resolveStringUrl).filter(Boolean);
+  }, [files]);
 
   useEffect(() => {
     return () => {
@@ -16,13 +26,11 @@ function PhotoPreview({ files, variant = 'single', onRemove, color = 'blue', lab
 
   useEffect(() => {
     if (!files || files.length === 0) {
-      setPreviews([]);
+      setBlobPreviews([]);
       return;
     }
 
     const currentBlobs = new Set(Array.from(files).filter((f) => f instanceof Blob));
-
-    // Revoke URLs for files no longer in the list
     urlMapRef.current.forEach((url, file) => {
       if (!currentBlobs.has(file)) {
         URL.revokeObjectURL(url);
@@ -32,10 +40,7 @@ function PhotoPreview({ files, variant = 'single', onRemove, color = 'blue', lab
 
     const urls = Array.from(files)
       .map((file) => {
-        if (!file) return null;
-        if (typeof file === 'string') {
-          return file.startsWith('http') ? file : `${bucket_url}/images/imageAdd/${file}`;
-        }
+        if (!file || typeof file === 'string') return null;
         if (file instanceof Blob) {
           if (!urlMapRef.current.has(file)) {
             urlMapRef.current.set(file, URL.createObjectURL(file));
@@ -46,8 +51,17 @@ function PhotoPreview({ files, variant = 'single', onRemove, color = 'blue', lab
       })
       .filter(Boolean);
 
-    setPreviews(urls);
+    setBlobPreviews(urls);
   }, [files]);
+
+  const previews = useMemo(() => {
+    const seen = new Set();
+    return [...stringPreviews, ...blobPreviews].filter((url) => {
+      if (seen.has(url)) return false;
+      seen.add(url);
+      return true;
+    });
+  }, [stringPreviews, blobPreviews]);
 
   if (previews.length === 0) return null;
 

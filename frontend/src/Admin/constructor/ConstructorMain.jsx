@@ -23,6 +23,7 @@ export default function ConstructorMain({ items, onSelect, children }) {
                 className={el.color === 'blue' ? s.buttonBlue : s.button}
                 type="button"
                 onClick={() => handleSelect(el)}>
+                <span className={s.btnText}>{el.id === 'video' && 'Видео-ссылка'}</span>
                 <Icon />
               </button>
             );
