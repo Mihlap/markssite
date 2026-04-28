@@ -9,7 +9,7 @@ import ProjectCardSlider from '../UI/Project&ArticleCardSlider/ProjectCardSlider
 import styles from './ProjectCard.module.css';
 import { getFetchForm } from '../store/Slice/projectSlice';
 import SliderContainerProjectCard from '../UI/Project&ArticleCardSlider/SliderContainerProjectCard';
-import AllProjectsButton from '../UI/ButtonsProjects/AllProjectsButton';
+
 import { handleScroll, onVerticalScroll, onWheel, shareToVK, shareToTelegram, shareToWhatsApp } from './utils';
 import catPhoto from '../img/default-photo.jpeg';
 import next from '../icons/next.svg';
