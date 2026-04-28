@@ -3,7 +3,7 @@ import s from './Styles.module.css';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
-function VideoPreview({ file, onRemove, label }) {
+function VideoPreview({ file, embedUrl, onRemove, label }) {
   const [src, setSrc] = useState(null);
 
   useEffect(() => {
@@ -18,22 +18,34 @@ function VideoPreview({ file, onRemove, label }) {
     }
   }, [file]);
 
-  if (!src) return null;
+  if (!src && !embedUrl) return null;
 
   return (
     <div>
       {label && <div className={s.label}>{label}</div>}
       <div className={s.item}>
-        <video
-          className={s.video}
-          src={src}
-          preload="metadata"
-          muted
-          loop
-          autoPlay
-          playsInline
-        />
-        <button type="button" className={s.remove} onClick={onRemove} aria-label="Удалить" />
+        {embedUrl ? (
+          <iframe
+            className={s.iframe}
+            src={embedUrl}
+            title="Video Preview"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        ) : (
+          <video
+            className={s.video}
+            src={src}
+            preload="metadata"
+            muted
+            loop
+            autoPlay
+            playsInline
+          />
+        )}
+        {onRemove && (
+          <button type="button" className={s.remove} onClick={onRemove} aria-label="Удалить" />
+        )}
       </div>
     </div>
   );

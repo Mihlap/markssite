@@ -472,7 +472,16 @@ const ArticlesForm = forwardRef(function ArticlesForm(
       {constructorBlocks.map((block, index) => {
         const Component = BLOCK_COMPONENTS[block.type];
         if (!Component) return null;
-        return <Component key={block.id} control={control} index={index} onRemove={() => remove(index)} clearErrors={clearErrors} />;
+        return (
+          <Component
+            key={block.id}
+            control={control}
+            index={index}
+            onRemove={() => remove(index)}
+            clearErrors={clearErrors}
+            {...(block.type === 'quote' ? { showAuthor: false } : {})}
+          />
+        );
       })}
       <Controller
         name="imageClose"
