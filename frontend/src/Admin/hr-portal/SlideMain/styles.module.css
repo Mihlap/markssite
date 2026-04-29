@@ -13,7 +13,7 @@
 .list {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    /* gap: 16px; */
     padding: 24px 0px;
 }
 
@@ -31,4 +31,8 @@
     align-items: center;
     justify-content: center;
     padding-top: 10%;
+}
+
+.draggableWrapper {
+    margin-bottom: 16px;
 }

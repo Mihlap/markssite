@@ -42,9 +42,9 @@
     font-style: normal;
     line-height: 24px;
     font-weight: 400;
-    overflow: hidden;
+    /* overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    white-space: nowrap; */
 }
 
 .id {
@@ -64,6 +64,10 @@
     button {
         display: flex;
     }
+}
+
+.titleId {
+    white-space: nowrap;
 }
 
 .copy {

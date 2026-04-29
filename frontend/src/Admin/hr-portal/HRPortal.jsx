@@ -285,7 +285,7 @@ export default function HRPortal({ user }) {
                         <>
                           Вы точно хотите удалить
                           <br />
-                          {selectedFilter === 'Стажировки' ? 'стажировку' : 'вакансию'} <strong>«{el.title}»</strong>?
+                          {selectedFilter === 'Стажировки' ? 'стажировку' : 'вакансию'} «{el.title}»?
                         </>
                       }
                       description={`Удаленную ${selectedFilter === 'Вакансии' ? 'вакансию' : 'стажировку'} вернуть будет невозможно`}

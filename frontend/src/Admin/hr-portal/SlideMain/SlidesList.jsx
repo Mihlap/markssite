@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState, useCallback } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import {
   fetchSlides,
   updateSlidesOrderLocally,
@@ -37,83 +38,69 @@ export default function SlidesList({
     [slidesFromStore]
   );
 
-  const [draggedItem, setDraggedItem] = useState(null);
-
   useEffect(() => {
     dispatch(fetchSlides());
   }, [dispatch]);
 
-  const handleDragStart = useCallback(
-    (e, index) => {
-      const item = slides[index];
-      setDraggedItem(item);
-      try { e.dataTransfer.setData('text/plain', String(item.id)); } catch (_) {}
-      e.dataTransfer.effectAllowed = 'move';
-    },
-    [slides]
-  );
-
-  const handleDragOver = useCallback((e) => {
-    e.preventDefault();
-    try { e.dataTransfer.dropEffect = 'move'; } catch (_) {}
-  }, []);
-
-  const handleDrop = useCallback(
-    async (e, index) => {
-      e.preventDefault();
-      if (!draggedItem) return;
-      const draggedIndex = slides.findIndex((s) => s.id === draggedItem.id);
-      if (draggedIndex === index) return;
-      const updated = [...slides];
-      const [removed] = updated.splice(draggedIndex, 1);
-      updated.splice(index, 0, removed);
-      const reindexed = updated.map((s, i) => ({ ...s, order: i }));
-      dispatch(updateSlidesOrderLocally(reindexed));
-      try {
-        await dispatch(updateSlidesOrder(reindexed)).unwrap();
-      } finally {
-        setDraggedItem(null);
-      }
-    },
-    [dispatch, slides, draggedItem]
-  );
+  const handleDragEnd = async (result) => {
+    if (!result.destination) return;
+    const from = result.source.index;
+    const to = result.destination.index;
+    if (from === to) return;
+    const updated = [...slides];
+    const [removed] = updated.splice(from, 1);
+    updated.splice(to, 0, removed);
+    const reindexed = updated.map((s, i) => ({ ...s, order: i }));
+    dispatch(updateSlidesOrderLocally(reindexed));
+    await dispatch(updateSlidesOrder(reindexed)).unwrap();
+  };
 
   if (isLoading) return <p className={styles.loading}>загрузка. . . </p>;
   if (error) return <p className={styles.error}>Ошибка загрузки данных.</p>;
   if (!slides.length) return <p className={styles.empty}>Слайдов пока нет.</p>;
 
   return (
-    <div className={styles.list} role="list">
-      {slides.map((el, index) => (
-        <div
-          key={el.id}
-          draggable
-          onDragStart={(e) => handleDragStart(e, index)}
-          onDragOver={(e) => handleDragOver(e)}
-          onDrop={(e) => handleDrop(e, index)}>
-          <UiMarksEntityRow
-            title={`Слайд ${el.id}`}
-            // id={el.id}
-            visible='slide'
-            role={getRole(user)}
-            hidden={el.hidden}
-            onToggle={() => handleLookClick(el.id)}
-            onEdit={() => handleEditClick(el.id)}
-            onDelete={() => handleDeleteModalOpenSlide(el.id)}
-          />
-          <UiMarksDeleteModal
-            isOpen={!!deleteModalStateSlide[el.id]}
-            title={
-              <>
-                Вы точно хотите удалить <strong>«Слайд {el.id}»</strong>?
-              </>
-            }
-            description="Удаленный слайд вернуть будет невозможно"
-            onConfirm={() => handleFormDeleteSlide(el.id)}
-            onClose={() => handleDeleteModalCloseSlide(el.id)}
-          />
-        </div>
-      ))}
-    </div>
+    <DragDropContext onDragEnd={handleDragEnd}>
+      <Droppable droppableId="slides-list">
+        {(provided) => (
+          <div className={styles.list} role="list" ref={provided.innerRef} {...provided.droppableProps}>
+            {slides.map((el, index) => (
+              <Draggable key={el.id} draggableId={String(el.id)} index={index}>
+                {(provided) => (
+                  <div
+                    className={styles.draggableWrapper}
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}>
+                    <UiMarksEntityRow
+                      title={`Слайд ${el.id}`}
+                      // id={el.id}
+                      visible="slide"
+                      role={getRole(user)}
+                      hidden={el.hidden}
+                      onToggle={() => handleLookClick(el.id)}
+                      onEdit={() => handleEditClick(el.id)}
+                      onDelete={() => handleDeleteModalOpenSlide(el.id)}
+                    />
+                    <UiMarksDeleteModal
+                      isOpen={!!deleteModalStateSlide[el.id]}
+                      title={
+                        <>
+                          Вы точно хотите удалить <strong>«Слайд {el.id}»</strong>?
+                        </>
+                      }
+                      description="Удаленный слайд вернуть будет невозможно"
+                      onConfirm={() => handleFormDeleteSlide(el.id)}
+                      onClose={() => handleDeleteModalCloseSlide(el.id)}
+                    />
+                  </div>
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
   );
 }
