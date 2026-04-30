@@ -160,6 +160,7 @@ const Header = React.memo(
     const combinedProjects = [...MapProject, ...MapProjectToEdit].filter(
       (project, index, self) => project && index === self.findIndex((p) => p && p.id === project.id)
     );
+    const visibleProjects = combinedProjects.filter((project) => project?.id);
 
     const defaultImagePath = img123;
 
@@ -493,17 +494,15 @@ const Header = React.memo(
                   slidesPerView: 2.1,
                 },
               }}>
-              {combinedProjects?.map((project, index) => {
-                if (!project || !project.id) return null;
-
+              {visibleProjects.map((project, index) => {
                 return (
                   <SwiperSlide
-                    key={`${project.IdProject}-${index}`}
+                    key={project.id}
                     id="slider_container_item_card"
                     className={`${styles.slider_container_item_card} ${index === 0 ? styles.slider_container_item_card_first : ''
                       }`}
                     style={index % 2 === 1 ? { paddingTop: '10rem' } : {}}>
-                    <Link to={`/projects/${project.id}`} key={`${project.IdProject}-${index}`}>
+                    <Link to={`/projects/${project.id}`}>
                       <div className={styles.wrapper_container_item_card}>
                         <img
                           onMouseEnter={handleMouseHover}
