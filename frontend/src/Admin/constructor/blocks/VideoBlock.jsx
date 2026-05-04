@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Controller, useWatch } from 'react-hook-form';
 import { UiMarksInput, UiMarksGrayWrap, UiVideoPreview } from '../../ui';
 
 const MAX_SIZE_MB = 10;
@@ -19,95 +18,76 @@ function getEmbedUrl(url) {
   return null;
 }
 
-export default function VideoBlock({ control, index, onRemove }) {
+export { getEmbedUrl };
+
+export default function VideoBlock({ file, url, onFileChange, onUrlChange, onRemove, btnClose = true, color = 'salmon', padding = '36px 16px 32px 16px' }) {
   const videoRef = useRef(null);
   const [sizeError, setSizeError] = useState(null);
   const [embedUrl, setEmbedUrl] = useState(null);
 
-  const videoValue = useWatch({ control, name: `constructorBlocks.${index}.video` });
-  const descriptionValue = useWatch({ control, name: `constructorBlocks.${index}.description` });
-
-  const hasFile = videoValue?.length > 0;
-  const hasLink = !!descriptionValue?.trim();
+  const hasFile = !!file;
+  const hasLink = !!url?.trim();
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setEmbedUrl(getEmbedUrl(descriptionValue));
-    }, 600);
+    const timer = setTimeout(() => setEmbedUrl(getEmbedUrl(url)), 600);
     return () => clearTimeout(timer);
-  }, [descriptionValue]);
+  }, [url]);
 
   return (
     <UiMarksGrayWrap
-      btnClose={true}
+      btnClose={btnClose}
       handlerClick={onRemove}
       customStyles={{
-        padding: '36px 16px 32px 16px',
+        padding: padding,
         display: 'flex',
         flexDirection: 'column',
         gap: '12px',
       }}>
-      <Controller
-        name={`constructorBlocks.${index}.video`}
-        control={control}
-        disabled={hasLink}
-        render={({ field: { onChange, value } }) =>
-          value?.length > 0 ? (
-            <UiVideoPreview
-              file={value[0]}
-              label="Видео"
-              onRemove={() => {
-                onChange([]);
-                setSizeError(null);
-                if (videoRef.current) videoRef.current.value = '';
-              }}
-            />
-          ) : (
-            <UiMarksInput
-              type="file"
-              color="salmon"
-              name={`constructorBlocks.${index}.video`}
-              label="Видео"
-              buttonText="Загрузить видео с компьютера"
-              accept="video/*"
-              inputRef={videoRef}
-              error={sizeError}
-              disabled={hasLink}
-              onChange={(e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                if (file.size > MAX_SIZE_BYTES) {
-                  setSizeError(`Файл слишком большой. Максимальный размер — ${MAX_SIZE_MB} МБ`);
-                  e.target.value = '';
-                  return;
-                }
-                setSizeError(null);
-                onChange([file]);
-              }}
-            />
-          )
-        }
-      />
-
-      <Controller
-        name={`constructorBlocks.${index}.description`}
-        control={control}
-        disabled={hasFile}
-        render={({ field }) => (
-          <UiMarksInput
-            color="salmon"
-            name={`constructorBlocks.${index}.description`}
-            placeholder="URL видео"
-            bordered
-            disabled={hasFile}
-            {...field}
-          />
-        )}
-      />
-
-      {embedUrl && !hasFile && (
-        <UiVideoPreview embedUrl={embedUrl} />
+      {hasFile ? (
+        <UiVideoPreview
+          file={file}
+          label="Видео"
+          color={color}
+          onRemove={() => {
+            onFileChange(null);
+            setSizeError(null);
+            if (videoRef.current) videoRef.current.value = '';
+          }}
+        />
+      ) : (
+        <UiMarksInput
+          type="file"
+          color={color}
+          label="Видео"
+          buttonText="Загрузить видео с компьютера"
+          accept="video/*"
+          inputRef={videoRef}
+          error={sizeError}
+          disabled={hasLink}
+          onChange={(e) => {
+            const f = e.target.files[0];
+            if (!f) return;
+            if (f.size > MAX_SIZE_BYTES) {
+              setSizeError(`Файл слишком большой. Максимальный размер — ${MAX_SIZE_MB} МБ`);
+              e.target.value = '';
+              return;
+            }
+            setSizeError(null);
+            onFileChange(f);
+          }}
+        />
       )}
+
+      <UiMarksInput
+        color={color}
+        placeholder="URL видео"
+        bordered
+        disabled={hasFile}
+        value={url ?? ''}
+        onChange={(e) => onUrlChange(e.target.value)}
+      />
+
+      {embedUrl && !hasFile && <UiVideoPreview embedUrl={embedUrl} />}
     </UiMarksGrayWrap>
   );
 }

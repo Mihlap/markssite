@@ -2,7 +2,7 @@ import TitleWithDesc from './TitleWithDesc';
 import ImageWithDesc from './ImageWithDesc';
 import Video from './Video';
 import VideoUpload from './VideoUpload';
-import VideoBlock from './VideoBlock';
+import VideoBlockController from './VideoBlockController';
 import ThreeImages from './ThreeImages';
 import TwoImages from './TwoImages';
 import Slider from './Slider';
@@ -23,7 +23,7 @@ export const BLOCK_COMPONENTS = {
   imageWithDesc: ImageWithDesc,
   video: Video,
   videoUpload: VideoUpload,
-  videoBlock: VideoBlock,
+  videoBlock: VideoBlockController,
   threeImages: ThreeImages,
   twoImages: TwoImages,
   slider: Slider,

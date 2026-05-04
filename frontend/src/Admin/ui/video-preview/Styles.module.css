@@ -69,3 +69,8 @@
 .remove:hover {
   transform: translate(-50%, -50%) scale(1.2);
 }
+
+.removeBlue::before,
+.removeBlue::after {
+  background-color: var(--blue-75BBFD);
+}
