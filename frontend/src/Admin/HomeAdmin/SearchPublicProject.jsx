@@ -52,8 +52,6 @@ export default function SearchPublicProject({
 
   const [rows, setRows] = useState(() => flatToRows(list));
   const listIdsRef = useRef(new Set(list.map((p) => p.IdProject)));
-  const [draggingFromRow, setDraggingFromRow] = useState(null);
-
   useEffect(() => {
     const newIds = new Set(list.map((p) => p.IdProject));
     const cached = listIdsRef.current;
@@ -62,13 +60,8 @@ export default function SearchPublicProject({
     if (changed) setRows(flatToRows(list));
   }, [list]);
 
-  const handleDragStart = useCallback((start) => {
-    setDraggingFromRow(parseInt(start.source.droppableId.split('-')[1]));
-  }, []);
-
   const handleDragEnd = useCallback(
     (result) => {
-      setDraggingFromRow(null);
       const { source, destination } = result;
       if (!destination) return;
       if (source.droppableId === destination.droppableId && source.index === destination.index) return;
@@ -121,14 +114,14 @@ export default function SearchPublicProject({
 
   return (
     <UiMarksGrayWrap customStyles={{ padding: '24px' }}>
-      <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+      <DragDropContext onDragEnd={handleDragEnd}>
         <div className={styles.list}>
           {rows.map((row, rowIdx) => (
             <Droppable
               key={rowIdx}
               droppableId={`row-${rowIdx}`}
               direction="horizontal"
-              isDropDisabled={row.length >= MAX_PER_ROW && rowIdx !== draggingFromRow}>
+            >
               {(provided) => (
                 <div ref={provided.innerRef} {...provided.droppableProps} className={styles.row}>
                   {row.map((proj, idx) => (
