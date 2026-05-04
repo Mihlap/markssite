@@ -4,7 +4,9 @@ const {
 } = require('url');
 const {
   Articles,
-  ConstructorArticles
+  ConstructorArticles,
+  PublicationOne,
+  PublicationTwo,
 } = require('../../db/models');
 const fileMiddleware = require('../../middleware/file');
 const {
@@ -494,6 +496,8 @@ router.delete('/deletezapros/:id', async (req, res) => {
         idBlock: id
       }
     });
+    await PublicationOne.destroy({ where: { IdArticle: id } });
+    await PublicationTwo.destroy({ where: { IdArticle: id } });
     await Articles.destroy({
       where: {
         id

@@ -127,6 +127,7 @@ const SlideForm = forwardRef(function SlideForm(
                 rules={{ required: true, maxLength: 150 }}
                 render={({ field, fieldState }) => (
                   <UiMarksTextarea
+                    maxLength={150}
                     label="Название конкурса"
                     name={`${key}.description`}
                     placeholder="Есть ограничение"

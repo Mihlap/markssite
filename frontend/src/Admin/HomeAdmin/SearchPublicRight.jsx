@@ -1,5 +1,3 @@
-import React, { useEffect, useState } from 'react';
-import styles from './HomeAdmin.module.scss';
 import { useDispatch } from 'react-redux';
 import {
   getUpdatedArticles,
@@ -7,7 +5,11 @@ import {
   searchArticleRightMain,
   updateArticleRight,
 } from '../../store/Slice/searchArticlePublicRightSlice';
-import IDPublicRight from './IDPublicRight';
+import { useNotification } from './utils/useNotification';
+import Notification from './Notification';
+import { UiMarksButton, UiMarksInput, UiMarksGrayWrap } from '../ui';
+import Item from './Item';
+import styles from './HomeAdmin.module.scss';
 
 export default function SearchPublicRight({
   articles,
@@ -20,24 +22,12 @@ export default function SearchPublicRight({
   isBtnDisabledPublicTwo,
 }) {
   const dispatch = useDispatch();
-  const [message, setMessage] = useState({
-    text: '',
-    type: null,
-  });
+  const { message, showMessage } = useNotification();
 
   const handleSearchTwoPublic = (event) => {
     setSearcIdTwo(event.target.value);
     setIsBtnDisabledPublicTwo(event.target.value === '');
   };
-
-  useEffect(() => {
-    if (message.type) {
-      const timer = setTimeout(() => {
-        setMessage({ text: '', type: null });
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [message]);
 
   const filterArticleTwoPublic = async (event) => {
     const filterArticle = articles.find((article) => article.id === parseInt(searcIdTwo, 10));
@@ -45,97 +35,85 @@ export default function SearchPublicRight({
     if (filterArticle) {
       try {
         await dispatch(searchArticleRightMain(filterArticle, setSearcIdTwo, setSaveIdTwo, setIsBtnDisabledPublicTwo));
-
         showMessage('Публикация добавлена', 'ok');
       } catch (error) {
-        console.error('Ошибка при сохранении проекта:', error);
-        showMessage('Ошибка при сохранении проекта:', 'error');
+        console.error('Ошибка при сохранении публикации:', error);
+        showMessage('Ошибка при сохранении публикации:', 'error');
       }
     } else {
-      // console.log("Публикация с таким id не найдена");
       showMessage('Публикация с таким id не найдена', 'error');
       setSearcIdTwo('');
       setIsBtnDisabledPublicTwo(event.target.value === '');
     }
   };
 
-  const showMessage = (text, type) => {
-    setMessage({ text, type });
-  };
-
-  const Message = ({ text, type }) => {
-    const typesToStyles = {
-      error: styles.home_admin_section__error,
-      ok: styles.home_admin_section__ok,
-      delete: styles.home_admin_section__delete,
-      update: styles.home_admin_section__update,
-    };
-    return <div className={typesToStyles[type] || styles.home_admin_section__ok}>{text}</div>;
-  };
-
   const handleArticleRightDelete = (formId) => {
     dispatch(searchArticleRightDelete(formId))
       .then(() => {
         dispatch(getUpdatedArticles());
-        showMessage('Публикация удалена');
+        showMessage('Публикация удалена', 'delete');
       })
       .catch((error) => {
-        console.log('Ошибка при удалении второй статьи:', error);
+        console.error('Ошибка при удалении второй статьи:', error);
       });
   };
 
   const handlerUpdateReplacement = () => {
-    const filterArticle = articles.find((article) => article.id === parseInt(searcIdTwo, 10));
+    const newId = parseInt(searcIdTwo, 10);
+    const currentId = arrIdArticleRight?.[0]?.IdArticle;
+
+    if (currentId === newId) {
+      showMessage('Эта публикация уже установлена', 'error');
+      return;
+    }
+
+    const filterArticle = articles.find((article) => article.id === newId);
 
     if (filterArticle) {
-      //  console.log("ЗАМЕНА публикации", filterArticle);
       dispatch(updateArticleRight(filterArticle, setSaveIdTwo, setSearcIdTwo, setIsBtnDisabledPublicTwo));
       showMessage('Публикация заменена', 'update');
     }
   };
 
   return (
-    <div className={styles.home_admin_section__block_search}>
-      <div className={styles.home_admin_section__id_container}>
+    <UiMarksGrayWrap customStyles={{ width: '100%', padding: '24px' }}>
+      <>
         {arrIdArticleRight &&
           arrIdArticleRight?.map((el) => (
-            <IDPublicRight key={el.id} article={el} handleArticleRightDelete={handleArticleRightDelete} />
+            <Item key={el.IdArticle} project={el} id={el.IdArticle} handleFormDelete={handleArticleRightDelete} />
           ))}
-      </div>
-      <div className={`${styles.form__group} ${styles.field}`}>
-        <input
+      </>
+      <div className={styles.wrapInputRight}>
+        <UiMarksInput
           type="number"
-          className={styles.form__field}
-          placeholder="idtwopublic"
           name="idtwopublic"
-          id="idtwopublic"
+          label="Укажите id статьи"
           value={saveIdTwo !== null ? saveIdTwo : searcIdTwo}
           onChange={handleSearchTwoPublic}
-          // onKeyPress={handleKeyPress}
           required
-          autoComplete="off"
         />
-        <label htmlFor="idtwopublic" className={styles.form__label}>
-          Укажите id статьи
-        </label>
       </div>
       <div className={styles.home_admin_section__button_container_articles}>
         {(!arrIdArticleRight || arrIdArticleRight.length === 0) && (
-          <button
-            className={styles.home_admin_section__button}
+          <UiMarksButton
+            color="blue"
+            className={styles.btn}
             onClick={filterArticleTwoPublic}
-            disabled={isBtnDisabledPublicTwo}
-          />
+            disabled={isBtnDisabledPublicTwo}>
+            Добавить на главную
+          </UiMarksButton>
         )}
         {arrIdArticleRight?.length > 0 && (
-          <button
-            className={styles.home_admin_section__button_replacement}
+          <UiMarksButton
+            color="blue"
+            className={styles.btn}
             onClick={handlerUpdateReplacement}
-            disabled={isBtnDisabledPublicTwo}
-          />
+            disabled={isBtnDisabledPublicTwo}>
+            Заменить публикацию
+          </UiMarksButton>
         )}
       </div>
-      {message.type && <Message text={message.text} type={message.type} />}
-    </div>
+      <Notification text={message.text} type={message.type} />
+    </UiMarksGrayWrap>
   );
 }
