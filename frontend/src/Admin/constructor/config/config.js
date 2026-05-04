@@ -3,8 +3,7 @@ import { Icon1, Icon2, Icon3, Icon4, Icon5, Icon6, Icon7, Icon8, Icon9, Icon10, 
 const project_items = [
   { id: 'imageWithDesc', icon: Icon1, label: 'Картинка с описанием' },
   { id: 'titleWithDesc', icon: Icon2, label: 'Заголовок с описанием' },
-  { id: 'video', icon: Icon3, label: 'Видео (ссылка)' },
-  { id: 'videoUpload', icon: Icon3, label: 'Видео (файл)' },
+  { id: 'videoBlock', icon: Icon3, label: 'Видео' },
   { id: 'threeImages', icon: Icon4, label: 'Три картинки' },
   { id: 'twoImages', icon: Icon5, label: 'Две картинки' },
   { id: 'slider', icon: Icon6, label: 'Слалайдер' },
@@ -19,8 +18,7 @@ const publications_news_items = [
   { id: 'textWithSelection', icon: Icon11, label: 'Текстовый блок выделенный' },
   { id: 'twoImages', icon: Icon5, label: 'Две картинки' },
   { id: 'slider', icon: Icon6, label: 'Слалайдер' },
-  { id: 'video', icon: Icon3, label: 'Видео (ссылка)' },
-  { id: 'videoUpload', icon: Icon3, label: 'Видео (файл)' },
+  { id: 'videoBlock', icon: Icon3, label: 'Видео' },
 ];
 
 const history_items = [

@@ -28,9 +28,16 @@
 .column {
     display: flex;
     flex-direction: column;
-    gap: 32px 1rem;
     flex: 1;
     min-width: 0;
+}
+
+.draggableWrapper {
+    margin-bottom: 32px;
+}
+
+.draggableWrapper:last-child {
+    margin-bottom: 0;
 }
 
 .item {
@@ -58,7 +65,7 @@
 
 .itemImg {
     width: 100%;
-    aspect-ratio: 1 / 1;
+    /* aspect-ratio: 1 / 1; */
     object-position: center;
     object-fit: cover;
     border-radius: 15px;

@@ -14,11 +14,10 @@ export default function MarksEntityRow({ title, desc, id, role, visible, hidden 
   const isLegenda = visible === 'legenda';
   const isSlide = visible === 'slide';
 
-  console.log(title);
   return (
     <div className={s.entily}>
       <div className={`${s.content} ${isLegenda ? s.contentLegenda : ''}`}>
-        {title && <div className={`${s.title} ${isLegenda ? s.titleLegenda : ''}`}>{title}</div>}
+        {title && <div title={title} className={`${s.title} ${isLegenda ? s.titleLegenda : ''}`}>{title}</div>}
         <div className={`${s.desc} ${isLegenda ? s.descLegenda : ''}`}>{desc}</div>
       </div>
       <div className={s.control}>

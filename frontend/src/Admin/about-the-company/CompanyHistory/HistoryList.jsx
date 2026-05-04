@@ -12,14 +12,10 @@ export default function HistoryList({ items, canDelete, canEdit, canDrag, onEdit
             <Draggable key={el.id} draggableId={String(el.id)} index={index} isDragDisabled={!canDrag}>
               {(provided, snapshot) => (
                 <div
-                  className={s.row}
+                  className={s.draggableWrapper}
                   ref={provided.innerRef}
                   {...provided.draggableProps}
-                  style={{
-                    ...provided.draggableProps.style,
-                    transition: snapshot.isDropAnimating ? 'all 0.3s ease' : provided.draggableProps.style?.transition,
-                  }}>
-                  <div {...provided.dragHandleProps}>
+                  {...provided.dragHandleProps}>
                     <MarksEntityRow
                       title={el.title || String(el.year)}
                       desc={String(el.year)}
@@ -31,7 +27,6 @@ export default function HistoryList({ items, canDelete, canEdit, canDrag, onEdit
                       onDelete={() => onDelete(el)}
                     />
                   </div>
-                </div>
               )}
             </Draggable>
           ))}

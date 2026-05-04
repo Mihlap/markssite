@@ -15,7 +15,7 @@ function validateFiles(files) {
   return null;
 }
 
-function FileInput({ name, label, color = 'blue', buttonText = 'Загрузить изображение', accept, multiple, inputRef, onChange, required, hint, info, className, error }) {
+function FileInput({ name, label, color = 'blue', buttonText = 'Загрузить изображение', accept, multiple, inputRef, onChange, required, hint, info, className, error, disabled = false }) {
   const [open, setOpen] = useState(false);
   const [formatError, setFormatError] = useState(null);
   const popoverRef = useRef(null);
@@ -63,8 +63,8 @@ function FileInput({ name, label, color = 'blue', buttonText = 'Загрузит
         </div>
       )}
       <div className={styles.file__row}>
-        <label className={`${styles.file__button} ${colorClass}`}>
-          <input type="file" name={name} accept={accept} multiple={multiple} ref={inputRef} onChange={handleChange} />
+        <label className={`${styles.file__button} ${colorClass} ${disabled ? styles.file__button_disabled : ''}`}>
+          <input type="file" name={name} accept={accept} multiple={multiple} ref={inputRef} onChange={handleChange} disabled={disabled} />
           <ClipIcon />
           <span className={styles.file__button_text}>{buttonText}</span>
         </label>
@@ -157,6 +157,7 @@ const MarksInput = forwardRef(function MarksInput({
         info={info}
         className={className}
         error={error}
+        disabled={disabled}
       />
     );
   }

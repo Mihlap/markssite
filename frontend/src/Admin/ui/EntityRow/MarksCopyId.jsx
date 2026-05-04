@@ -18,7 +18,7 @@ export default function MarksCopyId({ id, className }) {
 
   return (
     <div className={`${s.id}${className ? ` ${className}` : ''}`}>
-      <div>id: {id}</div>
+      <div className={s.titleId}>id: {id}</div>
       <button title="скопировать id" className={s.copy} type="button" onClick={handleCopy}>
         {isCopied && <div className={s.copyMessage}>id скопирован</div>}
         <Icon7 />

@@ -21,6 +21,7 @@ export default function StaffList({ items, canDelete, canEdit, canDrag, onEdit, 
                 <Draggable key={el.id} draggableId={String(el.id)} index={index} isDragDisabled={!canDrag}>
                   {(provided, snapshot) => (
                     <div
+                      className={s.draggableWrapper}
                       title={el.position}
                       ref={provided.innerRef}
                       {...provided.draggableProps}

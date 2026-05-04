@@ -1,174 +1,174 @@
-import { useEffect, useState } from 'react';
-import { UiMarksHeading } from '../../ui';
-import styles from '../../HomeAdmin/HomeAdmin.module.scss';
-import { useDispatch, useSelector } from 'react-redux';
-import DraggableVacancy from '../../HomeAdmin/DraggableVacancy';
-import { arrIdVacancySelector } from '../const/VacancySelector';
+import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+import Item from '../../HomeAdmin/Item';
 import {
   deleteVacancy,
   getZaprosData,
   searchVacancyMainPostzapros,
-  updateVacancyOrderReplacement,
   updateVacancyOrderSuccess,
+  updateVacancyOrderReplacement,
 } from '../../../store/Slice/searchVacancyMainSlice';
+import { UiMarksButton, UiMarksInput, UiMarksGrayWrap, UiMarksHeading } from '../../ui';
+import { useNotification } from '../../HomeAdmin/utils/useNotification';
+import Notification from '../../HomeAdmin/Notification';
+import styles from '../../HomeAdmin/HomeAdmin.module.scss';
 
-export default function SearchVacancyMain() {
+const MAX_PER_ROW = 7;
+const MAX_ROWS = 3;
+
+const flatToRows = (flat) => {
+  const rows = [];
+  for (let i = 0; i < flat.length && rows.length < MAX_ROWS; i += MAX_PER_ROW) {
+    rows.push(flat.slice(i, i + MAX_PER_ROW));
+  }
+  return rows;
+};
+
+const cascadeRows = (rows) => {
+  const result = rows.map((row) => [...row]);
+  for (let i = 0; i < result.length - 1; i++) {
+    while (result[i].length > MAX_PER_ROW) {
+      result[i + 1].unshift(result[i].pop());
+    }
+  }
+  return result.filter((row) => row.length > 0);
+};
+
+export default function SearchVacancyMain({ vacancies, arrIdVacancy }) {
   const dispatch = useDispatch();
-  const vacancies = useSelector((state) => state.vacancies?.vacancies);
-  const arrIdVacancy = useSelector(arrIdVacancySelector);
-
-  const [errorMessage, setErrorMessage] = useState('');
-  const [showError, setShowError] = useState(false);
-  const [okMessage, setOkMessage] = useState('');
-  const [showOk, setShowOk] = useState(false);
-  const [replacementMessage, setReplacementMessage] = useState('');
-  const [replacement, setReplacement] = useState(false);
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const { message, showMessage } = useNotification();
   const [searchId, setSearchId] = useState('');
   const [savedId, setSavedId] = useState(null);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
+  const list = useMemo(() => (arrIdVacancy ?? []).filter((v) => v && v.IdVacancy), [arrIdVacancy]);
+
+  const [rows, setRows] = useState(() => flatToRows(list));
+  const listIdsRef = useRef(new Set(list.map((v) => v.IdVacancy)));
 
   useEffect(() => {
     dispatch(getZaprosData());
   }, [dispatch]);
 
-  const handleSearchChange = (event) => {
-    setSearchId(event.target.value);
-    setIsButtonDisabled(event.target.value === '');
-  };
+  useEffect(() => {
+    const newIds = new Set(list.map((v) => v.IdVacancy));
+    const cached = listIdsRef.current;
+    const changed = newIds.size !== cached.size || list.some((v) => !cached.has(v.IdVacancy));
+    listIdsRef.current = newIds;
+    if (changed) setRows(flatToRows(list));
+  }, [list]);
 
-  const handleKeyPress = (event) => {
-    // Проверяем, является ли нажатая клавиша клавишей "Enter" (код клавиши 13)
-    if (event.key === 'Enter') {
-      filterVacanciesById(); // Выполняем поиск
-    }
-  };
-  // Функция для фильтрации проектов по введенному id
-  const filterVacanciesById = async () => {
-    if (!vacancies) {
+
+  const handleDragEnd = useCallback(
+    (result) => {
+      const { source, destination } = result;
+      if (!destination) return;
+      if (source.droppableId === destination.droppableId && source.index === destination.index) return;
+
+      const srcIdx = parseInt(source.droppableId.split('-')[1]);
+      const dstIdx = parseInt(destination.droppableId.split('-')[1]);
+
+      const next = rows.map((row) => [...row]);
+      const [moved] = next[srcIdx].splice(source.index, 1);
+      next[dstIdx].splice(destination.index, 0, moved);
+
+      const cascaded = cascadeRows(next);
+      const updated = cascaded.flat();
+      setRows(cascaded);
+      dispatch(updateVacancyOrderSuccess(updated));
+      dispatch(updateVacancyOrderReplacement(updated));
+      showMessage('Порядок сохранён', 'update');
+    },
+    [rows, dispatch, showMessage]
+  );
+
+  const handleFormDelete = useCallback(
+    (id) => {
+      dispatch(deleteVacancy(id));
+      showMessage('Вакансия удалена с главной страницы', 'delete');
+    },
+    [dispatch, showMessage]
+  );
+
+  const filterVacanciesById = useCallback(async () => {
+    const found = vacancies?.find((v) => v.id === +searchId);
+
+    if (!found) {
+      showMessage('Вакансия с таким id не найдена', 'error');
       return;
     }
-    const filteredVacancy = vacancies.find((vacancy) => vacancy.id === parseInt(searchId, 10));
-    if (filteredVacancy) {
-      try {
-        await dispatch(searchVacancyMainPostzapros(filteredVacancy, setSearchId, setSavedId));
 
-        showMessage('Вакансия добавлена', 'ok');
-      } catch (error) {
-        console.error('Ошибка при сохранении вакансии:', error);
-        showMessage('Ошибка при сохранении вакансии:', 'error');
-      }
-    } else {
-      showMessage('Вакансия с таким id не найден', 'error');
+    if (list.some((v) => v.IdVacancy === +searchId)) {
+      showMessage('Вакансия уже добавлена на главную', 'error');
+      return;
     }
-  };
 
-  const handleFormDelete = (formId) => {
-    dispatch(deleteVacancy(formId));
-  };
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowError(false);
-      setShowOk(false);
-      setReplacement(false);
-    }, 5000);
-
-    return () => clearTimeout(timer);
-  }, [showError, showOk, replacement]);
-
-  const updateVacancyOrder = (updatedVacancies) => {
-    return (dispatch) => {
-      dispatch(updateVacancyOrderSuccess(updatedVacancies));
-    };
-  };
-
-  const moveVacancy = (draggedIndex, targetIndex) => {
-    const updatedVacancies = [...arrIdVacancy];
-    const draggedVacancy = updatedVacancies[draggedIndex];
-    updatedVacancies.splice(draggedIndex, 1);
-    updatedVacancies.splice(targetIndex, 0, draggedVacancy);
-
-    // Вызываем действие для обновления порядка элементов
-    dispatch(updateVacancyOrder(updatedVacancies));
-
-    showMessage('Вакансия перемещена', 'replacement');
-    // И тут же сохраняем новый порядок в базу данных
-    dispatch(updateVacancyOrderReplacement(updatedVacancies));
-  };
-
-  const showMessage = (message, type) => {
-    switch (type) {
-      case 'error':
-        setErrorMessage(message);
-        setShowError(true);
-        break;
-      case 'ok':
-        setOkMessage(message);
-        setShowOk(true);
-        break;
-      case 'replacement':
-        setReplacementMessage(message);
-        setReplacement(true);
-        break;
-      default:
-        break;
+    try {
+      dispatch(searchVacancyMainPostzapros(found, setSearchId, setSavedId));
+      showMessage('Вакансия добавлена', 'ok');
+    } catch {
+      showMessage('Ошибка при сохранении вакансии', 'error');
     }
-  };
-
-  const Message = ({ message, type }) => {
-    return (
-      <div className={type === 'error' ? styles.home_admin_section__error : styles.home_admin_section__ok}>
-        {message}
-      </div>
-    );
-  };
+  }, [dispatch, list, vacancies, searchId, showMessage]);
 
   return (
-    <div className={styles.home_admin_section__section}>
-      <UiMarksHeading size="3xl" pb="lg" pt='60px'>
+    <>
+      <UiMarksHeading size="3xl" pb="lg" pt="60px">
         Актуальные вакансии
       </UiMarksHeading>
+      <UiMarksGrayWrap customStyles={{ padding: '24px' }}>
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <div className={styles.list}>
+            {rows.map((row, rowIdx) => (
+              <Droppable
+                key={rowIdx}
+                droppableId={`row-${rowIdx}`}
+                direction="horizontal"
+              >
+                {(provided) => (
+                  <div ref={provided.innerRef} {...provided.droppableProps} className={styles.row}>
+                    {row.map((vacancy, idx) => (
+                      <Draggable key={vacancy.IdVacancy} draggableId={String(vacancy.IdVacancy)} index={idx}>
+                        {(provided) => (
+                          <Item
+                            project={vacancy}
+                            id={vacancy.IdVacancy}
+                            handleFormDelete={handleFormDelete}
+                            ref={provided.innerRef}
+                            draggableProps={provided.draggableProps}
+                            dragHandleProps={provided.dragHandleProps}
+                          />
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            ))}
+          </div>
+        </DragDropContext>
 
-      <div className={`${styles.home_admin_section__block_search} ${styles.home_admin_section__block_searchVacancy}`}>
-        <div className={styles.home_admin_section__id_container}>
-          {arrIdVacancy?.map((vacancy, index) => (
-            <DraggableVacancy
-              key={index}
-              vacancy={vacancy}
-              index={index}
-              moveVacancy={moveVacancy}
-              handleFormDelete={handleFormDelete}
-            />
-          ))}
-        </div>
-        <div className={`${styles.form__group} ${styles.field}`}>
-          <input
+        <div className={styles.wrapInput} onKeyDown={(e) => e.key === 'Enter' && filterVacanciesById()}>
+          <UiMarksInput
             type="number"
-            className={styles.form__field}
-            placeholder="idshnik"
-            name="idshnik"
-            id="idshnik"
-            value={savedId !== null ? savedId : searchId}
-            onChange={handleSearchChange}
-            onKeyDown={handleKeyPress}
-            required
-            autoComplete="off"
-          />
-          <label htmlFor="idshnik" className={styles.form__label}>
-            Укажите id вакансии
-          </label>
-        </div>
-        <div className={styles.home_admin_section__button_container_project}>
-          <button
-            className={styles.home_admin_section__button}
-            onClick={filterVacanciesById}
-            disabled={isButtonDisabled}
+            name="vacancy-id"
+            label="Добавить id вакансии"
+            placeholder="id вакансии"
+            value={savedId ?? searchId}
+            onChange={(e) => {
+              setSearchId(e.target.value);
+              setIsButtonDisabled(e.target.value === '');
+            }}
           />
         </div>
-        <div>{showError && <Message message={errorMessage} type="error" />}</div>
-        <div>{showOk && <Message message={okMessage} type="ok" />}</div>
-        <div>{replacement && <Message message={replacementMessage} type="replacement" />}</div>
-      </div>
-    </div>
+        <UiMarksButton color="blue" disabled={isButtonDisabled} onClick={filterVacanciesById} className={styles.btn}>
+          Добавить на главную
+        </UiMarksButton>
+
+        <Notification text={message.text} type={message.type} />
+      </UiMarksGrayWrap>
+    </>
   );
 }

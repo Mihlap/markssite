@@ -22,15 +22,9 @@
 .list {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    /* gap: 1rem; */
     padding: 24px 0px;
 }
-
-/* .row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-} */
 
 .dragHandle {
     cursor: grab;
@@ -56,4 +50,8 @@
     font-size: 12px;
     font-weight: 400;
     line-height: 16px;
+}
+
+.draggableWrapper {
+    margin-bottom: 16px;
 }
