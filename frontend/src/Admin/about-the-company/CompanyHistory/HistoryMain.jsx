@@ -129,7 +129,7 @@ export default function HistoryMain({ user }) {
             items={showAll ? orderedItems : orderedItems.slice(0, 4)}
             canDelete={canDelete}
             canEdit={canEdit}
-            canDrag={canDrag && showAll}
+            canDrag={canDrag}
             onEdit={handleEdit}
             onToggle={handleToggle}
             onDelete={handleDelete}

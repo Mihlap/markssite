@@ -36,15 +36,6 @@ export default function HRPortal({ user }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editVacancyData, setEditVacancyData] = useState(null);
   const [deleteModalState, setDeleteModalState] = useState({});
-  const [errorMessage, setErrorMessage] = useState('');
-  const [showError, setShowError] = useState(false);
-  const [okMessage, setOkMessage] = useState('');
-  const [showOk, setShowOk] = useState(false);
-  const [replacementMessage, setReplacementMessage] = useState('');
-  const [replacement, setReplacement] = useState(false);
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-  const [searchId, setSearchId] = useState('');
-  const [savedId, setSavedId] = useState(null);
   const [isFormValid, setIsFormValid] = useState(false);
   const [isFormLoading, setIsFormLoading] = useState(false);
   const [showExitWarning, setShowExitWarning] = useState(false);
@@ -186,24 +177,6 @@ export default function HRPortal({ user }) {
           <SearchVacancyMain
             vacancies={vacancies}
             arrIdVacancy={arrIdVacancy}
-            setSearchId={setSearchId}
-            setIsButtonDisabled={setIsButtonDisabled}
-            setSavedId={setSavedId}
-            searchId={searchId}
-            setOkMessage={setOkMessage}
-            setShowOk={setShowOk}
-            setErrorMessage={setErrorMessage}
-            setShowError={setShowError}
-            setReplacement={setReplacement}
-            setReplacementMessage={setReplacementMessage}
-            savedId={savedId}
-            isButtonDisabled={isButtonDisabled}
-            showError={showError}
-            errorMessage={errorMessage}
-            showOk={showOk}
-            okMessage={okMessage}
-            replacement={replacement}
-            replacementMessage={replacementMessage}
           />
           <EventMain user={user} />
         </>
@@ -285,7 +258,7 @@ export default function HRPortal({ user }) {
                         <>
                           Вы точно хотите удалить
                           <br />
-                          {selectedFilter === 'Стажировки' ? 'стажировку' : 'вакансию'} <strong>«{el.title}»</strong>?
+                          {selectedFilter === 'Стажировки' ? 'стажировку' : 'вакансию'} «{el.title}»?
                         </>
                       }
                       description={`Удаленную ${selectedFilter === 'Вакансии' ? 'вакансию' : 'стажировку'} вернуть будет невозможно`}

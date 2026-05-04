@@ -1,13 +1,16 @@
-import { useEffect, useState } from 'react';
-import styles from './HomeAdmin.module.scss';
 import { useDispatch } from 'react-redux';
-import IDPublicLeft from './IDPublicLeft';
 import {
   getUpdatedArticles,
   searchArticleLeftDelete,
   searchArticleLeftMain,
   updateArticleLeft,
 } from '../../store/Slice/searchArticlePublicLeftSlice';
+import { UiMarksButton, UiMarksInput, UiMarksGrayWrap } from '../ui';
+import Item from './Item';
+import { useNotification } from './utils/useNotification';
+import Notification from './Notification';
+
+import styles from './HomeAdmin.module.scss';
 
 export default function SearchPublicLeft({
   articles,
@@ -20,24 +23,12 @@ export default function SearchPublicLeft({
   isBtnDisabledPublicOne,
 }) {
   const dispatch = useDispatch();
-  const [message, setMessage] = useState({
-    text: '',
-    type: null,
-  });
+  const { message, showMessage } = useNotification();
 
   const handleSearchOnePublic = (event) => {
     setSearcIdOne(event.target.value);
     setIsBtnDisabledPublicOne(event.target.value === '');
   };
-
-  useEffect(() => {
-    if (message.type) {
-      const timer = setTimeout(() => {
-        setMessage({ text: '', type: null });
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [message]);
 
   const filterArticleOnePublic = async (event) => {
     const filterArticle = articles.find((article) => article.id === parseInt(searcIdOne, 10));
@@ -56,20 +47,6 @@ export default function SearchPublicLeft({
     }
   };
 
-  const showMessage = (text, type) => {
-    setMessage({ text, type });
-  };
-
-  const Message = ({ text, type }) => {
-    const typesToStyles = {
-      error: styles.home_admin_section__error,
-      ok: styles.home_admin_section__ok,
-      delete: styles.home_admin_section__delete,
-      update: styles.home_admin_section__update,
-    };
-    return <div className={typesToStyles[type] || styles.home_admin_section__ok}>{text}</div>;
-  };
-
   const handleArticleLeftDelete = (formId) => {
     dispatch(searchArticleLeftDelete(formId))
       .then(() => {
@@ -82,6 +59,13 @@ export default function SearchPublicLeft({
   };
 
   const handlerUpdateReplacement = () => {
+    const newId = parseInt(searcIdOne, 10);
+    const currentId = arrIdArticleLeft?.[0]?.IdArticle;
+
+    if (currentId === newId) {
+      showMessage('Эта публикация уже установлена', 'error');
+      return;
+    }
     const filterArticle = articles.find((article) => article.id === parseInt(searcIdOne, 10));
 
     if (filterArticle) {
@@ -91,48 +75,44 @@ export default function SearchPublicLeft({
   };
 
   return (
-    <div className={styles.home_admin_section__block_search}>
-      <div className={styles.home_admin_section__id_container}>
+    <UiMarksGrayWrap customStyles={{ width: '100%', padding: '24px' }}>
+      <>
         {arrIdArticleLeft &&
           arrIdArticleLeft?.map((el) => (
-            <IDPublicLeft key={el.id} article={el} handleArticleLeftDelete={handleArticleLeftDelete} />
+            <Item key={el.IdArticle} project={el} id={el.IdArticle} handleFormDelete={handleArticleLeftDelete} />
           ))}
-      </div>
-      <div className={`${styles.form__group} ${styles.field}`}>
-        <input
+      </>
+      <div className={styles.wrapInputLeft}>
+        <UiMarksInput
           type="number"
-          className={styles.form__field}
-          placeholder="idonepublic"
           name="idonepublic"
-          id="idonepublic"
+          label="Укажите id статьи"
           value={saveIdOne !== null ? saveIdOne : searcIdOne}
           onChange={handleSearchOnePublic}
-          // onKeyPress={handleKeyPress}
           required
-          autoComplete="off"
         />
-        <label htmlFor="idonepublic" className={styles.form__label}>
-          Укажите id статьи
-        </label>
       </div>
       <div className={styles.home_admin_section__button_container_articles}>
         {(!arrIdArticleLeft || arrIdArticleLeft.length === 0) && (
-          <button
-            className={styles.home_admin_section__button}
+          <UiMarksButton
+            color="blue"
+            className={styles.btn}
             onClick={filterArticleOnePublic}
-            disabled={isBtnDisabledPublicOne}
-          />
+            disabled={isBtnDisabledPublicOne}>
+            Добавить на главную
+          </UiMarksButton>
         )}
-
         {arrIdArticleLeft?.length > 0 && (
-          <button
-            className={styles.home_admin_section__button_replacement}
+          <UiMarksButton
+            color="blue"
+            className={styles.btn}
             onClick={handlerUpdateReplacement}
-            disabled={isBtnDisabledPublicOne}
-          />
+            disabled={isBtnDisabledPublicOne}>
+            Заменить публикацию
+          </UiMarksButton>
         )}
       </div>
-      {message.type && <Message text={message.text} type={message.type} />}
-    </div>
+      <Notification text={message.text} type={message.type} />
+    </UiMarksGrayWrap>
   );
 }
