@@ -440,13 +440,6 @@ const JournalForm = forwardRef(function JournalForm(
         Добавить город, страну
       </UiMarksButton>
       <UiMarksGrayWrap customStyles={{ padding: '16px' }}>
-        {/* <MarkdownEditor
-          value={markdown}
-          onChange={handleChange}
-          onUploadFile={handleUpload}
-          onDeleteFile={handleDelete}
-          onTempFilesChange={(files) => (tempFilesRef.current = files)}
-        /> */}
         <UiMarksMarkDown
         value={markdown}
           onChange={handleChange}

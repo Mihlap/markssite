@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchStaffAsync, deleteStaffAsync, toggleVisibilityStaffAsync, reorderStaffAsync } from '../../../store/Slice/StaffSliceNew';
 import s from './Styles.module.css';
-import { UiMarksButton, UiMarksDialog, UiMarksDeleteModal, UiMarksHeading } from '../../ui';
+import { UiMarksButton, UiMarksDialog, UiMarksDeleteModal } from '../../ui';
 import StaffForm from './StaffForm';
 import { useAdminUser } from '../../hooks/useAdminUser';
 import StaffList from './StaffList';
@@ -132,10 +132,11 @@ export default function StaffMain({ items, user }) {
         isOpen={!!deleteTarget}
         title={
           <>
-            Вы точно хотите удалить <br /> сотрудника <strong>«{deleteTarget?.name}»</strong>?
+            Вы точно хотите удалить <br /> сотрудника «{deleteTarget?.name}»?
           </>
         }
-        description="Удалённого сотрудника вернуть будет невозможно"
+        // description="Удалённого сотрудника вернуть будет невозможно"
+        description={<>Если вы удалите информацию о сотруднике, вернуть <br/>ее будет невозможно</>}
         onConfirm={handleDeleteConfirm}
         onClose={() => setDeleteTarget(null)}
       />
