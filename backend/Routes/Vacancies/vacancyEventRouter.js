@@ -28,7 +28,7 @@ const deleteImageIfUnused = async (imageUrl, currentEventId) => {
   }
 };
 
-router.put('/update-event/:id', fileMiddleware.fields([{ name: 'files', maxCount: 500 }, { name: 'photoFiles', maxCount: 500 }]),
+router.put('/update-event/:id', fileMiddleware.fields([{ name: 'files', maxCount: 500 }, { name: 'photoFiles', maxCount: 500 }, { name: 'videoFiles', maxCount: 100 }]),
   async (req, res) => {
     const { id } = req.params;
 
@@ -60,10 +60,17 @@ router.put('/update-event/:id', fileMiddleware.fields([{ name: 'files', maxCount
         event.files = [...newFiles, ...oldFiles];
       }
 
+      const uploadedVideoNames = await Promise.all(
+        (req.files?.videoFiles || []).map(async (file) => {
+          await uploadFileToS3(file, 'videos');
+          return file.originalname;
+        })
+      );
+
       await event.update({
         title,
         files: event.files,
-        eventData,
+        eventData: [...eventData, ...uploadedVideoNames],
       });
 
       res.json({ message: "Слайд успешно обновлен", data: event });
@@ -75,6 +82,7 @@ router.put('/update-event/:id', fileMiddleware.fields([{ name: 'files', maxCount
 );
 
 router.put('/update-event-order', async (req, res) => {
+  console.log('/update-event-order');
   const { events } = req.body;
 
   if (!Array.isArray(events)) {
@@ -105,7 +113,7 @@ router.post('/save-event-details',
   fileMiddleware.fields([
     { name: 'files', maxCount: 500 },
     { name: 'photoFiles', maxCount: 500 },
-    { name: 'videos', maxCount: 100 },
+    { name: 'videoFiles', maxCount: 100 },
   ]), async (req, res) => {
     let details;
     try {
@@ -126,6 +134,13 @@ router.post('/save-event-details',
       const fileUrl = await uploadFileToS3(file, 'images/imageEvent');
       files.push(fileUrl);
     }
+
+    const uploadedVideoNames = await Promise.all(
+      (req.files?.videoFiles || []).map(async (file) => {
+        await uploadFileToS3(file, 'videos');
+        return file.originalname;
+      })
+    );
     const { title } = req.body;
 
     try {
@@ -135,7 +150,7 @@ router.post('/save-event-details',
         title,
         hidden: false,
         files,
-        eventData,
+        eventData: [...eventData, ...uploadedVideoNames],
         order: 0
       });
 

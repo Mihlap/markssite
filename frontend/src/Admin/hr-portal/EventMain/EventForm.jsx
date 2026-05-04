@@ -5,6 +5,7 @@ import compressImageFile from 'browser-image-compression';
 
 import { postEventData, editEvent, fetchEvents } from '../../../store/Slice/vacancyEventSlice';
 import { UiMarksInput, UiMarksGrayWrap, UiPhotoPreview, UiMarksButton } from '../../ui';
+import VideoBlock from '../../constructor/blocks/VideoBlock';
 
 import s from './EventForm.module.css';
 
@@ -25,7 +26,7 @@ const EventForm = forwardRef(function EventForm(
 
   const [removedFiles, setRemovedFiles] = useState([]);
   const [isImageRemoved, setIsImageRemoved] = useState(false);
-  const [videoUrls, setVideoUrls] = useState(['']);
+  const [videoItems, setVideoItems] = useState([{ url: '', file: null }]);
   const [photo, setPhoto] = useState([]);
   const [isCompressing, setIsCompressing] = useState(false);
   const fileInputRef = useRef(null);
@@ -47,7 +48,7 @@ const EventForm = forwardRef(function EventForm(
         reset(EMPTY);
         setRemovedFiles([]);
         setIsImageRemoved(false);
-        setVideoUrls(['']);
+        setVideoItems([{ url: '', file: null }]);
         setPhoto([]);
       },
     }),
@@ -59,7 +60,7 @@ const EventForm = forwardRef(function EventForm(
       reset(EMPTY);
       setRemovedFiles([]);
       setIsImageRemoved(false);
-      setVideoUrls(['']);
+      setVideoItems([{ url: '', file: null }]);
       setPhoto([]);
     } else {
       reset({
@@ -68,7 +69,11 @@ const EventForm = forwardRef(function EventForm(
       });
       setRemovedFiles([]);
       setIsImageRemoved(false);
-      setVideoUrls(editEventData.eventData?.length ? editEventData.eventData : ['']);
+      setVideoItems(
+        editEventData.eventData?.length
+          ? editEventData.eventData.map((url) => ({ url, file: null }))
+          : [{ url: '', file: null }]
+      );
     }
   }, [editEventData, reset]);
 
@@ -80,27 +85,30 @@ const EventForm = forwardRef(function EventForm(
     }
   }, []);
 
-  const addVideoField = useCallback(() => setVideoUrls((prev) => [...prev, '']), []);
+  const addVideoField = useCallback(() => setVideoItems((prev) => [...prev, { url: '', file: null }]), []);
   const addPhotoField = useCallback(() => setPhoto((prev) => [...prev, []]), []);
 
-  const changeVideoUrl = useCallback(
-    (i, val) => setVideoUrls((prev) => prev.map((u, idx) => (idx === i ? val : u))),
-    []
-  );
+  const changeVideoItem = useCallback((i, field, val) => {
+    setVideoItems((prev) => prev.map((item, idx) => (idx === i ? { ...item, [field]: val } : item)));
+  }, []);
+
+  const removeVideoItem = useCallback((i) => {
+    setVideoItems((prev) => prev.filter((_, idx) => idx !== i));
+  }, []);
 
   const onSubmit = useCallback(
     async (data) => {
       const fd = new FormData();
       fd.append('title', data.title);
 
-      const filtered = videoUrls.filter(Boolean);
+      const filteredUrls = videoItems.filter((v) => v.url?.trim()).map((v) => v.url);
 
       if (editEventData?.id) {
-        fd.append('videoUrls', JSON.stringify(filtered));
+        fd.append('videoUrls', JSON.stringify(filteredUrls));
         if (isImageRemoved) fd.append('removePhotoAva', 'true');
         if (removedFiles.length) fd.append('removedFiles', JSON.stringify(removedFiles));
       } else {
-        fd.append('details', JSON.stringify({ eventData: filtered }));
+        fd.append('details', JSON.stringify({ eventData: filteredUrls }));
       }
 
       (data.files || []).forEach((file) => {
@@ -111,6 +119,8 @@ const EventForm = forwardRef(function EventForm(
         files.forEach((file) => fd.append('photoFiles', file));
       });
 
+      videoItems.filter((v) => v.file).forEach((v) => fd.append('videoFiles', v.file));
+
       if (editEventData?.id) {
         await dispatch(editEvent({ id: editEventData.id, data: fd })).unwrap();
       } else {
@@ -120,7 +130,7 @@ const EventForm = forwardRef(function EventForm(
       await dispatch(fetchEvents());
       onSuccess?.();
     },
-    [dispatch, editEventData, videoUrls, photo, removedFiles, isImageRemoved, onSuccess]
+    [dispatch, editEventData, videoItems, photo, removedFiles, isImageRemoved, onSuccess]
   );
 
   return (
@@ -226,24 +236,23 @@ const EventForm = forwardRef(function EventForm(
           )}
         </UiMarksGrayWrap>
       ))}
-      <UiMarksButton variant="dashed-blue" icon iconSize='small' onClick={addPhotoField}>
+      <UiMarksButton variant="dashed-blue" icon iconSize="small" onClick={addPhotoField}>
         Добавить фотографии
       </UiMarksButton>
-      {videoUrls.map((url, i) => (
-        <UiMarksGrayWrap
+      {videoItems.map((item, i) => (
+        <VideoBlock
           key={i}
-          customStyles={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          <UiMarksInput
-            name={`video-${i}`}
-            label={'Ссылка на видеоролик'}
-            placeholder="ссылка на видеоролик"
-            bordered
-            value={url}
-            onChange={(e) => changeVideoUrl(i, e.target.value)}
-          />
-        </UiMarksGrayWrap>
+          file={item.file}
+          url={item.url}
+          onFileChange={(f) => changeVideoItem(i, 'file', f)}
+          onUrlChange={(v) => changeVideoItem(i, 'url', v)}
+          onRemove={() => removeVideoItem(i)}
+          btnClose={false}
+          color='blue'
+          padding='1rem'
+        />
       ))}
-      <UiMarksButton variant="dashed-blue" icon iconSize='small' onClick={addVideoField}>
+      <UiMarksButton variant="dashed-blue" icon iconSize="small" onClick={addVideoField}>
         Добавить видео
       </UiMarksButton>
     </form>

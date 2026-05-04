@@ -3,7 +3,7 @@ import s from './Styles.module.css';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
-function VideoPreview({ file, embedUrl, onRemove, label }) {
+function VideoPreview({ file, embedUrl, onRemove, label, color = 'salmon' }) {
   const [src, setSrc] = useState(null);
 
   useEffect(() => {
@@ -44,7 +44,7 @@ function VideoPreview({ file, embedUrl, onRemove, label }) {
           />
         )}
         {onRemove && (
-          <button type="button" className={s.remove} onClick={onRemove} aria-label="Удалить" />
+          <button type="button" className={`${s.remove}${color === 'blue' ? ` ${s.removeBlue}` : ''}`} onClick={onRemove} aria-label="Удалить" />
         )}
       </div>
     </div>
