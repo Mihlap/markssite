@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { Controller } from 'react-hook-form';
 import { UiMarksInput, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
 
-export default function TwoImages({ control, index, onRemove }) {
+export default function TwoImages({ control, index, onRemove, imageFolder = 'imageAdd' }) {
   const imageRef = useRef(null);
 
     return (
@@ -39,6 +39,7 @@ export default function TwoImages({ control, index, onRemove }) {
               <UiPhotoPreview
                 files={value}
                 variant="grid-2"
+                imageFolder={imageFolder}
                 label={currentCount === 2 ? 'Две вертикальные картинки' : undefined}
                 color="salmon"
                 onRemove={(i) => {

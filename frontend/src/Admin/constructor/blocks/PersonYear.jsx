@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { Controller } from 'react-hook-form';
 import { UiMarksInput, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
 
-export default function PersonYear({ control, index, onRemove, clearErrors }) {
+export default function PersonYear({ control, index, onRemove, clearErrors, imageFolder = 'imageAdd' }) {
   const imageRef = useRef(null);
 
   return (
@@ -20,6 +20,7 @@ export default function PersonYear({ control, index, onRemove, clearErrors }) {
               variant="portrait"
               label="Человек года *для отображения в хронике"
               color="blue"
+              imageFolder={imageFolder}
               onRemove={() => {
                 onChange([]);
                 if (imageRef.current) imageRef.current.value = '';
