@@ -361,7 +361,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
     let descriptionTextBlock = '';
 
     block?.forEach((item) => {
-      if (item.label === 'Блок описание') descriptionTextBlock = item.value;
+      if (item.label === 'Блок описание' || item.label === 'Текстовый блок') descriptionTextBlock = item.value;
     });
 
     return (
@@ -418,7 +418,6 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
     if (!block || block?.length === 0 || !block[0] || !block[0].label) {
       return null;
     }
-
     let quote = '';
     let author = '';
     let imageUrl = '';
@@ -433,7 +432,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
       }
     });
 
-    if (!quote || !author) {
+    if (!author) {
       return null;
     }
 
@@ -538,15 +537,14 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
     };
 
     const handleFullscreen = () => {
-      // const videoElement = videoRef.current;
-      const containerElement = document.documentElement;
+      const videoElement = videoRef.current;
 
-      if (containerElement.requestFullscreen) {
-        containerElement.requestFullscreen();
-      } else if (containerElement.webkitRequestFullscreen) {
-        containerElement.webkitRequestFullscreen();
-      } else if (containerElement.msRequestFullscreen) {
-        containerElement.msRequestFullscreen();
+      if (videoElement.requestFullscreen) {
+        videoElement.requestFullscreen();
+      } else if (videoElement.webkitRequestFullscreen) {
+        videoElement.webkitRequestFullscreen();
+      } else if (videoElement.msRequestFullscreen) {
+        videoElement.msRequestFullscreen();
       }
       setIsFullscreen(true);
     };
@@ -781,12 +779,14 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
       return renderTwoImage(block);
     case 'Слайдер *допускается загрузка 8ми изображений':
       return renderImageSlider(block);
+    case 'Текстовый блок':
     case 'Блок описание':
       return renderTextBlock(block);
     case 'Текстовый блок в рамке':
     case 'Текст в рамочке':
       return renderTextFramed(block);
     case 'Автор цитаты ( ФИО должность )':
+    case 'Цитата':
       return renderQuoteBlock(block);
     case 'Текст заметки':
     case 'Текстовый блок выделенный':
