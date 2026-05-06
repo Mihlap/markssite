@@ -29,10 +29,19 @@ const toOldFormat = (block) => {
         { type: 'text', label: 'Заголовок', value: block.title || '' },
         { type: 'text', label: 'Текстовый блок', value: block.description || '' },
       ];
+    // case 'video':
+    //   return [{ type: 'text', label: 'Ссылка на видеоролик', value: block.description || '' }];
+    // case 'videoUpload':
+    //   return [{ type: 'file', label: 'Видео файл', value: processFiles(block.video || []) }];
     case 'video':
       return [{ type: 'text', label: 'Ссылка на видеоролик', value: block.description || '' }];
     case 'videoUpload':
       return [{ type: 'file', label: 'Видео файл', value: processFiles(block.video || []) }];
+    case 'videoBlock':
+      return [
+        { type: 'file', label: 'Видео блок', value: processFiles(block.video || []) },
+        { type: 'text', label: 'Ссылка на видеоролик блок', value: block.description || '' },
+      ];
     case 'threeImages':
       return [{ type: 'file', label: 'Блок 3 картинки', value: processFiles(block.image) }];
     case 'twoImages':
