@@ -195,6 +195,7 @@ const EventForm = forwardRef(function EventForm(
                     if (updated.length === 0) setIsImageRemoved(true);
                     onChange(updated);
                   }}
+                  imageFolder="imageEvent"
                 />
               </>
             )}
@@ -232,6 +233,7 @@ const EventForm = forwardRef(function EventForm(
               onRemove={(fileIdx) =>
                 setPhoto((prev) => prev.map((p, idx) => (idx === i ? p.filter((_, fi) => fi !== fileIdx) : p)))
               }
+              imageFolder="imageEvent"
             />
           )}
         </UiMarksGrayWrap>

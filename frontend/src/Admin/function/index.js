@@ -17,6 +17,9 @@ const renameFile = (file) => {
 
 
 const convertOldToNewFormat = (oldBlocks) => {
+
+  console.log(oldBlocks);
+
   if (!Array.isArray(oldBlocks)) return [];
 
   return oldBlocks
@@ -43,6 +46,7 @@ const convertOldToNewFormat = (oldBlocks) => {
             type: 'video',
             description: block[0]?.value || '',
           };
+        // case 'Видеоролик':
         case 'Видео файл':
           return {
             type: 'videoUpload',

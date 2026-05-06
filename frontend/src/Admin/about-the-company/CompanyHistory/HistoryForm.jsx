@@ -386,6 +386,7 @@ const HistoryForm = forwardRef(function HistoryForm(
                     onChange([]);
                     if (previewImageRef.current) previewImageRef.current.value = '';
                   }}
+                  imageFolder="imageHistory"
                 />
               ) : (
                 <UiMarksInput
@@ -435,7 +436,7 @@ const HistoryForm = forwardRef(function HistoryForm(
       {constructorBlocks.map((block, index) => {
         const Component = BLOCK_COMPONENTS[block.type];
         if (!Component) return null;
-        return <Component key={block.id} control={control} index={index} onRemove={() => remove(index)} onUploadFile={handleMarkdownUpload} clearErrors={clearErrors} />;
+        return <Component key={block.id} control={control} index={index} onRemove={() => remove(index)} onUploadFile={handleMarkdownUpload} clearErrors={clearErrors} imageFolder="imageHistory" />;
       })}
     </form>
   );

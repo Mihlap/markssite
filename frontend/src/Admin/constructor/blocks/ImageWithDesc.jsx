@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { Controller } from 'react-hook-form';
 import { UiMarksInput, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
 
-export default function ImageWithDesc({ control, index, onRemove, clearErrors }) {
+export default function ImageWithDesc({ control, index, onRemove, clearErrors, imageFolder = 'imageAdd' }) {
   const imageRef = useRef(null);
 
   return (
@@ -27,6 +27,7 @@ export default function ImageWithDesc({ control, index, onRemove, clearErrors })
               variant="single"
               label="Загрузите изображение"
               color="salmon"
+              imageFolder={imageFolder}
               onRemove={() => {
                 onChange([]);
                 if (imageRef.current) imageRef.current.value = '';
