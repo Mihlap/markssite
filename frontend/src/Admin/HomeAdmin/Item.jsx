@@ -5,7 +5,6 @@ const Item = forwardRef(({ id, withOpacity, isDragging, style, dragListeners, dr
   const inlineStyles = {
     opacity: withOpacity ? '0.5' : '1',
     transformOrigin: '50% 50%',
-    display: 'flex',
     ...(!hideDrag && { cursor: isDragging ? 'grabbing' : 'grab' }),
     ...style,
   };
