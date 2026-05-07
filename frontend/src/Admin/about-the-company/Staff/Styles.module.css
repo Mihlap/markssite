@@ -41,10 +41,10 @@
 }
 
 .item {
-    min-width: 0;
+    /* min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1rem; */
 }
 
 .wrapImg {
@@ -82,6 +82,7 @@
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+    margin-top: 16px;
 }
 
 .empty,
