@@ -1,6 +1,8 @@
-import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+import { DndContext, closestCenter, PointerSensor, useSensor, useSensors, DragOverlay } from '@dnd-kit/core';
+import { SortableContext, rectSortingStrategy, arrayMove } from '@dnd-kit/sortable';
+import SortableItem from './SortableItem';
 import Item from '../../HomeAdmin/Item';
 import {
   deleteVacancy,
@@ -14,26 +16,6 @@ import { useNotification } from '../../HomeAdmin/utils/useNotification';
 import Notification from '../../HomeAdmin/Notification';
 import styles from '../../HomeAdmin/HomeAdmin.module.scss';
 
-const MAX_PER_ROW = 7;
-const MAX_ROWS = 3;
-
-const flatToRows = (flat) => {
-  const rows = [];
-  for (let i = 0; i < flat.length && rows.length < MAX_ROWS; i += MAX_PER_ROW) {
-    rows.push(flat.slice(i, i + MAX_PER_ROW));
-  }
-  return rows;
-};
-
-const cascadeRows = (rows) => {
-  const result = rows.map((row) => [...row]);
-  for (let i = 0; i < result.length - 1; i++) {
-    while (result[i].length > MAX_PER_ROW) {
-      result[i + 1].unshift(result[i].pop());
-    }
-  }
-  return result.filter((row) => row.length > 0);
-};
 
 export default function SearchVacancyMain({ vacancies, arrIdVacancy }) {
   const dispatch = useDispatch();
@@ -44,7 +26,8 @@ export default function SearchVacancyMain({ vacancies, arrIdVacancy }) {
 
   const list = useMemo(() => (arrIdVacancy ?? []).filter((v) => v && v.IdVacancy), [arrIdVacancy]);
 
-  const [rows, setRows] = useState(() => flatToRows(list));
+  const [flatList, setFlatList] = useState(list);
+  const [activeId, setActiveId] = useState(null);
   const listIdsRef = useRef(new Set(list.map((v) => v.IdVacancy)));
 
   useEffect(() => {
@@ -54,33 +37,40 @@ export default function SearchVacancyMain({ vacancies, arrIdVacancy }) {
   useEffect(() => {
     const newIds = new Set(list.map((v) => v.IdVacancy));
     const cached = listIdsRef.current;
-    const changed = newIds.size !== cached.size || list.some((v) => !cached.has(v.IdVacancy));
     listIdsRef.current = newIds;
-    if (changed) setRows(flatToRows(list));
+    const changed = newIds.size !== cached.size || list.some((v) => !cached.has(v.IdVacancy));
+    if (changed) setFlatList(list);
   }, [list]);
 
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
+  );
+
+  const handleDragStart = useCallback((event) => {
+    setActiveId(event.active.id);
+  }, []);
+
+  const handleDragCancel = useCallback(() => {
+    setActiveId(null);
+  }, []);
 
   const handleDragEnd = useCallback(
-    (result) => {
-      const { source, destination } = result;
-      if (!destination) return;
-      if (source.droppableId === destination.droppableId && source.index === destination.index) return;
+    (event) => {
+      const { active, over } = event;
+      setActiveId(null);
+      if (!over || active.id === over.id) return;
 
-      const srcIdx = parseInt(source.droppableId.split('-')[1]);
-      const dstIdx = parseInt(destination.droppableId.split('-')[1]);
-
-      const next = rows.map((row) => [...row]);
-      const [moved] = next[srcIdx].splice(source.index, 1);
-      next[dstIdx].splice(destination.index, 0, moved);
-
-      const cascaded = cascadeRows(next);
-      const updated = cascaded.flat();
-      setRows(cascaded);
-      dispatch(updateVacancyOrderSuccess(updated));
-      dispatch(updateVacancyOrderReplacement(updated));
+      setFlatList((prev) => {
+        const oldIndex = prev.findIndex((v) => v.IdVacancy === active.id);
+        const newIndex = prev.findIndex((v) => v.IdVacancy === over.id);
+        const next = arrayMove(prev, oldIndex, newIndex);
+        dispatch(updateVacancyOrderSuccess(next));
+        dispatch(updateVacancyOrderReplacement(next));
+        return next;
+      });
       showMessage('Порядок сохранён', 'update');
     },
-    [rows, dispatch, showMessage]
+    [dispatch, showMessage]
   );
 
   const handleFormDelete = useCallback(
@@ -104,6 +94,11 @@ export default function SearchVacancyMain({ vacancies, arrIdVacancy }) {
       return;
     }
 
+    if (list.length >= 6) {
+      showMessage('Нельзя добавить больше 6 вакансий', 'error');
+      return;
+    }
+
     try {
       dispatch(searchVacancyMainPostzapros(found, setSearchId, setSavedId));
       showMessage('Вакансия добавлена', 'ok');
@@ -118,37 +113,24 @@ export default function SearchVacancyMain({ vacancies, arrIdVacancy }) {
         Актуальные вакансии
       </UiMarksHeading>
       <UiMarksGrayWrap customStyles={{ padding: '24px' }}>
-        <DragDropContext onDragEnd={handleDragEnd}>
-          <div className={styles.list}>
-            {rows.map((row, rowIdx) => (
-              <Droppable
-                key={rowIdx}
-                droppableId={`row-${rowIdx}`}
-                direction="horizontal"
-              >
-                {(provided) => (
-                  <div ref={provided.innerRef} {...provided.droppableProps} className={styles.row}>
-                    {row.map((vacancy, idx) => (
-                      <Draggable key={vacancy.IdVacancy} draggableId={String(vacancy.IdVacancy)} index={idx}>
-                        {(provided) => (
-                          <Item
-                            project={vacancy}
-                            id={vacancy.IdVacancy}
-                            handleFormDelete={handleFormDelete}
-                            ref={provided.innerRef}
-                            draggableProps={provided.draggableProps}
-                            dragHandleProps={provided.dragHandleProps}
-                          />
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            ))}
-          </div>
-        </DragDropContext>
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={handleDragStart} onDragEnd={handleDragEnd} onDragCancel={handleDragCancel}>
+          <SortableContext items={flatList.map((v) => v.IdVacancy)} strategy={rectSortingStrategy}>
+            <div className={styles.list}>
+              {flatList.map((el) => (
+                <SortableItem el={el} key={el.IdVacancy} handleFormDelete={handleFormDelete} />
+              ))}
+            </div>
+          </SortableContext>
+          <DragOverlay adjustScale style={{ transformOrigin: '0 0' }}>
+            {activeId ? (
+              <Item
+                id={activeId}
+                isDragging
+                onDelete={handleFormDelete}
+              />
+            ) : null}
+          </DragOverlay>
+        </DndContext>
 
         <div className={styles.wrapInput} onKeyDown={(e) => e.key === 'Enter' && filterVacanciesById()}>
           <UiMarksInput
@@ -163,7 +145,7 @@ export default function SearchVacancyMain({ vacancies, arrIdVacancy }) {
             }}
           />
         </div>
-        <UiMarksButton color="blue" disabled={isButtonDisabled} onClick={filterVacanciesById} className={styles.btn}>
+        <UiMarksButton color="blue" disabled={isButtonDisabled || list.length >= 6} onClick={filterVacanciesById} className={styles.btn}>
           Добавить на главную
         </UiMarksButton>
 
