@@ -1,6 +1,8 @@
-import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+import { DndContext, closestCenter, PointerSensor, useSensor, useSensors, DragOverlay } from '@dnd-kit/core';
+import { SortableContext, rectSortingStrategy, arrayMove } from '@dnd-kit/sortable';
+import SortableItem from './SortableItem';
 import Item from './Item';
 import {
   deleteProject,
@@ -14,26 +16,8 @@ import Notification from './Notification';
 import styles from './HomeAdmin.module.scss';
 
 
-const MAX_PER_ROW = 7;
-const MAX_ROWS = 3;
+// const MOCK_ITEMS = Array.from({ length: 14 }, (_, i) => ({ IdProject: i + 1 }));
 
-const flatToRows = (flat) => {
-  const rows = [];
-  for (let i = 0; i < flat.length && rows.length < MAX_ROWS; i += MAX_PER_ROW) {
-    rows.push(flat.slice(i, i + MAX_PER_ROW));
-  }
-  return rows;
-};
-
-const cascadeRows = (rows) => {
-  const result = rows.map((row) => [...row]);
-  for (let i = 0; i < result.length - 1; i++) {
-    while (result[i].length > MAX_PER_ROW) {
-      result[i + 1].unshift(result[i].pop());
-    }
-  }
-  return result.filter((row) => row.length > 0);
-};
 
 export default function SearchPublicProject({
   projects,
@@ -50,37 +34,47 @@ export default function SearchPublicProject({
 
   const list = useMemo(() => arrIdProject.filter((p) => p && p.IdProject), [arrIdProject]);
 
-  const [rows, setRows] = useState(() => flatToRows(list));
+  // TODO: заменить MOCK_ITEMS на list и раскомментировать useEffect для реальных данных
+  const [flatList, setFlatList] = useState(list);
+  const [activeId, setActiveId] = useState(null);
   const listIdsRef = useRef(new Set(list.map((p) => p.IdProject)));
   useEffect(() => {
     const newIds = new Set(list.map((p) => p.IdProject));
     const cached = listIdsRef.current;
-    const changed = newIds.size !== cached.size || list.some((p) => !cached.has(p.IdProject));
     listIdsRef.current = newIds;
-    if (changed) setRows(flatToRows(list));
+    const changed = newIds.size !== cached.size || list.some((p) => !cached.has(p.IdProject));
+    if (changed) setFlatList(list);
   }, [list]);
 
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
+  );
+
+  const handleDragStart = useCallback((event) => {
+    setActiveId(event.active.id);
+  }, []);
+
+  const handleDragCancel = useCallback(() => {
+    setActiveId(null);
+  }, []);
+
   const handleDragEnd = useCallback(
-    (result) => {
-      const { source, destination } = result;
-      if (!destination) return;
-      if (source.droppableId === destination.droppableId && source.index === destination.index) return;
+    (event) => {
+      const { active, over } = event;
+      setActiveId(null);
+      if (!over || active.id === over.id) return;
 
-      const srcIdx = parseInt(source.droppableId.split('-')[1]);
-      const dstIdx = parseInt(destination.droppableId.split('-')[1]);
-
-      const next = rows.map((row) => [...row]);
-      const [moved] = next[srcIdx].splice(source.index, 1);
-      next[dstIdx].splice(destination.index, 0, moved);
-
-      const cascaded = cascadeRows(next);
-      const updated = cascaded.flat();
-      setRows(cascaded);
-      dispatch(updateProjectOrderSuccess(updated));
-      dispatch(updateProjectOrderReplacement(updated));
+      setFlatList((prev) => {
+        const oldIndex = prev.findIndex((p) => p.IdProject === active.id);
+        const newIndex = prev.findIndex((p) => p.IdProject === over.id);
+        const next = arrayMove(prev, oldIndex, newIndex);
+        dispatch(updateProjectOrderSuccess(next));
+        dispatch(updateProjectOrderReplacement(next));
+        return next;
+      });
       showMessage('Порядок сохранён', 'update');
     },
-    [rows, dispatch, showMessage]
+    [dispatch, showMessage]
   );
 
   const handleFormDelete = useCallback(
@@ -112,38 +106,27 @@ export default function SearchPublicProject({
     }
   }, [dispatch, list, projects, searchId, showMessage, setSearchId, setSavedId]);
 
+
   return (
     <UiMarksGrayWrap customStyles={{ padding: '24px' }}>
-      <DragDropContext onDragEnd={handleDragEnd}>
-        <div className={styles.list}>
-          {rows.map((row, rowIdx) => (
-            <Droppable
-              key={rowIdx}
-              droppableId={`row-${rowIdx}`}
-              direction="horizontal"
-            >
-              {(provided) => (
-                <div ref={provided.innerRef} {...provided.droppableProps} className={styles.row}>
-                  {row.map((proj, idx) => (
-                    <Draggable key={proj.IdProject} draggableId={String(proj.IdProject)} index={idx}>
-                      {(provided) => (
-                        <Item
-                          project={proj}
-                          handleFormDelete={handleFormDelete}
-                          ref={provided.innerRef}
-                          draggableProps={provided.draggableProps}
-                          dragHandleProps={provided.dragHandleProps}
-                        />
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          ))}
-        </div>
-      </DragDropContext>
+      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={handleDragStart} onDragEnd={handleDragEnd} onDragCancel={handleDragCancel}>
+        <SortableContext items={flatList.map((p) => p.IdProject)} strategy={rectSortingStrategy}>
+          <div className={styles.list}>
+            {flatList.map((el) => (
+              <SortableItem el={el} key={el.IdProject} handleFormDelete={handleFormDelete} />
+            ))}
+          </div>
+        </SortableContext>
+        <DragOverlay adjustScale style={{ transformOrigin: '0 0' }}>
+          {activeId ? (
+            <Item
+              id={activeId}
+              isDragging
+              onDelete={handleFormDelete}
+            />
+          ) : null}
+        </DragOverlay>
+      </DndContext>
 
       <div className={styles.wrapInput} onKeyDown={(e) => e.key === 'Enter' && filterProjectsById()}>
         <UiMarksInput

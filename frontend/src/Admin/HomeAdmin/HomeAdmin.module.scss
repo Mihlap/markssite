@@ -8,18 +8,9 @@
 }
 
 .list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.row {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  // gap: 0.5rem;
-  min-height: 48px;
-  overflow-x: auto;
+    display: grid;
+    grid-template-columns: repeat(6, max-content 1fr);
+    gap: 16px;
 }
 
 .items {
@@ -29,9 +20,7 @@
   background-color: var(--white-F6F6F6);
   border-radius: 2rem;
   padding: 8px 16px;
-  margin-right: 1rem;
   white-space: nowrap;
-  // margin-bottom: 1rem;
 
   &__title {
     color: var(--black-1D2E43);
@@ -68,7 +57,6 @@
 }
 
 .notification {
-
   &__ok,
   &__error,
   &__delete,
