@@ -181,6 +181,7 @@ const SlideForm = forwardRef(function SlideForm(
                   setIsImageRemoved(true);
                   onChange(null);
                 }}
+                imageFolder="slideCard"
               />
             )}
           </>

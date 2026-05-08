@@ -16,7 +16,6 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
   const galleryRef = useRef(null);
   const { events } = useSelector((state) => state.formAddEvent);
   const videoRefs = useRef([]);
-  console.log(events, 'events');
 
   useEffect(() => {
     dispatch(fetchEvents());
@@ -145,7 +144,7 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
           width="100%"
           height="100%"
         >
-          <source src={`${bucket_url}/videos/${videoUrl}`} type={mimeMap[ext] ?? 'video/mp4'} />
+          <source src={videoUrl.startsWith('http') ? videoUrl : `${bucket_url}/videos/${videoUrl}`} type={mimeMap[ext] ?? 'video/mp4'} />
         </video>
       );
     }

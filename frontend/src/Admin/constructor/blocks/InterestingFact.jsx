@@ -2,7 +2,7 @@ import React from 'react';
 import { Controller } from 'react-hook-form';
 import { UiMarksTextarea, UiMarksGrayWrap, UiPhotoPreview, UiMarksInput } from '../../ui';
 
-export default function InterestingFact({ control, index, onRemove, clearErrors }) {
+export default function InterestingFact({ control, index, onRemove, clearErrors, imageFolder = 'imageAdd' }) {
   const imageRef = React.useRef(null);
   const avaRef = React.useRef(null);
 
@@ -21,6 +21,7 @@ export default function InterestingFact({ control, index, onRemove, clearErrors 
               variant="single"
               label="Загрузите изображение"
               color="salmon"
+              imageFolder={imageFolder}
               onRemove={() => {
                 onChange([]);
                 if (imageRef.current) imageRef.current.value = '';
@@ -74,6 +75,7 @@ export default function InterestingFact({ control, index, onRemove, clearErrors 
                 variant="portrait"
                 label="Портрет сотрудника "
                 color="salmon"
+                imageFolder={imageFolder}
                 onRemove={() => {
                   onChange([]);
                   if (avaRef.current) avaRef.current.value = '';
