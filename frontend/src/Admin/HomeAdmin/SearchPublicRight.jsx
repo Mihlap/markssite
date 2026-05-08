@@ -80,7 +80,7 @@ export default function SearchPublicRight({
       <>
         {arrIdArticleRight &&
           arrIdArticleRight?.map((el) => (
-            <Item key={el.IdArticle} project={el} id={el.IdArticle} handleFormDelete={handleArticleRightDelete} />
+            <Item key={el.IdArticle} id={el.IdArticle} onDelete={handleArticleRightDelete} hideDrag />
           ))}
       </>
       <div className={styles.wrapInputRight}>

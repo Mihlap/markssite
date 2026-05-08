@@ -33,6 +33,11 @@ const toOldFormat = (block) => {
       return [{ type: 'text', label: 'Ссылка на видеоролик', value: block.description || '' }];
     case 'videoUpload':
       return [{ type: 'file', label: 'Видео файл', value: processFiles(block.video || []) }];
+    case 'videoBlock':
+      return [
+        { type: 'file', label: 'Видео блок', value: processFiles(block.video || []) },
+        { type: 'text', label: 'Ссылка на видеоролик блок', value: block.description || '' },
+      ];
     case 'threeImages':
       return [{ type: 'file', label: 'Блок 3 картинки', value: processFiles(block.image) }];
     case 'twoImages':
@@ -62,6 +67,7 @@ const ArticlesForm = forwardRef(function ArticlesForm(
   { onValidityChange, onLoadingChange, editArticleData, onSuccess, onDirtyChange },
   ref
 ) {
+
   const dispatch = useDispatch();
   const photoAvaRef = useRef(null);
   const dropPhotoRef = useRef(null);
@@ -346,6 +352,7 @@ const ArticlesForm = forwardRef(function ArticlesForm(
                 }}
                 // label="Слайдер *допускается загрузка 4х&nbsp;изображений"
                 label={value?.length === 4 ? 'Слайдер *допускается загрузка 4х изображений' : ''}
+                imageFolder="imageArticle"
               />
             </>
           )}
@@ -399,6 +406,7 @@ const ArticlesForm = forwardRef(function ArticlesForm(
                   }
                 }}
                 label="Фото автора текста"
+                imageFolder="imageArticle"
               />
             ) : (
               <UiMarksInput
@@ -433,6 +441,7 @@ const ArticlesForm = forwardRef(function ArticlesForm(
                   }
                 }}
                 label="Открывающая картинка"
+                imageFolder="imageArticle"
               />
             ) : (
               <UiMarksInput
@@ -479,6 +488,7 @@ const ArticlesForm = forwardRef(function ArticlesForm(
             index={index}
             onRemove={() => remove(index)}
             clearErrors={clearErrors}
+            imageFolder="imageArticle"
             {...(block.type === 'quote' ? { showAuthor: false } : {})}
           />
         );
@@ -499,6 +509,7 @@ const ArticlesForm = forwardRef(function ArticlesForm(
                   }
                 }}
                 label="Закрывающая картинка"
+                imageFolder="imageArticle"
               />
             ) : (
               <UiMarksInput

@@ -369,7 +369,7 @@ const JournalForm = forwardRef(function JournalForm(
             onChange={(e) => handleFileChange(author.id, e.target.files?.[0])}
           />
           {author.image && (
-            <UiPhotoPreview variant="portrait" files={[author.image]} onRemove={() => handleRemoveImage(author.id)} />
+            <UiPhotoPreview variant="portrait" files={[author.image]} onRemove={() => handleRemoveImage(author.id)} imageFolder="imageJournal" />
           )}
           <UiMarksInput
             // label="ФИО"

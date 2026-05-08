@@ -60,17 +60,14 @@ router.put('/update-event/:id', fileMiddleware.fields([{ name: 'files', maxCount
         event.files = [...newFiles, ...oldFiles];
       }
 
-      const uploadedVideoNames = await Promise.all(
-        (req.files?.videoFiles || []).map(async (file) => {
-          await uploadFileToS3(file, 'videos');
-          return file.originalname;
-        })
+      const uploadedVideoUrls = await Promise.all(
+        (req.files?.videoFiles || []).map((file) => uploadFileToS3(file, 'videos'))
       );
 
       await event.update({
         title,
         files: event.files,
-        eventData: [...eventData, ...uploadedVideoNames],
+        eventData: [...eventData, ...uploadedVideoUrls],
       });
 
       res.json({ message: "Слайд успешно обновлен", data: event });
@@ -135,11 +132,8 @@ router.post('/save-event-details',
       files.push(fileUrl);
     }
 
-    const uploadedVideoNames = await Promise.all(
-      (req.files?.videoFiles || []).map(async (file) => {
-        await uploadFileToS3(file, 'videos');
-        return file.originalname;
-      })
+    const uploadedVideoUrls = await Promise.all(
+      (req.files?.videoFiles || []).map((file) => uploadFileToS3(file, 'videos'))
     );
     const { title } = req.body;
 
@@ -150,7 +144,7 @@ router.post('/save-event-details',
         title,
         hidden: false,
         files,
-        eventData: [...eventData, ...uploadedVideoNames],
+        eventData: [...eventData, ...uploadedVideoUrls],
         order: 0
       });
 
