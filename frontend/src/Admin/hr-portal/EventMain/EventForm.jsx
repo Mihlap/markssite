@@ -5,7 +5,7 @@ import compressImageFile from 'browser-image-compression';
 
 import { postEventData, editEvent, fetchEvents } from '../../../store/Slice/vacancyEventSlice';
 import { UiMarksInput, UiMarksGrayWrap, UiPhotoPreview, UiMarksButton } from '../../ui';
-import VideoBlock from '../../constructor/blocks/VideoBlock';
+import VideoBlock, { getEmbedUrl } from '../../constructor/blocks/VideoBlock';
 
 import s from './EventForm.module.css';
 
@@ -71,7 +71,13 @@ const EventForm = forwardRef(function EventForm(
       setIsImageRemoved(false);
       setVideoItems(
         editEventData.eventData?.length
-          ? editEventData.eventData.map((url) => ({ url, file: null }))
+          ? editEventData.eventData.map((value) => {
+              if (getEmbedUrl(value)) return { url: value, file: null };
+              const fileUrl = value.startsWith('http')
+                ? value
+                : `${process.env.REACT_APP_S3_BUCKET_URL}/videos/${value}`;
+              return { url: '', file: fileUrl };
+            })
           : [{ url: '', file: null }]
       );
     }
@@ -101,14 +107,16 @@ const EventForm = forwardRef(function EventForm(
       const fd = new FormData();
       fd.append('title', data.title);
 
-      const filteredUrls = videoItems.filter((v) => v.url?.trim()).map((v) => v.url);
+      const externalUrls = videoItems.filter((v) => v.url?.trim()).map((v) => v.url);
+      const serverVideoUrls = videoItems.filter((v) => typeof v.file === 'string').map((v) => v.file);
+      const allVideoUrls = [...externalUrls, ...serverVideoUrls];
 
       if (editEventData?.id) {
-        fd.append('videoUrls', JSON.stringify(filteredUrls));
+        fd.append('videoUrls', JSON.stringify(allVideoUrls));
         if (isImageRemoved) fd.append('removePhotoAva', 'true');
         if (removedFiles.length) fd.append('removedFiles', JSON.stringify(removedFiles));
       } else {
-        fd.append('details', JSON.stringify({ eventData: filteredUrls }));
+        fd.append('details', JSON.stringify({ eventData: allVideoUrls }));
       }
 
       (data.files || []).forEach((file) => {
@@ -119,7 +127,7 @@ const EventForm = forwardRef(function EventForm(
         files.forEach((file) => fd.append('photoFiles', file));
       });
 
-      videoItems.filter((v) => v.file).forEach((v) => fd.append('videoFiles', v.file));
+      videoItems.filter((v) => v.file instanceof File).forEach((v) => fd.append('videoFiles', v.file));
 
       if (editEventData?.id) {
         await dispatch(editEvent({ id: editEventData.id, data: fd })).unwrap();
