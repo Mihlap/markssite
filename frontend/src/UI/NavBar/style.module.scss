@@ -246,7 +246,7 @@
         border: none;
         background: transparent;
         position: relative;
-        z-index: 11000;
+        z-index: 9981;
 
         span {
             position: absolute;
@@ -504,7 +504,7 @@
         }
 
         &-burger {
-            display: block;
+            display: flex;
             margin-right: 33px;
 
             &--open {

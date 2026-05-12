@@ -3,7 +3,8 @@
 
 <head>
   <!-- Yandex.Metrika counter -->
-  <script type="text/javascript">
+<script type="text/javascript">
+  if (!['localhost', '127.0.0.1'].includes(location.hostname)) {
     (function (m, e, t, r, i, k, a) {
       m[i] =
         m[i] ||
@@ -28,7 +29,8 @@
       accurateTrackBounce: true,
       webvisor: true,
     });
-  </script>
+  }
+</script>
   <noscript>
     <div><img src="https://mc.yandex.ru/watch/95967240" style="position: absolute; left: -9999px" alt="" /></div>
   </noscript>

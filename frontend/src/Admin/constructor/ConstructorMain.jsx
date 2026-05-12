@@ -1,0 +1,44 @@
+import React, { useState } from 'react';
+import { UiMarksConstructorWrap, UiMarksButton } from '../ui';
+
+import s from './Styles.module.css';
+
+export default function ConstructorMain({ items, onSelect, children }) {
+  const [pickerOpen, setPickerOpen] = useState(false);
+
+  const handleSelect = (item) => {
+    onSelect?.(item);
+    // setPickerOpen(false);
+  };
+  return (
+    <>
+      {pickerOpen ? (
+        <UiMarksConstructorWrap>
+          {items?.map((el) => {
+            const Icon = el.icon;
+            return (
+              <button
+                title={el.label}
+                key={el.id}
+                className={el.color === 'blue' ? s.buttonBlue : s.button}
+                type="button"
+                onClick={() => handleSelect(el)}>
+                <span className={s.btnText}>{el.id === 'video' && 'Видео-ссылка'}</span>
+                <Icon />
+              </button>
+            );
+          })}
+        </UiMarksConstructorWrap>
+      ) : (
+        <UiMarksButton
+          variant="dashed-orange"
+          size="large"
+          icon
+          onClick={() => setPickerOpen(true)}>
+          Добавить блок из библиотеки
+        </UiMarksButton>
+      )}
+      {children}
+    </>
+  );
+}

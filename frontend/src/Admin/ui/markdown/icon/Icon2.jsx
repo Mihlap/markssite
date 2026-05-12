@@ -1,0 +1,8 @@
+export default function Icon2({ color }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M0 4C0 1.79086 1.79086 0 4 0H8V16H4C1.79086 16 0 14.2091 0 12V4Z" fill={color} />
+      <path d="M16 4C16 1.79086 14.2091 0 12 0H8V16H12C14.2091 16 16 14.2091 16 12V4Z" fill={color} />
+    </svg>
+  );
+}

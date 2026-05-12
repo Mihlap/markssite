@@ -5,8 +5,9 @@ import { useIsInternship } from './hooks/useIsInternship';
 import { directionOptions, maskOptions } from './const/index.js';
 import Input from '../Input/Input.jsx';
 import InputFile from '../Input/InputFile/InputFile.jsx';
-import Select from '../Select/Select.jsx';
 import telegramIcon from './icons/telegram.svg';
+
+import { UiMarksSelect } from '../../../UI/index.js';
 
 import styles from './styles.module.css';
 
@@ -171,13 +172,14 @@ const ApplicationForm = ({ variant: variantProp = 'full', initialDirection }) =>
                   name="direction"
                   control={control}
                   render={({ field }) => (
-                    <Select
+                    <UiMarksSelect
                       {...field}
+                      variant="compact"
                       options={directionOptions}
                       placeholder="Указанное направление"
                       isClearable
                       isSearchable={false}
-                      variant={variantProp}
+                      // variant={variantProp}
                     />
                   )}
                 />

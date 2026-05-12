@@ -1,0 +1,117 @@
+.button {
+    font-family: var(--font-raleway);
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.suffixIcon {
+    display: flex;
+    align-items: center;
+}
+
+.blue {
+    color: var(--white-F6F6F6);
+    background: var(--blue-75BBFD);
+    border-radius: 32px;
+    transition: all 0.3s;
+
+    &:hover {
+        background-color: var(--dark-blue-389FFF);
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+        ;
+        background-color: var(--light-blue-D4EDFB);
+    }
+}
+
+.white {
+    color: var(--black-1D2E43);
+    background: var(--light-light-gray-EBECEE);
+    border-radius: 32px;
+    transition: all 0.3s;
+
+    &:hover {
+        background-color: var(--light-gray-C0C5CB);
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+        background-color: var(--white-F6F6F6);
+    }
+}
+
+.gray {
+    color: var(--black-1D2E43);
+    background: var(--light-light-gray-EBECEE);
+    border-radius: 32px;
+    transition: all 0.3s;
+
+    &:hover {
+        color: var(--white-F6F6F6);
+        background-color: var(--light-gray-C0C5CB);
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+        background-color: var(--white-F6F6F6);
+    }
+}
+
+.small {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    padding: 8px 16px;
+}
+
+.normal {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    padding: 16px 32px;
+}
+
+.big {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 16px;
+}
+
+.large {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+    border-radius: 6px;
+}
+
+.dashed-orange {
+    border: dashed 1px;
+    border-radius: 6px;
+    color: var(--salmon-FF7F6A);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 16px
+}
+
+.dashed-blue {
+    border: dashed 1px;
+    border-radius: 6px;
+    color: var(--blue-75BBFD);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 16px 0px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 16px;
+}

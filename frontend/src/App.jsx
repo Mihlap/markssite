@@ -30,6 +30,7 @@ import ButtonAdmin from './UI/ButtonAdmin/ButtonAdmin';
 import CustomCursor from './UI/CustomCursor/CustomCursor';
 import CookieComponent from './UI/CookieComponent/CookieComponent';
 import Loading from './Loading/LoadingNew';
+import MarksEntityRow from './Admin/ui/EntityRow/MarksEntityRow';
 // import Loading from './UI/Loading/christmas/Loading';
 
 const Header = lazy(() => import('./Header/Header'));
@@ -59,13 +60,13 @@ const FooterCircle = lazy(() => import('./Footer/FooterCircle'));
 const Login = lazy(() => import('./Login/Login'));
 const SignUpPage = lazy(() => import('./Login/SignUpPage'));
 
-const Add = lazy(() => import('./Add/Add'));
-const HomeAdmin = lazy(() => import('./Add/HomeAdmin/HomeAdmin'));
-const AddProject = lazy(() => import('./Add/add-project/AddProject'));
-const AddArticles = lazy(() => import('./Add/add-articles/AddArticles'));
-const AddHRPortal = lazy(() => import('./Add/add-hr-portal/AddHRPortal'));
-const AddCompany = lazy(() => import('./Add/add-about-the-company/AddCompany'));
-const Applications = lazy(() => import('./Add/applications/Applications'));
+const Admin = lazy(() => import('./Admin/Admin'));
+const HomeAdmin = lazy(() => import('./Admin/HomeAdmin/HomeAdmin'));
+const AdminProject = lazy(() => import('./Admin/project/Project'));
+const AdminArticles = lazy(() => import('./Admin/articles/Articles'));
+const AdminHRPortal = lazy(() => import('./Admin/hr-portal/HRPortal'));
+const AdminCompany = lazy(() => import('./Admin/about-the-company/Company'));
+const Applications = lazy(() => import('./Admin/applications/Applications'));
 
 const NotFound = lazy(() => import('./NotFound/NotFound'));
 
@@ -183,6 +184,22 @@ export default function App() {
                   <PageFade>
                     <Project />
                   </PageFade>
+                }
+              />
+
+              <Route
+                path="/test"
+                element={
+                  <MarksEntityRow
+                    title="Ведущий инженер-конструктор"
+                    desc="Экспертно-аналитический отдел"
+                    id="9062234144"
+                    role="manager"
+                    visible="legenda"
+                    onEdit
+                    onToggle
+                    onDelete
+                  />
                 }
               />
 
@@ -375,23 +392,23 @@ export default function App() {
                   path="/admin/*"
                   element={
                     <PageFade>
-                      <Add user={user} onPageChange={handlePageChange} />
+                      <Admin user={user} onPageChange={handlePageChange} />
                     </PageFade>
                   }>
                   <Route index element={<HomeAdmin />} />
                   <Route path="home" element={<HomeAdmin />} />
-                  <Route path="add-a-project" element={<AddProject user={user} />} />
-                  <Route path="add-a-articles" element={<AddArticles user={user} />} />
-                  <Route path="add-hr-portal" element={<AddHRPortal user={user} />} />
+                  <Route path="add-a-project" element={<AdminProject user={user} />} />
+                  <Route path="add-a-articles" element={<AdminArticles user={user} />} />
+                  <Route path="add-hr-portal" element={<AdminHRPortal user={user} />} />
                   <Route
                     path="add-a-company"
                     element={
                       user?.name === 'hr778' ? (
                         <PageFade>
-                          <AddHRPortal user={user} />
+                          <AdminHRPortal user={user} />
                         </PageFade>
                       ) : (
-                        <AddCompany user={user} />
+                        <AdminCompany user={user} />
                       )
                     }
                   />

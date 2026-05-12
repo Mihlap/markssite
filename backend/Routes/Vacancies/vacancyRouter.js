@@ -32,11 +32,11 @@ router.post('/addVacancy', async (req, res) => {
 
     const newVacancy = new Employee({
       title: formData.title,
-      direction: formData.direction.value,
-      experience: formData.experience.value,
-      locationStaff: formData.location.value,
-      busyness: formData.busyness.value,
-      modeOperating: formData.workMode.value,
+      direction: formData.direction,
+      experience: formData.experience,
+      locationStaff: formData.location,
+      busyness: formData.busyness,
+      modeOperating: formData.workMode,
       skills: formData.skills,
       advantages: formData.benefits,
       searchStaff: formData.textBlock1,

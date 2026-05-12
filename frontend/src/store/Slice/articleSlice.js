@@ -146,7 +146,6 @@ export const fetchArticle = createAsyncThunk('article/fetchArticle', async (form
 
      
           formData.append('dynamicBlocksJSON', JSON.stringify(cloneDynamicBlocks));
-          // console.log(cloneDynamicBlocks, '<----cloneDynamicBlocks');
 
           photosArray.forEach((photo) => {
             formData.append('dynamicImages', photo);

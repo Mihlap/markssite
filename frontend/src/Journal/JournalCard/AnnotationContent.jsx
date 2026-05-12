@@ -4,13 +4,17 @@ import remarkBreaks from 'remark-breaks';
 import remarkMath from 'remark-math';
 import rehypeRaw from 'rehype-raw';
 import rehypeKatex from 'rehype-katex';
-import rehypePdfEmbedder from '../../Add/add-articles/AddJournal/utils/rehypePdfEmbedder';
-import rehypeUniqueHeadingIds from '../../Add/add-articles/AddJournal/utils/rehypeUniqueHeadingIds';
+import rehypePdfEmbedder from '../../UI/MarkdownContentRenderer/utils/rehypePdfEmbedder';
+import rehypeUniqueHeadingIds from '../../UI/MarkdownContentRenderer/utils/rehypeUniqueHeadingIds';
 import { BlockMath, InlineMath } from 'react-katex';
 import styles from './JournalCard.module.scss';
 
 const markdownComponents = {
-  p: ({ children, ...props }) => <p className={styles.annotationText} {...props}>{children}</p>,
+  p: ({ children, ...props }) => (
+    <p className={styles.annotationText} {...props}>
+      {children}
+    </p>
+  ),
   strong: ({ children, ...props }) => <strong {...props}>{children}</strong>,
   em: ({ children, ...props }) => <em {...props}>{children}</em>,
   del: ({ children, ...props }) => <del {...props}>{children}</del>,
@@ -23,18 +27,16 @@ export default function AnnotationContent({ markdown }) {
   const cleaned = markdown.replace(chapterPattern, (_, inner) => inner).trim();
 
   const annotationStart = '<!-- annotation:start -->';
-  const annotationEnd   = '<!-- annotation:end -->';
-  const keywordsStart   = '<!-- keywords:start -->';
-  const keywordsEnd     = '<!-- keywords:end -->';
+  const annotationEnd = '<!-- annotation:end -->';
+  const keywordsStart = '<!-- keywords:start -->';
+  const keywordsEnd = '<!-- keywords:end -->';
 
   let annotationText = '';
   const aStart = cleaned.indexOf(annotationStart);
   if (aStart !== -1) {
     const aEnd = cleaned.indexOf(annotationEnd, aStart + annotationStart.length);
     if (aEnd !== -1) {
-      annotationText = cleaned
-        .slice(aStart + annotationStart.length, aEnd)
-        .trim();
+      annotationText = cleaned.slice(aStart + annotationStart.length, aEnd).trim();
     }
   }
 
@@ -43,9 +45,7 @@ export default function AnnotationContent({ markdown }) {
   if (kStart !== -1) {
     const kEnd = cleaned.indexOf(keywordsEnd, kStart + keywordsStart.length);
     if (kEnd !== -1) {
-      keywordsText = cleaned
-        .slice(kStart + keywordsStart.length, kEnd)
-        .trim();
+      keywordsText = cleaned.slice(kStart + keywordsStart.length, kEnd).trim();
     }
   }
 
@@ -56,11 +56,7 @@ export default function AnnotationContent({ markdown }) {
     <div className={styles.annotationContainer}>
       {keywordsText && (
         <div className={styles.keywords}>
-          <ReactMarkdown
-            remarkPlugins={remarkPlugins}
-            rehypePlugins={rehypePlugins}
-            components={markdownComponents}
-          >
+          <ReactMarkdown remarkPlugins={remarkPlugins} rehypePlugins={rehypePlugins} components={markdownComponents}>
             {keywordsText}
           </ReactMarkdown>
         </div>
@@ -68,11 +64,7 @@ export default function AnnotationContent({ markdown }) {
 
       {annotationText && (
         <div className={styles.annotationText}>
-          <ReactMarkdown
-            remarkPlugins={remarkPlugins}
-            rehypePlugins={rehypePlugins}
-            components={markdownComponents}
-          >
+          <ReactMarkdown remarkPlugins={remarkPlugins} rehypePlugins={rehypePlugins} components={markdownComponents}>
             {annotationText}
           </ReactMarkdown>
         </div>

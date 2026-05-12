@@ -1,0 +1,51 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    font-family: var(--font-raleway);
+}
+
+.selectContainer :global(.select__control) {
+    margin: 0;
+    /* margin-top: 25px; */
+}
+
+.selectContainer :global(.select__menu) {
+    color: var(--gray-959DA6);
+    background-color: var(--white-F6F6F6);
+    border-radius: 0;
+    box-shadow: none;
+    z-index: 100;
+    transform: translateY(10px);
+}
+
+.blockLabel {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--gray-566272);
+    margin-bottom: 12px;
+}
+
+.addBtn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-family: var(--font-raleway);
+    color: var(--dark-161B23);
+}
+
+.addBtnText {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.loadingText {
+    font-family: var(--font-raleway);
+    color: var(--gray-566272);
+    padding: 32px;
+    text-align: center;
+}

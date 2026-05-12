@@ -5,7 +5,6 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchJournals } from '../../store/Slice/journalSlice';
 import 'katex/dist/katex.min.css';
-import AllArticlesButton from '../../UI/ButtonsArticles/AllArticlesButton';
 import ArticleTableOfContents from './ArticleTableOfContents';
 import ArticleAuthors from './ArticleAuthors';
 import SkeletonArticle from './SkeletonArticle';
@@ -76,9 +75,6 @@ function ArticleJournalPage({ handleMouseEnter, handleMouseLeave }) {
   return (
     <div className={styles.main_article_card}>
       <div className={styles.main_article_card__fon}>
-        <div className={styles.allButton_div}>
-          <AllArticlesButton path="/journalPage" />
-        </div>
         <div className={styles.left_title}>{journalToUse.title}</div>
         <div className={styles.authorsNames}>
           {journalToUse.authors?.map((a, idx) => (

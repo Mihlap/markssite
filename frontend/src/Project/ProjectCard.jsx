@@ -9,7 +9,7 @@ import ProjectCardSlider from '../UI/Project&ArticleCardSlider/ProjectCardSlider
 import styles from './ProjectCard.module.css';
 import { getFetchForm } from '../store/Slice/projectSlice';
 import SliderContainerProjectCard from '../UI/Project&ArticleCardSlider/SliderContainerProjectCard';
-import AllProjectsButton from '../UI/ButtonsProjects/AllProjectsButton';
+
 import { handleScroll, onVerticalScroll, onWheel, shareToVK, shareToTelegram, shareToWhatsApp } from './utils';
 import catPhoto from '../img/default-photo.jpeg';
 import next from '../icons/next.svg';
@@ -222,9 +222,9 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
       <div className={styles.main_project_card}>
         <ProjectCardSlider slidesCard={[project]} />
 
-        <div className={styles.all_button_div} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        {/* <div className={styles.all_button_div} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           <AllProjectsButton />
-        </div>
+        </div> */}
 
         <div className={styles.section_project__block__card}>
           <div className={styles.cart_project__block__card}>
