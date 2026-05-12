@@ -40,6 +40,7 @@ const SwiperContainerProject = ({ projects }) => {
   const combinedProjects = [...MapProject, ...MapProjectToEdit].filter(
     (project, index, self) => project && index === self.findIndex((p) => p && p.id === project.id)
   );
+  const visibleProjects = combinedProjects.filter((project) => project?.id);
 
   return (
     <div className="swiper_container">
@@ -59,13 +60,9 @@ const SwiperContainerProject = ({ projects }) => {
         }}
       >
         <div className="swiper_wrapper">
-          {combinedProjects?.map((project, index) => {
-            if (!project || !project.id) {
-              return null;
-            }
-            return (
-              <SwiperSlide className="swiper_container_item_projects" key={`${project.id}_${index}`}>
-                <Link key={project.id} to={`/projects/${project.id}`}>
+          {visibleProjects.map((project) => (
+              <SwiperSlide className="swiper_container_item_projects" key={project.id}>
+                <Link to={`/projects/${project.id}`}>
                   <SliderItemProject
                     title={project.title}
                     src={
@@ -131,12 +128,11 @@ const SwiperContainerProject = ({ projects }) => {
                   />
                 </Link>
               </SwiperSlide>
-            );
-          })}
+          ))}
         </div>
       </Swiper>
       <div className="swiper_pagination_ProjectCard">
-        {combinedProjects.map((_, index) => (
+        {visibleProjects.map((_, index) => (
           <button
             key={index}
             className={`swiper_pagination_bullet_ProjectCard ${currentIndex === index ? 'active' : ''}`}
