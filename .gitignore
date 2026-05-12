@@ -4,3 +4,9 @@ node_modules
 # webpack cache
 frontend/.webpack-cache/
 .vscode
+.env
+.env.local
+.env.*.local
+.env.example
+.composeEnv
+composeEnv
