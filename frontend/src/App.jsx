@@ -15,9 +15,9 @@ import {
   textEnter,
   textLeave,
   textLeaveFooter,
-  textFooter,
+  textFooter, 
   textFooterEnter,
-  textFooterWhite,
+  textFooterWhite,  
   textFooterWhiteEnter,
   textLeaveWhiteFooter,
 } from './store/Slice/cursorSlice';
