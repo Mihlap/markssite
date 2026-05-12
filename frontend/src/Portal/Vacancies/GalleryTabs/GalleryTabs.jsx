@@ -54,8 +54,13 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
       (file) => file.endsWith('.jpg') || file.endsWith('.png') || file.endsWith('.jpeg') || file.endsWith('.avif')
     );
 
+    const videoExts = ['.mp4', '.mov', '.webm'];
     const videos = event?.eventData?.filter(
-      (file) => file.endsWith('.mp4') || file.includes('youtube.com') || file.includes('rutube.ru')
+      (file) =>
+        videoExts.some((ext) => file.toLowerCase().endsWith(ext)) ||
+        file.includes('youtube.com') ||
+        file.includes('youtu.be') ||
+        file.includes('rutube.ru')
     );
     return { images, videos };
   }, []);
@@ -77,7 +82,7 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
   const renderVideo = useCallback((videoUrl, index) => {
     let youtubeVideoId;
     if (videoUrl.includes('youtu.be')) {
-      youtubeVideoId = videoUrl.split('/').pop();
+      youtubeVideoId = videoUrl.split('/').pop().split('?')[0];
     } else if (videoUrl.includes('youtube.com')) {
       const urlParams = new URLSearchParams(new URL(videoUrl).search);
       youtubeVideoId = urlParams.get('v');
@@ -123,7 +128,9 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
           }}
         ></iframe>
       );
-    } else if (videoUrl.endsWith('.mp4')) {
+    } else if (['.mp4', '.mov', '.webm'].some((ext) => videoUrl.toLowerCase().endsWith(ext))) {
+      const mimeMap = { '.mp4': 'video/mp4', '.mov': 'video/quicktime', '.webm': 'video/webm' };
+      const ext = videoUrl.toLowerCase().match(/\.\w+$/)?.[0];
       return (
         <video
           ref={(el) => (videoRefs.current[index] = el)}
@@ -137,7 +144,7 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
           width="100%"
           height="100%"
         >
-          <source src={`${bucket_url}/videos/${videoUrl}`} type="video/mp4" />
+          <source src={videoUrl.startsWith('http') ? videoUrl : `${bucket_url}/images/imageEvent/${videoUrl}`} type={mimeMap[ext] ?? 'video/mp4'} />
         </video>
       );
     }
@@ -156,9 +163,10 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
               iframe.contentWindow.postMessage(JSON.stringify({ type: 'player:play', data: {} }), '*');
             }
           } else if (entry.isIntersecting && entry.target.tagName === 'VIDEO') {
-            entry.target.play();
-          } else {
-            entry.target.pause?.();
+            entry.target.play().catch(() => {});
+          } else if (entry.target.tagName === 'VIDEO') {
+            const el = entry.target;
+            if (!el.paused) el.pause();
           }
         });
       },
@@ -185,7 +193,7 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
       if (currentVideo && currentVideo.tagName === 'IFRAME' && currentVideo.src.includes('rutube.ru')) {
         currentVideo.contentWindow.postMessage(JSON.stringify({ type: 'player:play', data: {} }), '*');
       } else if (currentVideo && currentVideo.tagName === 'VIDEO') {
-        currentVideo.play();
+        currentVideo.play().catch(() => {});
       }
     }
   }, [activeIndex, mediaPaths?.videos]);

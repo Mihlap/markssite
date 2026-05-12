@@ -25,7 +25,7 @@ const NavBar = () => {
   const container = useRef();
 
   // сustom hooks 
-  const { pathname, hash, isCompany, isVacancyDetail, isInternship, linkBack, textBack, isHrPortal } = useHrNavMeta();
+  const { pathname, hash, isCompany, isVacancyDetail, isProjectDetail, isArticleDetail, isJournalDetail, isInternship, linkBack, textBack, isHrPortal } = useHrNavMeta();
   const { primary, cta } = useNavLinks();
 
   // Прокрутка к якорю или элементу на странице
@@ -119,6 +119,11 @@ const NavBar = () => {
 
   // Закрытие бургер-меню
   const closeMenu = () => setIsMenuOpen(false);
+
+  useEffect(() => {
+    document.body.style.overflow = isMenuOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [isMenuOpen]);
 
   // Навигация с учетом хеша и возможной прокрутки
   const navigateWithHash = (path) => {
@@ -232,16 +237,19 @@ const NavBar = () => {
   }, [isVacancyDetail, isInternship]);
 
   return (
-    <nav
-      ref={container}
-      className={clsx(
-        styles['navbar'],
-        isNavbarHidden && styles['navbar--hidden']
-      )}>
+    <nav ref={container} className={clsx(styles['navbar'], isNavbarHidden && styles['navbar--hidden'])}>
       <div className={styles['navbar-top']}>
         {isVacancyDetail ? (
           <Link className={styles['navbar-link_back']} to={linkBack}>
             Все {textBack}
+          </Link>
+        ) : isProjectDetail ? (
+          <Link className={styles['navbar-link_back']} to="/project">
+            Все проекты
+          </Link>
+        ) : (isArticleDetail || isJournalDetail) ? (
+          <Link className={styles['navbar-link_back']} to="/publication">
+            Все статьи
           </Link>
         ) : (
           <Logo />
@@ -295,15 +303,15 @@ const NavBar = () => {
                             <NavLink
                               to={el.path}
                               onClick={(event) =>
-                              handleCompanyAwareNavigation({
-                                event,
-                                path: el.path,
-                                fallbackId: el.id,
-                                isCompany,
-                                navigate: handlerLink,
-                                goToCompanySection,
-                              })
-                            }
+                                handleCompanyAwareNavigation({
+                                  event,
+                                  path: el.path,
+                                  fallbackId: el.id,
+                                  isCompany,
+                                  navigate: handlerLink,
+                                  goToCompanySection,
+                                })
+                              }
                               className={clsx(
                                 styles['navbar-dropdown-item'],
                                 isDropdownActive && styles['navbar-item-active']
@@ -367,7 +375,7 @@ const NavBar = () => {
                   {label}
                 </a>
               ) : (
-                  // кнопка тут
+                // кнопка тут
                 <button
                   style={{ opacity: `${isVacancyDetail ? 0 : 1}` }}
                   key={id}

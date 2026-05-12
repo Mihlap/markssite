@@ -34,7 +34,6 @@
   padding: 1rem 1.5rem;
   border-radius: 2rem;
   transition: all 0.3s ease-in-out;
-  cursor: none !important;
 }
 
 .preview_mode:hover {

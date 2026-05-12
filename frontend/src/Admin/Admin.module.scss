@@ -1,0 +1,55 @@
+.main {
+  display: grid;
+  /* Левая колонка 250px, правая занимает остаток */
+  grid-template-columns: 328px 1fr;
+  /* Растягиваем на всю высоту экрана */
+  height: 100vh;
+  transition: grid-template-columns 0.3s ease-in-out;
+  position: relative;
+
+  @media screen and (min-width: 1440px) {
+    max-width: 1386px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  @media screen and (max-width: 1024px) {
+    grid-template-columns: 75px 1fr;
+  }
+}
+
+
+.wrap {
+  overflow-y: auto;
+  padding-left: 26px;
+  padding-right: 26px;
+  padding-top: 120px;
+
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE и Edge */
+
+  @media screen and (min-width: 1440px) {
+    padding-right: 0px;
+  }
+}
+
+.wrap::-webkit-scrollbar {
+  width: 0;
+  /* Chrome, Safari, Edge */
+  height: 0;
+}
+
+.btn {
+  position: absolute;
+  top: 41px;
+  right: 0px;
+  width: 180px !important;
+  height: 56px !important;
+  z-index: 9;
+
+  @media screen and (max-width: 1440px) {
+    right: 16px;
+  }
+}

@@ -51,6 +51,8 @@ button {
   --salmon-light-FFBFB5: #ffbfb5;
   --crimson-light-F39CB5: #f39cb5;
   --color-mg-blue: #5E96CA;
+  --md-blue: rgba(186, 221, 254, 0.5);
+  --md-orange: rgba(255, 191, 181, 0.5);
 }
 
 /* Fonts */
@@ -198,6 +200,7 @@ button {
 
 input,
 textarea {
+  resize: none;
   outline: none;
   font-variant-numeric: lining-nums;
 }

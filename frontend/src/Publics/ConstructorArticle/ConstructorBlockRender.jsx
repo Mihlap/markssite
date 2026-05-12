@@ -142,7 +142,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
     };
   }, []);
 
-  const isFullUrl = (url) => url.startsWith('http://') || url.startsWith('https://');
+  const isFullUrl = (url) => url && (url.startsWith('http://') || url.startsWith('https://'));
 
   const renderImageWithDescription = (block) => {
     let imageUrl = '';
@@ -270,7 +270,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
   };
 
   const renderImageSlider = (block) => {
-    const images = block[0].value;
+    const images = block[0]?.value?.filter(Boolean) ?? [];
 
     const sliderImageContainerStyle = {
       borderRadius: '1rem',
@@ -361,7 +361,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
     let descriptionTextBlock = '';
 
     block?.forEach((item) => {
-      if (item.label === 'Блок описание') descriptionTextBlock = item.value;
+      if (item.label === 'Блок описание' || item.label === 'Текстовый блок') descriptionTextBlock = item.value;
     });
 
     return (
@@ -389,6 +389,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
 
     block?.forEach((item) => {
       if (item.label === 'Текст в рамочке') descriptionText = item.value;
+      if (item.label === 'Текстовый блок в рамке') descriptionText = item.value;
     });
 
     return (
@@ -417,7 +418,6 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
     if (!block || block?.length === 0 || !block[0] || !block[0].label) {
       return null;
     }
-
     let quote = '';
     let author = '';
     let imageUrl = '';
@@ -432,7 +432,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
       }
     });
 
-    if (!quote || !author) {
+    if (!author) {
       return null;
     }
 
@@ -477,6 +477,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
 
     block?.forEach((item) => {
       if (item.label === 'Текст заметки') noteBlockText = item?.value;
+      if (item.label === 'Текстовый блок выделенный') noteBlockText = item?.value;
     });
     return (
       <div className={styles.note_block}>
@@ -536,15 +537,14 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
     };
 
     const handleFullscreen = () => {
-      // const videoElement = videoRef.current;
-      const containerElement = document.documentElement;
+      const videoElement = videoRef.current;
 
-      if (containerElement.requestFullscreen) {
-        containerElement.requestFullscreen();
-      } else if (containerElement.webkitRequestFullscreen) {
-        containerElement.webkitRequestFullscreen();
-      } else if (containerElement.msRequestFullscreen) {
-        containerElement.msRequestFullscreen();
+      if (videoElement.requestFullscreen) {
+        videoElement.requestFullscreen();
+      } else if (videoElement.webkitRequestFullscreen) {
+        videoElement.webkitRequestFullscreen();
+      } else if (videoElement.msRequestFullscreen) {
+        videoElement.msRequestFullscreen();
       }
       setIsFullscreen(true);
     };
@@ -644,7 +644,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
     if (videoLink.includes('vk.com/video_ext.php')) {
       return videoLink;
     }
-    const match = videoLink.match(/vk.com\/video(-?\d+)_(\d+)/);
+    const match = videoLink.match(/(?:vk\.com|vkvideo\.ru)\/video(-?\d+)_(\d+)/);
     if (match) {
       const [oid, id] = match.slice(1);
       return `https://vk.com/video_ext.php?oid=${oid}&id=${id}`;
@@ -678,6 +678,96 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
     );
   };
 
+  const renderCombinedVideoBlock = (block) => {
+    const fileItem = block?.find((item) => item.label === 'Видео блок');
+    const linkItem = block?.find((item) => item.label === 'Ссылка на видеоролик блок');
+
+    const videoPath = Array.isArray(fileItem?.value) ? fileItem.value.join('') : null;
+    const embedLink = linkItem?.value ? getEmbedUrl(linkItem.value) : null;
+
+    if (!videoPath && !embedLink) return null;
+
+    const videoSrc = videoPath
+      ? isFullUrl(videoPath)
+        ? videoPath
+        : `${bucket_url}/images/imageArticle/${videoPath}`
+      : null;
+
+    const videoStyle = {
+      WebkitAppearance: 'none',
+      appearance: 'none',
+      border: 'none',
+      opacity: 1,
+      outline: 'none',
+      display: 'block',
+      width: '100%',
+      height: isFullscreen ? '50vh' : 'auto',
+      objectFit: 'cover',
+    };
+
+    return (
+      <>
+        {videoSrc && (
+          <div className={styles.wrapper_conteiner__item}>
+            <div
+              className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              style={{ position: 'relative' }}>
+              <video
+                ref={videoRef}
+                playsInline
+                muted
+                loop
+                className={styles.block_video}
+                style={videoStyle}
+                onPlay={() => setIsPlaying(true)}
+                onPause={() => setIsPlaying(false)}>
+                <source src={videoSrc} type="video/mp4" />
+              </video>
+              <div className={styles.buttonWrapperBlock}>
+                {isPlaying ? (
+                  isHovered && (
+                    <button className={styles.buttonPause} onClick={() => { videoRef.current?.pause(); setIsPlaying(false); setIsHovered(false); }}>
+                      <img src={pauseIconToUse} alt="pause" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />
+                    </button>
+                  )
+                ) : (
+                  <button className={styles.buttonPlayBlock} onClick={() => { videoRef.current?.play(); setIsPlaying(true); setIsHovered(false); }}>
+                    <img src={playIconToUse} alt="play" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />
+                  </button>
+                )}
+              </div>
+              <div className={styles.buttonWrapperBlock1}>
+                {!isFullscreen ? (
+                  <button className={styles.buttonFullscreen} onClick={() => { document.documentElement.requestFullscreen?.(); setIsFullscreen(true); }}>
+                    <img src={fullscreen} alt="fullscreen" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />
+                  </button>
+                ) : (
+                  <button className={styles.buttonExitFullscreen} onClick={() => { document.exitFullscreen?.(); setIsFullscreen(false); }}>
+                    <img src={fullscreen_exit} alt="exit fullscreen" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+        {embedLink && (
+          <div className={styles.videoLinkContainer}>
+            <iframe
+              className={styles.block_videoLink}
+              src={embedLink}
+              title="Video Player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              onError={handleIframeError}
+            />
+          </div>
+        )}
+      </>
+    );
+  };
+
   switch (block[0]?.label) {
     case 'Картинка с описанием':
       return renderImageWithDescription(block);
@@ -689,18 +779,25 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
       return renderTwoImage(block);
     case 'Слайдер *допускается загрузка 8ми изображений':
       return renderImageSlider(block);
+    case 'Текстовый блок':
     case 'Блок описание':
       return renderTextBlock(block);
+    case 'Текстовый блок в рамке':
     case 'Текст в рамочке':
       return renderTextFramed(block);
     case 'Автор цитаты ( ФИО должность )':
+    case 'Цитата':
       return renderQuoteBlock(block);
     case 'Текст заметки':
+    case 'Текстовый блок выделенный':
       return renderNoteBlock(block);
     case 'Видеоролик':
+    case 'Видео файл':
       return renderVideoBlock(block);
     case 'Ссылка на видеоролик':
       return renderVideoLinkBlock(block);
+    case 'Видео блок':
+      return renderCombinedVideoBlock(block);
     default:
       return null;
   }

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import adminStyles from '../../Add/style/style-card.module.scss';
+import adminStyles from '../../Admin/style/style-card.module.scss';
 
 export default function ExitConfirmModal({
   open,

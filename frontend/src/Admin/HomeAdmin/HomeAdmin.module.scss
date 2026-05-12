@@ -1,0 +1,119 @@
+.wrapInput {
+  padding-top: 24px;
+}
+
+.wrapInputRight,
+.wrapInputLeft {
+  padding-top: 15px;
+}
+
+.list {
+    display: grid;
+    grid-template-columns: repeat(6, max-content 1fr);
+    gap: 16px;
+}
+
+.items {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--white-F6F6F6);
+  border-radius: 2rem;
+  padding: 8px 16px;
+  white-space: nowrap;
+
+  &__title {
+    color: var(--black-1D2E43);
+    font-family: var(--font-raleway);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 26px;
+  }
+
+  &__icon_drag {
+    display: flex;
+    padding-right: 10px;
+
+    &:hover svg circle {
+      fill: var(--blue-75BBFD);
+    }
+  }
+
+  &__icon_del {
+    display: flex;
+    padding-left: 4px;
+
+    &:hover svg path {
+      stroke: var(--blue-75BBFD);
+    }
+  }
+}
+
+.btn {
+  width: 231px;
+  margin-top: 32px;
+  white-space: nowrap;
+}
+
+.notification {
+  &__ok,
+  &__error,
+  &__delete,
+  &__update {
+    position: absolute;
+    top: -10%;
+    right: 10px;
+    color: var(--white-F6F6F6);
+    display: inline-flex;
+    padding: 8px 19px;
+    align-items: flex-start;
+    gap: 10px;
+    border-radius: 1rem;
+
+    &::after {
+      content: '';
+      position: absolute;
+      font-family: var(--font-raleway);
+      font-style: normal;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 16px;
+      bottom: -16px;
+      left: 20px;
+      border: 8px solid transparent;
+    }
+  }
+
+  &__ok {
+    background: var(--gray-959DA6);
+
+    &::after {
+      border-top-color: var(--gray-959DA6);
+    }
+  }
+
+  &__error {
+    background: var(--salmon-FF7F6A);
+
+    &::after {
+      border-top-color: var(--salmon-FF7F6A);
+    }
+  }
+
+  &__delete {
+    background: var(--crimson-E00747);
+
+    &::after {
+      border-top-color: var(--crimson-E00747);
+    }
+  }
+
+  &__update {
+    background: var(--green-96A96C);
+
+    &::after {
+      border-top-color: var(--green-96A96C);
+    }
+  }
+}

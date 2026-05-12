@@ -114,6 +114,7 @@ const updateDynamicBlocksContent = (blocks, newImages) => {
   );
 };
 
+
 router.post(
   '/postzapros',
   fileMiddleware.fields([{
@@ -141,13 +142,14 @@ router.post(
     try {
       let dynamicBlocksContent = null;
 
-      const dynamicImageTitles = req.files.dynamicImages ?
-        await Promise.all(
-          req.files.dynamicImages.map(async (file) => {
-            const fileUrl = await uploadFileToS3(file, 'images/imageAdd');
-            return fileUrl;
-          })
-        ) : [];
+      const dynamicImageTitles = req.files.dynamicImages
+        ? await Promise.all(
+            req.files.dynamicImages.map(async (file) => {
+              const fileUrl = await uploadFileToS3(file, 'images/imageAdd');
+              return fileUrl;
+            }),
+          )
+        : [];
 
       if (req.body.dynamicBlocksJSON) {
         try {
@@ -155,28 +157,29 @@ router.post(
         } catch (error) {
           console.error('Ошибка при разборе dynamicBlocksJSON:', error);
           return res.status(400).json({
-            message: 'Неверный формат данных для dynamicBlocksJSON'
+            message: 'Неверный формат данных для dynamicBlocksJSON',
           });
         }
       }
 
-      const imageTitles = req.files.dropPhoto ?
-        await Promise.all(
-          req.files.dropPhoto.map(async (file) => {
-            const fileUrl = await uploadFileToS3(file, 'images/imageAdd');
-            return fileUrl;
-          })
-        ) : [];
+      const imageTitles = req.files.dropPhoto
+        ? await Promise.all(
+            req.files.dropPhoto.map(async (file) => {
+              const fileUrl = await uploadFileToS3(file, 'images/imageAdd');
+              return fileUrl;
+            }),
+          )
+        : [];
 
-      const imageProjects = req.files.photoAva ?
-        await uploadFileToS3(req.files.photoAva[0], 'images/imageAdd') :
-        null;
-      const imageOpens = req.files.imageOpen ?
-        await uploadFileToS3(req.files.imageOpen[0], 'images/imageAdd') :
-        null;
-      const imageCloses = req.files.imageClose ?
-        await uploadFileToS3(req.files.imageClose[0], 'images/imageAdd') :
-        null;
+      const imageProjects = req.files.photoAva
+        ? await uploadFileToS3(req.files.photoAva[0], 'images/imageAdd')
+        : null;
+      const imageOpens = req.files.imageOpen
+        ? await uploadFileToS3(req.files.imageOpen[0], 'images/imageAdd')
+        : null;
+      const imageCloses = req.files.imageClose
+        ? await uploadFileToS3(req.files.imageClose[0], 'images/imageAdd')
+        : null;
 
       const createdProject = await Project.create({
         title: req.body.title,
@@ -218,7 +221,7 @@ router.post(
       });
 
       res.status(200).json({
-        message: 'Данные успешно сохранены'
+        message: 'Данные успешно сохранены',
       });
     } catch (error) {
       console.log(error);

@@ -1,0 +1,53 @@
+.bg {
+    background-color: var(--light-light-gray-EBECEE);
+    border-radius: 6px;
+    position: relative;
+    /* overflow: clip; */
+}
+
+
+.btnClose {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 12px;
+    height: 12px;
+}
+
+.btnClose::before {
+    content: '';
+    background-color: var(--gray-959DA6);
+    height: 1px;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    width: 16.5px;
+}
+
+.btnClose::after {
+    content: '';
+    background-color: var(--gray-959DA6);
+    height: 1px;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    width: 16.5px;
+}
+
+.btnClose:hover::before,
+.btnClose:hover::after {
+    background-color: var(--salmon-light-FFBFB5);
+}
+
+
+.btnClose[data-color-status="true"]::before,
+.btnClose[data-color-status="true"]::after {
+    background-color: var(--gray-959DA6);
+}
+
+.btnClose[data-color-status="true"]:hover::before,
+.btnClose[data-color-status="true"]:hover::after {
+    background-color: var(--light-blue-D4EDFB);
+}

@@ -28,7 +28,7 @@ const deleteImageIfUnused = async (imageUrl, currentEventId) => {
   }
 };
 
-router.put('/update-event/:id', fileMiddleware.fields([{ name: 'files', maxCount: 500 }]),
+router.put('/update-event/:id', fileMiddleware.fields([{ name: 'files', maxCount: 500 }, { name: 'photoFiles', maxCount: 500 }, { name: 'videoFiles', maxCount: 100 }]),
   async (req, res) => {
     const { id } = req.params;
 
@@ -54,16 +54,37 @@ router.put('/update-event/:id', fileMiddleware.fields([{ name: 'files', maxCount
         event.files = event.files.filter((file) => !removedFilesArray.includes(file));
       }
 
-      if (req.files && req.files['files']) {
-        const newFilesPromises = req.files['files'].map((file) => uploadFileToS3(file, 'images/imageEvent'));
-        const newFiles = await Promise.all(newFilesPromises);
+      const incomingFiles = [...(req.files?.files || []), ...(req.files?.photoFiles || [])];
+      if (incomingFiles.length) {
+        const newFiles = await Promise.all(incomingFiles.map((file) => uploadFileToS3(file, 'images/imageEvent')));
         event.files = [...newFiles, ...oldFiles];
+      }
+
+      const uploadedVideoUrls = await Promise.all(
+        (req.files?.videoFiles || []).map((file) => uploadFileToS3(file, 'images/imageEvent'))
+      );
+
+      const oldEventData = event.eventData || [];
+      const newEventData = [...eventData, ...uploadedVideoUrls];
+      const removedVideos = oldEventData.filter(
+        (url) =>
+          !newEventData.includes(url) &&
+          url.startsWith('http') &&
+          !url.includes('youtube.com') &&
+          !url.includes('youtu.be') &&
+          !url.includes('rutube.ru')
+      );
+      // eslint-disable-next-line no-restricted-syntax
+      for (const url of removedVideos) {
+        const fileName = getFileNameFromUrl(url);
+        // eslint-disable-next-line no-await-in-loop
+        await deleteFileFromS3(fileName, 'images/imageEvent');
       }
 
       await event.update({
         title,
         files: event.files,
-        eventData,
+        eventData: newEventData,
       });
 
       res.json({ message: "Слайд успешно обновлен", data: event });
@@ -75,6 +96,7 @@ router.put('/update-event/:id', fileMiddleware.fields([{ name: 'files', maxCount
 );
 
 router.put('/update-event-order', async (req, res) => {
+  console.log('/update-event-order');
   const { events } = req.body;
 
   if (!Array.isArray(events)) {
@@ -104,7 +126,8 @@ router.put('/update-event-order', async (req, res) => {
 router.post('/save-event-details',
   fileMiddleware.fields([
     { name: 'files', maxCount: 500 },
-    { name: 'videos', maxCount: 100 },
+    { name: 'photoFiles', maxCount: 500 },
+    { name: 'videoFiles', maxCount: 100 },
   ]), async (req, res) => {
     let details;
     try {
@@ -120,14 +143,15 @@ router.post('/save-event-details',
     const { eventData } = details;
     const files = [];
 
-    if (req.files && req.files.files) {
-      // eslint-disable-next-line no-restricted-syntax
-      for (const file of req.files.files) {
-        // eslint-disable-next-line no-await-in-loop
-        const fileUrl = await uploadFileToS3(file, 'images/imageEvent');
-        files.push(fileUrl);
-      }
+    for (const file of [...(req.files?.files || []), ...(req.files?.photoFiles || [])]) {
+      // eslint-disable-next-line no-await-in-loop
+      const fileUrl = await uploadFileToS3(file, 'images/imageEvent');
+      files.push(fileUrl);
     }
+
+    const uploadedVideoUrls = await Promise.all(
+      (req.files?.videoFiles || []).map((file) => uploadFileToS3(file, 'images/imageEvent'))
+    );
     const { title } = req.body;
 
     try {
@@ -137,7 +161,7 @@ router.post('/save-event-details',
         title,
         hidden: false,
         files,
-        eventData,
+        eventData: [...eventData, ...uploadedVideoUrls],
         order: 0
       });
 
@@ -221,6 +245,22 @@ router.delete('/delete-event/:id', async (req, res) => {
           const fileName = getFileNameFromUrl(fileUrl);
           // eslint-disable-next-line no-await-in-loop
           await deleteFileFromS3(fileName, 'images/imageEvent');
+        }
+      }
+
+      if (event.eventData && Array.isArray(event.eventData)) {
+        // eslint-disable-next-line no-restricted-syntax
+        for (const url of event.eventData) {
+          if (
+            url.startsWith('http') &&
+            !url.includes('youtube.com') &&
+            !url.includes('youtu.be') &&
+            !url.includes('rutube.ru')
+          ) {
+            const fileName = getFileNameFromUrl(url);
+            // eslint-disable-next-line no-await-in-loop
+            await deleteFileFromS3(fileName, 'images/imageEvent');
+          }
         }
       }
 

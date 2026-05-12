@@ -4,7 +4,9 @@ const {
 } = require('url');
 const {
   Articles,
-  ConstructorArticles
+  ConstructorArticles,
+  PublicationOne,
+  PublicationTwo,
 } = require('../../db/models');
 const fileMiddleware = require('../../middleware/file');
 const {
@@ -74,7 +76,7 @@ const updateDynamicBlocksContent = (blocks, newImages) => {
     blockGroup.map((block) => {
       if (block.type === 'file' && Array.isArray(block.value)) {
         const updatedValues = block.value.map((val) => {
-          if (typeof val === 'string' && (val.startsWith('blob:') || val.startsWith('temp_'))) {
+          if (typeof val === 'string' && val.length > 0 && !val.startsWith('http')) {
             const newImage = newImages[imageIndex];
             imageIndex += 1;
             return newImage;
@@ -170,8 +172,12 @@ router.post(
         imageClose: imageCloses,
       });
 
+      const updatedDynamicBlocksContent = dynamicBlocksContent
+        ? updateDynamicBlocksContent(dynamicBlocksContent, dynamicImageTitles)
+        : null;
+
       await ConstructorArticles.create({
-        data: dynamicBlocksContent,
+        data: updatedDynamicBlocksContent,
         image: dynamicImageTitles.join(', '),
         idBlock: createdArticle.id,
       });
@@ -296,20 +302,16 @@ router.put(
       const dynamicImagesNew = req.files.dynamicImages ?
         await Promise.all(
           req.files.dynamicImages.map(async (file) => {
-            const {
-              fileUrl
-            } = await uploadFileToS3(file, 'images/imageArticle');
+            const fileUrl = await uploadFileToS3(file, 'images/imageArticle');
             return fileUrl;
           })) : [];
 
       const existingDynamicImages = existingConstructor && existingConstructor.image ?
         existingConstructor.image.split(', ').map((img) => img.trim()) : [];
 
-      const allDynamicImages = [...existingDynamicImages, ...dynamicImagesNew];
-
       const updatedDynamicBlocksContent = updateDynamicBlocksContent(
         dynamicBlocksContent,
-        allDynamicImages
+        dynamicImagesNew
       );
 
       const extractImages = (blocks) =>
@@ -319,24 +321,30 @@ router.put(
           .flatMap((block) => block.value)
           .filter(Boolean);
 
-      const newDynamicImages = extractImages(dynamicBlocksContent).map((img) => img.trim());
+      // Extract kept URLs from pre-update JSON (http strings)
+      const keptDynamicImages = extractImages(dynamicBlocksContent)
+        .map((img) => img.trim())
+        .filter((img) => img.startsWith('http'));
+
+      // Final image list = kept existing URLs + newly uploaded S3 URLs
+      const finalDynamicImages = [...keptDynamicImages, ...dynamicImagesNew];
 
       const normalizedExistingDynamicImages = existingDynamicImages.map(extractFileName);
-      const normalizedNewDynamicImages = newDynamicImages.map(extractFileName);
+      const normalizedFinalDynamicImages = finalDynamicImages.map(extractFileName);
 
-      const imagesToRemoveFromDynamicBlocks = normalizedExistingDynamicImages.filter((image) => !normalizedNewDynamicImages.includes(image));
+      const imagesToRemoveFromDynamicBlocks = normalizedExistingDynamicImages.filter((image) => !normalizedFinalDynamicImages.includes(image));
 
       await Promise.all(imagesToRemoveFromDynamicBlocks.map(deleteImageFromS3));
 
       if (existingConstructor) {
         await existingConstructor.update({
           data: updatedDynamicBlocksContent,
-          image: newDynamicImages.join(', ')
+          image: finalDynamicImages.join(', ')
         });
       } else {
         await ConstructorArticles.create({
           data: updatedDynamicBlocksContent,
-          image: newDynamicImages.join(', '),
+          image: finalDynamicImages.join(', '),
           idBlock: articleId
         });
       }
@@ -488,6 +496,8 @@ router.delete('/deletezapros/:id', async (req, res) => {
         idBlock: id
       }
     });
+    await PublicationOne.destroy({ where: { IdArticle: id } });
+    await PublicationTwo.destroy({ where: { IdArticle: id } });
     await Articles.destroy({
       where: {
         id

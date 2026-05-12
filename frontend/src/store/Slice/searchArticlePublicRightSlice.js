@@ -105,7 +105,6 @@ export const searchArticleRightDelete = (IdArticle) => async (dispatch) => {
 
 export const updateArticleRight =
   (filterArticle, setSaveIdOne, setSearcIdOne, setIsBtnDisabledPublicOne) => async (dispatch) => {
-    console.log('updateArticleLeft called:', filterArticle); // Add this line for debugging
 
     dispatch(fetchArticleRightStart());
 
@@ -115,7 +114,6 @@ export const updateArticleRight =
         IdArticle: filterArticle.id,
       });
       const updatedArticle = response.data;
-      console.log('Response from the server:', updatedArticle); // Add this line for debugging
       dispatch(updateArticleRightSuccess(updatedArticle));
       setSearcIdOne('');
       setSaveIdOne(null);
