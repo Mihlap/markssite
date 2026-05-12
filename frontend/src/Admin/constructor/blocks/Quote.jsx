@@ -2,7 +2,7 @@ import React from 'react';
 import { Controller } from 'react-hook-form';
 import { UiMarksTextarea, UiMarksGrayWrap, UiMarksInput, UiPhotoPreview } from '../../ui';
 
-export default function Quote({ control, index, onRemove, clearErrors, showAuthor = true }) {
+export default function Quote({ control, index, onRemove, clearErrors, showAuthor = true, imageFolder = 'imageAdd' }) {
   const imageRef = React.useRef(null);
 
   return (
@@ -22,6 +22,7 @@ export default function Quote({ control, index, onRemove, clearErrors, showAutho
                   variant="portrait"
                   label="Автор цитаты"
                   color="salmon"
+                  imageFolder={imageFolder}
                   onRemove={() => {
                     onChange([]);
                     if (imageRef.current) imageRef.current.value = '';

@@ -3,19 +3,19 @@ import styles from './Styles.module.css';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
-const resolveStringUrl = (file) => {
+const resolveStringUrl = (file, folder) => {
   if (typeof file !== 'string') return null;
-  return file.startsWith('http') ? file : `${bucket_url}/images/imageAdd/${file}`;
+  return file.startsWith('http') ? file : `${bucket_url}/images/${folder}/${file}`;
 };
 
-function PhotoPreview({ files, variant = 'single', onRemove, color = 'blue', label, customStyles }) {
+function PhotoPreview({ files, variant = 'single', onRemove, color = 'blue', label, customStyles, imageFolder = 'imageAdd' }) {
   const urlMapRef = useRef(new Map());
   const [blobPreviews, setBlobPreviews] = useState([]);
 
   const stringPreviews = useMemo(() => {
     if (!files) return [];
-    return Array.from(files).map(resolveStringUrl).filter(Boolean);
-  }, [files]);
+    return Array.from(files).map((f) => resolveStringUrl(f, imageFolder)).filter(Boolean);
+  }, [files, imageFolder]);
 
   useEffect(() => {
     return () => {

@@ -5,8 +5,7 @@ import s from './Styles.module.css';
 import { UiMarksButton, UiMarksDialog, UiMarksDeleteModal } from '../../ui';
 import StaffForm from './StaffForm';
 import { useAdminUser } from '../../hooks/useAdminUser';
-import StaffList from './StaffList';
-import { DragDropContext } from '@hello-pangea/dnd';
+import List from './List';
 
 
 export default function StaffMain({ items, user }) {
@@ -75,32 +74,6 @@ export default function StaffMain({ items, user }) {
     isFormDirtyRef.current = dirty;
   }, []);
 
-  const handleDragEnd = useCallback((result) => {
-    const { source, destination } = result;
-    if (!destination) return;
-    if (source.droppableId === destination.droppableId && source.index === destination.index) return;
-
-    const COLS = 3;
-    const columns = [[], [], []];
-    orderedItems.forEach((item, i) => columns[i % COLS].push(item));
-
-    const srcCol = parseInt(source.droppableId.split('-')[1]);
-    const dstCol = parseInt(destination.droppableId.split('-')[1]);
-    const [moved] = columns[srcCol].splice(source.index, 1);
-    columns[dstCol].splice(destination.index, 0, moved);
-
-    const next = [];
-    const maxRows = Math.max(...columns.map((c) => c.length));
-    for (let row = 0; row < maxRows; row++) {
-      for (let col = 0; col < COLS; col++) {
-        if (columns[col][row] !== undefined) next.push(columns[col][row]);
-      }
-    }
-
-    setOrderedItems(next);
-    dispatch(reorderStaffAsync(next.map((it, i) => ({ id: it.id, sortIndex: i }))));
-  }, [orderedItems, dispatch]);
-
   return (
     <>
       {canAdd && (
@@ -115,17 +88,16 @@ export default function StaffMain({ items, user }) {
       ) : orderedItems.length === 0 ? (
         <p className={s.empty}>В этом отделе пока нет сотрудников.</p>
       ) : (
-        <DragDropContext onDragEnd={handleDragEnd}>
-          <StaffList
-            items={orderedItems}
-            canDelete={canDelete}
-            canEdit={canEdit}
-            canDrag={canDrag}
-            onEdit={handleEdit}
-            onToggle={handleToggle}
-            onDelete={handleDelete}
-          />
-        </DragDropContext>
+        <List
+          items={orderedItems}
+          canDrag={canDrag}
+          canEdit={canEdit}
+          canDelete={canDelete}
+          onEdit={handleEdit}
+          onToggle={handleToggle}
+          onDelete={handleDelete}
+          onReorder={(next) => dispatch(reorderStaffAsync(next.map((it, i) => ({ id: it.id, sortIndex: i }))))}
+        />
       )}
 
       <UiMarksDeleteModal

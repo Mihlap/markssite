@@ -78,9 +78,10 @@ export default function SearchPublicLeft({
     <UiMarksGrayWrap customStyles={{ width: '100%', padding: '24px' }}>
       <>
         {arrIdArticleLeft &&
-          arrIdArticleLeft?.map((el) => (
-            <Item key={el.IdArticle} project={el} id={el.IdArticle} handleFormDelete={handleArticleLeftDelete} />
-          ))}
+          arrIdArticleLeft?.map((el) => {
+            return <Item key={el.IdArticle} id={el.IdArticle} onDelete={handleArticleLeftDelete} hideDrag />;
+          }
+          )}
       </>
       <div className={styles.wrapInputLeft}>
         <UiMarksInput

@@ -1,4 +1,5 @@
 // frontend/src/UI/NavBar/const/routes.js
+import { IS_DEV } from '../../../const/is-dev';
 
 export const baseNavConfig = {
   primary: [
@@ -51,6 +52,7 @@ export const baseNavConfig = {
   cta: [
     { id: 7, type: 'link', label: 'Обсудить проект', path: '/footerForm', variant: 'cta-primary' },
     { id: 8, type: 'external', external: true, label: 'EN', path: 'https://marksgroup.org/', variant: 'cta-secondary' },
+    ...(IS_DEV ? [{ id: 9, type: 'link', label: 'Login', path: '/login', variant: 'cta-secondary' }] : []),
   ],
 };
 
