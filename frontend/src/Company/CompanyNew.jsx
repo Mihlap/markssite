@@ -28,6 +28,7 @@ import CounterCompanyMobile2 from '../UI/CounterCompanyMobile2';
 import CompanySlider from './CompanySlider/CompanySlider';
 // import ModalVacancyFormSend from '../UI/VacancyFormContact/ModalVacancyFormSend';
 import CompanyStaffPublic from './CompanyStaffPublic';
+import CompanyHistory from './CompanyHistory/CompanyHistory';
 import { useHashScroll } from './CompanyGroupSlider/hooks/useHashScroll';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
@@ -47,10 +48,11 @@ const VIDEO_SOURCE2 = {
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleMouseHover }) {
+  const dispatch = useDispatch();
+
   const [countPercent, setCountPercent] = useState(0);
   const [countHuman, setCountHuman] = useState(0);
   const [countProject, setCountProject] = useState(0);
-
   // const [videoSrc, setVideoSrc] = useState(null);
   const [videoSrc2, setVideoSrc2] = useState(null);
 
@@ -59,11 +61,10 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
   // const [isLoadingSubscription] = useState(false);
   // const [modalOpenSubscription, setModalOpenSubscription] = useState(false);
 
-  const dispatch = useDispatch();
 
+  const companyTopRef = useRef(null);
+  const sliderWrapperRef = useRef(null);
   const blockSlider = useRef(null);
-  const nameCompanyRef = useRef(null);
-  const thisBlockRef = useRef(null);
 
   const countDepartment = useSelector((state) => state.counter.countDepartment);
   const countGap = useSelector((state) => state.counter.countGap);
@@ -71,13 +72,28 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
   const countScienceDegree = useSelector((state) => state.counter.countScienceDegree);
 
   const aliasMap = useMemo(() => ({ section1: 'history', section2: 'awards', section3: 'staff' }), []);
-  useHashScroll({ aliasMap, offsetY: 120 });
+  useHashScroll({ aliasMap, offsetY: 120, offsetYById: { history: 0 } });
 
   const [ref, inView] = useInView({
     threshold: 0.5,
   });
 
   const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth <= 767 : false);
+
+  const [startTopCounters, setStartTopCounters] = useState(false);
+  const topCountersStartedRef = useRef(false);
+  const [mobileTopCountersArmed, setMobileTopCountersArmed] = useState(false);
+
+  const armTopCounters = () => {
+    if (isMobile) {
+      setMobileTopCountersArmed(true);
+      return;
+    }
+
+    if (topCountersStartedRef.current) return;
+    topCountersStartedRef.current = true;
+    setStartTopCounters(true);
+  }
 
   useEffect(() => {
     const handleResize = () => {
@@ -108,16 +124,21 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
   }, []);
 
   useEffect(() => {
+    if (!startTopCounters) return;
+
     const timer1 = setTimeout(() => {
       if (countPercent < 1300) setCountPercent(countPercent + 20);
       if (countProject < 200) setCountProject(countProject + 5);
       if (countHuman < 20) setCountHuman(countHuman + 1);
     }, 50);
+
     return () => clearTimeout(timer1);
-  }, [countPercent, countHuman, countProject]);
+
+  }, [startTopCounters, countPercent, countHuman, countProject]);
 
   useEffect(() => {
-    if (!inView) return;
+    // if (!inView) return;
+    if (!startTopCounters) return;
 
     const t = setTimeout(() => {
       dispatch(incrementDepartment());
@@ -127,7 +148,7 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
     }, 80);
 
     return () => clearTimeout(t);
-  }, [dispatch, inView]);
+  }, [dispatch, startTopCounters]);
 
   useEffect(() => {
     const elementsRight = [blockSlider.current];
@@ -149,47 +170,13 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
     };
   }, []);
 
-  useEffect(() => {
-    const nameCompanyElement = nameCompanyRef.current;
-    const thisBlockElement = thisBlockRef.current;
-
-    function handleScroll() {
-      if (!nameCompanyElement || !thisBlockElement) return;
-
-      const nameCompanyRect = nameCompanyElement.getBoundingClientRect();
-      const thisBlockRect = thisBlockElement.getBoundingClientRect();
-      const screenWidth = window.innerWidth;
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-
-      if (scrollTop > thisBlockRect.top && screenWidth >= 2000) {
-        const translateYValue = nameCompanyRect.height + 190;
-        nameCompanyElement.style.transform = `translateY(${translateYValue}px)`;
-        thisBlockElement.style.transform = `translateY(150px) translateX(10vw) rotate(-90deg)`;
-      } else if (scrollTop > thisBlockRect.top && screenWidth < 1999 && screenWidth >= 1480) {
-        const translateYValue = nameCompanyRect.height + 200;
-        nameCompanyElement.style.transform = `translateY(${translateYValue}px)`;
-        thisBlockElement.style.transform = `translateY(170px) translateX(10vw) rotate(-90deg)`;
-      } else if (scrollTop > thisBlockRect.top && screenWidth <= 1479) {
-        const translateYValue = nameCompanyRect.height + 230;
-        nameCompanyElement.style.transform = `translateY(${translateYValue}px)`;
-        thisBlockElement.style.transform = `translateY(180px) translateX(10vw) rotate(-90deg)`;
-      } else {
-        nameCompanyElement.style.transform = 'none';
-        thisBlockElement.style.transform = 'rotate(-180deg)';
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
     <>
       <Helmet>
         <title>MARKS GROUP</title>
       </Helmet>
 
-      <div className={styles.company_main}>
+      <div ref={companyTopRef} className={styles.company_main}>
         <div className={styles.company_intro}>
           <div className={styles.block_video_company}>
             {videoSrc2 && (
@@ -214,7 +201,7 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
             </span>
             <span className={styles.span_underSlider_text2}>О&nbsp;компании</span>
 
-            {isMobile && <CounterCompanyMobile />}
+            {isMobile && <CounterCompanyMobile armed={mobileTopCountersArmed} />}
 
             {!isMobile && (
               <div className={styles.div_counter_wrapper}>
@@ -252,11 +239,13 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
           </div>
         </div>
 
-        <div className={styles.sliderMobile_wrapper}>
+        <div ref={sliderWrapperRef} className={styles.sliderMobile_wrapper}>
           <SliderHeader />
         </div>
 
-        <div id="history" className={styles.about_main}>
+        <CompanyHistory parentStartRef={companyTopRef} sliderRef={sliderWrapperRef} onExitToParentTop={armTopCounters} />
+
+        {/* <div id="history" className={styles.about_main}>
           <div className={styles.left_about}>
             <div ref={nameCompanyRef} className={styles.name_company}>
               MARKS GROUP
@@ -334,7 +323,7 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
               </div>
             )}
           </div>
-        </div>
+        </div> */}
 
         <CompanySlider />
 

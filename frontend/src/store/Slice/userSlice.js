@@ -23,5 +23,5 @@ const userSlice = createSlice({
 export const { setUser, setCurrentPage, resetCurrentPage } = userSlice.actions;
 
 export default userSlice.reducer;
-
 // этот слайс нужен для того, чтоб скрывать и показывать navbar && footer когда мы переходим или выходим из админки
+

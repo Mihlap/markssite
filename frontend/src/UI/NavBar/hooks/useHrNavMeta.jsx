@@ -1,4 +1,3 @@
-// frontend/src/UI/NavBar/hooks/useHrNavMeta.jsx;
 import { useLocation, matchPath } from 'react-router-dom';
 import { useMemo } from 'react';
 

@@ -70,30 +70,16 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
   const projectsPerPage = 100;
 
   useEffect(() => {
-    const scrollToTop = () => {
-      window.scrollTo(0, 0);
-    };
-
-    const scrollToTableHeader = () => {
-      const element = document.getElementById('block-header-anchorr');
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        window.location.replace('#block-header-anchor');
-      }
-    };
-
-    const hash = window.location.hash;
+    const hash = location.hash;
     if (hash === '#block-header-anchor') {
-      scrollToTableHeader();
-    } else {
-      scrollToTop();
+      const element = document.getElementById('block-header-anchor');
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      }
     }
-
-    return () => {
-      window.removeEventListener('scroll', scrollToTop);
-      window.removeEventListener('scroll', scrollToTableHeader);
-    };
-  }, []);
+  }, [location.hash]);
 
   const handleResize = useCallback(() => {
     setScreenWidth(window.innerWidth);
@@ -133,15 +119,12 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
 
   const handleChange = useCallback(
     (event) => {
-      const address = event.target.value;
+      const address = event.target.value.toLowerCase();
       setValue(address);
-      setIsValid(address.trim() === '');
+      setIsValid(address === '');
       setIsTyping(true);
       setSelectOnCompetencies('');
-      
-      if (address.trim()) {
-        dispatch(setSelectedCity(''));
-      } else {
+      if (!address) {
         dispatch(setSelectedCity(''));
         setSelectOnCompetencies('Все');
       }
@@ -153,38 +136,22 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
     event.preventDefault();
   };
 
-  const handleKeyDown = useCallback(
-    (event) => {
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        const address = event.target.value.trim();
-        setIsFocusedProject(false);
-        setValue(address);
-        setIsValid(address === '');   
-        dispatch(setSelectedCity(''));
-        setSelectOnCompetencies('');
-        if (address === '') {
-          setSelectOnCompetencies('Все');
-        }      
-        event.target.blur();
-      }
-    },
-    [dispatch]
-  );
-
   const handleBlur = useCallback(
     (event) => {
-      const address = event.target.value.trim();
+      const address = event.target.value;
       setIsFocusedProject(false);
-      setValue(address);
-      setIsValid(address === '');
-
-      if (address === '') {
+      if (!address) {
         dispatch(setSelectedCity(''));
+      }
+      setValue(address);
+      setIsValid(isValid);
+      dispatch(setSelectedCity(''));
+      setSelectOnCompetencies('');
+      if (value.trim() === '') {
         setSelectOnCompetencies('Все');
       }
     },
-    [dispatch]
+    [dispatch, isValid, value]
   );
 
   const handleButtonClick = useCallback(
@@ -210,8 +177,6 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
       dispatch(getFetchFormCityFilter(currentPage, projectsPerPage, countryCity));
       setCurrentPage(1);
       setSelectOnCompetencies('');
-      setValue('');
-      setIsValid(true);
     },
     [dispatch, currentPage, projectsPerPage, isTyping]
   );
@@ -268,10 +233,6 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
   const categoriesSet = useMemo(() => {
     const set = new Set();
 
-    if (!Array.isArray(projects)) {
-      return set;
-    }
-
     const searchValue = (value || '').toLowerCase();
     const selectedCityLower = (selectedCity || '').toLowerCase();
 
@@ -297,33 +258,21 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
   }, [projects, selectedCity, value]);
 
   const filteredProjects = useMemo(() => {
-    if (!Array.isArray(projects)) {
-      return [];
-    }
-
     return projects
       .filter((project) =>
         selectOnCompetencies === 'Все' ? true : project.viewConstruction?.includes(selectOnCompetencies)
       )
       .filter((project) => {
         const projectCity = extractCityFromCountryCity(project.countryCity);
-        const searchValue = (value || '').trim().toLowerCase();
-        const projectLocation = (project.location || '').toLowerCase();
-        const projectCityLower = projectCity?.toLowerCase();
-   
-        if (selectedCity) {
-          const matchesCity = projectCity === selectedCity;         
-          if (searchValue) {
-            return matchesCity && projectLocation.includes(searchValue);
-          }
-          return matchesCity;
-        }
-  
-        if (searchValue) {
-          return projectLocation.includes(searchValue);
-        }
-
-        return true;
+        return selectedCity === '' ? true : projectCity === selectedCity;
+      })
+      .filter((project) => {
+        const searchValue = value?.toLowerCase();
+        const projectLocation = project.location?.toLowerCase();
+        const projectCity = extractCityFromCountryCity(project.countryCity)?.toLowerCase();
+        return (
+          projectLocation?.includes(searchValue) && (selectedCity === '' || projectCity === selectedCity?.toLowerCase())
+        );
       });
   }, [projects, selectOnCompetencies, selectedCity, value]);
 
@@ -363,7 +312,6 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
                   onFocus={handleFocus}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  onKeyDown={handleKeyDown}
                   maxLength="50"
                   size="60"
                   required
@@ -559,7 +507,6 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
                   onFocus={handleFocus}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  onKeyDown={handleKeyDown}
                   maxLength="50"
                   size="60"
                   required

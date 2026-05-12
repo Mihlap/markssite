@@ -131,6 +131,7 @@ dist
 .pnp.*
 
 # webpack cache
+frontend/.webpack-cache/
 .webpack-cache/
 
 build/*

@@ -115,7 +115,7 @@
 }
 
 .sliderMobile_wrapper {
-  padding: 2rem 0 8rem 0;
+  padding: 2rem 0 0 0;
 }
 
 .about_main {
@@ -782,6 +782,17 @@
     margin-top: 0;
   }
 
+ 
+  .awards_wrapper {
+    padding-left: 3.4375rem;
+    padding-right: 0;
+  }
+
+  .list_project {
+    padding-left: 3.4375rem;
+    padding-right: 1rem;
+  }
+
   .modal_wrapper {
     width: 29rem;
     height: auto;
@@ -1031,7 +1042,8 @@
 
   .my_swiper_button_group {
     padding: 0 1rem !important;
-    overflow: visible !important;
+    overflow-x: hidden;
+    overflow-y: visible;
     display: flex;
     left: 0;
     width: 100%;
@@ -1198,6 +1210,3 @@
     top: 0;
   }
 }
-
-
-

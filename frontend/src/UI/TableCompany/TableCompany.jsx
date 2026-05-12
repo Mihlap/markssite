@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import styles from './TableCompany.module.css';
 import tableData from './tableData';
 
 const TableCompany = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }) => {
   const [showAll, setShowAll] = useState(false);
+  const location = useLocation();
 
   const tdStyle = {
     paddingTop: '24px',
@@ -26,31 +28,18 @@ const TableCompany = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }) 
   const handleShowAllClick = () => {
     setShowAll(!showAll);
   };
-  useEffect(() => {
-    const scrollToTop = () => {
-      window.scrollTo(0, 0);
-    };
 
-    const scrollToTableHeader = () => {
+  useEffect(() => {
+    const hash = location.hash;
+    if (hash === '#table-header-anchor') {
       const element = document.getElementById('table-header-anchor');
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        window.location.replace('#table-header-anchor');
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
       }
-    };
-
-    const hash = window.location.hash;
-    if (hash === '#table-header-anchor') {
-      scrollToTableHeader();
-    } else {
-      scrollToTop();
     }
-
-    return () => {
-      window.removeEventListener('scroll', scrollToTop);
-      window.removeEventListener('scroll', scrollToTableHeader);
-    };
-  }, []);
+  }, [location.hash]);
 
   return (
     <div className={styles.TableCompanyContainer}>

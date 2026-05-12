@@ -1,8 +1,7 @@
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwipeCore from 'swiper';
-import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -14,8 +13,6 @@ const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 const SwiperContainerProject = ({ projects }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const swiperRef = useRef(null);
-
-  SwipeCore.use([Navigation, Pagination, Autoplay]);
 
   const colors = {
     Архитектура: '#FF7F6A',
@@ -44,6 +41,7 @@ const SwiperContainerProject = ({ projects }) => {
   return (
     <div className="swiper_container">
       <Swiper
+        modules={[Navigation, Pagination, Autoplay]}
         loop={false}
         slidesPerView={1.1}
         spaceBetween={-2}

@@ -1,32 +1,10 @@
-import React, { useRef, useState, useEffect, useCallback, Suspense, Component } from 'react';
+import React, { useRef, useState, useEffect, useCallback, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { EffectComposer, N8AO, ToneMapping } from '@react-three/postprocessing';
 import Show, { preloadShoeModel } from './Show';
 import Planet from './Planet';
 
 preloadShoeModel();
-
-class ErrorBoundary extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  static getDerivedStateFromError(error) {
-    return { hasError: true };
-  }
-
-  componentDidCatch(error, errorInfo) {
-    console.error('Canvas Error:', error, errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return null;
-    }
-    return this.props.children;
-  }
-}
 
 function isWebGLAvailable() {
   if (typeof window === 'undefined') return false;
@@ -53,11 +31,10 @@ const Rocket = () => {
   });
 
   const [webglSupported, setWebglSupported] = useState(true);
-  const [mounted, setMounted] = useState(false);
 
   const handleResize = useCallback(() => {
     const screenWidth = window.innerWidth;
-    let width = '25%';
+    let width = '25%';   
 
     if (screenWidth >= 3500) width = '40%';
     else if (screenWidth >= 3000) width = '45%';
@@ -76,10 +53,6 @@ const Rocket = () => {
 
   useEffect(() => {
     setWebglSupported(isWebGLAvailable());
-    // Отложенная инициализация Canvas для избежания ошибки registerRenderer
-    const timer = setTimeout(() => {
-      setMounted(true);
-    }, 100);
 
     const onResize = () => {
       if (resizeRaf.current) cancelAnimationFrame(resizeRaf.current);
@@ -89,13 +62,12 @@ const Rocket = () => {
     window.addEventListener('resize', onResize);
     handleResize();
     return () => {
-      clearTimeout(timer);
       window.removeEventListener('resize', onResize);
       if (resizeRaf.current) cancelAnimationFrame(resizeRaf.current);
     };
   }, [handleResize]);
 
-  if (!webglSupported || !mounted) {
+  if (!webglSupported) {
     return (
       <div style={containerStyle}>
         <div
@@ -111,14 +83,12 @@ const Rocket = () => {
 
   return (
     <div style={containerStyle}>
-      <ErrorBoundary>
-        <Canvas
-          key={`rocket-canvas-${webglSupported}-${mounted}`}
-          flat
-          shadows
-          dpr={[1, 1.5]}
-          gl={{ preserveDrawingBuffer: false, alpha: true }}
-          camera={{ position: [0, 0, 80], fov: 30, near: 1, far: 3000 }}>
+      <Canvas
+        flat
+        shadows
+        dpr={[1, 1.5]}
+        gl={{ preserveDrawingBuffer: false, alpha: true }}
+        camera={{ position: [0, 0, 80], fov: 30, near: 1, far: 3000 }}>
         <ambientLight intensity={2} color="#91c8fc" />
         <directionalLight castShadow position={[-10, -20, 50]} intensity={2.4} shadow-mapSize={512} />
         <pointLight ref={light} intensity={1400} color="#389FFF" decay={2} distance={600} position={[-10, 4, 45]} />
@@ -130,12 +100,11 @@ const Rocket = () => {
           <Show />
         </Suspense>
 
-          <EffectComposer>
-            {typeof N8AO === 'function' && <N8AO aoRadius={1.2} intensity={3} color="grey" quality="performance" />}
-            <ToneMapping />
-          </EffectComposer>
-        </Canvas>
-      </ErrorBoundary>
+        <EffectComposer>
+          {typeof N8AO === 'function' && <N8AO aoRadius={1.2} intensity={3} color="grey" quality="performance" />}
+          <ToneMapping />
+        </EffectComposer>
+      </Canvas>
     </div>
   );
 };

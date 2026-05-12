@@ -4,23 +4,14 @@ import logo from '../icon/logo.svg';
 import iconhr from '../icon/hr.svg';
 import iconmg from '../icon/mj.svg';
 
-import styles from '../logo/style.module.css';
-import { useEffect, useState } from 'react';
+import styles from '../logo/style.module.scss';
 
 export default function Logo({ isSideBar = false }) {
+  
   const location = useLocation();
-  // маршрутные флаги нужны, чтобы включать компактную версию и нужный набор анимаций
   const isHrRoute = location.pathname.startsWith('/hr/');
   const isMjRoute = location.pathname.startsWith('/journalPage');
   const shouldCompactLogo = isHrRoute || isMjRoute;
-  const [animate, setAnimate] = useState(shouldCompactLogo);
-
-  useEffect(() => {
-    // синхронизируем включение/выключение анимации при смене страницы
-    setAnimate(shouldCompactLogo);
-  }, [shouldCompactLogo]);
-
-  // выбираем доп.иконку, alt и ссылку домой под соответствующий раздел
   const animatedIcon = isHrRoute ? iconhr : isMjRoute ? iconmg : null;
   const animatedAlt = isHrRoute
     ? 'дополнительный логотип для MarksGroup HR portal'
@@ -37,22 +28,27 @@ export default function Logo({ isSideBar = false }) {
       {/* <div className={styles['navbar-logo-circle']} /> */}
       <div
         className={clsx(styles['logo-circle'], {
-          [styles['logo-circle-animate']]: animate,
+          [styles['logo-circle-animate']]: shouldCompactLogo,
         })}
       />
       <img
         className={clsx(styles['logo-image'], {
-          [styles['logo-image-animate']]: animate,
+          [styles['logo-image--shifted']]: shouldCompactLogo,
         })}
         src={logo}
         alt="логотип компании MarksGroup"
         loading="lazy"
       />
+      <div
+        className={clsx(styles['logo-circle-blue'], {
+          [styles['logo-circle-blue-animate']]: shouldCompactLogo,
+        })}
+      />
       {animatedIcon && (
         <img
           key={animatedIcon}
           className={clsx(styles['logo-hr'], {
-            [styles['logo-hr-animate']]: animate,
+            [styles['logo-hr-animate']]: shouldCompactLogo,
             [styles['logo-hr-sidebar']]: isSideBar,
           })}
           src={animatedIcon}

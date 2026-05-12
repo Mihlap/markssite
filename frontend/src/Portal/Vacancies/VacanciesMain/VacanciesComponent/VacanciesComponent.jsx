@@ -17,7 +17,7 @@ import { setPreviousPage } from '../../../../store/Slice/previousPageSlice';
 import { setActivePage } from '../../../../store/Slice/activePageSlice';
 import VacanciesSectionRender from '../VacanciesSectionRender/VacanciesSectionRender';
 import FilterModalVacancies from '../../FilterModalVacancies/FilterModalVacancies';
-import ApplicationForm from '../../../ui/ApplicationForm/ApplicationForm';
+import VacancyFormContact from '../../../../UI/VacancyFormContact/VacancyFormContact';
 import RocketComponent from '../../../../UI/Rocket/RocketComponents';
 
 import iconFilter from '../../icons/filter.svg';
@@ -29,6 +29,7 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
   const dispatch = useDispatch();
   const { vacancies, loading, filteredVacancies, activeFilters } = useSelector((state) => state.vacancies);
   const selectedFilter = useSelector((state) => state.vacancies.selectedFilter);
+  const activePage = useSelector((state) => state.activePage.page);
 
   const filterKeyForSpecialty = 'direction';
 
@@ -256,7 +257,7 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
             </div>
             <div className={styles.vacancies_header_wrapper}>
               <span className={styles.vacancies_header1}>Мы ищем специалистов в&nbsp;наш дружный коллектив</span>
-              <span className={styles.vacancies_header2}>Вакансии</span>
+              <span className={styles.vacancies_header2}>Работа у нас</span>
             </div>
           </div>
           <div className={styles.menu_button_group_vacancy_wrapper_main}>
@@ -402,14 +403,21 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
             handleMouseLeave={handleMouseLeave}
             isInternship={false}
           />
-          <div id="form" className={styles.temporaryText}>
+          <div className={styles.temporaryText}>
             {windowWidth > 1024 ? 'Не нашли подходящую вакансию?' : 'Мы ищем именно тебя!'}
           </div>
           <div className={styles.textUnderForm}>
             Оставьте ваши контакты, мы всегда в поиске талантливых профессионалов
           </div>
           <div className={styles.vacancyFormWrapper}>
-            <ApplicationForm variant="full" />
+            <VacancyFormContact
+              handleMouseEnter={handleMouseEnter}
+              handleMouseLeave={handleMouseLeave}
+              handleMouseHover={handleMouseHover}
+              centerButton={true}
+              buttonText={activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'}
+              isInternship={false}
+            />
           </div>
         </div>
       )}

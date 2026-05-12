@@ -8,9 +8,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { debounce } from 'lodash';
 import styles from './VacanciesMainCard.module.scss';
 import VacancySlider from '../VacancySlider/VacancySlider';
+import LoadingVacancy from '../../../Loading/LoadingVacancy';
 import RenderVacancySections from '../RenderVacancySections/RenderVacancySections';
 import { fetchEmployees } from '../../../store/Slice/vacanciesSlice';
-import ApplicationForm from '../../ui/ApplicationForm/ApplicationForm';
+import VacancyFormContactSimple from '../../../UI/VacancyFormContact/VacancyFormContactSimple';
+import VacancyFormContact from '../../../UI/VacancyFormContact/VacancyFormContact';
+import ModalVacancyFormSend from '../../../UI/VacancyFormContact/ModalVacancyFormSend';
 
 import star1 from '../icons/star-header-1.png';
 import star2 from '../icons/star-header-2.png';
@@ -36,6 +39,10 @@ import vectorAround from '../icons/VectorAround.svg';
 import vectorAround1 from '../icons/VectorAround1.png';
 import vectorAround2 from '../icons/vectorAround2.svg';
 
+import frame1 from '../icons/frame/frame1.svg';
+import frame2 from '../icons/frame/frame2.svg';
+import frame3 from '../icons/frame/frame3.svg';
+import frame4 from '../icons/frame/frame4.svg';
 import BenefitsVacancy from '../BenefitsVacancy/BenefitsVacancy';
 
 // hooks
@@ -52,12 +59,14 @@ function setViewportUnits() {
   document.documentElement.style.setProperty('--vw', `${window.innerWidth / 100}px`);
 }
 
-const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave }) => {
+const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }) => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const { width } = useWindowWidth();
   const activePage = useSelector((state) => state.activePage.page);
   const vacancies = useSelector((state) => state.vacancies.vacancies);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedVacancy, setSelectedVacancy] = useState(null);
   const [isVisible, setIsVisible] = useState(window.innerWidth > 1024);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -286,6 +295,15 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave }) => {
         <title>Marks Group</title>
       </Helmet>
       <div className={styles.main_vacancyWrapper} ref={pageRef}>
+        {isLoading && <LoadingVacancy />}
+        <ModalVacancyFormSend
+          isOpen={isModalOpen}
+          onRequestClose={() => setIsModalOpen(false)}
+          title="Спасибо за&nbsp;отклик!"
+          message="Мы изучим информацию и&nbsp;свяжемся с&nbsp;вами"
+          buttonText="Спасибо,&nbsp;жду!"
+          variant="manualClose"
+        />
         <section className={styles['section-top']}>
           <div className={styles['section-top__title']} ref={topContainerRef}>
             <img ref={firstStarRef} className={styles['section-top__star']} src={star1} alt="иконка звезды" />
@@ -345,10 +363,15 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave }) => {
           </div>
           <aside className={styles['section-top__aside']}>
             <VacancyRequirements vacancy={vacancies[0]} variant="default" />
-            <ApplicationForm
-              variant="simple"
+            <VacancyFormContactSimple
+              handleMouseEnter={handleMouseEnter}
+              handleMouseLeave={handleMouseLeave}
+              handleMouseHover={handleMouseHover}
+              setIsLoading={setIsLoading}
+              setIsModalOpen={setIsModalOpen}
               vacancyTitleSimple={selectedVacancy?.title}
               buttonText={activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'}
+              inputPaddingTop={width >= 1024 && width <= 1600 ? '2rem' : undefined}
             />
           </aside>
         </section>
@@ -411,7 +434,9 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave }) => {
                 <div className={styles.locationValue}>10&nbsp;мин</div>
               </div>
               <div className={styles.main_vacancyWrapper__spanWrapperLocation}>
-                <span className={styles.spanLocationText}>Комфортный оборудованный офис</span>
+                <span className={styles.spanLocationText}>
+                  Комфортный оборудованный офис
+                </span>
                 <span className={styles.spanLocationText}>
                   Мы предоставляем все оборудование для комфортной работы и отдыха
                 </span>
@@ -450,18 +475,19 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave }) => {
             <BenefitsVacancy />
           </div>
         </div>
-        <div id="form" className={styles.temporaryText}>
-          Мы ищем именно тебя!
-        </div>
+        <div className={styles.temporaryText}>Мы ищем именно тебя!</div>
         <div className={styles.textUnderForm}>
           Оставьте ваши контакты, мы всегда&nbsp;в&nbsp;поиске талантливых профессионалов
         </div>
         <div className={styles.main_vacancyWrapper__vacancyFormWrapper} ref={formRef}>
-          <ApplicationForm
-            variant="full"
+          <VacancyFormContact
+            formRef={formRef}
             initialDirection={selectedVacancy?.direction}
             handleMouseEnter={handleMouseEnter}
             handleMouseLeave={handleMouseLeave}
+            handleMouseHover={handleMouseHover}
+            setIsLoading={setIsLoading}
+            setIsModalOpen={setIsModalOpen}
             vacancyTitle={selectedVacancy?.title}
             centerButton={true}
             buttonText={activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'}

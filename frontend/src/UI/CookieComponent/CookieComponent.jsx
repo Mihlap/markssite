@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import CookieConsent from 'react-cookie-consent';
-import {IS_DEV} from '../../const/is-dev';
 
 const CookieComponent = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 767);
@@ -14,10 +13,6 @@ const CookieComponent = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  if (IS_DEV) {
-    return null
-  }
-
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'auto min-content' }}>
       <CookieConsent
@@ -25,14 +20,13 @@ const CookieComponent = () => {
         cookieName="myCookieConsent"
         buttonText="Принять"
         style={{
-          display: isMobile ? 'block' : 'flex',
+          display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          padding: '0',
-          paddingLeft: isMobile ? '0' : '32px',
-          background: 'var(--light-light-gray-EBECEE)',
-          color: 'var(--black-1D2E43)',
-          boxShadow: 'none',
+          padding: isMobile ? '0.5rem 1rem' : '0.5rem 4rem 0.5rem 2rem',
+          background: '#ebecee',
+          color: '#1d2e43',
+          boxShadow: '0px 0px 20px 0px rgba(196, 215, 234, 0.61)',
           fontFamily: 'var(--font-raleway)',
           fontSize: isMobile ? '1rem' : '1.125rem',
           fontStyle: 'normal',
@@ -42,18 +36,15 @@ const CookieComponent = () => {
           whiteSpace: isMobile ? 'unset' : 'pre-line',
         }}
         buttonStyle={{
-          width: isMobile && '100%',
-          margin: '0',
-          padding: '24px 50px',
-          borderRadius: '0',
-          border: 'none',
-          background: '#1d2e43',
-          color: 'var(--white-F6F6F6)',
+          padding: '1rem 2rem',
+          borderRadius: '4.125rem',
+          border: '1px solid #C7E4FF',
+          background: 'linear-gradient(135deg, rgba(123, 191, 255, 0.55) 3.43%, rgba(240, 248, 255, 0.55) 177.6%)',
           fontFamily: 'var(--font-raleway)',
           fontSize: '1rem',
           fontStyle: 'normal',
-          fontWeight: '600',
-          lineHeight: '24px',
+          fontWeight: 'var(--fw-400)',
+          lineHeight: '1.5rem',
           cursor: 'pointer',
         }}
         expires={10}>

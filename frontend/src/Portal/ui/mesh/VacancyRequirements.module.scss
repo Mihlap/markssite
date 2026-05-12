@@ -53,19 +53,9 @@
         // grid-template-columns: 1fr 1fr;
 
         &__row {
-            @include row(50px 0px 50px 0px, $special-children: (1, 4));
-            align-items: center;
+            @include row(119px 190px 119px 100px, $special-children: (1, 4));
         }
 
-        &__label {
-            @include label(16px, 400, 24px);
-        }
-
-        &__value {
-            @include value(20px, 300, 28px);
-        }
-
-        @media (min-width: 2560px) { 
         &__label {
             @include label(18px, 400, 26px);
         }
@@ -73,6 +63,19 @@
         &__value {
             @include value(32px, 300, 40px);
         }
+
+        @media (max-width: 2560px) {
+            &__row {
+                @include row(33px 126px 44px 40px);
+            }
+
+            &__label {
+                @include label(16px, 400, 24px);
+            }
+
+            &__value {
+                @include value(20px, 300, 28px);
+            }
         }
     }
 

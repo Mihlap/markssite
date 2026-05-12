@@ -3,4 +3,4 @@ node_modules
 
 # webpack cache
 frontend/.webpack-cache/
-.vscode
+
