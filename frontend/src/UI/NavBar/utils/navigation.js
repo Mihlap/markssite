@@ -34,7 +34,7 @@ export const handleCompanyAwareNavigation = ({
   if (isCompany) {
     event?.preventDefault?.();
 
-    if (path === '/journalPage') {
+    if (path === '/journalPage' || path === '/publication') {
       navigate?.(path);
       return;
     }

@@ -9,7 +9,6 @@ export const postVacancyData = createAsyncThunk(
     try {
       const res = await axios.post(`${serverHost}/api-vacancyDetails/save-vacancy-details`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
-        withCredentials: true,
       });
       const slide = res?.data?.data;
       if (!slide) throw new Error('Некорректный ответ сервера: отсутствует поле data');
@@ -54,7 +53,6 @@ export const editSlide = createAsyncThunk('slides/editSlide', async ({ id, data 
   try {
     const res = await axios.put(`${serverHost}/api-vacancyDetails/update-slide/${id}`, data, {
       headers: { 'Content-Type': 'multipart/form-data' },
-      withCredentials: true,
     });
     if (res.status !== 200) return rejectWithValue('Не удалось обновить слайд');
     const slide = res?.data?.data;
@@ -102,7 +100,7 @@ export const deleteSlide = createAsyncThunk(
   'slides/deleteSlide',
   async (id, { dispatch, getState, rejectWithValue }) => {
     try {
-      await axios.delete(`${serverHost}/api-vacancyDetails/delete-slide/${id}`, { withCredentials: true });
+      await axios.delete(`${serverHost}/api-vacancyDetails/delete-slide/${id}`);
       const state = getState();
       const slides = (state.formAddSlide?.slides || [])
         .filter((s) => s.id !== id)

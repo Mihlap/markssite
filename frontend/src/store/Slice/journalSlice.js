@@ -31,7 +31,7 @@ export const uploadMarkdownFile = createAsyncThunk('journal/uploadMarkdownFile',
   try {
     const formData = new FormData();
     formData.append('markdownFile', file);
-    const { data } = await axios.post(`${serverHost}/api-journal/uploadMarkdownFile`, formData, { withCredentials: true });
+    const { data } = await axios.post(`${serverHost}/api-journal/uploadMarkdownFile`, formData);
     return data.url;
   } catch (err) {
     console.error('Ошибка при загрузке Markdown-файла:', err);
@@ -42,7 +42,7 @@ export const uploadMarkdownFile = createAsyncThunk('journal/uploadMarkdownFile',
 // Thunk для создания новой записи
 export const createJournal = createAsyncThunk('journal/createJournal', async (formData, { rejectWithValue }) => {
   try {
-    const { data } = await axios.post(`${serverHost}/api-journal/postzapros`, formData, { withCredentials: true });
+    const { data } = await axios.post(`${serverHost}/api-journal/postzapros`, formData);
     return data;
   } catch (err) {
     console.error('Ошибка при создании записи:', err);
@@ -55,7 +55,7 @@ export const updateJournal = createAsyncThunk(
   'journal/updateJournal',
   async ({ journalId, formData }, { rejectWithValue }) => {
     try {
-      const { data } = await axios.put(`${serverHost}/api-journal/editzapros/${journalId}`, formData, { withCredentials: true });
+      const { data } = await axios.put(`${serverHost}/api-journal/editzapros/${journalId}`, formData);
       return data;
     } catch (err) {
       console.error('Ошибка при обновлении записи:', err);
@@ -67,7 +67,7 @@ export const updateJournal = createAsyncThunk(
 // Thunk для удаления Markdown-файла по URL
 export const deleteMarkdownFile = createAsyncThunk('journal/deleteMarkdownFile', async (url, { rejectWithValue }) => {
   try {
-    await axios.delete(`${serverHost}/api-journal/delete-file`, { data: { url }, withCredentials: true });
+    await axios.delete(`${serverHost}/api-journal/delete-file`, { data: { url } });
     return url;
   } catch (err) {
     console.error('Ошибка при удалении Markdown-файла:', err);
@@ -78,7 +78,7 @@ export const deleteMarkdownFile = createAsyncThunk('journal/deleteMarkdownFile',
 // Thunk для удаления записи
 export const deleteJournal = createAsyncThunk('journal/deleteJournal', async (id, { rejectWithValue }) => {
   try {
-    await axios.delete(`${serverHost}/api-journal/deletezapros/${id}`, { withCredentials: true });
+    await axios.delete(`${serverHost}/api-journal/deletezapros/${id}`);
     return { id };
   } catch (err) {
     console.error('Ошибка при удалении записи:', err);
@@ -127,7 +127,7 @@ const journalSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
+    builder   
       .addCase(fetchJournals.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -139,12 +139,12 @@ const journalSlice = createSlice({
       .addCase(fetchJournals.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload;
-      })
+      })   
       .addCase(fetchJournalById.pending, (state) => {
         state.loading = true;
       })
       .addCase(fetchJournalById.fulfilled, (state, { payload: data }) => {
-        state.loading = false;
+        state.loading = false;    
         const attachmentsById = (data.authors || []).reduce((acc, a, idx) => {
           acc[a.id] = a.image || data.attachments?.[idx] || null;
           return acc;
@@ -178,7 +178,7 @@ const journalSlice = createSlice({
       .addCase(fetchJournalById.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload || 'Ошибка при загрузке записи';
-      })
+      })    
       .addCase(createJournal.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -203,7 +203,7 @@ const journalSlice = createSlice({
       .addCase(updateJournal.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload;
-      })
+      })  
       .addCase(deleteMarkdownFile.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -214,7 +214,7 @@ const journalSlice = createSlice({
       .addCase(deleteMarkdownFile.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload;
-      })
+      })   
       .addCase(deleteJournal.pending, (state) => {
         state.loading = true;
         state.error = null;

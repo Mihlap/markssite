@@ -119,7 +119,7 @@ export const updateStaffCategoryToggleAsync = createAsyncThunk(
   'toggle/updateStaffCat',
   async ({ key, value }, { rejectWithValue }) => {
     try {
-      const { data } = await axios.put(`${serverHost}/api/toggle/staff-categories`, { key, value });
+      const { data } = await axios.put(`${serverHost}/api/toggle/staff-categories`, { key, value });     
       return data;
     } catch (e) {
       return rejectWithValue(e?.response?.data || { message: 'Unknown error' });
@@ -140,7 +140,7 @@ const toggleSlice = createSlice({
   reducers: {},
   extraReducers: {
     // button1
-    [updateToggleStateAsync.pending]: (state) => { },
+    [updateToggleStateAsync.pending]: (state) => {},
     [updateToggleStateAsync.fulfilled]: (state) => {
       state.isActiveForButton1 = !state.isActiveForButton1;
     },
@@ -155,7 +155,7 @@ const toggleSlice = createSlice({
     },
 
     // button2
-    [updateToggleStateForButton2Async.pending]: (state) => { },
+    [updateToggleStateForButton2Async.pending]: (state) => {},
     [updateToggleStateForButton2Async.fulfilled]: (state) => {
       state.isActiveForButton2 = !state.isActiveForButton2;
     },
@@ -170,7 +170,7 @@ const toggleSlice = createSlice({
     },
 
     // button3
-    [updateToggleStateForButton3Async.pending]: (state) => { },
+    [updateToggleStateForButton3Async.pending]: (state) => {},
     [updateToggleStateForButton3Async.fulfilled]: (state) => {
       state.isActiveForButton3 = !state.isActiveForButton3;
     },
@@ -185,7 +185,7 @@ const toggleSlice = createSlice({
     },
 
     // button4
-    [updateToggleStateForButton4Async.pending]: (state) => { },
+    [updateToggleStateForButton4Async.pending]: (state) => {},
     [updateToggleStateForButton4Async.fulfilled]: (state) => {
       state.isActiveForButton4 = !state.isActiveForButton4;
     },
@@ -202,14 +202,14 @@ const toggleSlice = createSlice({
     // staffCats
     [fetchStaffCategoryTogglesAsync.fulfilled]: (state, action) => {
       const p = action.payload || {};
-      state.staffCats = {
+        state.staffCats = {
         leadership: p.leadership === undefined ? true : !!p.leadership,
         science: p.science === undefined ? true : !!p.science,
         hr: p.hr === undefined ? true : !!p.hr,
       };
     },
     [fetchStaffCategoryTogglesAsync.rejected]: (state, action) => {
-      state.error = action.payload?.message || 'Unknown error';
+      state.error = action.payload?.message || 'Unknown error';   
       state.staffCats = { ...DEFAULT_STAFF_CATS };
     },
     [updateStaffCategoryToggleAsync.fulfilled]: (state, action) => {

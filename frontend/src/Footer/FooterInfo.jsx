@@ -79,11 +79,10 @@ const FooterInfo = ({
         </div>
         <div className={styles.FooterInfo__footnote}>
           <a
-            href="/information"
+            href="./Information"
             onMouseEnter={handleMouseEnterFooterMore}
             onMouseLeave={handleMouseLeaveFooter}
-            target="_blank"
-            rel="noreferrer">
+            target="_blank">
             Документы
           </a>
           <a

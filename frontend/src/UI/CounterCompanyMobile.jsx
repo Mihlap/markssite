@@ -1,11 +1,10 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useInView } from 'react-intersection-observer';
+import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import styles from '../Company/Company.module.scss';
 
 import bracket from '../icons/bracket.svg';
 
-const CounterCompanyMobile = ({ armed }) => {
+const CounterCompanyMobile = () => {
   const [countPercentM, setCountPercentM] = useState(0);
   const [countHumanM, setCountHumanM] = useState(0);
   const [countProjectM, setCountProjectM] = useState(0);
@@ -13,25 +12,7 @@ const CounterCompanyMobile = ({ armed }) => {
   const [finishedCounters, setFinishedCounters] = useState([]);
   const blockSlider = useRef();
 
-  const isArmed = useMemo(() => (typeof armed === 'boolean' ? armed : true), [armed]);
-  const [started, setStarted] = useState(false);
-
-  const [focusRef, focusInView] = useInView({
-    // "Фокус" = пересечение центральной полосы viewport
-    threshold: 0,
-    rootMargin: '-50% 0px -50% 0px',
-    triggerOnce: true,
-  });
-
   useEffect(() => {
-    if (!isArmed) return;
-    if (started) return;
-    if (!focusInView) return;
-    setStarted(true);
-  }, [isArmed, focusInView, started]);
-
-  useEffect(() => {
-    if (!started) return;
     const timer1 = setTimeout(() => {
       if (countPercentM < 1300 && activeCounter === 0) {
         setCountPercentM(countPercentM + 20);
@@ -62,12 +43,9 @@ const CounterCompanyMobile = ({ armed }) => {
       clearTimeout(timer1);
       clearTimeout(delayTimer);
     };
-  }, [started, countPercentM, countHumanM, countProjectM, activeCounter, finishedCounters]);
+  }, [countPercentM, countHumanM, countProjectM, activeCounter, finishedCounters]);
 
   useEffect(() => {
-    if (!started) return;
-    const slider = blockSlider.current;
-    if (!slider || !slider.children?.length) return;
     const elements = blockSlider.current.children;
 
     gsap.from(elements, {
@@ -76,10 +54,10 @@ const CounterCompanyMobile = ({ armed }) => {
       stagger: 0.5,
       ease: 'power2.out',
     });
-  }, [started, activeCounter]);
+  }, [activeCounter]);
 
   return (
-    <div ref={focusRef} className={styles.div_counter_wrapper}>
+    <div className={styles.div_counter_wrapper}>
       <div ref={blockSlider} className={styles.container_text}>
         <div className={styles.div_underSlider_text}>
           <div className={styles.text_svg}>

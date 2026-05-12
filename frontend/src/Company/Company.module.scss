@@ -115,7 +115,7 @@
 }
 
 .sliderMobile_wrapper {
-  padding: 2rem 0 0 0;
+  padding: 2rem 0 8rem 0;
 }
 
 .about_main {
@@ -1042,8 +1042,7 @@
 
   .my_swiper_button_group {
     padding: 0 1rem !important;
-    overflow-x: hidden;
-    overflow-y: visible;
+    overflow: visible !important;
     display: flex;
     left: 0;
     width: 100%;

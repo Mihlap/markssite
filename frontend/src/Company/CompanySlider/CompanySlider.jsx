@@ -1,10 +1,9 @@
 import React from 'react';
 import styles from './CompanySlider.module.scss';
-import 'swiper/css';
-import 'swiper/css/pagination';
+import 'swiper/css/bundle';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Keyboard, Pagination } from 'swiper/modules';
+import { Pagination, Keyboard } from 'swiper/modules';
 
 import company_1 from '../../img/company-swiper-1.svg';
 import company_2 from '../../img/company-swiper-2.svg';

@@ -23,6 +23,7 @@ export default function SideBar({
 
   // сustom hooks
   const { pathname, hash, isVacancyDetail, linkBack, textBack, showSidebarLogo, isHrPortal } = useHrNavMeta();
+  const contactEmail = isHrPortal ? 'hr@marksgroup.ru' : 'mail@marksgroup.ru';
 
   const activeDropdownId = useMemo(() => {
     const dropdown = primary.find(
@@ -138,14 +139,16 @@ export default function SideBar({
                     {openDropdownId === item.id && (
                       <ul className={styles['navbar-sidebar-sublist']}>
                         {item.children.map((child) => {
+                          const isChildActive = isRouteActive(pathname, hash, child.path);
                           const cut = child.description.replace(/(статьи).*/i, '$1');
                           return (
                             <li key={child.id} className={styles['navbar-sidebar-subitem']}>
                               <NavLink
                                 to={child.path}
-                                className={({ isActive }) =>
-                                  clsx(styles['navbar-sidebar-link'], isActive && styles['navbar-sidebar-link--active'])
-                                }
+                                className={clsx(
+                                  styles['navbar-sidebar-link'],
+                                  isChildActive && styles['navbar-sidebar-link--active']
+                                )}
                                 onClick={handleChildNavigate(child)}>
                                 <div className={styles['navbar-sidebar-linkLabel']}>{child.label}</div>
 
@@ -207,7 +210,7 @@ export default function SideBar({
                       </li>
                     )}
                     <li className={styles['navbar-sidebar-cta--contact-item']}>
-                      <a href="mailto:mail@marksgroup.ru">mail@marksgroup.ru</a>
+                      <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
                     </li>
                     <li className={styles['navbar-sidebar-cta--contact-item']}>
                       <a href="tel:+74951201226">+7 (495) 120-12-26</a>
@@ -224,7 +227,7 @@ export default function SideBar({
                     </Link>
                     <ul className={styles['navbar-sidebar-cta--contact-list']}>
                       <li className={styles['navbar-sidebar-cta--contact-item']}>
-                        <a href="mailto:mail@marksgroup.ru">mail@marksgroup.ru</a>
+                        <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
                       </li>
                       <li className={styles['navbar-sidebar-cta--contact-item']}>
                         <a href="tel:+74951201226">+7 (495) 120-12-26</a>
@@ -244,7 +247,7 @@ export default function SideBar({
                     </Link>
                     <ul className={styles['navbar-sidebar-cta--contact-list']}>
                       <li className={styles['navbar-sidebar-cta--contact-item']}>
-                        <a href="mailto:mail@marksgroup.ru">mail@marksgroup.ru</a>
+                        <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
                       </li>
                       <li className={styles['navbar-sidebar-cta--contact-item']}>
                         <a href="tel:+74951201226">+7 (495) 120-12-26</a>

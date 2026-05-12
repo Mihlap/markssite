@@ -5,9 +5,7 @@ const serverHost = process.env.REACT_APP_SERVER_HOST;
 
 export const fetchEmployees = createAsyncThunk('vacancies/fetchEmployees', async (id) => {
   try {
-    const response = await axios.get(`${serverHost}/api-vacancy/vacancies/${id}`, {
-      withCredentials: true,
-    });
+    const response = await axios.get(`${serverHost}/api-vacancy/vacancies/${id}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching employee:', error);
@@ -143,8 +141,6 @@ export const addVacancy = createAsyncThunk('vacancies/addVacancy', async (formDa
       ...formData,
       skills: skillsValue,
       benefits: benefitsValue,
-    }, {
-      withCredentials: true,
     });
 
     dispatch(clearFormData());
@@ -160,9 +156,7 @@ export const addVacancy = createAsyncThunk('vacancies/addVacancy', async (formDa
 export const sendCopiedVacancyToServer = (copiedVacancy) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post(`${serverHost}/api-vacancy/copyVacancy/${copiedVacancy.id}`, copiedVacancy, {
-        withCredentials: true,
-      });
+      const response = await axios.post(`${serverHost}/api-vacancy/copyVacancy/${copiedVacancy.id}`, copiedVacancy);
 
       dispatch(clearFormData());
       dispatch(getFetchForm());
@@ -200,8 +194,6 @@ export const editVacancy = createAsyncThunk(
         skills: skillsValue,
         benefits: benefitsValue,
         hidden: hiddenValue,
-      }, {
-        withCredentials: true,
       });
 
       dispatch(clearFormData());
@@ -220,9 +212,7 @@ export const updateVacancyLookStatusAndSaveToDB = createAsyncThunk(
   'vacancies/updateVacancyLookStatusAndSaveToDB',
   async ({ id, hidden }, { dispatch }) => {
     try {
-      const response = await axios.put(`${serverHost}/api-vacancy/updateVacancyLookStatus/${id}`, { hidden }, {
-        withCredentials: true,
-      });
+      const response = await axios.put(`${serverHost}/api-vacancy/updateVacancyLookStatus/${id}`, { hidden });
       if (response.status === 200) {
         dispatch(updateVacancyLookStatusSuccess({ id, hidden }));
       }
@@ -237,9 +227,7 @@ export const updateVacancyLookStatusAndSaveToDB = createAsyncThunk(
 export const getHiddenVacanciesFromDB = () => async (dispatch) => {
   dispatch(fetchVacancyStart());
   try {
-    const response = await axios.get(`${serverHost}/api-vacancy/getHiddenVacancies`, {
-      withCredentials: true,
-    });
+    const response = await axios.get(`${serverHost}/api-vacancy/getHiddenVacancies`);
     dispatch(updateVacancyLookStatusSuccess(response.data));
   } catch (error) {
     dispatch(fetchVacancyFailure(error.message));
@@ -249,9 +237,7 @@ export const getHiddenVacanciesFromDB = () => async (dispatch) => {
 export const getFetchForm = () => async (dispatch) => {
   dispatch(fetchVacancyStart());
   try {
-    const response = await axios.get(`${serverHost}/api-vacancy/getzapros`, {
-      withCredentials: true,
-    });
+    const response = await axios.get(`${serverHost}/api-vacancy/getzapros`);
     dispatch(fetchVacancySuccess(response.data));
     return response.data;
   } catch (error) {
@@ -267,7 +253,6 @@ export const getFetchFormFilter = (direction) => async (dispatch, getState) => {
       params: {
         direction,
       },
-      withCredentials: true,
     });
     dispatch(fetchVacancySuccess(response.data));
   } catch (error) {
@@ -288,9 +273,7 @@ export const fetchFilteredVacancies = createAsyncThunk(
         });
       });
 
-      const response = await axios.get(`${serverHost}/api-vacancy/getzapros-modalFilter?${queryParams}`, {
-        withCredentials: true,
-      });
+      const response = await axios.get(`${serverHost}/api-vacancy/getzapros-modalFilter?${queryParams}`);
       return response.data;
     } catch (error) {
       console.error('Ошибка при получении фильтрованных вакансий:', error);
@@ -303,7 +286,6 @@ export const getVacanciesByDirection = (type) => async (dispatch) => {
   try {
     const response = await axios.get(`${serverHost}/api-vacancy/getzapros`, {
       params: { type },
-      withCredentials: true,
     });
     const vacancies = response.data;
 
@@ -323,9 +305,7 @@ export const getVacanciesByDirection = (type) => async (dispatch) => {
 
 export const deleteForm = (id) => async (dispatch, getState) => {
   try {
-    await axios.delete(`${serverHost}/api-vacancy/deletezapros/${id}`, {
-      withCredentials: true,
-    });
+    await axios.delete(`${serverHost}/api-vacancy/deletezapros/${id}`);
 
     const updatedVacancies = getState().vacancies.vacancies.filter((el) => el.id !== id);
     dispatch(fetchVacancySuccess(updatedVacancies));
