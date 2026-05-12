@@ -15,9 +15,9 @@ import {
   textEnter,
   textLeave,
   textLeaveFooter,
-  textFooter, 
+  textFooter,
   textFooterEnter,
-  textFooterWhite,  
+  textFooterWhite,
   textFooterWhiteEnter,
   textLeaveWhiteFooter,
 } from './store/Slice/cursorSlice';
@@ -29,10 +29,9 @@ import PageFade from './UI/PageFade/PageFade';
 import ButtonAdmin from './UI/ButtonAdmin/ButtonAdmin';
 import CustomCursor from './UI/CustomCursor/CustomCursor';
 import CookieComponent from './UI/CookieComponent/CookieComponent';
+import Loading from './Loading/LoadingNew';
 import MarksEntityRow from './Admin/ui/EntityRow/MarksEntityRow';
 // import Loading from './UI/Loading/christmas/Loading';
-import LoadingNew from './Loading/LoadingNew';
-
 
 const Header = lazy(() => import('./Header/Header'));
 const Contacts = lazy(() => import('./Contacts/Contacts'));
@@ -69,7 +68,6 @@ const AdminHRPortal = lazy(() => import('./Admin/hr-portal/HRPortal'));
 const AdminCompany = lazy(() => import('./Admin/about-the-company/Company'));
 const Applications = lazy(() => import('./Admin/applications/Applications'));
 
-const LoadingModal = lazy(() => import('./Add/add-project/loading/LoadingModal'));
 const NotFound = lazy(() => import('./NotFound/NotFound'));
 
 export default function App() {
@@ -95,17 +93,6 @@ export default function App() {
     dispatch(fetchToggleStateForButton3Async());
   }, [dispatch]);
 
-  useEffect(() => {
-    if ('scrollRestoration' in window.history) {
-      window.history.scrollRestoration = 'manual';
-    }
-  }, []);
-
-  useEffect(() => { 
-    if (location.hash) return;    
-    window.scrollTo(0, 0);
-  }, [location.pathname, location.search]);
-
   const handlePageChange = (page) => {
     dispatch(setCurrentPage(page));
   };
@@ -126,7 +113,9 @@ export default function App() {
   const handleMouseLeaveFooterWhite = () => dispatch(textLeaveWhiteFooter());
 
   useEffect(() => {
-    if (videoLoaded) setIsReady(true);
+    if (videoLoaded) {
+      setIsReady(true);
+    }
   }, [videoLoaded]);
 
   useEffect(() => {
@@ -398,15 +387,6 @@ export default function App() {
                 }
               />
 
-              <Route
-                path="/test"
-                element={
-                  <PageFade>
-                    <LoadingModal />
-                  </PageFade>
-                }
-              />
-
               {user && (
                 <Route
                   path="/admin/*"
@@ -474,7 +454,7 @@ export default function App() {
 
         {shouldShowGlobalLoader && (
           <div className="app-shell__loaderOverlay">
-            <LoadingNew isReady={isReady} onFinish={() => setLoading(false)} />
+            <Loading isReady={isReady} onFinish={() => setLoading(false)} />
           </div>
         )}
       </div>
