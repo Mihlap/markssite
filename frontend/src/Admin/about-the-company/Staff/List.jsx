@@ -2,14 +2,13 @@ import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import Grid from './Grid';
 import Item from './Item';
 
-const moveId = (ids, fromId, toId) => {
+const swapIds = (ids, fromId, toId) => {
   if (fromId === toId) return ids;
   const next = ids.slice();
   const from = next.indexOf(fromId);
   const to = next.indexOf(toId);
   if (from === -1 || to === -1) return ids;
-  const [m] = next.splice(from, 1);
-  next.splice(to, 0, m);
+  [next[from], next[to]] = [next[to], next[from]];
   return next;
 };
 
@@ -39,7 +38,7 @@ const List = ({ items: externalItems, canDrag, canEdit, canDelete, onEdit, onTog
     e.preventDefault();
     if (!dragId || dragId === overId) return;
     setOrderIds((prev) => {
-      const next = moveId(prev, dragId, overId);
+      const next = swapIds(prev, dragId, overId);
       if (next !== prev) setDirty(true);
       return next;
     });
