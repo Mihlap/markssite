@@ -61,13 +61,30 @@ router.put('/update-event/:id', fileMiddleware.fields([{ name: 'files', maxCount
       }
 
       const uploadedVideoUrls = await Promise.all(
-        (req.files?.videoFiles || []).map((file) => uploadFileToS3(file, 'videos'))
+        (req.files?.videoFiles || []).map((file) => uploadFileToS3(file, 'images/imageEvent'))
       );
+
+      const oldEventData = event.eventData || [];
+      const newEventData = [...eventData, ...uploadedVideoUrls];
+      const removedVideos = oldEventData.filter(
+        (url) =>
+          !newEventData.includes(url) &&
+          url.startsWith('http') &&
+          !url.includes('youtube.com') &&
+          !url.includes('youtu.be') &&
+          !url.includes('rutube.ru')
+      );
+      // eslint-disable-next-line no-restricted-syntax
+      for (const url of removedVideos) {
+        const fileName = getFileNameFromUrl(url);
+        // eslint-disable-next-line no-await-in-loop
+        await deleteFileFromS3(fileName, 'images/imageEvent');
+      }
 
       await event.update({
         title,
         files: event.files,
-        eventData: [...eventData, ...uploadedVideoUrls],
+        eventData: newEventData,
       });
 
       res.json({ message: "Слайд успешно обновлен", data: event });
@@ -133,7 +150,7 @@ router.post('/save-event-details',
     }
 
     const uploadedVideoUrls = await Promise.all(
-      (req.files?.videoFiles || []).map((file) => uploadFileToS3(file, 'videos'))
+      (req.files?.videoFiles || []).map((file) => uploadFileToS3(file, 'images/imageEvent'))
     );
     const { title } = req.body;
 
@@ -228,6 +245,22 @@ router.delete('/delete-event/:id', async (req, res) => {
           const fileName = getFileNameFromUrl(fileUrl);
           // eslint-disable-next-line no-await-in-loop
           await deleteFileFromS3(fileName, 'images/imageEvent');
+        }
+      }
+
+      if (event.eventData && Array.isArray(event.eventData)) {
+        // eslint-disable-next-line no-restricted-syntax
+        for (const url of event.eventData) {
+          if (
+            url.startsWith('http') &&
+            !url.includes('youtube.com') &&
+            !url.includes('youtu.be') &&
+            !url.includes('rutube.ru')
+          ) {
+            const fileName = getFileNameFromUrl(url);
+            // eslint-disable-next-line no-await-in-loop
+            await deleteFileFromS3(fileName, 'images/imageEvent');
+          }
         }
       }
 
