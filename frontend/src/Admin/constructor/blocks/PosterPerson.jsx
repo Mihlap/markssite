@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { Controller } from 'react-hook-form';
 import { UiMarksInput, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
 
-export default function PosterPerson({ control, index, onRemove, clearErrors }) {
+export default function PosterPerson({ control, index, onRemove, clearErrors, imageFolder = 'imageAdd' }) {
   const imageRef = useRef(null);
 
   return (
@@ -20,6 +20,7 @@ export default function PosterPerson({ control, index, onRemove, clearErrors }) 
               variant="portrait"
               label="Портрет сотрудника"
               color="salmon"
+              imageFolder={imageFolder}
               onRemove={() => {
                 onChange([]);
                 if (imageRef.current) imageRef.current.value = '';

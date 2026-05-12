@@ -391,7 +391,7 @@ const StaffForm = forwardRef(function StaffForm(
       {constructorBlocks.map((block, index) => {
         const Component = BLOCK_COMPONENTS[block.type];
         if (!Component) return null;
-        return <Component key={block.id} control={control} index={index} onRemove={() => remove(index)} onUploadFile={handleMarkdownUpload} clearErrors={clearErrors} />;
+        return <Component key={block.id} control={control} index={index} onRemove={() => remove(index)} onUploadFile={handleMarkdownUpload} clearErrors={clearErrors} imageFolder="imageStaff" />;
       })}
     </form>
     <DevTool control={control} placement="top-right" />

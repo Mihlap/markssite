@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { Controller } from 'react-hook-form';
 import { UiMarksInput, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
 
-export default function Slider({ control, index, onRemove }) {
+export default function Slider({ control, index, onRemove, imageFolder = 'imageAdd' }) {
        const imageRef = useRef(null);
   return (
     <UiMarksGrayWrap
@@ -38,6 +38,7 @@ export default function Slider({ control, index, onRemove }) {
               <UiPhotoPreview
                 files={value}
                 variant="grid-8"
+                imageFolder={imageFolder}
                 label={currentCount === 8 ? 'Слайдер *допускается загрузка 8ми изображений' : undefined}
                 color="salmon"
                 onRemove={(i) => {
