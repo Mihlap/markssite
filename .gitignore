@@ -9,3 +9,4 @@ frontend/.webpack-cache/
 .env.*.local
 .env.example
 .composeEnv
+composeEnv
