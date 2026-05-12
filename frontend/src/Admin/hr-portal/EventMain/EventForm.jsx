@@ -75,7 +75,7 @@ const EventForm = forwardRef(function EventForm(
               if (getEmbedUrl(value)) return { url: value, file: null };
               const fileUrl = value.startsWith('http')
                 ? value
-                : `${process.env.REACT_APP_S3_BUCKET_URL}/videos/${value}`;
+                : `${process.env.REACT_APP_S3_BUCKET_URL}/images/imageEvent/${value}`;
               return { url: '', file: fileUrl };
             })
           : [{ url: '', file: null }]

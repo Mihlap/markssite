@@ -144,7 +144,7 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
           width="100%"
           height="100%"
         >
-          <source src={videoUrl.startsWith('http') ? videoUrl : `${bucket_url}/videos/${videoUrl}`} type={mimeMap[ext] ?? 'video/mp4'} />
+          <source src={videoUrl.startsWith('http') ? videoUrl : `${bucket_url}/images/imageEvent/${videoUrl}`} type={mimeMap[ext] ?? 'video/mp4'} />
         </video>
       );
     }
