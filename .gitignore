@@ -1,11 +1,13 @@
 node_modules
 .cursor/
 .vscode/
+
 .env
 .env.local
 .env.*.local
+.env.example
 .composeEnv
+composeEnv
 
 # webpack cache
 frontend/.webpack-cache/
-
