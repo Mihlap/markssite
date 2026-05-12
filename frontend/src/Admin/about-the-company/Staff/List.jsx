@@ -1,82 +1,90 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { DndContext, closestCenter, MouseSensor, TouchSensor, DragOverlay, useSensor, useSensors } from '@dnd-kit/core';
-import { arrayMove, SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import Grid from './Grid';
-import SortableItem from './SortableItem';
 import Item from './Item';
 
+const moveId = (ids, fromId, toId) => {
+  if (fromId === toId) return ids;
+  const next = ids.slice();
+  const from = next.indexOf(fromId);
+  const to = next.indexOf(toId);
+  if (from === -1 || to === -1) return ids;
+  const [m] = next.splice(from, 1);
+  next.splice(to, 0, m);
+  return next;
+};
+
 const List = ({ items: externalItems, canDrag, canEdit, canDelete, onEdit, onToggle, onDelete, onReorder }) => {
-  const [items, setItems] = useState(externalItems || []);
-  const [activeId, setActiveId] = useState(null);
-  const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
+  const [orderIds, setOrderIds] = useState(() => (externalItems || []).map((x) => x.id));
+  const [dragId, setDragId] = useState(null);
+  const [dirty, setDirty] = useState(false);
 
   useEffect(() => {
-    setItems(externalItems || []);
+    setOrderIds((externalItems || []).map((x) => x.id));
+    setDirty(false);
   }, [externalItems]);
 
-  const handleDragStart = useCallback((event) => {
-    setActiveId(event.active.id);
+  const byId = useMemo(() => {
+    const m = new Map();
+    for (const it of externalItems || []) m.set(it.id, it);
+    return m;
+  }, [externalItems]);
+
+  const handleDragStart = useCallback((e, id) => {
+    setDragId(id);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', id);
   }, []);
 
-  const handleDragEnd = useCallback((event) => {
-    const { active, over } = event;
+  const handleDragEnter = useCallback((e, overId) => {
+    e.preventDefault();
+    if (!dragId || dragId === overId) return;
+    setOrderIds((prev) => {
+      const next = moveId(prev, dragId, overId);
+      if (next !== prev) setDirty(true);
+      return next;
+    });
+  }, [dragId]);
 
-    if (active.id !== over?.id) {
-      setItems((prev) => {
-        const oldIndex = prev.findIndex((i) => i.id === active.id);
-        const newIndex = prev.findIndex((i) => i.id === over.id);
-        const next = arrayMove(prev, oldIndex, newIndex);
-        onReorder?.(next);
-        return next;
-      });
+  const handleDragOver = useCallback((e) => {
+    e.preventDefault();
+  }, []);
+
+  const handleDragEnd = useCallback(() => {
+    if (!dirty) {
+      setDragId(null);
+      return;
     }
-
-    setActiveId(null);
-  }, [onReorder]);
-
-  const handleDragCancel = useCallback(() => {
-    setActiveId(null);
-  }, []);
-
-  const activeItem = items.find((i) => i.id === activeId);
+    const next = orderIds.map((id) => byId.get(id)).filter(Boolean);
+    onReorder?.(next);
+    setDragId(null);
+    setDirty(false);
+  }, [dirty, orderIds, byId, onReorder]);
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
-      onDragCancel={handleDragCancel}>
-      <SortableContext items={items.map((i) => i.id)} strategy={rectSortingStrategy}>
-        <Grid columns={3}>
-          {items.map((el) => (
-            <SortableItem
+    <div onDragOver={handleDragOver} onDrop={handleDragEnd}>
+      <Grid columns={3}>
+        {orderIds.map((id) => {
+          const el = byId.get(id);
+          if (!el) return null;
+          return (
+            <Item
               key={el.id}
               el={el}
-              canDrag={canDrag}
+              draggable={canDrag}
+              isDragging={dragId === el.id}
+              onDragStart={canDrag ? (e) => handleDragStart(e, el.id) : undefined}
+              onDragEnter={canDrag ? (e) => handleDragEnter(e, el.id) : undefined}
+              onDragEnd={canDrag ? handleDragEnd : undefined}
               canEdit={canEdit}
               canDelete={canDelete}
               onEdit={onEdit}
               onToggle={onToggle}
               onDelete={onDelete}
             />
-          ))}
-        </Grid>
-      </SortableContext>
-      <DragOverlay adjustScale style={{ transformOrigin: '0 0' }}>
-        {activeItem ? (
-          <Item
-            el={activeItem}
-            isDragging
-            canEdit={canEdit}
-            canDelete={canDelete}
-            onEdit={onEdit}
-            onToggle={onToggle}
-            onDelete={onDelete}
-          />
-        ) : null}
-      </DragOverlay>
-    </DndContext>
+          );
+        })}
+      </Grid>
+    </div>
   );
 };
 
