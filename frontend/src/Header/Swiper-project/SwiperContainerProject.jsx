@@ -40,7 +40,6 @@ const SwiperContainerProject = ({ projects }) => {
   const combinedProjects = [...MapProject, ...MapProjectToEdit].filter(
     (project, index, self) => project && index === self.findIndex((p) => p && p.id === project.id)
   );
-  const visibleProjects = combinedProjects.filter((project) => project?.id);
 
   return (
     <div className="swiper_container">
@@ -60,9 +59,13 @@ const SwiperContainerProject = ({ projects }) => {
         }}
       >
         <div className="swiper_wrapper">
-          {visibleProjects.map((project) => (
-              <SwiperSlide className="swiper_container_item_projects" key={project.id}>
-                <Link to={`/projects/${project.id}`}>
+          {combinedProjects?.map((project, index) => {
+            if (!project || !project.id) {
+              return null;
+            }
+            return (
+              <SwiperSlide className="swiper_container_item_projects" key={`${project.id}_${index}`}>
+                <Link key={project.id} to={`/projects/${project.id}`}>
                   <SliderItemProject
                     title={project.title}
                     src={
@@ -76,8 +79,8 @@ const SwiperContainerProject = ({ projects }) => {
                       try {
                         const selectCompetencies = project.selectCompetencies;
 
-                        if (Array.isArray(selectCompetencies)) {                    
-                        } else if (typeof project.selectCompetencies === 'string') {                        
+                        if (Array.isArray(selectCompetencies)) {
+                        } else if (typeof project.selectCompetencies === 'string') {
                           if (!project.selectCompetencies.includes(',')) {
                             const label = project.selectCompetencies.trim();
                             return (
@@ -95,7 +98,7 @@ const SwiperContainerProject = ({ projects }) => {
                                 {label}
                               </div>
                             );
-                          } else {                         
+                          } else {
                             return project.selectCompetencies.split(',').map((value) => {
                               const label = value.trim();
                               return (
@@ -125,11 +128,12 @@ const SwiperContainerProject = ({ projects }) => {
                   />
                 </Link>
               </SwiperSlide>
-          ))}
+            );
+          })}
         </div>
       </Swiper>
       <div className="swiper_pagination_ProjectCard">
-        {visibleProjects.map((_, index) => (
+        {combinedProjects.map((_, index) => (
           <button
             key={index}
             className={`swiper_pagination_bullet_ProjectCard ${currentIndex === index ? 'active' : ''}`}
