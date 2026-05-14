@@ -5,6 +5,7 @@ const { sequelize, StaffNew, ConstructorStaffNew } = require('../db/models');
 const { Op } = require('sequelize');
 const fileMiddleware = require('../middleware/file');
 const { uploadFileToS3, deleteFileFromS3 } = require('../s3Utils/s3Service');
+const { logResourceAction } = require('../utils/fileLogger');
 
 const router = express.Router();
 
@@ -73,13 +74,13 @@ function extractMdFileNameAndFolder(url) {
   }
 }
 
-const deleteImageFromS3Safe = async (fileUrlOrKey) => {
+const deleteImageFromS3Safe = async (fileUrlOrKey, logInfo = null) => {
   const parsed = extractFileNameAndFolderFromUrl(fileUrlOrKey);
   if (!parsed) return;
   const { fileName, folder } = parsed;
   try {
-    await deleteFileFromS3(fileName, folder);
-  } catch {}
+    await deleteFileFromS3(fileName, folder, logInfo);
+  } catch { }
 };
 
 
@@ -188,6 +189,18 @@ router.post('/stuffs', async (req, res) => {
         },
       ],
     });
+
+    if (req.session?.user) {
+      logResourceAction({
+        action: 'CREATE',
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'staff',
+        resourceId: row.id.toString(),
+        resourceName: payload.name || 'Сотрудник',
+      });
+    }
+
     res.status(201).json(full);
   } catch (e) {
     await t.rollback();
@@ -199,7 +212,12 @@ router.post('/stuffs', async (req, res) => {
 router.post('/upload', fileMiddleware.single('file'), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ error: 'Файл не передан' });
-    const key = await uploadFileToS3(req.file, STAFF_BASE_DIR);
+    const userInfo = req.session?.user ? {
+      userName: req.session.user.name,
+      userId: req.session.user.id.toString(),
+      resourceType: 'staff',
+    } : null;
+    const key = await uploadFileToS3(req.file, STAFF_BASE_DIR, userInfo);
     res.json({ filename: key });
   } catch (e) {
     console.error(e);
@@ -210,12 +228,18 @@ router.post('/upload', fileMiddleware.single('file'), async (req, res) => {
 router.post('/stuffs-mp', fileMiddleware.any(), async (req, res) => {
   const t = await sequelize.transaction();
   try {
+    const userInfo = req.session?.user ? {
+      userName: req.session.user.name,
+      userId: req.session.user.id.toString(),
+      resourceType: 'staff',
+    } : null;
+
     const meta = req.body?.meta ? JSON.parse(req.body.meta) : {};
     const category = Array.isArray(meta.category)
       ? meta.category
       : meta.category
-      ? [meta.category]
-      : [];
+        ? [meta.category]
+        : [];
 
     const sortIndex = await getNextSortIndex(t);
 
@@ -235,7 +259,7 @@ router.post('/stuffs-mp', fileMiddleware.any(), async (req, res) => {
 
     const photoAvaFile = (req.files || []).find((f) => f.fieldname === 'photoAva');
     if (photoAvaFile) {
-      const key = await uploadFileToS3(photoAvaFile, STAFF_BASE_DIR);
+      const key = await uploadFileToS3(photoAvaFile, STAFF_BASE_DIR, userInfo);
       await staff.update({ img: key }, { transaction: t });
     }
 
@@ -252,7 +276,7 @@ router.post('/stuffs-mp', fileMiddleware.any(), async (req, res) => {
       filesMap[b] ??= {};
       filesMap[b][i] ??= [];
       f.originalname = `${batchId}__${f.originalname || 'file'}`;
-      const savedKey = await uploadFileToS3(f, STAFF_FILES_DIR);
+      const savedKey = await uploadFileToS3(f, STAFF_FILES_DIR, userInfo);
       filesMap[b][i].push(savedKey);
     }
 
@@ -293,6 +317,18 @@ router.post('/stuffs-mp', fileMiddleware.any(), async (req, res) => {
         },
       ],
     });
+
+    if (req.session?.user) {
+      logResourceAction({
+        action: 'CREATE',
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'staff',
+        resourceId: staff.id.toString(),
+        resourceName: meta.name || 'Сотрудник',
+      });
+    }
+
     res.status(201).json(full);
   } catch (e) {
     await t.rollback();
@@ -305,12 +341,18 @@ router.post('/upload-markdown-file', fileMiddleware.single('markdownFile'), asyn
   try {
     if (!req.file) return res.status(400).json({ message: 'Файл не найден в запросе' });
 
+    const userInfo = req.session?.user ? {
+      userName: req.session.user.name,
+      userId: req.session.user.id.toString(),
+      resourceType: 'staff',
+    } : null;
+
     const uploadFolder =
       req.file.mimetype === 'application/pdf' ? STAFF_MD_DOCS_DIR : STAFF_MD_IMAGES_DIR;
 
     const { fileName } = buildHashedKey(req.file, uploadFolder);
     const fileForUpload = { ...req.file, originalname: fileName };
-    const url = await uploadFileToS3(fileForUpload, uploadFolder);
+    const url = await uploadFileToS3(fileForUpload, uploadFolder, userInfo);
 
     return res.status(200).json({ message: 'Файл успешно загружен', url });
   } catch (e) {
@@ -323,6 +365,14 @@ router.put('/stuffs-mp/:id', fileMiddleware.any(), async (req, res) => {
   const t = await sequelize.transaction();
   try {
     const id = req.params.id;
+
+    const userInfo = req.session?.user ? {
+      userName: req.session.user.name,
+      userId: req.session.user.id.toString(),
+      resourceType: 'staff',
+      resourceId: id,
+    } : null;
+
     const staff = await StaffNew.findByPk(id, {
       include: [{ model: ConstructorStaffNew, as: 'ConstructorStaffNews' }],
     });
@@ -332,13 +382,23 @@ router.put('/stuffs-mp/:id', fileMiddleware.any(), async (req, res) => {
     const category = Array.isArray(meta.category)
       ? meta.category
       : meta.category
-      ? [meta.category]
-      : [];
-   
+        ? [meta.category]
+        : [];
+
+    const oldName = staff.name;
+    const oldPosition = staff.position;
+    const oldDescription = staff.description;
+    const oldCategory = staff.category;
+    const oldIsVisible = staff.isVisible;
+    const oldVisibilityByCategory = staff.visibilityByCategory;
+    const oldAvatar = staff.img || null;
+    const oldConstructorData = (staff.ConstructorStaffNews || []).map(c => ({
+      data: JSON.stringify(c.data),
+      image: c.image
+    }));
+
     const oldMdLinks = collectMarkdownLinksFromConstructor(staff.ConstructorStaffNews);
 
-    const oldAvatar = staff.img || null;
- 
     const oldDynamicFiles = (staff.ConstructorStaffNews || []).flatMap((c) => {
       const inputs = flattenInputs(c.data);
       const fileInputs = inputs
@@ -353,7 +413,7 @@ router.put('/stuffs-mp/:id', fileMiddleware.any(), async (req, res) => {
 
     const newPhotoAva = (req.files || []).find((f) => f.fieldname === 'photoAva');
     let newAvatarKey = oldAvatar;
-    if (newPhotoAva) newAvatarKey = await uploadFileToS3(newPhotoAva, STAFF_BASE_DIR);
+    if (newPhotoAva) newAvatarKey = await uploadFileToS3(newPhotoAva, STAFF_BASE_DIR, userInfo);
 
     const filesMap = {};
     const batchId =
@@ -368,7 +428,7 @@ router.put('/stuffs-mp/:id', fileMiddleware.any(), async (req, res) => {
       filesMap[b] ??= {};
       filesMap[b][i] ??= [];
       f.originalname = `${batchId}__${f.originalname || 'file'}`;
-      const savedKey = await uploadFileToS3(f, STAFF_FILES_DIR);
+      const savedKey = await uploadFileToS3(f, STAFF_FILES_DIR, userInfo);
       filesMap[b][i].push(savedKey);
     }
 
@@ -382,7 +442,7 @@ router.put('/stuffs-mp/:id', fileMiddleware.any(), async (req, res) => {
         return inp;
       }),
     );
-  
+
     const actualDynamicFiles = mergedBlocks
       .flatMap((group) => flattenInputs(group))
       .filter((inp) => inp?.type === 'file')
@@ -422,7 +482,7 @@ router.put('/stuffs-mp/:id', fileMiddleware.any(), async (req, res) => {
     const removedMd = oldMdLinks.filter((u) => !newMdLinks.includes(u));
 
     await t.commit();
- 
+
     const oldAll = [
       ...new Set([...(oldDynamicFiles || []), ...(oldAvatar ? [oldAvatar] : [])]),
     ].filter(Boolean);
@@ -434,19 +494,47 @@ router.put('/stuffs-mp/:id', fileMiddleware.any(), async (req, res) => {
       .filter(Boolean)
       .filter((v) => !newAll.includes(v));
 
-    await Promise.all(toDelete.map(deleteImageFromS3Safe));
+    await Promise.all(toDelete.map((url) => deleteImageFromS3Safe(url, userInfo)));
 
     await Promise.all(
       removedMd.map(async (url) => {
         const parsed = extractMdFileNameAndFolder(url);
         if (!parsed) return;
         try {
-          await deleteFileFromS3(parsed.fileName, parsed.folder);
+          await deleteFileFromS3(parsed.fileName, parsed.folder, userInfo);
         } catch (e) {
           console.error('Не удалось удалить markdown-файл:', url, e);
         }
       }),
     );
+
+    const newName = String(meta.name || '').trim();
+    const newPosition = meta.position || '';
+    const newDescription = meta.description || '';
+    const newCategory = category;
+    const newIsVisible = meta.isVisible ?? true;
+    const newVisibilityByCategory = meta.visibilityByCategory || {};
+    const newConstructorData = mergedBlocks.map(g => JSON.stringify(g));
+    const oldConstructorDataStr = oldConstructorData.map(c => c.data);
+
+    const constructorChanged =
+      oldConstructorData.length !== newConstructorData.length ||
+      oldConstructorDataStr.some((oldData, idx) => {
+        if (idx >= newConstructorData.length) return true;
+        return oldData !== newConstructorData[idx];
+      });
+
+    const hasChanges =
+      oldName !== newName ||
+      oldPosition !== newPosition ||
+      oldDescription !== newDescription ||
+      JSON.stringify(oldCategory) !== JSON.stringify(newCategory) ||
+      oldIsVisible !== newIsVisible ||
+      JSON.stringify(oldVisibilityByCategory) !== JSON.stringify(newVisibilityByCategory) ||
+      oldAvatar !== newAvatarKey ||
+      constructorChanged ||
+      oldMdLinks.length !== newMdLinks.length ||
+      oldMdLinks.some(link => !newMdLinks.includes(link));
 
     const full = await StaffNew.findByPk(id, {
       include: [
@@ -458,6 +546,19 @@ router.put('/stuffs-mp/:id', fileMiddleware.any(), async (req, res) => {
         },
       ],
     });
+
+    if (req.session?.user) {
+      logResourceAction({
+        action: 'UPDATE',
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'staff',
+        resourceId: id,
+        resourceName: newName || staff.name,
+        hasChanges,
+      });
+    }
+
     res.json(full);
   } catch (e) {
     await t.rollback();
@@ -495,6 +596,17 @@ router.put('/stuffs/:id', async (req, res) => {
     const payload = { ...req.body };
     if (payload.category && !Array.isArray(payload.category)) payload.category = [payload.category];
 
+    const existingStaff = await StaffNew.findByPk(id);
+    if (!existingStaff) return res.status(404).json({ error: 'Карточка не найдена' });
+
+    const hasChanges =
+      existingStaff.name !== (payload.name || existingStaff.name) ||
+      existingStaff.position !== (payload.position !== undefined ? payload.position : existingStaff.position) ||
+      existingStaff.description !== (payload.description !== undefined ? payload.description : existingStaff.description) ||
+      JSON.stringify(existingStaff.category) !== JSON.stringify(payload.category || existingStaff.category) ||
+      existingStaff.isVisible !== (payload.isVisible !== undefined ? payload.isVisible : existingStaff.isVisible) ||
+      JSON.stringify(existingStaff.visibilityByCategory) !== JSON.stringify(payload.visibilityByCategory || existingStaff.visibilityByCategory);
+
     const [cnt] = await StaffNew.update(payload, { where: { id } });
     if (!cnt) return res.status(404).json({ error: 'Карточка не найдена' });
 
@@ -508,6 +620,19 @@ router.put('/stuffs/:id', async (req, res) => {
         },
       ],
     });
+
+    if (req.session?.user) {
+      logResourceAction({
+        action: 'UPDATE',
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'staff',
+        resourceId: id,
+        resourceName: payload.name || existingStaff.name,
+        hasChanges,
+      });
+    }
+
     res.json(row);
   } catch (e) {
     console.error(e);
@@ -592,6 +717,14 @@ router.delete('/stuffs/:id', async (req, res) => {
     });
     if (!staff) return res.status(404).json({ error: 'Карточка не найдена' });
 
+    const staffName = staff.name || 'Сотрудник';
+    const userInfo = req.session?.user ? {
+      userName: req.session.user.name,
+      userId: req.session.user.id.toString(),
+      resourceType: 'staff',
+      resourceId: id,
+    } : null;
+
     if (category) {
       const cur = Array.isArray(staff.category) ? staff.category : [];
       if (!cur.includes(category)) {
@@ -623,20 +756,32 @@ router.delete('/stuffs/:id', async (req, res) => {
         const unique = [
           ...new Set(files.map((x) => (typeof x === 'string' ? x.trim() : x)).filter(Boolean)),
         ];
-        await Promise.all(unique.map(deleteImageFromS3Safe));
+        await Promise.all(unique.map((url) => deleteImageFromS3Safe(url, userInfo)));
 
         await Promise.all(
           mdLinks.map(async (url) => {
             const parsed = extractMdFileNameAndFolder(url);
             if (!parsed) return;
             try {
-              await deleteFileFromS3(parsed.fileName, parsed.folder);
-            } catch {}
+              await deleteFileFromS3(parsed.fileName, parsed.folder, userInfo);
+            } catch { }
           }),
         );
 
         await ConstructorStaffNew.destroy({ where: { staffNewId: id } });
         await StaffNew.destroy({ where: { id } });
+
+        if (req.session?.user) {
+          logResourceAction({
+            action: 'DELETE',
+            userName: req.session.user.name,
+            userId: req.session.user.id.toString(),
+            resourceType: 'staff',
+            resourceId: id,
+            resourceName: staffName,
+          });
+        }
+
         return res.json({ id, deleted: true, categoryRemoved: category });
       }
 
@@ -662,20 +807,31 @@ router.delete('/stuffs/:id', async (req, res) => {
     const unique = [
       ...new Set(files.map((x) => (typeof x === 'string' ? x.trim() : x)).filter(Boolean)),
     ];
-    await Promise.all(unique.map(deleteImageFromS3Safe));
+    await Promise.all(unique.map((url) => deleteImageFromS3Safe(url, userInfo)));
 
     await Promise.all(
       mdLinks.map(async (url) => {
         const parsed = extractMdFileNameAndFolder(url);
         if (!parsed) return;
         try {
-          await deleteFileFromS3(parsed.fileName, parsed.folder);
-        } catch {}
+          await deleteFileFromS3(parsed.fileName, parsed.folder, userInfo);
+        } catch { }
       }),
     );
 
     await ConstructorStaffNew.destroy({ where: { staffNewId: id } });
     await StaffNew.destroy({ where: { id } });
+
+    if (req.session?.user) {
+      logResourceAction({
+        action: 'DELETE',
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'staff',
+        resourceId: id,
+        resourceName: staffName,
+      });
+    }
 
     res.json({ id, deleted: true });
   } catch (e) {
@@ -686,13 +842,19 @@ router.delete('/stuffs/:id', async (req, res) => {
 
 router.delete('/delete-markdown-file', async (req, res) => {
   try {
+    const userInfo = req.session?.user ? {
+      userName: req.session.user.name,
+      userId: req.session.user.id.toString(),
+      resourceType: 'staff',
+    } : null;
+
     const { url } = req.body || {};
     if (!url) return res.status(400).json({ message: 'URL не предоставлен' });
 
     const parsed = extractMdFileNameAndFolder(url);
     if (!parsed) return res.status(400).json({ message: 'Невозможно определить имя файла/папку' });
 
-    await deleteFileFromS3(parsed.fileName, parsed.folder);
+    await deleteFileFromS3(parsed.fileName, parsed.folder, userInfo);
     return res.status(200).json({ message: 'Файл удалён' });
   } catch (e) {
     console.error('Ошибка при удалении markdown-файла (staff):', e);
