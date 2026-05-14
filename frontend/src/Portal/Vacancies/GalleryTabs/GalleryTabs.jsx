@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import styles from './GalleryTabs.module.scss';
 import { fetchEvents } from '../../../store/Slice/vacancyEventSlice';
+import { getEmbedUrl } from '../../../media/videoEmbedUrl';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
@@ -55,13 +56,13 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
     );
 
     const videoExts = ['.mp4', '.mov', '.webm'];
-    const videos = event?.eventData?.filter(
-      (file) =>
-        videoExts.some((ext) => file.toLowerCase().endsWith(ext)) ||
-        file.includes('youtube.com') ||
-        file.includes('youtu.be') ||
-        file.includes('rutube.ru')
-    );
+    const videos = event?.eventData?.filter((file) => {
+      if (typeof file !== 'string') return false;
+      const lower = file.toLowerCase();
+      if (videoExts.some((ext) => lower.endsWith(ext))) return true;
+      if (lower.includes('youtube.com') || lower.includes('youtu.be') || lower.includes('rutube.ru')) return true;
+      return Boolean(getEmbedUrl(file));
+    });
     return { images, videos };
   }, []);
 
@@ -80,6 +81,7 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
   );
 
   const renderVideo = useCallback((videoUrl, index) => {
+    const linkEmbed = getEmbedUrl(videoUrl);
     let youtubeVideoId;
     if (videoUrl.includes('youtu.be')) {
       youtubeVideoId = videoUrl.split('/').pop().split('?')[0];
@@ -105,7 +107,8 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
         ></iframe>
       );
     } else if (videoUrl.includes('rutube.ru')) {
-      const rutubeEmbedUrl = videoUrl.replace('/video/', '/play/embed/') + '?autoplay=1&muted=1&controls=0';
+      const rutubeBase = linkEmbed || videoUrl.replace('/video/', '/play/embed/');
+      const rutubeEmbedUrl = `${rutubeBase}${rutubeBase.includes('?') ? '&' : '?'}autoplay=1&muted=1&controls=0`;
       return (
         <iframe
           ref={(el) => (videoRefs.current[index] = el)}
@@ -127,6 +130,31 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
             }, 100);
           }}
         ></iframe>
+      );
+    } else if (linkEmbed?.includes('vk.com/video_ext.php')) {
+      const vkSrc = linkEmbed;
+      const vkWithAutoplay = (() => {
+        try {
+          const u = new URL(vkSrc);
+          u.searchParams.set('autoplay', '1');
+          return u.toString();
+        } catch {
+          return vkSrc;
+        }
+      })();
+      return (
+        <iframe
+          ref={(el) => (videoRefs.current[index] = el)}
+          id={`vk-player-${index}`}
+          width="100%"
+          height="100%"
+          src={vkWithAutoplay}
+          title="VK video"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+          playsInline
+          allowFullScreen
+          loading="lazy"
+        />
       );
     } else if (['.mp4', '.mov', '.webm'].some((ext) => videoUrl.toLowerCase().endsWith(ext))) {
       const mimeMap = { '.mp4': 'video/mp4', '.mov': 'video/quicktime', '.webm': 'video/webm' };
