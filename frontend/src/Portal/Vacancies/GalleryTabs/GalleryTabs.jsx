@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import styles from './GalleryTabs.module.scss';
 import { fetchEvents } from '../../../store/Slice/vacancyEventSlice';
-import { getEmbedUrl } from '../../../Admin/constructor/blocks/videoEmbedUrl';
+import { getEmbedUrl } from '../../../media/videoEmbedUrl';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
