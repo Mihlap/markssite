@@ -1,18 +1,36 @@
 const express = require('express');
 const { URL } = require('url');
 const crypto = require('crypto');
+const { Op } = require('sequelize');
 
 const router = express.Router();
 
 const { Legend, ConstructorLegend, User } = require('../db/models');
 const fileMiddleware = require('../middleware/file');
 const { uploadFileToS3, deleteFileFromS3 } = require('../s3Utils/s3Service');
+const { logResourceAction } = require('../utils/fileLogger');
+
+const LEGEND_INCLUDE = [
+  { model: ConstructorLegend },
+  { model: User, as: 'author', attributes: ['id', 'userName'] },
+];
+const CONSTRUCTOR_ORDER = [ConstructorLegend, 'id', 'ASC'];
 
 const LEGEND_FILES_DIR = 'images/imageHistory';
 const LEGEND_MD_IMAGES_DIR = 'images/imageHistory/imagesFolder/imageMarkdown';
 const LEGEND_MD_DOCS_DIR = 'images/imageHistory/imagesFolder/documents';
 
+const BUCKET_URL = (process.env.S3_PUBLIC_URL || process.env.S3_BUCKET_URL || '').replace(/\/+$/, '');
+
 const toArray = (v) => (Array.isArray(v) ? v : v ? [v] : []);
+
+const isHttp = (s) => typeof s === 'string' && /^https?:\/\//i.test(s);
+const toPublicUrl = (raw) => {
+  if (!raw) return null;
+  if (isHttp(raw)) return raw;
+  if (!BUCKET_URL) return String(raw);
+  return `${BUCKET_URL}/${String(raw).replace(/^\/+/, '')}`;
+};
 
 function flattenInputs(data) {
   if (!Array.isArray(data)) return [];
@@ -22,6 +40,63 @@ function flattenInputs(data) {
     else if (it && typeof it === 'object') flat.push(it);
   }
   return flat;
+}
+
+function firstFileFromBlock(cons, blockId) {
+  if (!Array.isArray(cons)) return null;
+
+  for (const row of cons) {
+    const flat = flattenInputs(row?.data);
+
+    const belongsToBlock = flat.some((inp) => inp?.blockId === blockId);
+    if (!belongsToBlock) continue;
+
+    for (const inp of flat) {
+      if (inp?.blockId !== blockId) continue;
+      if (inp?.type !== 'file') continue;
+
+      const v = inp?.value;
+      if (!v) continue;
+
+      return Array.isArray(v) ? (v[0] ?? null) : v;
+    }
+
+    if (row?.image) return row.image;
+  }
+
+  return null;
+}
+
+function firstFileFromConstructor(cons) {
+  if (!Array.isArray(cons)) return null;
+
+  for (const row of cons) {
+    if (row?.image) return row.image;
+
+    const flat = flattenInputs(row?.data);
+    for (const inp of flat) {
+      if (inp?.type !== 'file') continue;
+      const v = inp?.value;
+      if (!v) continue;
+      return Array.isArray(v) ? (v[0] ?? null) : v;
+    }
+  }
+
+  return null;
+}
+
+function withComputedUrls(legendInstanceOrPlain) {
+  const legend = legendInstanceOrPlain?.toJSON ? legendInstanceOrPlain.toJSON() : legendInstanceOrPlain;
+  const cons = legend?.ConstructorLegends || [];
+
+  const avatarRaw = legend?.avatar || firstFileFromBlock(cons, 'personOfYear') || firstFileFromConstructor(cons);
+  const previewRaw = legend?.previewImageUrl || legend?.img || null;
+
+  return {
+    ...legend,
+    avatarUrl: toPublicUrl(avatarRaw),
+    previewImageUrl: toPublicUrl(previewRaw),
+  };
 }
 
 const extractFileNameAndFolderFromUrl = (url) => {
@@ -68,17 +143,6 @@ function extractMdFileNameAndFolder(url) {
     return null;
   }
 }
-
-const deleteImageFromS3Safe = async (fileUrlOrKey) => {
-  const parsed = extractFileNameAndFolderFromUrl(fileUrlOrKey);
-  if (!parsed) return;
-  const { fileName, folder } = parsed;
-  try {
-    await deleteFileFromS3(fileName, folder);
-  } catch {
-
-  }
-};
 
 function extractMarkdownLinks(markdownText = '') {
   const links = [];
@@ -128,20 +192,123 @@ function buildHashedKey(file, folder) {
   return { folder, fileName: name };
 }
 
+function normBasicFileKey(urlOrKey) {
+  const p = extractFileNameAndFolderFromUrl(urlOrKey);
+  if (!p?.fileName) return null;
+  return `${p.folder}/${p.fileName}`;
+}
+
+function normMdFileKey(urlOrKey) {
+  const p = extractMdFileNameAndFolder(urlOrKey);
+  if (!p?.fileName) return null;
+  return `${p.folder}/${p.fileName}`;
+}
+
+function collectStringRefsFromConstructorData(data) {
+  const flat = flattenInputs(data);
+  const out = [];
+
+  for (const inp of flat) {
+    if (!inp) continue;
+
+    if (inp.type === 'file') {
+      const arr = toArray(inp.value).filter(Boolean);
+      out.push(...arr);
+    }
+
+    if (inp.type === 'markdown' && typeof inp.value === 'string') {
+      out.push(...extractMarkdownLinks(inp.value));
+    }
+  }
+
+  return out;
+}
+
+async function isAnyOtherLegendUsingBasicFile(basicKey, excludeLegendId) {
+  if (!basicKey) return false;
+
+  const whereLegend = excludeLegendId ? { id: { [Op.ne]: excludeLegendId } } : undefined;
+  const whereConstructor = excludeLegendId ? { legendId: { [Op.ne]: excludeLegendId } } : undefined;
+
+  const [legends, constructors] = await Promise.all([
+    Legend.findAll({ attributes: ['id', 'img'], where: whereLegend }),
+    ConstructorLegend.findAll({ attributes: ['legendId', 'image', 'data'], where: whereConstructor }),
+  ]);
+
+  for (const l of legends) {
+    if (normBasicFileKey(l.img) === basicKey) return true;
+  }
+
+  for (const c of constructors) {
+    if (normBasicFileKey(c.image) === basicKey) return true;
+
+    const refs = collectStringRefsFromConstructorData(c.data);
+    for (const r of refs) {
+      if (normBasicFileKey(r) === basicKey) return true;
+    }
+  }
+
+  return false;
+}
+
+async function isAnyOtherLegendUsingMdFile(mdKey, excludeLegendId) {
+  if (!mdKey) return false;
+
+  const whereConstructor = excludeLegendId ? { legendId: { [Op.ne]: excludeLegendId } } : undefined;
+
+  const constructors = await ConstructorLegend.findAll({
+    attributes: ['legendId', 'data'],
+    where: whereConstructor,
+  });
+
+  for (const c of constructors) {
+    const refs = collectStringRefsFromConstructorData(c.data);
+    for (const r of refs) {
+      if (normMdFileKey(r) === mdKey) return true;
+    }
+  }
+
+  return false;
+}
+
+const deleteImageFromS3Safe = async (fileUrlOrKey, logInfo = null, excludeLegendId = null) => {
+  const basicKey = normBasicFileKey(fileUrlOrKey);
+  if (!basicKey) return;
+
+  try {
+    const usedSomewhereElse = await isAnyOtherLegendUsingBasicFile(basicKey, excludeLegendId);
+    if (usedSomewhereElse) return;
+
+    const parsed = extractFileNameAndFolderFromUrl(fileUrlOrKey);
+    if (!parsed) return;
+
+    await deleteFileFromS3(parsed.fileName, parsed.folder, logInfo);
+  } catch { }
+};
+
+const deleteMarkdownFromS3Safe = async (url, logInfo = null, excludeLegendId = null) => {
+  const mdKey = normMdFileKey(url);
+  if (!mdKey) return;
+
+  try {
+    const usedSomewhereElse = await isAnyOtherLegendUsingMdFile(mdKey, excludeLegendId);
+    if (usedSomewhereElse) return;
+
+    const parsed = extractMdFileNameAndFolder(url);
+    if (!parsed) return;
+
+    await deleteFileFromS3(parsed.fileName, parsed.folder, logInfo);
+  } catch { }
+};
+
 router.get('/', async (req, res, next) => {
   try {
     const legends = await Legend.findAll({
-      order: [
-        ['order', 'ASC'],
-        ['year', 'DESC'],
-      ],
-      include: [
-        { model: ConstructorLegend },
-        { model: User, as: 'author', attributes: ['id', 'userName'] },
-      ],
+      order: [['order', 'ASC'], ['year', 'DESC'], CONSTRUCTOR_ORDER],
+      include: LEGEND_INCLUDE,
     });
 
-    res.json(legends);
+    res.json(legends.map(withComputedUrls));
   } catch (err) {
     console.error('GET /api/legend error:', err);
     next(err);
@@ -151,15 +318,13 @@ router.get('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
   try {
     const legend = await Legend.findByPk(req.params.id, {
-      include: [
-        { model: ConstructorLegend },
-        { model: User, as: 'author', attributes: ['id', 'userName'] },
-      ],
+      include: LEGEND_INCLUDE,
+      order: [CONSTRUCTOR_ORDER],
     });
 
     if (!legend) return res.status(404).json({ message: 'Legend not found' });
 
-    res.json(legend);
+    res.json(withComputedUrls(legend));
   } catch (err) {
     console.error('GET /api/legend/:id error:', err);
     next(err);
@@ -206,21 +371,26 @@ router.post('/', async (req, res, next) => {
     let fullLegend = legend;
     try {
       const withIncludes = await Legend.findByPk(legend.id, {
-        include: [
-          { model: ConstructorLegend },
-          { model: User, as: 'author', attributes: ['id', 'userName'] },
-        ],
+        include: LEGEND_INCLUDE,
+        order: [CONSTRUCTOR_ORDER],
       });
       if (withIncludes) fullLegend = withIncludes;
     } catch (fetchErr) {
-      console.error(
-        'POST /api/legend: error in Legend.findByPk after commit:',
-        fetchErr,
-        fetchErr.original || ''
-      );
+      console.error('POST /api/legend: error in Legend.findByPk after commit:', fetchErr, fetchErr.original || '');
     }
 
-    return res.status(201).json(fullLegend);
+    if (req.session?.user) {
+      logResourceAction({
+        action: 'CREATE',
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'legend',
+        resourceId: legend.id.toString(),
+        resourceName: title || 'Легенда',
+      });
+    }
+
+    return res.status(201).json(withComputedUrls(fullLegend));
   } catch (err) {
     if (!t.finished) {
       try {
@@ -246,15 +416,58 @@ router.put('/:id', async (req, res, next) => {
       return res.status(404).json({ message: 'Legend not found' });
     }
 
+    const oldYear = legend.year;
+    const oldTitle = legend.title;
+    const oldImg = legend.img;
+    const oldDescription = legend.description;
+    const oldHidden = legend.hidden;
+    const oldOrder = legend.order;
+    const oldUserId = legend.userId;
+
+    const newYear = year ?? legend.year;
+    const newTitle = title ?? legend.title;
+    const newImg = img !== undefined ? img : legend.img;
+    const newDescription = description !== undefined ? description : legend.description;
+    const newHidden = hidden !== undefined ? hidden : legend.hidden;
+    const newOrder = order ?? legend.order;
+    const newUserId = userId !== undefined ? userId : legend.userId;
+
+    let constructorChanged = false;
+    if (constructor) {
+      const existingConstructor = await ConstructorLegend.findOne({
+        where: { legendId: legend.id },
+        transaction: t,
+      });
+      if (existingConstructor) {
+        const oldData = JSON.stringify(existingConstructor.data);
+        const oldImage = existingConstructor.image;
+        const newData = JSON.stringify(constructor.data !== undefined ? constructor.data : existingConstructor.data);
+        const newImage = constructor.image !== undefined ? constructor.image : existingConstructor.image;
+        constructorChanged = oldData !== newData || oldImage !== newImage;
+      } else if (constructor.data || constructor.image) {
+        constructorChanged = true;
+      }
+    }
+
+    const hasChanges =
+      oldYear !== newYear ||
+      oldTitle !== newTitle ||
+      oldImg !== newImg ||
+      oldDescription !== newDescription ||
+      oldHidden !== newHidden ||
+      oldOrder !== newOrder ||
+      oldUserId !== newUserId ||
+      constructorChanged;
+
     await legend.update(
       {
-        year: year ?? legend.year,
-        title: title ?? legend.title,
-        img: img !== undefined ? img : legend.img,
-        description: description !== undefined ? description : legend.description,
-        hidden: hidden !== undefined ? hidden : legend.hidden,
-        order: order ?? legend.order,
-        userId: userId !== undefined ? userId : legend.userId,
+        year: newYear,
+        title: newTitle,
+        img: newImg,
+        description: newDescription,
+        hidden: newHidden,
+        order: newOrder,
+        userId: newUserId,
       },
       { transaction: t }
     );
@@ -289,24 +502,30 @@ router.put('/:id', async (req, res, next) => {
 
     await t.commit();
 
+    if (req.session?.user) {
+      logResourceAction({
+        action: 'UPDATE',
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'legend',
+        resourceId: id,
+        resourceName: newTitle || legend.title,
+        hasChanges,
+      });
+    }
+
     let fullLegend = legend;
     try {
       const withIncludes = await Legend.findByPk(id, {
-        include: [
-          { model: ConstructorLegend },
-          { model: User, as: 'author', attributes: ['id', 'userName'] },
-        ],
+        include: LEGEND_INCLUDE,
+        order: [CONSTRUCTOR_ORDER],
       });
       if (withIncludes) fullLegend = withIncludes;
     } catch (fetchErr) {
-      console.error(
-        'PUT /api/legend/:id: error in Legend.findByPk after commit:',
-        fetchErr,
-        fetchErr.original || ''
-      );
+      console.error('PUT /api/legend/:id: error in Legend.findByPk after commit:', fetchErr, fetchErr.original || '');
     }
 
-    return res.json(fullLegend);
+    return res.json(withComputedUrls(fullLegend));
   } catch (err) {
     if (!t.finished) {
       try {
@@ -326,8 +545,29 @@ router.patch('/:id/hidden', async (req, res, next) => {
     const legend = await Legend.findByPk(req.params.id);
     if (!legend) return res.status(404).json({ message: 'Legend not found' });
 
-    await legend.update({ hidden: !!hidden });
-    res.json(legend);
+    const oldHidden = !!legend.hidden;
+    const newHidden = !!hidden;
+
+    await legend.update({ hidden: newHidden });
+
+    const fullLegend = await Legend.findByPk(req.params.id, {
+      include: LEGEND_INCLUDE,
+      order: [CONSTRUCTOR_ORDER],
+    });
+
+    if (req.session?.user) {
+      logResourceAction({
+        action: 'UPDATE',
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'legend',
+        resourceId: String(req.params.id),
+        resourceName: legend.title || 'Легенда',
+        hasChanges: oldHidden !== newHidden,
+      });
+    }
+
+    res.json(withComputedUrls(fullLegend || legend));
   } catch (err) {
     console.error('PATCH /api/legend/:id/hidden error:', err, err.original || '');
     next(err);
@@ -351,13 +591,10 @@ router.patch('/order/bulk', async (req, res, next) => {
     await t.commit();
 
     const legends = await Legend.findAll({
-      order: [
-        ['order', 'ASC'],
-        ['year', 'DESC'],
-      ],
-      include: [{ model: ConstructorLegend }],
+      order: [['order', 'ASC'], ['year', 'DESC'], CONSTRUCTOR_ORDER],
+      include: LEGEND_INCLUDE,
     });
-    res.json(legends);
+    res.json(legends.map(withComputedUrls));
   } catch (err) {
     if (!t.finished) {
       try {
@@ -386,6 +623,8 @@ router.delete('/:id', async (req, res, next) => {
       return res.status(404).json({ message: 'Legend not found' });
     }
 
+    const legendTitle = legend.title || 'Легенда';
+
     const constructorRows = await ConstructorLegend.findAll({
       where: { legendId: id },
       transaction: t,
@@ -413,22 +652,30 @@ router.delete('/:id', async (req, res, next) => {
 
     if (!deleted) return res.status(404).json({ message: 'Legend not found' });
 
-    const uniqueFiles = [
-      ...new Set(files.map((x) => (typeof x === 'string' ? x.trim() : x)).filter(Boolean)),
-    ];
+    const userInfo = req.session?.user
+      ? {
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'legend',
+        resourceId: id,
+      }
+      : null;
 
-    await Promise.all(uniqueFiles.map(deleteImageFromS3Safe));
+    const uniqueFiles = [...new Set(files.map((x) => (typeof x === 'string' ? x.trim() : x)).filter(Boolean))];
 
-    await Promise.all(
-      mdLinks.map(async (url) => {
-        const parsed = extractMdFileNameAndFolder(url);
-        if (!parsed) return;
-        try {
-          await deleteFileFromS3(parsed.fileName, parsed.folder);
-        } catch {
-        }
-      })
-    );
+    await Promise.all(uniqueFiles.map((url) => deleteImageFromS3Safe(url, userInfo, id)));
+    await Promise.all(mdLinks.map((url) => deleteMarkdownFromS3Safe(url, userInfo, id)));
+
+    if (req.session?.user) {
+      logResourceAction({
+        action: 'DELETE',
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'legend',
+        resourceId: id,
+        resourceName: legendTitle,
+      });
+    }
 
     res.json({ message: 'Deleted', id });
   } catch (err) {
@@ -448,12 +695,19 @@ router.post('/upload-markdown-file', fileMiddleware.single('markdownFile'), asyn
   try {
     if (!req.file) return res.status(400).json({ message: 'Файл не найден в запросе' });
 
-    const uploadFolder =
-      req.file.mimetype === 'application/pdf' ? LEGEND_MD_DOCS_DIR : LEGEND_MD_IMAGES_DIR;
+    const userInfo = req.session?.user
+      ? {
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'legend',
+      }
+      : null;
+
+    const uploadFolder = req.file.mimetype === 'application/pdf' ? LEGEND_MD_DOCS_DIR : LEGEND_MD_IMAGES_DIR;
 
     const { fileName } = buildHashedKey(req.file, uploadFolder);
     const fileForUpload = { ...req.file, originalname: fileName };
-    const url = await uploadFileToS3(fileForUpload, uploadFolder);
+    const url = await uploadFileToS3(fileForUpload, uploadFolder, userInfo);
 
     return res.status(200).json({ message: 'Файл успешно загружен', url });
   } catch (e) {
@@ -464,13 +718,19 @@ router.post('/upload-markdown-file', fileMiddleware.single('markdownFile'), asyn
 
 router.delete('/delete-markdown-file', async (req, res) => {
   try {
+    const userInfo = req.session?.user
+      ? {
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'legend',
+      }
+      : null;
+
     const { url } = req.body || {};
     if (!url) return res.status(400).json({ message: 'URL не предоставлен' });
 
-    const parsed = extractMdFileNameAndFolder(url);
-    if (!parsed) return res.status(400).json({ message: 'Невозможно определить имя файла/папку' });
+    await deleteMarkdownFromS3Safe(url, userInfo, null);
 
-    await deleteFileFromS3(parsed.fileName, parsed.folder);
     return res.status(200).json({ message: 'Файл удалён' });
   } catch (e) {
     console.error('Ошибка при удалении markdown-файла (legend):', e);
@@ -481,6 +741,14 @@ router.delete('/delete-markdown-file', async (req, res) => {
 router.post('/mp', fileMiddleware.any(), async (req, res) => {
   const t = await Legend.sequelize.transaction();
   try {
+    const userInfo = req.session?.user
+      ? {
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'legend',
+      }
+      : null;
+
     const meta = req.body?.meta ? JSON.parse(req.body.meta) : {};
     const year = Number(meta.year);
     const title = String(meta.title || '').trim();
@@ -496,7 +764,7 @@ router.post('/mp', fileMiddleware.any(), async (req, res) => {
     const photoAvaFile = (req.files || []).find((f) => f.fieldname === 'photoAva');
     let imgKey = meta.img || null;
     if (photoAvaFile) {
-      imgKey = await uploadFileToS3(photoAvaFile, LEGEND_FILES_DIR);
+      imgKey = await uploadFileToS3(photoAvaFile, LEGEND_FILES_DIR, userInfo);
     }
 
     const legend = await Legend.create(
@@ -513,9 +781,7 @@ router.post('/mp', fileMiddleware.any(), async (req, res) => {
     );
 
     const filesMap = {};
-    const batchId =
-      req.batchId ||
-      (req.batchId = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`);
+    const batchId = req.batchId || (req.batchId = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`);
 
     for (const f of req.files || []) {
       const m = f.fieldname.match(/^dynamic_block_(\d+)_input_(\d+)(\[\])?$/);
@@ -525,7 +791,7 @@ router.post('/mp', fileMiddleware.any(), async (req, res) => {
       filesMap[b] ??= {};
       filesMap[b][i] ??= [];
       f.originalname = `${batchId}__${f.originalname || 'file'}`;
-      const savedKey = await uploadFileToS3(f, LEGEND_FILES_DIR);
+      const savedKey = await uploadFileToS3(f, LEGEND_FILES_DIR, userInfo);
       filesMap[b][i].push(savedKey);
     }
 
@@ -542,9 +808,7 @@ router.post('/mp', fileMiddleware.any(), async (req, res) => {
 
       let image = null;
       const flat = flattenInputs(inputs);
-      const firstFileIdx = flat.findIndex(
-        (x) => x.type === 'file' && (typeof x.value === 'string' || Array.isArray(x.value))
-      );
+      const firstFileIdx = flat.findIndex((x) => x.type === 'file' && (typeof x.value === 'string' || Array.isArray(x.value)));
       if (firstFileIdx >= 0) {
         const v = flat[firstFileIdx].value;
         image = Array.isArray(v) ? v[0] ?? null : v;
@@ -563,13 +827,22 @@ router.post('/mp', fileMiddleware.any(), async (req, res) => {
     await t.commit();
 
     const fullLegend = await Legend.findByPk(legend.id, {
-      include: [
-        { model: ConstructorLegend },
-        { model: User, as: 'author', attributes: ['id', 'userName'] },
-      ],
+      include: LEGEND_INCLUDE,
+      order: [CONSTRUCTOR_ORDER],
     });
 
-    res.status(201).json(fullLegend || legend);
+    if (req.session?.user) {
+      logResourceAction({
+        action: 'CREATE',
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'legend',
+        resourceId: legend.id.toString(),
+        resourceName: title || 'Легенда',
+      });
+    }
+
+    res.status(201).json(withComputedUrls(fullLegend || legend));
   } catch (e) {
     if (!t.finished) await t.rollback();
     console.error('POST /api/legend/mp error:', e);
@@ -581,6 +854,16 @@ router.put('/mp/:id', fileMiddleware.any(), async (req, res) => {
   const t = await Legend.sequelize.transaction();
   try {
     const id = req.params.id;
+
+    const userInfo = req.session?.user
+      ? {
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'legend',
+        resourceId: id,
+      }
+      : null;
+
     const legend = await Legend.findByPk(id, {
       include: [{ model: ConstructorLegend }],
     });
@@ -592,30 +875,36 @@ router.put('/mp/:id', fileMiddleware.any(), async (req, res) => {
 
     const meta = req.body?.meta ? JSON.parse(req.body.meta) : {};
 
-    const oldMdLinks = collectMarkdownLinksFromConstructor(legend.ConstructorLegends);
+    const oldYear = legend.year;
+    const oldTitle = legend.title;
+    const oldDescription = legend.description;
+    const oldHidden = legend.hidden;
+    const oldUserId = legend.userId;
     const oldAvatar = legend.img || null;
+    const oldConstructorData = (legend.ConstructorLegends || []).map((c) => ({
+      data: JSON.stringify(c.data),
+      image: c.image,
+    }));
+
+    const oldMdLinks = collectMarkdownLinksFromConstructor(legend.ConstructorLegends);
+
     const oldDynamicFiles = (legend.ConstructorLegends || []).flatMap((c) => {
       const inputs = flattenInputs(c.data);
       const fileInputs = inputs
         .filter((inp) => inp?.type === 'file')
         .flatMap((inp) => toArray(inp.value))
         .filter(Boolean);
-      return [
-        ...(c.image ? [c.image] : []),
-        ...fileInputs,
-      ];
+      return [...(c.image ? [c.image] : []), ...fileInputs];
     });
 
     const newPhotoAva = (req.files || []).find((f) => f.fieldname === 'photoAva');
     let newAvatarKey = meta.img !== undefined ? meta.img : oldAvatar;
     if (newPhotoAva) {
-      newAvatarKey = await uploadFileToS3(newPhotoAva, LEGEND_FILES_DIR);
+      newAvatarKey = await uploadFileToS3(newPhotoAva, LEGEND_FILES_DIR, userInfo);
     }
 
     const filesMap = {};
-    const batchId =
-      req.batchId ||
-      (req.batchId = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`);
+    const batchId = req.batchId || (req.batchId = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`);
 
     for (const f of req.files || []) {
       const m = f.fieldname.match(/^dynamic_block_(\d+)_input_(\d+)(\[\])?$/);
@@ -625,7 +914,7 @@ router.put('/mp/:id', fileMiddleware.any(), async (req, res) => {
       filesMap[b] ??= {};
       filesMap[b][i] ??= [];
       f.originalname = `${batchId}__${f.originalname || 'file'}`;
-      const savedKey = await uploadFileToS3(f, LEGEND_FILES_DIR);
+      const savedKey = await uploadFileToS3(f, LEGEND_FILES_DIR, userInfo);
       filesMap[b][i].push(savedKey);
     }
 
@@ -650,7 +939,12 @@ router.put('/mp/:id', fileMiddleware.any(), async (req, res) => {
       {
         year: meta.year ?? legend.year,
         title: meta.title ?? legend.title,
-        description: meta.previewText !== undefined ? String(meta.previewText || '').trim() : (meta.description !== undefined ? String(meta.description || '').trim() : legend.description),
+        description:
+          meta.previewText !== undefined
+            ? String(meta.previewText || '').trim()
+            : meta.description !== undefined
+              ? String(meta.description || '').trim()
+              : legend.description,
         img: newAvatarKey,
         hidden: meta.hidden !== undefined ? !!meta.hidden : legend.hidden,
         userId: meta.userId ?? legend.userId,
@@ -663,9 +957,7 @@ router.put('/mp/:id', fileMiddleware.any(), async (req, res) => {
     for (const group of mergedBlocks) {
       let image = null;
       const flat = flattenInputs(group);
-      const firstFileIdx = flat.findIndex(
-        (x) => x.type === 'file' && (typeof x.value === 'string' || Array.isArray(x.value))
-      );
+      const firstFileIdx = flat.findIndex((x) => x.type === 'file' && (typeof x.value === 'string' || Array.isArray(x.value)));
       if (firstFileIdx >= 0) {
         const v = flat[firstFileIdx].value;
         image = Array.isArray(v) ? v[0] ?? null : v;
@@ -686,31 +978,63 @@ router.put('/mp/:id', fileMiddleware.any(), async (req, res) => {
       .filter(Boolean)
       .filter((v) => !newAll.includes(v));
 
-    await Promise.all(toDelete.map(deleteImageFromS3Safe));
+    await Promise.all(toDelete.map((url) => deleteImageFromS3Safe(url, userInfo, id)));
 
     if (oldAvatar && oldAvatar !== newAvatarKey) {
-      await deleteImageFromS3Safe(oldAvatar);
+      await deleteImageFromS3Safe(oldAvatar, userInfo, id);
     }
-    await Promise.all(
-      removedMd.map(async (url) => {
-        const parsed = extractMdFileNameAndFolder(url);
-        if (!parsed) return;
-        try {
-          await deleteFileFromS3(parsed.fileName, parsed.folder);
-        } catch (e) {
-          console.error('Не удалось удалить markdown-файл legend:', url, e);
-        }
-      })
-    );
+
+    await Promise.all(removedMd.map((url) => deleteMarkdownFromS3Safe(url, userInfo, id)));
+
+    const newYear = meta.year ?? legend.year;
+    const newTitle = meta.title ?? legend.title;
+    const newDescription =
+      meta.previewText !== undefined
+        ? String(meta.previewText || '').trim()
+        : meta.description !== undefined
+          ? String(meta.description || '').trim()
+          : legend.description;
+    const newHidden = meta.hidden !== undefined ? !!meta.hidden : legend.hidden;
+    const newUserId = meta.userId ?? legend.userId;
+
+    const newConstructorData = mergedBlocks.map((g) => JSON.stringify(g));
+    const oldConstructorDataStr = oldConstructorData.map((c) => c.data);
+    const constructorChanged =
+      oldConstructorData.length !== newConstructorData.length ||
+      oldConstructorDataStr.some((oldData, idx) => {
+        if (idx >= newConstructorData.length) return true;
+        return oldData !== newConstructorData[idx];
+      });
+
+    const hasChanges =
+      oldYear !== newYear ||
+      oldTitle !== newTitle ||
+      oldDescription !== newDescription ||
+      oldHidden !== newHidden ||
+      oldUserId !== newUserId ||
+      oldAvatar !== newAvatarKey ||
+      constructorChanged ||
+      oldMdLinks.length !== newMdLinks.length ||
+      oldMdLinks.some((link) => !newMdLinks.includes(link));
 
     const fullLegend = await Legend.findByPk(id, {
-      include: [
-        { model: ConstructorLegend },
-        { model: User, as: 'author', attributes: ['id', 'userName'] },
-      ],
+      include: LEGEND_INCLUDE,
+      order: [CONSTRUCTOR_ORDER],
     });
 
-    res.json(fullLegend || legend);
+    if (req.session?.user) {
+      logResourceAction({
+        action: 'UPDATE',
+        userName: req.session.user.name,
+        userId: req.session.user.id.toString(),
+        resourceType: 'legend',
+        resourceId: id,
+        resourceName: newTitle || legend.title,
+        hasChanges,
+      });
+    }
+
+    res.json(withComputedUrls(fullLegend || legend));
   } catch (e) {
     if (!t.finished) await t.rollback();
     console.error('PUT /api/legend/mp/:id error:', e);

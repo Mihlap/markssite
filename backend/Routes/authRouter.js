@@ -1,8 +1,113 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const { User } = require('../db/models');
+const { logAdminLogin, logAdminLogout } = require('../utils/fileLogger');
 
 const authRouter = express.Router();
+
+function isValidIp(ip) {
+  if (!ip || typeof ip !== 'string') return false;
+  
+  const ipv4Regex = /^(\d{1,3}\.){3}\d{1,3}$/;
+  const ipv6Regex = /^([0-9a-fA-F]{0,4}:){2,7}[0-9a-fA-F]{0,4}$/;
+  
+  const trimmed = ip.trim();  
+
+  if (ipv4Regex.test(trimmed)) {
+    const parts = trimmed.split('.');
+    return parts.every(part => {
+      const num = parseInt(part, 10);
+      return num >= 0 && num <= 255;
+    });
+  }
+  
+  if (ipv6Regex.test(trimmed) || trimmed === '::1') {
+    return true;
+  }
+  
+  return false;
+}
+
+function getRealClientIp(req) {
+  const forwardedFor = req.headers['x-forwarded-for'];
+  if (forwardedFor) {
+    const ips = forwardedFor.split(',').map(ip => ip.trim()).filter(ip => ip);
+    if (ips.length > 0) {
+      const firstIp = normalizeIp(ips[0]);
+       if (isValidIp(firstIp)) {
+        return firstIp;
+      }
+    }
+  }
+ 
+  const realIp = req.headers['x-real-ip'];
+  if (realIp) {
+    const normalized = normalizeIp(realIp.trim());
+    if (isValidIp(normalized)) {
+      return normalized;
+    }
+  }
+
+  const cfIp = req.headers['cf-connecting-ip'];
+  if (cfIp) {
+    const normalized = normalizeIp(cfIp.trim());
+    if (isValidIp(normalized)) {
+      return normalized;
+    }
+  }
+
+  const clientIp = req.headers['x-client-ip'];
+  if (clientIp) {
+    const normalized = normalizeIp(clientIp.trim());
+    if (isValidIp(normalized)) {
+      return normalized;
+    }
+  }
+
+  const trueClientIp = req.headers['true-client-ip'];
+  if (trueClientIp) {
+    const normalized = normalizeIp(trueClientIp.trim());
+    if (isValidIp(normalized)) {
+      return normalized;
+    }
+  }
+
+  const socketIp = req.socket?.remoteAddress || req.connection?.remoteAddress;
+  if (socketIp) {
+    const normalized = normalizeIp(socketIp);
+    return normalized;
+  }
+
+  return 'N/A';
+}
+
+function normalizeIp(ip) {
+
+  if (!ip) return 'N/A';
+
+  ip = ip.trim();
+
+  if (ip === '::1') {
+    return '127.0.0.1';
+  }
+
+  if (ip.startsWith('::ffff:')) {
+    return ip.replace('::ffff:', '');
+  }
+
+  if (ip.startsWith('[') && ip.endsWith(']')) {
+    const innerIp = ip.slice(1, -1);
+    if (innerIp === '::1') {
+      return '127.0.0.1';
+    }
+    if (innerIp.startsWith('::ffff:')) {
+      return innerIp.replace('::ffff:', '');
+    }
+    return innerIp;
+  }
+
+  return ip;
+}
 
 authRouter.post('/signup', async (req, res) => {
   try {
@@ -46,6 +151,14 @@ authRouter.post('/login', async (req, res) => {
 
     const sessionData = { name: foundUser.userName, id: foundUser.id };
     req.session.user = sessionData;
+  
+    const ipAddress = getRealClientIp(req);
+   
+    logAdminLogin({
+      userName: foundUser.userName,
+      userId: foundUser.id,
+      ipAddress,
+    });
 
     return res.status(200).json(sessionData);
   } catch (e) {
@@ -90,7 +203,7 @@ authRouter.delete('/user/:id', async (req, res) => {
     await User.destroy({ where: { id: userId } });
 
     if (req.session.user?.id === userId) {
-      req.session.destroy(() => {});
+      req.session.destroy(() => { });
       res.clearCookie('user_marks_group');
     }
 
@@ -101,8 +214,23 @@ authRouter.delete('/user/:id', async (req, res) => {
   }
 });
 
-authRouter.get('/logout', (req, res) => {
-  req.session.destroy(() => {});
+authRouter.get('/logout', (req, res) => { 
+  const userData = req.session.user ? {
+    userName: req.session.user.name,
+    userId: req.session.user.id,
+  } : null;
+
+  const ipAddress = getRealClientIp(req);
+
+  if (userData) {
+    logAdminLogout({
+      userName: userData.userName,
+      userId: userData.userId,
+      ipAddress,
+    });
+  }
+
+  req.session.destroy(() => { });
   res.clearCookie('user_marks_group');
   res.sendStatus(200);
 });

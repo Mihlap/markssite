@@ -7,9 +7,9 @@ router.post('/search-vacancy', async (req, res) => {
   const { vacancy, IdVacancy } = req.body;
   try {
     const existingEntry = await VacanciesMain.findOne({ where: { IdVacancy } });
-    if (existingEntry) {  
+    if (existingEntry) {
       await existingEntry.update({ vacancy });
-    } else {     
+    } else {
       await VacanciesMain.create({ vacancy, IdVacancy });
     }
     res.status(200).json({ message: 'Вакансия сохранена/обновлена успешно.' });
@@ -44,7 +44,7 @@ router.put('/search-vacancy-replacement', async (req, res) => {
   try {
     const updatedVacancies = req.body;
 
-     for (let i = 0; i < updatedVacancies.length; i+=1) {
+    for (let i = 0; i < updatedVacancies.length; i += 1) {
       // eslint-disable-next-line no-await-in-loop
       await VacanciesMain.update({ order: i },
         { where: { id: updatedVacancies[i].id } }
