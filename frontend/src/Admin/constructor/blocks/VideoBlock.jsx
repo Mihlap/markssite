@@ -1,24 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { UiMarksInput, UiMarksGrayWrap, UiVideoPreview } from '../../ui';
+import { getEmbedUrl } from './videoEmbedUrl';
+
+export { getEmbedUrl };
 
 const MAX_SIZE_MB = 10;
 const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
-
-function getEmbedUrl(url) {
-  if (!url) return null;
-  if (url.includes('youtu.be')) return url.replace('youtu.be/', 'www.youtube.com/embed/');
-  if (url.includes('youtube.com/watch?v=')) return url.replace('watch?v=', 'embed/');
-  if (url.includes('rutube.ru/video/')) {
-    const id = url.split('/video/')[1]?.split('/')[0];
-    return id ? `https://rutube.ru/play/embed/${id}` : null;
-  }
-  if (url.includes('vk.com/video_ext.php')) return url;
-  const vkMatch = url.match(/(?:vk\.com|vkvideo\.ru)\/video(-?\d+)_(\d+)/);
-  if (vkMatch) return `https://vk.com/video_ext.php?oid=${vkMatch[1]}&id=${vkMatch[2]}`;
-  return null;
-}
-
-export { getEmbedUrl };
 
 export default function VideoBlock({ file, url, onFileChange, onUrlChange, onRemove, btnClose = true, color = 'salmon', padding = '36px 16px 32px 16px' }) {
   const videoRef = useRef(null);
