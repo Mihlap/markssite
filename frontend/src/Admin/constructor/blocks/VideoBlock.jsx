@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { UiMarksInput, UiMarksGrayWrap, UiVideoPreview } from '../../ui';
-import { getEmbedUrl } from './videoEmbedUrl';
+import { getEmbedUrl } from '../../../media/videoEmbedUrl';
 
 export { getEmbedUrl };
 
