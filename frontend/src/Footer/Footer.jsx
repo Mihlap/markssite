@@ -113,14 +113,15 @@ const Footer = ({ handleMouseEnterFooter, handleMouseEnterFooterMore, handleMous
             </Link>
           </div>
           <div className={styles.footer__documents}>
-            <Link
-              to="./Information"
+            <a
+              href="/information"
               target="_blank"
+              rel="noopener noreferrer"
               onMouseEnter={handleMouseEnterFooterMore}
               onMouseLeave={handleMouseLeaveFooter}
               className={styles.footer__documents_link}>
               <span>Документы</span>
-            </Link>
+            </a>
             <Link
               to="https://laba-laba.ru/"
               target="_blank"
@@ -128,7 +129,7 @@ const Footer = ({ handleMouseEnterFooter, handleMouseEnterFooterMore, handleMous
               onMouseLeave={handleMouseLeaveFooter}
               className={styles.footer__copyright}>
               <span>©&nbsp;LABA</span>
-            </Link>            
+            </Link>
           </div>
         </div>
       </div>
