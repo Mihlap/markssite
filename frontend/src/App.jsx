@@ -79,11 +79,16 @@ export default function App() {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const [loading, setLoading] = useState(!IS_DEV);
+  const [loading, setLoading] = useState(() => {
+    if (IS_DEV) return false;
+    const path = typeof window !== 'undefined' ? window.location.pathname : '';
+    return path.toLowerCase() !== '/information';
+  });
   const [isReady, setIsReady] = useState(IS_DEV);
   const [videoLoaded, setVideoLoaded] = useState(false);
 
   const isPortalPage = location.pathname.startsWith('/hr/');
+  const isInformationPage = location.pathname.toLowerCase() === '/information';
   const isFooterFormPage = location.pathname === '/footerForm';
   const isAdminPage = location.pathname.startsWith('/admin');
   const isNavPreviewPage = location.pathname === '/navbar';
@@ -136,7 +141,7 @@ export default function App() {
   }, [location.pathname, dispatch]);
 
   const shouldShowGlobalLoader =
-    !IS_DEV && loading && !isPortalPage && location.pathname !== '/information' && location.pathname !== '/footerForm';
+    !IS_DEV && loading && !isPortalPage && !isInformationPage && !isFooterFormPage;
 
   return (
     <HelmetProvider>
