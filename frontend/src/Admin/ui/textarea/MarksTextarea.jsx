@@ -1,4 +1,4 @@
-import { memo, useMemo, useCallback, forwardRef } from 'react';
+import { memo, useMemo, useCallback, forwardRef, useRef } from 'react';
 import ReactQuill, { Quill } from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 import { Icon1, Icon2, Icon3 } from './icon';
@@ -20,6 +20,7 @@ const MarksTextarea = forwardRef(function MarksTextarea(
 ) {
   const toolbarId = `toolbar-${name.replaceAll('.', '-')}`;
   const showCounter = maxLength != null;
+  const internalQuillRef = useRef(null);
 
   const textLength = useMemo(() => {
     if (!showCounter) return 0;
@@ -30,9 +31,13 @@ const MarksTextarea = forwardRef(function MarksTextarea(
   }, [showCounter, richText, value]);
 
   const handleQuillChange = useCallback((content, _delta, _source, editor) => {
-    if (maxLength != null && editor.getText().length - 1 > maxLength) return;
+    if (maxLength != null && editor.getText().length - 1 > maxLength) {
+      const quill = (quillRef ?? internalQuillRef).current?.getEditor();
+      quill?.deleteText(maxLength, quill.getLength());
+      return;
+    }
     onChange(content);
-  }, [maxLength, onChange]);
+  }, [maxLength, onChange, quillRef]);
 
   const quillModules = useMemo(
     () => ({
@@ -59,7 +64,7 @@ const MarksTextarea = forwardRef(function MarksTextarea(
           </div>
           <div className={s.textarea__field_wrap}>
             <ReactQuill
-              ref={quillRef}
+              ref={quillRef ?? internalQuillRef}
               modules={quillModules}
               formats={quillFormats}
               className={`${s.quill} ${s[`quill_${color}`] || ''} ${error ? s.quill_error : ''}`}
