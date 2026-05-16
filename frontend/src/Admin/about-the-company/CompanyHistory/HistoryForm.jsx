@@ -420,12 +420,7 @@ const HistoryForm = forwardRef(function HistoryForm(
               maxLength={160}
               error={fieldState.error?.message}
               {...field}
-              onChange={(v) => {
-                field.onChange(v);
-                const d = document.createElement('div');
-                d.innerHTML = v || '';
-                if (d.textContent.trim()) clearErrors('previewText');
-              }}
+              onChange={field.onChange}
             />
           )}
         />
