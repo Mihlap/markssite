@@ -1,7 +1,7 @@
 import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
-import { fetchProject, setProjectId } from '../../../store/Slice/projectSlice';
+import { createProject, updateProject } from '../../../store/Slice/projectSlice';
 import { UiMarksInput, UiMarksSelect, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
 import { monthOptions, yearOptions, typesСonstruction } from './const/Time';
 import {
@@ -68,24 +68,16 @@ const ProjectForm = forwardRef(function ProjectForm(
   useImperativeHandle(
     ref,
     () => ({
-      resetForm: () => {
-        dispatch(setProjectId(null));
-        reset(EMPTY_VALUES);
-      },
+      resetForm: () => reset(EMPTY_VALUES),
     }),
-    [dispatch, reset]
+    [reset]
   );
 
-  // Populate form when editing or reset for new project
   useEffect(() => {
     if (!editProjectData) {
-      dispatch(setProjectId(null));
       reset(EMPTY_VALUES);
       return;
     }
-
-    // Set projectId for PUT request
-    dispatch(setProjectId(editProjectData.id));
 
     // Parse monthYear
     const [month, year] = (editProjectData.monthYear || '').trim().split(' ');
@@ -139,10 +131,7 @@ const ProjectForm = forwardRef(function ProjectForm(
       constructorBlocks: newFormatBlocks,
     });
 
-    return () => {
-      dispatch(setProjectId(null));
-    };
-  }, [editProjectData, dispatch, reset]);
+  }, [editProjectData, reset]);
 
   const toOldFormat = (block) => {
     const processFiles = (files) => {
@@ -239,7 +228,11 @@ const ProjectForm = forwardRef(function ProjectForm(
       dynamicBlocks: oldFormatBlocks,
     };
 
-    await dispatch(fetchProject(formattedData));
+    if (editProjectData?.id) {
+      dispatch(updateProject(editProjectData.id, formattedData));
+    } else {
+      dispatch(createProject(formattedData));
+    }
     reset();
     onSuccess?.();
   };

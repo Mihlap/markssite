@@ -2,6 +2,7 @@ const express = require('express');
 const {
   URL
 } = require('url');
+const { Op } = require('sequelize');
 const {
   Project,
   ProjectMain,
@@ -410,46 +411,36 @@ router.put(
   }
 );
 
-router.get('/getzapros', async (req, res) => {
+router.get('/all', async (req, res) => {
   try {
-    const page = parseInt(req.query.page, 10);
-    const limit = parseInt(req.query.limit, 10);
+    const { page = 1, limit = 12, view, city } = req.query;
+    const offset = (page - 1) * limit;
 
-    if (page && limit && page > 0 && limit > 0) {
-      const offset = (page - 1) * limit;
+    const where = {};
+    if (view && view !== 'Все') where.viewConstruction = { [Op.like]: `%${view}%` };
+    if (city) where.countryCity = { [Op.like]: `%${city}%` };
 
-      const { count, rows } = await Project.findAndCountAll({
-        include: [Constructor],
-        order: [
-          ['id', 'DESC']
-        ],
-        limit,
-        offset,
-      });
+    const { count, rows } = await Project.findAndCountAll({
+      where,
+      include: [Constructor],
+      order: [['id', 'DESC']],
+      limit: Number(limit),
+      offset: Number(offset),
+    });
 
-      res.json({
-        data: rows,
-        pagination: {
-          total: count,
-          page,
-          limit,
-          totalPages: Math.ceil(count / limit),
-        },
-      });
-    } else {
-      const data = await Project.findAll({
-        include: [Constructor],
-        order: [
-          ['id', 'DESC']
-        ]
-      });
-
-      res.json(data);
-    }
+    res.json({
+      data: rows,
+      pagination: {
+        total: count,
+        page: Number(page),
+        limit: Number(limit),
+        totalPages: Math.ceil(count / limit),
+      },
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      error: 'Внутренняя ошибка сервера. Пожалуйста, попробуйте позже.'
+      error: 'Внутренняя ошибка сервера. Пожалуйста, попробуйте позже.',
     });
   }
 });

@@ -6,17 +6,17 @@ import gsap from 'gsap';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { ScrollTrigger, MotionPathPlugin } from 'gsap/all';
 import ProjectCardSlider from '../UI/Project&ArticleCardSlider/ProjectCardSlider';
-import styles from './ProjectCard.module.css';
+import styles from './styles/ProjectCard.module.css';
 import { getFetchForm } from '../store/Slice/projectSlice';
 import SliderContainerProjectCard from '../UI/Project&ArticleCardSlider/SliderContainerProjectCard';
 
-import { handleScroll, onVerticalScroll, onWheel, shareToVK, shareToTelegram, shareToWhatsApp } from './utils';
+import { handleScroll, onVerticalScroll, onWheel, shareToVK, shareToTelegram, shareToWhatsApp } from './utils/utils';
 import catPhoto from '../img/default-photo.jpeg';
 import next from '../icons/next.svg';
 import previous from '../icons/previous.svg';
 import ConstructorBlockRenderer from './ConstructorProject/ConstructorBlockRenderer';
 import NotFound from '../NotFound/NotFound';
-import { containsListTags, renderListWithDots } from '../Project/utils';
+import { containsListTags, renderListWithDots } from './utils/utils';
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
@@ -25,8 +25,8 @@ const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMouseHover }) => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const sliderCardRef = useRef(null);  
-  const projectsRaw = useSelector((state) => state.project.projects); 
+  const sliderCardRef = useRef(null);
+  const projectsRaw = useSelector((state) => state.project.projects);
   const projects = useMemo(() => (Array.isArray(projectsRaw) ? projectsRaw : []), [projectsRaw]);
 
   useEffect(() => {
@@ -67,7 +67,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
     [refs]
   );
 
-  useEffect(() => { 
+  useEffect(() => {
     requestAnimationFrame(() => {
       gsap.set([refs.title.current, refs.address.current], { opacity: 0 });
       gsap.to(refs.title.current, { duration: 1, opacity: 1, delay: 0.5 });
@@ -90,7 +90,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [elementsRight]);
- 
+
   useEffect(() => {
     const el = sliderCardRef.current;
     if (!el) return;
@@ -207,11 +207,11 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
         { value: project?.long, text: 'Длинна', unit: 'км' },
       ].filter((item) => item.value),
     [project]
-  ); 
- 
+  );
+
   if (!projects.length) return null;
   if (!project) return <NotFound />;
-  
+
   return (
     <>
       <Helmet>
