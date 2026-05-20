@@ -4,7 +4,6 @@
   height: 100%;
   width: 100%;
   padding-bottom: 3.38rem;
-  position: relative;
 }
 
 .project_slider_box {
@@ -127,15 +126,6 @@ display: inline-block;
   display: flex;
   padding-top: 2rem;
   padding-left: 0.5rem;
-}
-
-
-.section_project {
-  display: flex;
-  flex-direction: column;
-  background-color: var(--white-F6F6F6);
-  padding-bottom: 0rem;
-  padding-top: 2.5rem;
 }
 
 .section_project__block {
@@ -536,6 +526,7 @@ display: inline-block;
   .menu_button_group_project_wrapper_main1 {
     margin: 1.5rem 0 0 0;
     overflow: hidden;
+    background-color: #ff7f6a;
   }
 
   .my_swiper2_button_group_project {
@@ -925,4 +916,23 @@ display: inline-block;
   .modal_wrapper_project_location {
     display: none;
   }
+}
+
+.btnCity {
+  background: var(--light-light-gray-EBECEE) !important;
+  outline: none !important; 
+  padding-right: 1rem !important;
+  padding-left: 1rem !important;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btnCity:hover {
+  color: var(--black-1D2E43) !important;
+  background: var(--light-gray-C0C5CB) !important;
+}
+
+.list {
+  display: grid;
 }

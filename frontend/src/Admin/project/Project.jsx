@@ -19,7 +19,6 @@ export default function Project({ user }) {
   const error = useSelector((state) => state.project.error);
 
   const { canDelete, canEdit } = useAdminUser(user);
-
   const [deleteModalState, setDeleteModalState] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);

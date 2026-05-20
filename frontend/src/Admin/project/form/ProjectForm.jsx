@@ -229,9 +229,9 @@ const ProjectForm = forwardRef(function ProjectForm(
     };
 
     if (editProjectData?.id) {
-      dispatch(updateProject(editProjectData.id, formattedData));
+      await dispatch(updateProject(editProjectData.id, formattedData));
     } else {
-      dispatch(createProject(formattedData));
+      await dispatch(createProject(formattedData));
     }
     reset();
     onSuccess?.();

@@ -12,10 +12,10 @@ const CompanySlider = () => {
   const [lineWidth, setLineWidth] = useState(22);
 
   const slidesCard = [
-    { imageTitle: 'wine-park1.png' },
-    { imageTitle: 'mfk-slava2.png' },
-    { imageTitle: 'prime-park3.png' },
-    { imageTitle: 'badaevsky4.png' },
+    { imageTitle: 'wine-park1.webp' },
+    { imageTitle: 'mfk-slava2.webp' },
+    { imageTitle: 'prime-park3.webp' },
+    { imageTitle: 'badaevsky4.webp' },
   ];
 
   const imagePaths = slidesCard.flatMap((slide) => {

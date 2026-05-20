@@ -24,6 +24,7 @@ async function seed(count = 50) {
   for (let i = 1; i <= count; i++) {
     projects.push({
       title: `Тестовый проект ${i}`,
+      imageTitle: '',
       viewConstruction: VIEWS[i % VIEWS.length],
       countryCity: CITIES[i % CITIES.length],
       monthYear: `0${(i % 12) + 1}.202${i % 5}`,

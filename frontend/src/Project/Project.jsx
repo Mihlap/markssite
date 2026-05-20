@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet-async';
 import { useDispatch, useSelector } from 'react-redux';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { useProjects, useGeolocation } from '../hooks';
+import { useProjects, useGeolocation, useWindowWidth } from '../hooks';
 import CompanySlider from '../UI/Company_Slider/CompanySlider';
 import '../UI/Company_Slider/CompanySlider.css';
 import '../UI/ButtonsProjects/AllProjectsButton.module.css';
@@ -17,11 +17,12 @@ import { BUTTON_CHOOSE, COLOR } from './const';
 import Button from './ui/Button';
 import { Icon } from './icon';
 import styles from './styles/Project.module.css';
+import Item from './Item';
 
 const CityModal = lazy(() => import('./CityModal'));
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
-export default function Project({ handleMouseLeave, handleMouseHover }) {
+export default function Project() {
   const dispatch = useDispatch();
   const [selectOnCompetencies, setSelectOnCompetencies] = useState('Все');
   const [selectedCity, setSelectedCity] = useState('');
@@ -38,25 +39,13 @@ export default function Project({ handleMouseLeave, handleMouseHover }) {
 
   const [modalCity, setModalCity] = useState(false);
   const currentLocation = useGeolocation();
+  const { isMobile, isTablet } = useWindowWidth();
   const [searchValue, setSearchValue] = useState('');
   const [searchResetKey, setSearchResetKey] = useState(0);
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-  const isMobile = screenWidth <= 1024;
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  const handleResize = useCallback(() => {
-    setScreenWidth(window.innerWidth);
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [handleResize]);
 
   useEffect(() => {
     dispatch(fetchToggleStateAsync());
@@ -143,7 +132,7 @@ export default function Project({ handleMouseLeave, handleMouseHover }) {
             <span className={styles.projects_name_text}>Проекты</span>
           </div>
         </div>
-        {screenWidth && (
+        {isMobile && (
           <div className={styles.searchCityAddress_wrapper}>
             <div className={styles.searchCityAddress_location_project_group}>
               <label className={`${styles.searchCityAddress_label_project}`}>
@@ -166,27 +155,21 @@ export default function Project({ handleMouseLeave, handleMouseHover }) {
             </div>
           </div>
         )}
-        <div className={styles.menu_button_group_project_wrapper_main1}>
-          {isMobile && (
-            <Swiper
-              slidesPerView="auto"
-              spaceBetween={8}
-              className={styles.my_swiper2_button_group_project}
-              touch="true">
-              {visibleButtons.map((el, i) => (
-                <SwiperSlide
-                  key={el}
-                  onClick={() => handleButtonClick(el)}
-                  className={`${styles.menu__button__allProject} ${i === 0 ? styles.firstSlide : ''} ${isButtonActive(el) ? styles.active : ''}`}
-                  style={{ width: 'fit-content' }}>
-                  <p type="button" className={styles.menu_button_items}>
-                    {el}
-                  </p>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          )}
-        </div>
+        {(isMobile || isTablet) && (
+          <Swiper slidesPerView="auto" spaceBetween={8} className={styles.my_swiper2_button_group_project} touch="true">
+            {visibleButtons.map((el, i) => (
+              <SwiperSlide
+                key={el}
+                onClick={() => handleButtonClick(el)}
+                className={`${styles.menu__button__allProject} ${i === 0 ? styles.firstSlide : ''} ${isButtonActive(el) ? styles.active : ''}`}
+                style={{ width: 'fit-content' }}>
+                <p type="button" className={styles.menu_button_items}>
+                  {el}
+                </p>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        )}
 
         {!isMobile && !isActive && (
           <div className={styles.menu_button_group_project_wrapper_main}>
@@ -195,14 +178,10 @@ export default function Project({ handleMouseLeave, handleMouseHover }) {
                 <Button key={el.i} label={el} isActive={isButtonActive(el)} onClick={() => handleButtonClick(el)} />
               ))}
             </div>
-            <Button
-              label="Выбрать город"
-              onClick={handleSelectCityClick}
-              icon={<Icon />}
-            />
+            <Button label="Выбрать город" onClick={handleSelectCityClick} icon={<Icon />} className={styles.btnCity} />
           </div>
         )}
-        <Suspense fallback={null}>
+        <Suspense fallback={<>Loading...</>}>
           <CityModal
             isOpen={modalCity}
             onClose={handleModalClose}
@@ -211,121 +190,21 @@ export default function Project({ handleMouseLeave, handleMouseHover }) {
             onCityClick={handleButtonCityClick}
           />
         </Suspense>
-        <section className={styles.section_project}>
-          <div className={styles.section_project__block}>
-            {filteredProjects &&
-              filteredProjects.slice().map((project) => {
-                const defaultPhoto = catPhoto;
-                const photoName = project && project?.imageProject;
-                const photoSrc =
-                  photoName && photoName.includes('https')
-                    ? photoName
-                    : `${bucket_url}/images/imageAdd/${photoName || defaultPhoto}`;
-                if (!project) {
-                  return null;
-                }
-                return (
-                  <Link key={project.id} to={`/projects/${project.id}`} className={styles.section_project__block_cart}>
-                    <div className={styles.cart_project}>
-                      <div className={styles.cart_project__container}>
-                        <img
-                          className={styles.container__imageTitle_projectCard}
-                          src={photoSrc}
-                          onMouseEnter={handleMouseHover}
-                          onMouseLeave={handleMouseLeave}
-                          alt={project.imageProject || 'Default Alt Text'}
-                        />
-                        <div className={styles.project_content__wrapper}>
-                          <div className={styles.container_wrapper_title_city_data_block}>
-                            <div className={styles.cart_project_title}>{project.title}</div>
-                            <div className={styles.cart_project__address}>
-                              {project.countryCity}{' '}
-                              <div className={styles.cart_project__address__svg}>
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="2"
-                                  height="2"
-                                  viewBox="0 0 2 2"
-                                  fill="none">
-                                  <circle cx="1" cy="1" r="1" fill="#959DA6" />
-                                </svg>{' '}
-                              </div>
-                              {project.monthYear}
-                            </div>
-                          </div>
-                          <div className={styles.cart_project__content}>
-                            <div className={styles.cart_project__widget}>
-                              {(() => {
-                                try {
-                                  const selectCompetencies = JSON.parse(project.selectCompetencies);
-
-                                  return selectCompetencies.map((competency) => (
-                                    <div
-                                      key={competency.value}
-                                      className={styles.el_project_selectCompetencies}
-                                      style={{
-                                        color: COLOR[competency.value],
-                                        borderColor: COLOR[competency.value],
-                                        border: '1px solid',
-                                        padding: '3px 6px',
-                                        borderRadius: '34px',
-                                      }}>
-                                      {competency.label}
-                                    </div>
-                                  ));
-                                } catch (error) {
-                                  if (typeof project.selectCompetencies === 'string') {
-                                    if (!project.selectCompetencies.includes(',')) {
-                                      const label = project.selectCompetencies.trim();
-                                      return (
-                                        <div
-                                          key={label}
-                                          className={styles.el_project_selectCompetencies}
-                                          style={{
-                                            color: COLOR[label],
-                                            borderColor: COLOR[label],
-                                            border: '1px solid',
-                                            padding: '3px 6px',
-                                            borderRadius: '34px',
-                                          }}>
-                                          {label}
-                                        </div>
-                                      );
-                                    } else {
-                                      return project.selectCompetencies.split(',').map((value) => {
-                                        const label = value.trim();
-                                        return (
-                                          <div
-                                            key={value}
-                                            className={styles.el_project_selectCompetencies}
-                                            style={{
-                                              color: COLOR[value],
-                                              borderColor: COLOR[value],
-                                              border: '1px solid',
-                                              padding: '3px 6px',
-                                              borderRadius: '34px',
-                                            }}>
-                                            {label}
-                                          </div>
-                                        );
-                                      });
-                                    }
-                                  }
-                                  return null;
-                                }
-                              })()}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
-          </div>
+        <>
+          <section className={styles.list}>
+            {filteredProjects.map((project) => {
+              if (!project) return null;
+              const photoName = project.imageProject;
+              const photoSrc =
+                photoName && photoName.includes('https')
+                  ? photoName
+                  : `${bucket_url}/images/imageAdd/${photoName || catPhoto}`;
+              return <Item key={project.id} project={project} photoSrc={photoSrc} />;
+            })}
+          </section>
           <div ref={sentinelRef} />
           {isFetchingNextPage && <p style={{ textAlign: 'center', padding: '16px' }}>Загрузка...</p>}
-        </section>
+        </>
       </div>
     </>
   );

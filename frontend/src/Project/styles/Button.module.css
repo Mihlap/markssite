@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 2.125rem;
-    border: 1px solid var(--black-1D2E43);
+    outline: 1px solid var(--black-1D2E43);
     background-color: transparent;
     white-space: nowrap;
     color: var(--black-1D2E43);
