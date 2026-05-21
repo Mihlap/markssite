@@ -1,5 +1,4 @@
 import { configureStore } from '@reduxjs/toolkit';
-import projectSlice from './Slice/projectSlice';
 import companyHistoryReducer from './Slice/companyHistorySlice';
 import StaffSliceNew from './Slice/StaffSliceNew';
 import counterSlice from './Slice/counterSlice';
@@ -25,7 +24,6 @@ export default configureStore({
   reducer: {
     user: userReducer,
     auth: authReducer,
-    project: projectSlice,
     staff: StaffSliceNew,
     counter: counterSlice,
     article: articleSlice,

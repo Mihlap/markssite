@@ -1,7 +1,6 @@
 import React, { forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
-import { createProject, updateProject } from '../../../store/Slice/projectSlice';
+import { useCreateProject, useUpdateProject } from '../../../hooks';
 import { UiMarksInput, UiMarksSelect, UiMarksTextarea, UiPhotoPreview, UiMarksGrayWrap } from '../../ui';
 import { monthOptions, yearOptions, typesСonstruction } from './const/Time';
 import {
@@ -24,7 +23,8 @@ const ProjectForm = forwardRef(function ProjectForm(
   { onValidityChange, onLoadingChange, editProjectData, onSuccess, onDirtyChange },
   ref
 ) {
-  const dispatch = useDispatch();
+  const { mutateAsync: createProjectMutation } = useCreateProject();
+  const { mutateAsync: updateProjectMutation } = useUpdateProject();
   const photoAvaRef = useRef(null);
   const dropPhotoRef = useRef(null);
   const imageOpenRef = useRef(null);
@@ -229,9 +229,9 @@ const ProjectForm = forwardRef(function ProjectForm(
     };
 
     if (editProjectData?.id) {
-      await dispatch(updateProject(editProjectData.id, formattedData));
+      await updateProjectMutation({ id: editProjectData.id, formattedData });
     } else {
-      await dispatch(createProject(formattedData));
+      await createProjectMutation(formattedData);
     }
     reset();
     onSuccess?.();

@@ -1,14 +1,13 @@
 import { useEffect, useState, useCallback, useMemo, lazy, Suspense } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Helmet } from 'react-helmet-async';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { useProjects, useGeolocation, useWindowWidth } from '../hooks';
 import CompanySlider from '../UI/Company_Slider/CompanySlider';
 import '../UI/Company_Slider/CompanySlider.css';
 import '../UI/ButtonsProjects/AllProjectsButton.module.css';
-import { fetchToggleStateAsync } from '../store/Slice/toggleSlice';
 import catPhoto from '../img/default-photo.jpeg';
 import SearchInput from './SearchInput';
 
@@ -22,7 +21,6 @@ const CityModal = lazy(() => import('./CityModal'));
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 export default function Project() {
-  const dispatch = useDispatch();
   const [selectOnCompetencies, setSelectOnCompetencies] = useState('Все');
   const [selectedCity, setSelectedCity] = useState('');
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isError } = useProjects({
@@ -43,10 +41,6 @@ export default function Project() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  useEffect(() => {
-    dispatch(fetchToggleStateAsync());
-  }, [dispatch]);
 
   const handleButtonClick = useCallback((viewConstruction) => {
     setSelectedCity('');

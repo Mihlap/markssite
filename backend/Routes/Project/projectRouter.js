@@ -99,7 +99,7 @@ const updateDynamicBlocksContent = (blocks, newImages) => {
     blockGroup.map((block) => {
       if (block.type === 'file' && Array.isArray(block.value)) {
         const updatedValues = block.value.map((val) => {
-          if (typeof val === 'string' && (val.startsWith('blob:') || val.startsWith('temp_'))) {
+          if (typeof val === 'string' && !val.startsWith('http')) {
             const newImage = newImages[imageIndex];
             imageIndex += 1;
             return newImage;
@@ -147,8 +147,8 @@ router.post(
       const dynamicImageTitles = req.files.dynamicImages
         ? await Promise.all(
             req.files.dynamicImages.map(async (file) => {
-              const converted = await convertToWebp(file);
-              return uploadFileToS3(converted, 'images/imageAdd');
+              const fileToUpload = file.mimetype.startsWith('image/') ? await convertToWebp(file) : file;
+              return uploadFileToS3(fileToUpload, 'images/imageAdd');
             }),
           )
         : [];
@@ -216,8 +216,12 @@ router.post(
         imageClose: imageCloses,
       });
 
+      const updatedDynamicBlocksContent = dynamicBlocksContent
+        ? updateDynamicBlocksContent(dynamicBlocksContent, dynamicImageTitles)
+        : dynamicBlocksContent;
+
       await Constructor.create({
-        data: dynamicBlocksContent,
+        data: updatedDynamicBlocksContent,
         image: dynamicImageTitles.join(', '),
         idBlock: createdProject.id,
       });
@@ -352,8 +356,8 @@ router.put(
       const dynamicImagesNew = req.files.dynamicImages ?
         await Promise.all(
           req.files.dynamicImages.map(async (file) => {
-            const converted = await convertToWebp(file);
-            return uploadFileToS3(converted, 'images/imageAdd');
+            const fileToUpload = file.mimetype.startsWith('image/') ? await convertToWebp(file) : file;
+            return uploadFileToS3(fileToUpload, 'images/imageAdd');
           })
         ) : [];
 
@@ -441,6 +445,19 @@ router.get('/all', async (req, res) => {
     res.status(500).json({
       error: 'Внутренняя ошибка сервера. Пожалуйста, попробуйте позже.',
     });
+  }
+});
+
+router.get('/:id', async (req, res) => {
+  try {
+    const project = await Project.findByPk(req.params.id, {
+      include: [Constructor],
+    });
+    if (!project) return res.status(404).json({ error: 'Проект не найден' });
+    res.json(project);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Внутренняя ошибка сервера. Пожалуйста, попробуйте позже.' });
   }
 });
 

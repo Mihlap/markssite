@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
 import { useParams, Link } from 'react-router-dom';
 import gsap from 'gsap';
@@ -7,11 +6,11 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { ScrollTrigger, MotionPathPlugin } from 'gsap/all';
 import ProjectCardSlider from '../UI/Project&ArticleCardSlider/ProjectCardSlider';
 import styles from './styles/ProjectCard.module.css';
-import { getFetchForm } from '../store/Slice/projectSlice';
+import { useProject, useProjects } from '../hooks';
 import SliderContainerProjectCard from '../UI/Project&ArticleCardSlider/SliderContainerProjectCard';
 
 import { handleScroll, onVerticalScroll, onWheel, shareToVK, shareToTelegram, shareToWhatsApp } from './utils/utils';
-import catPhoto from '../img/default-photo.jpeg';
+import placehold from './icon/placehold.webp';
 import next from '../icons/next.svg';
 import previous from '../icons/previous.svg';
 import ConstructorBlockRenderer from './ConstructorProject/ConstructorBlockRenderer';
@@ -24,18 +23,10 @@ const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMouseHover }) => {
   const { id } = useParams();
-  const dispatch = useDispatch();
   const sliderCardRef = useRef(null);
-  const projectsRaw = useSelector((state) => state.project.projects);
-  const projects = useMemo(() => (Array.isArray(projectsRaw) ? projectsRaw : []), [projectsRaw]);
-
-  useEffect(() => {
-    if (!projects.length) {
-      dispatch(getFetchForm());
-    }
-  }, [dispatch, projects.length]);
-
-  const project = useMemo(() => projects.find((item) => item.id === Number(id)), [projects, id]);
+  const { data: project, isLoading: isProjectLoading } = useProject(id);
+  const { data: projectsData } = useProjects({ limit: 20 });
+  const projects = useMemo(() => projectsData?.pages.flatMap((p) => p.data) ?? [], [projectsData]);
 
   const [enableVerticalScroll, setEnableVerticalScroll] = useState(true);
   const [isHorizontalScroll, setIsHorizontalScroll] = useState(false);
@@ -124,7 +115,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
   const nextProject = projects[nextIndex];
 
   const getImageSource = useCallback((image) => {
-    if (!image) return catPhoto;
+    if (!image) return placehold;
     const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
     return image.startsWith('http') ? image : `${bucket_url}/images/imageAdd/${image}`;
   }, []);
@@ -209,7 +200,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
     [project]
   );
 
-  if (!projects.length) return null;
+  if (isProjectLoading) return null;
   if (!project) return <NotFound />;
 
   return (
@@ -472,7 +463,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                 ? randomProject.imageProject.startsWith('http')
                   ? randomProject.imageProject
                   : `${bucket_url}/images/imageAdd/${randomProject.imageProject}`
-                : catPhoto;
+                : placehold;
 
               return (
                 <SwiperSlide
