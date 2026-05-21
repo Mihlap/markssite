@@ -17,8 +17,8 @@ import Error from '../Loading/Error/Error';
 import BlockHeaderMain from '../UI/BlockHeader/BlockHeaderMain';
 
 import { getFetchFormArticle } from '../store/Slice/articleSlice';
-import { getZaprosData } from '../store/Slice/searchProjectMainSlice';
 import { searchArticleLeftGet } from '../store/Slice/searchArticlePublicLeftSlice';
+import { useFeaturedProjects } from '../hooks';
 import { searchArticleRightGet } from '../store/Slice/searchArticlePublicRightSlice';
 
 import styles from './Header.module.css';
@@ -53,7 +53,7 @@ const Header = React.memo(
     const { error } = useSelector((state) => state.article);
     const dispatch = useDispatch();
     const articles = useSelector((state) => state.article.article);
-    const projects = useSelector((state) => state.searchproject.projects);
+    const { data: projects = [] } = useFeaturedProjects();
     const ArticleLeft = useSelector((state) => state.searchArticlePublicLeft.articleLeft);
     const ArticleRight = useSelector((state) => state.searchArticlePublicRight.articleRight);
 
@@ -93,10 +93,6 @@ const Header = React.memo(
       dispatch(getFetchFormArticle());
       dispatch(searchArticleLeftGet());
       dispatch(searchArticleRightGet());
-    }, [dispatch]);
-
-    useEffect(() => {
-      dispatch(getZaprosData());
     }, [dispatch]);
 
     const colors = useMemo(

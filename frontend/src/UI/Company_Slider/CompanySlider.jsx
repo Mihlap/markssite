@@ -82,7 +82,7 @@ const CompanySlider = () => {
       <Slider {...settings}>
         {imagePaths.map((path, index) => (
           <div key={index} className="company-slider-slide">
-            <img className="company-slider-slide-img" src={path} alt={`Slide ${index + 1}`} />
+            <img className="company-slider-slide-img" loading="eager" src={path} alt={`Slide ${index + 1}`} />
           </div>
         ))}
       </Slider>
@@ -92,8 +92,7 @@ const CompanySlider = () => {
             <button
               key={index}
               className={`button_slider ${activeButtonIndex === index ? 'active' : ''}`}
-              onClick={() => handleButtonClick(index)}
-            >
+              onClick={() => handleButtonClick(index)}>
               {String(index + 1).padStart(2, '0')}
             </button>
           ))}

@@ -448,6 +448,51 @@ router.get('/all', async (req, res) => {
   }
 });
 
+router.get('/featured', async (req, res) => {
+  try {
+    const data = await ProjectMain.findAll({ order: [['order', 'ASC']] });
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
+
+router.post('/featured', async (req, res) => {
+  try {
+    const project = req.body.project;
+    const saved = await ProjectMain.create({ project, IdProject: project.id });
+    res.status(200).json({ message: 'OK', projectId: saved.id });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Ошибка при сохранении данных' });
+  }
+});
+
+router.put('/featured/order', async (req, res) => {
+  try {
+    const list = (Array.isArray(req.body) ? req.body : []).filter((item) => item?.IdProject != null);
+    for (let i = 0; i < list.length; i++) {
+      await ProjectMain.update({ order: i }, { where: { IdProject: list[i].IdProject } });
+    }
+    const updated = await ProjectMain.findAll({ order: [['order', 'ASC']] });
+    res.json(updated);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
+
+router.delete('/featured/:id', async (req, res) => {
+  try {
+    await ProjectMain.destroy({ where: { IdProject: req.params.id } });
+    res.sendStatus(200);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
+
 router.get('/:id', async (req, res) => {
   try {
     const project = await Project.findByPk(req.params.id, {

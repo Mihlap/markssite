@@ -31,7 +31,7 @@ export default function Item({ project, photoSrc }) {
       <img
         src={photoSrc}
         alt={project.imageProject || 'Default Alt Text'}
-        loading="lazy"
+        loading="eager"
         decoding="async"
         onError={(e) => {
           e.currentTarget.src = catPhoto;

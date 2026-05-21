@@ -6,8 +6,20 @@ export const useDeleteProject = () => {
 
   return useMutation({
     mutationFn: (id) => deleteProject(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['projects'] });
+    onSuccess: (_, id) => {
+      queryClient.setQueriesData({ queryKey: ['projects'] }, (prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          pages: prev.pages.map((page) => ({
+            ...page,
+            data: page.data.filter((p) => p.id !== id),
+          })),
+        };
+      });
+      queryClient.setQueryData(['featuredProjects'], (prev = []) =>
+        prev.filter((p) => p.IdProject !== id)
+      );
     },
   });
 };
