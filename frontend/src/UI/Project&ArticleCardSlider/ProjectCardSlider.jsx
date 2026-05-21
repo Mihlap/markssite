@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import Slider from 'react-slick';
-import catPhoto from '../../img/default-photo.jpeg';
+import placehold from '../../Project/icon/placehold.webp';
+
 import '.././Company_Slider/CompanySlider.css';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
@@ -24,7 +25,7 @@ const ProjectCardSlider = ({ slidesCard }) => {
   const imagePaths =
     slidesCard && slidesCard.length > 0
       ? slidesCard.flatMap((slide) => {
-          if (!slide.imageTitle) return catPhoto;
+          if (!slide.imageTitle) return placehold;
           return slide.imageTitle.split(',').map((el) => {
             return el.includes('https') ? el.trim() : `${bucket_url}/images/imageAdd/${el.trim()}`;
           });

@@ -6,16 +6,14 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { useProjects, useGeolocation, useWindowWidth } from '../hooks';
 import CompanySlider from '../UI/Company_Slider/CompanySlider';
-import '../UI/Company_Slider/CompanySlider.css';
-import '../UI/ButtonsProjects/AllProjectsButton.module.css';
 import catPhoto from '../img/default-photo.jpeg';
 import SearchInput from './SearchInput';
 
 import { BUTTON_CHOOSE } from './const';
 import Button from './ui/Button';
+import Item from './Item';
 import { Icon } from './icon';
 import styles from './styles/Project.module.css';
-import Item from './Item';
 
 const CityModal = lazy(() => import('./CityModal'));
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
@@ -145,7 +143,7 @@ export default function Project() {
           <div className={styles.menu_button_group_project_wrapper_main}>
             <div className={styles.menu_button_group_project}>
               {visibleButtons.map((el, i) => (
-                <Button key={el.i} label={el} isActive={isButtonActive(el)} onClick={() => handleButtonClick(el)} />
+                <Button key={i} label={el} isActive={isButtonActive(el)} onClick={() => handleButtonClick(el)} />
               ))}
             </div>
             <Button label="Выбрать город" onClick={handleSelectCityClick} icon={<Icon />} className={styles.btnCity} />
@@ -160,7 +158,11 @@ export default function Project() {
             onCityClick={handleButtonCityClick}
           />
         </Suspense>
-        {isError && <p style={{ textAlign: 'center', padding: '16px' }}>Не удалось загрузить проекты. Попробуйте обновить страницу.</p>}
+        {isError && (
+          <p style={{ textAlign: 'center', padding: '16px' }}>
+            Не удалось загрузить проекты. Попробуйте обновить страницу.
+          </p>
+        )}
         <>
           <section className={styles.list}>
             {filteredProjects.map((project) => {
