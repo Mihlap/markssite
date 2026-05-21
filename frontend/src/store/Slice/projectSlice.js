@@ -116,10 +116,11 @@ const buildProjectFormData = (formattedData) => {
   return formData;
 };
 
+// TODO: migrate to useMutation (useCreateProject hook)
 export const createProject = (formattedData) => async (dispatch) => {
   dispatch(fetchProjectStart());
   try {
-    await axios.post(`${serverHost}/api-project/postzapros`, buildProjectFormData(formattedData), {
+    await axios.post(`${serverHost}/api-project`, buildProjectFormData(formattedData), {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
     dispatch(getFetchForm());
@@ -129,10 +130,11 @@ export const createProject = (formattedData) => async (dispatch) => {
   }
 };
 
+// TODO: migrate to useMutation (useUpdateProject hook)
 export const updateProject = (id, formattedData) => async (dispatch) => {
   dispatch(fetchProjectStart());
   try {
-    await axios.put(`${serverHost}/api-project/updatezapros/${id}`, buildProjectFormData(formattedData), {
+    await axios.put(`${serverHost}/api-project/${id}`, buildProjectFormData(formattedData), {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
     dispatch(getFetchForm());
@@ -142,6 +144,7 @@ export const updateProject = (id, formattedData) => async (dispatch) => {
   }
 };
 
+// TODO: used in ProjectCard.jsx — replace with useProjects hook, then remove
 export const getFetchForm = () => async (dispatch) => {
   dispatch(fetchProjectStart());
 
@@ -155,6 +158,7 @@ export const getFetchForm = () => async (dispatch) => {
   }
 };
 
+// TODO: unused — remove
 export const getFetchFormCityFilter = (page, projectsPerPage, countryCity) => async (dispatch) => {
   dispatch(fetchProjectStart());
 
@@ -170,6 +174,7 @@ export const getFetchFormCityFilter = (page, projectsPerPage, countryCity) => as
   }
 };
 
+// TODO: migrated to useDeleteProject hook — remove after cleanup
 export const deleteForm = (id) => async (dispatch) => {
   try {
     await axios.delete(`${serverHost}/api-project/deletezapros/${id}`);

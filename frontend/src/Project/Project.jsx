@@ -1,5 +1,4 @@
 import { useEffect, useState, useCallback, useMemo, lazy, Suspense } from 'react';
-import { Link } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import { Helmet } from 'react-helmet-async';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,7 +12,7 @@ import { fetchToggleStateAsync } from '../store/Slice/toggleSlice';
 import catPhoto from '../img/default-photo.jpeg';
 import SearchInput from './SearchInput';
 
-import { BUTTON_CHOOSE, COLOR } from './const';
+import { BUTTON_CHOOSE } from './const';
 import Button from './ui/Button';
 import { Icon } from './icon';
 import styles from './styles/Project.module.css';
@@ -26,15 +25,13 @@ export default function Project() {
   const dispatch = useDispatch();
   const [selectOnCompetencies, setSelectOnCompetencies] = useState('Все');
   const [selectedCity, setSelectedCity] = useState('');
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useProjects({
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isError } = useProjects({
     limit: 12,
     view: selectOnCompetencies,
     city: selectedCity,
   });
   const projects = useMemo(() => data?.pages.flatMap((p) => p.data) ?? [], [data]);
 
-  const { data: allData } = useProjects({ limit: 200, city: selectedCity });
-  const allProjects = useMemo(() => allData?.pages.flatMap((p) => p.data) ?? [], [allData]);
   const isActive = useSelector((state) => state.toggle.isActiveForButton1);
 
   const [modalCity, setModalCity] = useState(false);
@@ -82,28 +79,7 @@ export default function Project() {
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
-  const categoriesSet = useMemo(() => {
-    const set = new Set();
-
-    for (const p of allProjects) {
-      const vc = p.viewConstruction;
-      if (Array.isArray(vc)) {
-        vc.forEach((cat) => set.add(cat));
-      } else if (typeof vc === 'string') {
-        for (const cat of BUTTON_CHOOSE) {
-          if (cat === 'Все') continue;
-          if (vc.includes(cat)) set.add(cat);
-        }
-      }
-    }
-
-    return set;
-  }, [allProjects]);
-
-  const visibleButtons = useMemo(
-    () => BUTTON_CHOOSE.filter((el) => el === 'Все' || categoriesSet.has(el)),
-    [categoriesSet]
-  );
+  const visibleButtons = BUTTON_CHOOSE;
 
   const isButtonActive = (el) => !modalCity && (el === selectOnCompetencies || (!selectOnCompetencies && el === 'Все'));
 
@@ -190,6 +166,7 @@ export default function Project() {
             onCityClick={handleButtonCityClick}
           />
         </Suspense>
+        {isError && <p style={{ textAlign: 'center', padding: '16px' }}>Не удалось загрузить проекты. Попробуйте обновить страницу.</p>}
         <>
           <section className={styles.list}>
             {filteredProjects.map((project) => {

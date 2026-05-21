@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { fetchProjects } from '../api/projects';
+import { fetchProjects, deleteProject } from '../api/projects';
 
 export const useProjects = ({ limit = 12, view = 'Все', city = '' } = {}) => {
   return useInfiniteQuery({

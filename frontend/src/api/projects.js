@@ -11,11 +11,6 @@ export const fetchProjects = async ({ page = 1, limit = 12, view = '', city = ''
   return response.data;
 };
 
-export const fetchAdminProjects = async () => {
-  const response = await axios.get(`${serverHost}/api-project/getzapros`);
-  return Array.isArray(response.data) ? response.data : (response.data?.data ?? []);
-};
-
-export const deleteAdminProject = async (id) => {
-  await axios.delete(`${serverHost}/api-project/deletezapros/${id}`);
+export const deleteProject = async (id) => {
+  await axios.delete(`${serverHost}/api-project/${id}`);
 };

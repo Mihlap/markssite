@@ -13,6 +13,7 @@ const {
   uploadFileToS3,
   deleteFileFromS3
 } = require('../../s3Utils/s3Service');
+const { convertToWebp } = require('../../utils/convertToWebp');
 
 const router = express.Router();
 
@@ -117,7 +118,7 @@ const updateDynamicBlocksContent = (blocks, newImages) => {
 
 
 router.post(
-  '/postzapros',
+  '/',
   fileMiddleware.fields([{
     name: 'dropPhoto',
     maxCount: 4
@@ -146,8 +147,8 @@ router.post(
       const dynamicImageTitles = req.files.dynamicImages
         ? await Promise.all(
             req.files.dynamicImages.map(async (file) => {
-              const fileUrl = await uploadFileToS3(file, 'images/imageAdd');
-              return fileUrl;
+              const converted = await convertToWebp(file);
+              return uploadFileToS3(converted, 'images/imageAdd');
             }),
           )
         : [];
@@ -166,20 +167,20 @@ router.post(
       const imageTitles = req.files.dropPhoto
         ? await Promise.all(
             req.files.dropPhoto.map(async (file) => {
-              const fileUrl = await uploadFileToS3(file, 'images/imageAdd');
-              return fileUrl;
+              const converted = await convertToWebp(file);
+              return uploadFileToS3(converted, 'images/imageAdd');
             }),
           )
         : [];
 
       const imageProjects = req.files.photoAva
-        ? await uploadFileToS3(req.files.photoAva[0], 'images/imageAdd')
+        ? await uploadFileToS3(await convertToWebp(req.files.photoAva[0]), 'images/imageAdd')
         : null;
       const imageOpens = req.files.imageOpen
-        ? await uploadFileToS3(req.files.imageOpen[0], 'images/imageAdd')
+        ? await uploadFileToS3(await convertToWebp(req.files.imageOpen[0]), 'images/imageAdd')
         : null;
       const imageCloses = req.files.imageClose
-        ? await uploadFileToS3(req.files.imageClose[0], 'images/imageAdd')
+        ? await uploadFileToS3(await convertToWebp(req.files.imageClose[0]), 'images/imageAdd')
         : null;
 
       const createdProject = await Project.create({
@@ -234,7 +235,7 @@ router.post(
 );
 
 router.put(
-  '/updatezapros/:projectId',
+  '/:projectId',
   fileMiddleware.fields([{
     name: 'dropPhoto',
     maxCount: 4
@@ -276,10 +277,10 @@ router.put(
       const currentImageOpens = projectToUpdate.imageOpen ? [projectToUpdate.imageOpen] : [];
       const currentImageCloses = projectToUpdate.imageClose ? [projectToUpdate.imageClose] : [];
 
-      const imageTitlesNew = req.files.dropPhoto ? await Promise.all(req.files.dropPhoto.map((file) => uploadFileToS3(file, 'images/imageAdd'))) : [];
-      const imageProjectNew = req.files.photoAva ? await uploadFileToS3(req.files.photoAva[0], 'images/imageAdd') : null;
-      const imageOpenNew = req.files.imageOpen ? await uploadFileToS3(req.files.imageOpen[0], 'images/imageAdd') : null;
-      const imageCloseNew = req.files.imageClose ? await uploadFileToS3(req.files.imageClose[0], 'images/imageAdd') : null;
+      const imageTitlesNew = req.files.dropPhoto ? await Promise.all(req.files.dropPhoto.map(async (file) => uploadFileToS3(await convertToWebp(file), 'images/imageAdd'))) : [];
+      const imageProjectNew = req.files.photoAva ? await uploadFileToS3(await convertToWebp(req.files.photoAva[0]), 'images/imageAdd') : null;
+      const imageOpenNew = req.files.imageOpen ? await uploadFileToS3(await convertToWebp(req.files.imageOpen[0]), 'images/imageAdd') : null;
+      const imageCloseNew = req.files.imageClose ? await uploadFileToS3(await convertToWebp(req.files.imageClose[0]), 'images/imageAdd') : null;
 
       const imageTitlesFromClient = req.body.imageTitle ? req.body.imageTitle.split(',').map((item) => item.trim()) : [];
       const imageProjectFromClient = req.body.imageProject ? [req.body.imageProject] : [];
@@ -351,10 +352,8 @@ router.put(
       const dynamicImagesNew = req.files.dynamicImages ?
         await Promise.all(
           req.files.dynamicImages.map(async (file) => {
-            const {
-              fileUrl
-            } = await uploadFileToS3(file, 'images/imageAdd');
-            return fileUrl;
+            const converted = await convertToWebp(file);
+            return uploadFileToS3(converted, 'images/imageAdd');
           })
         ) : [];
 
@@ -445,61 +444,7 @@ router.get('/all', async (req, res) => {
   }
 });
 
-router.get('/getzapros-filter', async (req, res) => {
-  try {
-    const {
-      viewConstruction
-    } = req.query;
-    let data;
-
-    if (viewConstruction && viewConstruction !== 'Все') {
-      data = await Project.findAll({
-        where: {
-          viewConstruction
-        },
-      });
-    } else {
-      data = await Project.findAll();
-    }
-    res.json(data);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      error: 'Произошла ошибка при получении проектов.'
-    });
-  }
-});
-
-router.get('/getdynamicdata/:projectId', async (req, res) => {
-  try {
-    const {
-      projectId
-    } = req.params;
-
-    const constructorData = await Constructor.findOne({
-      where: {
-        idBlock: projectId
-      },
-    });
-
-    if (!constructorData) {
-      return res.status(404).json({
-        message: 'Динамические данные не найдены'
-      });
-    }
-    res.json({
-      dynamicData: constructorData.data,
-      dynamicImages: constructorData.image.split(', '),
-    });
-  } catch (error) {
-    console.error('Ошибка при получении динамических данных:', error);
-    res.status(500).json({
-      message: 'Произошла ошибка при получении динамических данных'
-    });
-  }
-});
-
-router.delete('/deletezapros/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     const {
       id

@@ -1,22 +1,21 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import { useInView } from 'react-intersection-observer';
 import s from './styles.module.css';
 import defaultPhoto from '../../img/default-photo.jpeg';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteForm, getFetchForm } from '../../store/Slice/projectSlice';
 import { fetchToggleStateAsync, updateToggleStateAsync } from '../../store/Slice/toggleSlice';
 import { UiMarksButton, UiMarksDialog, UiMarksSwitch, UiMarksHeading, UiMarksDeleteModal } from '../ui';
 import MarksEntityActions from '../ui/EntityRow/MarksEntityActions';
 import MarksCopyId from '../ui/EntityRow/MarksCopyId';
 import { useAdminUser } from '../hooks/useAdminUser';
 import ProjectForm from './form/ProjectForm';
+import { useProjects, useDeleteProject } from '../../hooks';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 export default function Project({ user }) {
   const dispatch = useDispatch();
-  const project = useSelector((state) => state.project.projects);
   const isActiveForButton1 = useSelector((state) => state.toggle.isActiveForButton1);
-  const error = useSelector((state) => state.project.error);
 
   const { canDelete, canEdit } = useAdminUser(user);
   const [deleteModalState, setDeleteModalState] = useState({});
@@ -25,12 +24,24 @@ export default function Project({ user }) {
   const [isFormLoading, setIsFormLoading] = useState(false);
   const [editDataForNewForm, setEditDataForNewForm] = useState(null);
   const [showExitWarning, setShowExitWarning] = useState(false);
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isError } = useProjects({
+    limit: 12,
+  });
+  const { mutate: deleteProject } = useDeleteProject();
+  const project = useMemo(() => data?.pages.flatMap((p) => p.data) ?? [], [data]);
+
+  const { ref: sentinelRef, inView } = useInView({ threshold: 0 });
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
 
   const isFormDirtyRef = useRef(false);
   const formRef = useRef(null);
 
   useEffect(() => {
-    dispatch(getFetchForm());
     dispatch(fetchToggleStateAsync());
   }, [dispatch]);
 
@@ -58,10 +69,10 @@ export default function Project({ user }) {
 
   const handleFormDelete = useCallback(
     (id) => {
-      dispatch(deleteForm(id));
+      deleteProject(id);
       handleDeleteModalClose(id);
     },
-    [dispatch, handleDeleteModalClose]
+    [deleteProject, handleDeleteModalClose]
   );
 
 
@@ -106,12 +117,9 @@ export default function Project({ user }) {
       <UiMarksButton color="blue" size="large" icon onClick={() => setIsOpen(true)}>
         Добавить новый проект
       </UiMarksButton>
+      {isError && <p style={{ textAlign: 'center', padding: '16px' }}>Не удалось загрузить проекты. Попробуйте обновить страницу.</p>}
       <>
-        {error ? (
-          <p className={s.error}>
-            Нажмите на кнопку Проекты, <span>это позволит серверу сделать запрос ещё раз.</span>
-          </p>
-        ) : project.length === 0 ? (
+        {project.length === 0 ? (
           <p className={s.empty}>Проектов сейчас нет, добавьте свой первый проект!</p>
         ) : (
           <div className={s.grid}>
@@ -154,8 +162,10 @@ export default function Project({ user }) {
                 </React.Fragment>
               );
             })}
+            <div ref={sentinelRef} />
           </div>
         )}
+        {isFetchingNextPage && <p style={{ textAlign: 'center', padding: '16px' }}>Загрузка...</p>}
       </>
       <UiMarksDialog
         isOpen={isOpen}
