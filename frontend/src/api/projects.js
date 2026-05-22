@@ -88,11 +88,13 @@ const buildProjectFormData = (formattedData) => {
 export const createProject = async (formattedData) => {
   await axios.post(`${serverHost}/api-project`, buildProjectFormData(formattedData), {
     headers: { 'Content-Type': 'multipart/form-data' },
+    withCredentials: true,
   });
 };
 
 export const updateProject = async (id, formattedData) => {
   await axios.put(`${serverHost}/api-project/${id}`, buildProjectFormData(formattedData), {
     headers: { 'Content-Type': 'multipart/form-data' },
+    withCredentials: true, 
   });
 };
