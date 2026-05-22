@@ -1,5 +1,7 @@
 const express = require('express');
 const { ProjectMain } = require('../../db/models');
+const { logResourceActionFromSession } = require('../../utils/fileLogger');
+
 const router = express.Router();
 
 router.post('/search-project', async (req, res) => {
@@ -10,6 +12,14 @@ router.post('/search-project', async (req, res) => {
       project: publicationData,
       IdProject: IdProjects,
     });
+
+    logResourceActionFromSession(req, {
+      action: 'CREATE',
+      resourceType: 'project_main',
+      resourceId: IdProjects?.toString(),
+      resourceName: publicationData?.title || 'Проект (главная)',
+    });
+
     res.status(200).json({ message: 'OK', projectId: saved.id });
   } catch (err) {
     console.error('Ошибка при создании проекта:', err);
@@ -29,7 +39,16 @@ router.get('/search-project/getzapros', async (req, res) => {
 
 router.delete('/search-project/deletezapros/:IdProject', async (req, res) => {
   try {
-    await ProjectMain.destroy({ where: { IdProject: req.params.IdProject } });
+    const { IdProject } = req.params;
+    await ProjectMain.destroy({ where: { IdProject } });
+
+    logResourceActionFromSession(req, {
+      action: 'DELETE',
+      resourceType: 'project_main',
+      resourceId: IdProject,
+      resourceName: 'Проект (главная)',
+    });
+
     res.sendStatus(200);
   } catch (err) {
     console.error('Ошибка при удалении проекта:', err);
@@ -51,6 +70,13 @@ router.put('/search-project-replacement', async (req, res) => {
       const pk = list[i].IdProject;
       await ProjectMain.update({ order: i }, { where: { IdProject: pk } });
     }
+
+    logResourceActionFromSession(req, {
+      action: 'UPDATE',
+      resourceType: 'project_main',
+      resourceName: 'Порядок проектов на главной',
+      hasChanges: true,
+    });
 
     const updatedData = await ProjectMain.findAll({ order: [['order', 'ASC']] });
     res.json(updatedData);

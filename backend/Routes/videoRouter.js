@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require("path");
 const { Constructor } = require('../db/models');
 const videoUpload = require('../middleware/fileVideo');
+const { logResourceActionFromSession } = require('../utils/fileLogger');
 
 const router = express.Router();
 
@@ -19,6 +20,13 @@ router.post(`/upload-video`, videoUpload.single("video"), async (req, res) => {
 
     const constructor = await Constructor.create({
       videoPath,
+    });
+
+    logResourceActionFromSession(req, {
+      action: 'CREATE',
+      resourceType: 'video',
+      resourceId: constructor.id?.toString(),
+      resourceName: req.file.originalname,
     });
 
     return res.status(200).send(constructor);

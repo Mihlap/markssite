@@ -222,6 +222,7 @@ export const fetchProject = createAsyncThunk('project/fetchProject', async (form
       url: requestUrl,
       data: formData,
       headers: { 'Content-Type': 'multipart/form-data' },
+      withCredentials: true,
     });
 
 
