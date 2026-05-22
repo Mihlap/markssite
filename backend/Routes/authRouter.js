@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const { User } = require('../db/models');
-const { logAdminLogin, logAdminLogout } = require('../utils/fileLogger');
+const { logAdminLogin, logAdminLogout, logResourceActionFromSession } = require('../utils/fileLogger');
 
 const authRouter = express.Router();
 
@@ -151,16 +151,26 @@ authRouter.post('/login', async (req, res) => {
 
     const sessionData = { name: foundUser.userName, id: foundUser.id };
     req.session.user = sessionData;
-  
-    const ipAddress = getRealClientIp(req);
-   
-    logAdminLogin({
-      userName: foundUser.userName,
-      userId: foundUser.id,
-      ipAddress,
-    });
 
-    return res.status(200).json(sessionData);
+    const ipAddress = getRealClientIp(req);
+
+    return new Promise((resolve) => {
+      req.session.save((err) => {
+        if (err) {
+          console.error(err);
+          resolve(res.status(500).json({ message: 'Ошибка при сохранении сессии' }));
+          return;
+        }
+
+        logAdminLogin({
+          userName: foundUser.userName,
+          userId: foundUser.id,
+          ipAddress,
+        });
+
+        resolve(res.status(200).json(sessionData));
+      });
+    });
   } catch (e) {
     console.error(e);
     return res.status(500).json({ message: 'Ошибка авторизации' });
@@ -201,6 +211,13 @@ authRouter.delete('/user/:id', async (req, res) => {
     }
 
     await User.destroy({ where: { id: userId } });
+
+    logResourceActionFromSession(req, {
+      action: 'DELETE',
+      resourceType: 'admin_user',
+      resourceId: userId.toString(),
+      resourceName: userToDelete.userName,
+    });
 
     if (req.session.user?.id === userId) {
       req.session.destroy(() => { });

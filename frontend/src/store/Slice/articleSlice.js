@@ -168,6 +168,7 @@ export const fetchArticle = createAsyncThunk('article/fetchArticle', async (form
       headers: {
         'Content-Type': 'multipart/form-data',
       },
+      withCredentials: true,
     });
 
     dispatch(clearFormData());
