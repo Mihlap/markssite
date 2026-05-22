@@ -22,7 +22,7 @@ export default function Project() {
   const [selectOnCompetencies, setSelectOnCompetencies] = useState('Все');
   const [selectedCity, setSelectedCity] = useState('');
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isError } = useProjects({
-    limit: 12,
+    limit: 6,
     view: selectOnCompetencies,
     city: selectedCity,
   });
