@@ -12,6 +12,7 @@ const {
   uploadFileToS3,
   deleteFileFromS3
 } = require('../../s3Utils/s3Service');
+const { logResourceActionFromSession, buildS3LogInfo } = require('../../utils/fileLogger');
 
 const router = express.Router();
 
@@ -71,7 +72,7 @@ const extractFileNameAndFolderFromUrl = (url) => {
   }
 };
 
-const deleteImageFromS3 = async (fileUrl) => {
+const deleteImageFromS3 = async (fileUrl, logInfo = null) => {
   const result = extractFileNameAndFolderFromUrl(fileUrl);
   if (result) {
     let {
@@ -81,8 +82,7 @@ const deleteImageFromS3 = async (fileUrl) => {
     fileName = decodeURIComponent(fileName);
     folder = decodeURIComponent(folder);
     try {
-      const response = await deleteFileFromS3(fileName, folder);
-      console.log(`Файл ${fileName} успешно удалён с S3:`, response);
+      await deleteFileFromS3(fileName, folder, logInfo);
     } catch (error) {
       console.error(`Ошибка при удалении файла ${fileName}:`, error);
     }
@@ -140,12 +140,13 @@ router.post(
   ]),
   async (req, res) => {
     try {
+      const s3LogInfo = buildS3LogInfo(req, 'project');
       let dynamicBlocksContent = null;
 
       const dynamicImageTitles = req.files.dynamicImages
         ? await Promise.all(
             req.files.dynamicImages.map(async (file) => {
-              const fileUrl = await uploadFileToS3(file, 'images/imageAdd');
+              const fileUrl = await uploadFileToS3(file, 'images/imageAdd', s3LogInfo);
               return fileUrl;
             }),
           )
@@ -165,20 +166,20 @@ router.post(
       const imageTitles = req.files.dropPhoto
         ? await Promise.all(
             req.files.dropPhoto.map(async (file) => {
-              const fileUrl = await uploadFileToS3(file, 'images/imageAdd');
+              const fileUrl = await uploadFileToS3(file, 'images/imageAdd', s3LogInfo);
               return fileUrl;
             }),
           )
         : [];
 
       const imageProjects = req.files.photoAva
-        ? await uploadFileToS3(req.files.photoAva[0], 'images/imageAdd')
+        ? await uploadFileToS3(req.files.photoAva[0], 'images/imageAdd', s3LogInfo)
         : null;
       const imageOpens = req.files.imageOpen
-        ? await uploadFileToS3(req.files.imageOpen[0], 'images/imageAdd')
+        ? await uploadFileToS3(req.files.imageOpen[0], 'images/imageAdd', s3LogInfo)
         : null;
       const imageCloses = req.files.imageClose
-        ? await uploadFileToS3(req.files.imageClose[0], 'images/imageAdd')
+        ? await uploadFileToS3(req.files.imageClose[0], 'images/imageAdd', s3LogInfo)
         : null;
 
       const createdProject = await Project.create({
@@ -218,6 +219,13 @@ router.post(
         data: dynamicBlocksContent,
         image: dynamicImageTitles.join(', '),
         idBlock: createdProject.id,
+      });
+
+      logResourceActionFromSession(req, {
+        action: 'CREATE',
+        resourceType: 'project',
+        resourceId: createdProject.id.toString(),
+        resourceName: createdProject.title || 'Проект',
       });
 
       res.status(200).json({
@@ -270,15 +278,17 @@ router.put(
         });
       }
 
+      const s3LogInfo = buildS3LogInfo(req, 'project', projectId);
+
       const currentImageTitles = projectToUpdate.imageTitle ? projectToUpdate.imageTitle.split(', ').map((item) => item.trim()) : [];
       const currentImageProjects = projectToUpdate.imageProject ? [projectToUpdate.imageProject] : [];
       const currentImageOpens = projectToUpdate.imageOpen ? [projectToUpdate.imageOpen] : [];
       const currentImageCloses = projectToUpdate.imageClose ? [projectToUpdate.imageClose] : [];
 
-      const imageTitlesNew = req.files.dropPhoto ? await Promise.all(req.files.dropPhoto.map((file) => uploadFileToS3(file, 'images/imageAdd'))) : [];
-      const imageProjectNew = req.files.photoAva ? await uploadFileToS3(req.files.photoAva[0], 'images/imageAdd') : null;
-      const imageOpenNew = req.files.imageOpen ? await uploadFileToS3(req.files.imageOpen[0], 'images/imageAdd') : null;
-      const imageCloseNew = req.files.imageClose ? await uploadFileToS3(req.files.imageClose[0], 'images/imageAdd') : null;
+      const imageTitlesNew = req.files.dropPhoto ? await Promise.all(req.files.dropPhoto.map((file) => uploadFileToS3(file, 'images/imageAdd', s3LogInfo))) : [];
+      const imageProjectNew = req.files.photoAva ? await uploadFileToS3(req.files.photoAva[0], 'images/imageAdd', s3LogInfo) : null;
+      const imageOpenNew = req.files.imageOpen ? await uploadFileToS3(req.files.imageOpen[0], 'images/imageAdd', s3LogInfo) : null;
+      const imageCloseNew = req.files.imageClose ? await uploadFileToS3(req.files.imageClose[0], 'images/imageAdd', s3LogInfo) : null;
 
       const imageTitlesFromClient = req.body.imageTitle ? req.body.imageTitle.split(',').map((item) => item.trim()) : [];
       const imageProjectFromClient = req.body.imageProject ? [req.body.imageProject] : [];
@@ -302,7 +312,7 @@ router.put(
 
       const imagesToRemove = normalizedCurrentImages.filter((image) => !normalizedUpdatedImages.includes(image));
 
-      await Promise.all(imagesToRemove.map(deleteImageFromS3));
+      await Promise.all(imagesToRemove.map((url) => deleteImageFromS3(url, s3LogInfo)));
 
       await projectToUpdate.update({
         title: req.body.title,
@@ -350,9 +360,7 @@ router.put(
       const dynamicImagesNew = req.files.dynamicImages ?
         await Promise.all(
           req.files.dynamicImages.map(async (file) => {
-            const {
-              fileUrl
-            } = await uploadFileToS3(file, 'images/imageAdd');
+            const fileUrl = await uploadFileToS3(file, 'images/imageAdd', s3LogInfo);
             return fileUrl;
           })
         ) : [];
@@ -381,7 +389,7 @@ router.put(
 
       const imagesToRemoveFromDynamicBlocks = normalizedExistingDynamicImages.filter((image) => !normalizedNewDynamicImages.includes(image));
 
-      await Promise.all(imagesToRemoveFromDynamicBlocks.map(deleteImageFromS3));
+      await Promise.all(imagesToRemoveFromDynamicBlocks.map((url) => deleteImageFromS3(url, s3LogInfo)));
 
       if (existingConstructor) {
         await existingConstructor.update({
@@ -397,6 +405,14 @@ router.put(
       }
 
       await syncProjectMain(projectId);
+
+      logResourceActionFromSession(req, {
+        action: 'UPDATE',
+        resourceType: 'project',
+        resourceId: projectId.toString(),
+        resourceName: req.body.title || projectToUpdate.title || 'Проект',
+        hasChanges: true,
+      });
 
       res.status(200).json({
         message: 'Данные успешно обновлены',
@@ -581,6 +597,13 @@ router.delete('/deletezapros/:id', async (req, res) => {
       where: {
         id
       }
+    });
+
+    logResourceActionFromSession(req, {
+      action: 'DELETE',
+      resourceType: 'project',
+      resourceId: id.toString(),
+      resourceName: post?.title || 'Проект',
     });
 
     res.sendStatus(200);

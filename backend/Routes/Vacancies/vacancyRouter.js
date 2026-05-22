@@ -5,7 +5,7 @@ const {
   Employee,
   VacanciesMain
 } = require('../../db/models');
-const { logResourceAction } = require('../../utils/fileLogger');
+const { logResourceActionFromSession } = require('../../utils/fileLogger');
 
 const router = express.Router();
 
@@ -52,10 +52,8 @@ router.post('/addVacancy', async (req, res) => {
     const resourceType = formData.type === 'стажировка' ? 'internship' : 'vacancy';
     const resourceName = formData.title || (formData.type === 'стажировка' ? 'Стажировка' : 'Вакансия');
 
-    logResourceAction({
+    logResourceActionFromSession(req, {
       action: 'CREATE',
-      userName: req.session?.user?.name || 'Неизвестный',
-      userId: req.session?.user?.id?.toString() || 'N/A',
       resourceType,
       resourceId: newVacancy.id.toString(),
       resourceName,
@@ -99,10 +97,8 @@ router.post('/copyVacancy/:id', async (req, res) => {
     const resourceType = newVacancy.type === 'стажировка' ? 'internship' : 'vacancy';
     const resourceName = newVacancy.title || (newVacancy.type === 'стажировка' ? 'Стажировка (копия)' : 'Вакансия (копия)');
 
-    logResourceAction({
+    logResourceActionFromSession(req, {
       action: 'CREATE',
-      userName: req.session?.user?.name || 'Неизвестный',
-      userId: req.session?.user?.id?.toString() || 'N/A',
       resourceType,
       resourceId: newVacancy.id.toString(),
       resourceName,
@@ -229,10 +225,8 @@ router.put('/editVacancy/:id', async (req, res) => {
     const resourceType = formData.type === 'стажировка' || existingVacancy.type === 'стажировка' ? 'internship' : 'vacancy';
     const resourceName = formData.title || existingVacancy.title || (existingVacancy.type === 'стажировка' ? 'Стажировка' : 'Вакансия');
 
-    logResourceAction({
+    logResourceActionFromSession(req, {
       action: 'UPDATE',
-      userName: req.session?.user?.name || 'Неизвестный',
-      userId: req.session?.user?.id?.toString() || 'N/A',
       resourceType,
       resourceId: id,
       resourceName,
@@ -270,10 +264,8 @@ router.put('/updateVacancyLookStatus/:id', async (req, res) => {
       const resourceType = vacancy.type === 'стажировка' ? 'internship' : 'vacancy';
       const resourceName = vacancy.title || (vacancy.type === 'стажировка' ? 'Стажировка' : 'Вакансия');
 
-      logResourceAction({
+      logResourceActionFromSession(req, {
         action: 'UPDATE',
-        userName: req.session?.user?.name || 'Неизвестный',
-        userId: req.session?.user?.id?.toString() || 'N/A',
         resourceType,
         resourceId: id,
         resourceName,
@@ -420,10 +412,8 @@ router.delete('/deletezapros/:id', async (req, res) => {
     const resourceType = vacancy?.type === 'стажировка' ? 'internship' : 'vacancy';
     const resourceName = vacancyTitle || (vacancy?.type === 'стажировка' ? 'Стажировка' : 'Вакансия');
 
-    logResourceAction({
+    logResourceActionFromSession(req, {
       action: 'DELETE',
-      userName: req.session?.user?.name || 'Неизвестный',
-      userId: req.session?.user?.id?.toString() || 'N/A',
       resourceType,
       resourceId: id,
       resourceName,

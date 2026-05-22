@@ -33,17 +33,19 @@ async function uploadFileToS3(file, folder, logInfo = null) {
     await upload.done();
     const fileUrl = `https://${BUCKET_NAME}.s3.timeweb.cloud/${folder}/${fileName}`;    
 
-    logFileAction({
-      action: 'UPLOAD',
-      userName: logInfo?.userName || null,
-      userId: logInfo?.userId || null,
-      fileName,
-      filePath: folder,
-      fileUrl,
-      resourceType: logInfo?.resourceType || null,
-      resourceId: logInfo?.resourceId || null,
-    });
-    
+    if (logInfo?.userName && logInfo?.userId) {
+      logFileAction({
+        action: 'UPLOAD',
+        userName: logInfo.userName,
+        userId: logInfo.userId,
+        fileName,
+        filePath: folder,
+        fileUrl,
+        resourceType: logInfo.resourceType || null,
+        resourceId: logInfo.resourceId || null,
+      });
+    }
+
     return fileUrl; 
   } catch (err) {
     console.error('Ошибка при загрузке файла на S3:', err);
@@ -71,15 +73,17 @@ async function deleteFileFromS3(fileName, folder, logInfo = null) {
   try {
     await s3Client.send(new DeleteObjectCommand(deleteParams));    
  
-    logFileAction({
-      action: 'DELETE',
-      userName: logInfo?.userName || null,
-      userId: logInfo?.userId || null,
-      fileName,
-      filePath: folder,
-      resourceType: logInfo?.resourceType || null,
-      resourceId: logInfo?.resourceId || null,
-    });
+    if (logInfo?.userName && logInfo?.userId) {
+      logFileAction({
+        action: 'DELETE',
+        userName: logInfo.userName,
+        userId: logInfo.userId,
+        fileName,
+        filePath: folder,
+        resourceType: logInfo.resourceType || null,
+        resourceId: logInfo.resourceId || null,
+      });
+    }
   } catch (err) {
     console.error('Ошибка при удалении файла с S3:', err);
     throw err;

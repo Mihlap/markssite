@@ -2,6 +2,11 @@ node_modules
 .cursor/
 .vscode/
 
+docs/
+
+# Журнал действий админки (ротация ~2 месяца)
+backend/logs/
+
 .env
 .env.local
 .env.*.local
