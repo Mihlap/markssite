@@ -3,7 +3,7 @@ const { Op } = require('sequelize');
 const fileMiddleware = require('../../middleware/file');
 const { VacancyMainSlideCard } = require('../../db/models');
 const { uploadFileToS3, deleteFileFromS3 } = require('../../s3Utils/s3Service');
-const { logResourceAction } = require('../../utils/fileLogger');
+const { logResourceActionFromSession } = require('../../utils/fileLogger');
 
 const router = express.Router();
 
@@ -75,10 +75,8 @@ router.post(
         order: nextOrder,
       });
 
-      logResourceAction({
+      logResourceActionFromSession(req, {
         action: 'CREATE',
-        userName: req.session?.user?.name || 'Неизвестный',
-        userId: req.session?.user?.id?.toString() || 'N/A',
         resourceType: 'vacancy-slide',
         resourceId: newSlide.id.toString(),
         resourceName: details.card1?.title || 'Слайд вакансии',
@@ -136,10 +134,8 @@ router.put('/update-slide/:id', fileMiddleware.fields([{ name: 'photoAva', maxCo
 
       const hasChanges = oldImage !== slide.photoAva || oldCardData !== newCardData;
 
-      logResourceAction({
+      logResourceActionFromSession(req, {
         action: 'UPDATE',
-        userName: req.session?.user?.name || 'Неизвестный',
-        userId: req.session?.user?.id?.toString() || 'N/A',
         resourceType: 'vacancy-slide',
         resourceId: id,
         resourceName: details.card1?.title || slide.cardData?.card1?.title || 'Слайд вакансии',
@@ -229,10 +225,8 @@ router.put('/toggle-slide/:id', async (req, res) => {
     });
 
     if (updated) {
-      logResourceAction({
+      logResourceActionFromSession(req, {
         action: 'UPDATE',
-        userName: req.session?.user?.name || 'Неизвестный',
-        userId: req.session?.user?.id?.toString() || 'N/A',
         resourceType: 'vacancy-slide',
         resourceId: id,
         resourceName: slide.cardData?.card1?.title || 'Слайд вакансии',
@@ -282,10 +276,8 @@ router.delete('/delete-slide/:id', async (req, res) => {
         await deleteFileFromS3(fileName, 'images/slideCard', userInfo);
       }
 
-      logResourceAction({
+      logResourceActionFromSession(req, {
         action: 'DELETE',
-        userName: req.session?.user?.name || 'Неизвестный',
-        userId: req.session?.user?.id?.toString() || 'N/A',
         resourceType: 'vacancy-slide',
         resourceId: id,
         resourceName: slide.cardData?.card1?.title || 'Слайд вакансии',

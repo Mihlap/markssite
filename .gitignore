@@ -1,7 +1,12 @@
 node_modules
 .cursor/
 
-# webpack cache
+docs/
+
+# Журнал действий админки (ротация ~2 месяца)
+backend/logs/
+
+webpack cache
 frontend/.webpack-cache/
 .vscode
 .env

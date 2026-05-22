@@ -1,3 +1,4 @@
+import axios from 'axios';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import store from './store/store';
@@ -16,6 +17,8 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+axios.defaults.withCredentials = true;
 
 const root = document.getElementById('root');
 

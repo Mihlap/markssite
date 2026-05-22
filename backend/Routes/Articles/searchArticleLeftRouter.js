@@ -1,5 +1,6 @@
 const express = require('express');
 const { PublicationOne } = require('../../db/models');
+const { logResourceActionFromSession } = require('../../utils/fileLogger');
 
 const router = express.Router();
 
@@ -11,6 +12,13 @@ router.post('/left', async (req, res) => {
     const newPublication = await PublicationOne.create({
       publication: publicationData,
       IdArticle: IdArticles,
+    });
+
+    logResourceActionFromSession(req, {
+      action: 'CREATE',
+      resourceType: 'article_publication_left',
+      resourceId: IdArticles?.toString(),
+      resourceName: publicationData?.publication?.title || 'Публикация (левая колонка)',
     });
 
     res.status(200).json(newPublication);
@@ -33,6 +41,14 @@ router.delete('/left-delete/:IdArticle', async (req, res) => {
   try {
     const { IdArticle } = req.params;
     await PublicationOne.destroy({ where: { IdArticle } });
+
+    logResourceActionFromSession(req, {
+      action: 'DELETE',
+      resourceType: 'article_publication_left',
+      resourceId: IdArticle,
+      resourceName: 'Публикация (левая колонка)',
+    });
+
     res.sendStatus(200);
   } catch (error) {
     console.log(error);
@@ -52,6 +68,14 @@ router.put('/left-update', async (req, res) => {
       },
       { where: {} },
     );
+
+    logResourceActionFromSession(req, {
+      action: 'UPDATE',
+      resourceType: 'article_publication_left',
+      resourceId: IdArticles?.toString(),
+      resourceName: publicationData?.publication?.title || 'Публикация (левая колонка)',
+      hasChanges: true,
+    });
 
     res.sendStatus(200);
   } catch (error) {

@@ -3,8 +3,11 @@ const { URL } = require('url');
 const { Op } = require('sequelize');
 const { Project, ProjectMain, Constructor } = require('../../db/models');
 const fileMiddleware = require('../../middleware/file');
-const { uploadFileToS3, deleteFileFromS3 } = require('../../s3Utils/s3Service');
 const { convertToWebp } = require('../../utils/convertToWebp');
+const {
+  uploadFileToS3,
+  deleteFileFromS3
+} = require('../../s3Utils/s3Service');
 const { logResourceActionFromSession, buildS3LogInfo } = require('../../utils/fileLogger');
 
 const router = express.Router();
@@ -63,15 +66,14 @@ const extractFileNameAndFolderFromUrl = (url) => {
   }
 };
 
-const deleteImageFromS3 = async (fileUrl) => {
+const deleteImageFromS3 = async (fileUrl, logInfo = null) => {
   const result = extractFileNameAndFolderFromUrl(fileUrl);
   if (result) {
     let { fileName, folder } = result;
     fileName = decodeURIComponent(fileName);
     folder = decodeURIComponent(folder);
     try {
-      const response = await deleteFileFromS3(fileName, folder);
-      console.log(`Файл ${fileName} успешно удалён с S3:`, response);
+      await deleteFileFromS3(fileName, folder, logInfo);
     } catch (error) {
       console.error(`Ошибка при удалении файла ${fileName}:`, error);
     }
@@ -163,6 +165,7 @@ router.post(
   ]),
   async (req, res) => {
     try {
+      const s3LogInfo = buildS3LogInfo(req, 'project');
       let dynamicBlocksContent = null;
 
       const dynamicImageTitles = req.files.dynamicImages
@@ -171,7 +174,7 @@ router.post(
               const fileToUpload = file.mimetype.startsWith('image/')
                 ? await convertToWebp(file)
                 : file;
-              return uploadFileToS3(fileToUpload, 'images/imageAdd');
+              return uploadFileToS3(fileToUpload, 'images/imageAdd', s3LogInfo);
             }),
           )
         : [];
@@ -191,19 +194,19 @@ router.post(
         ? await Promise.all(
             req.files.dropPhoto.map(async (file) => {
               const converted = await convertToWebp(file);
-              return uploadFileToS3(converted, 'images/imageAdd');
+              return uploadFileToS3(converted, 'images/imageAdd', s3LogInfo);
             }),
           )
         : [];
 
       const imageProjects = req.files.photoAva
-        ? await uploadFileToS3(await convertToWebp(req.files.photoAva[0]), 'images/imageAdd')
+        ? await uploadFileToS3(await convertToWebp(req.files.photoAva[0]), 'images/imageAdd', s3LogInfo)
         : null;
       const imageOpens = req.files.imageOpen
-        ? await uploadFileToS3(await convertToWebp(req.files.imageOpen[0]), 'images/imageAdd')
+        ? await uploadFileToS3(await convertToWebp(req.files.imageOpen[0]), 'images/imageAdd', s3LogInfo)
         : null;
       const imageCloses = req.files.imageClose
-        ? await uploadFileToS3(await convertToWebp(req.files.imageClose[0]), 'images/imageAdd')
+        ? await uploadFileToS3(await convertToWebp(req.files.imageClose[0]), 'images/imageAdd', s3LogInfo)
         : null;
 
       const createdProject = await Project.create({
@@ -299,6 +302,8 @@ router.put(
         include: [Constructor],
       });
 
+      const s3LogInfo = buildS3LogInfo(req, 'project', projectId);
+
       if (!projectToUpdate) {
         return res.status(404).json({
           message: 'Проект не найден',
@@ -317,18 +322,18 @@ router.put(
       const imageTitlesNew = req.files.dropPhoto
         ? await Promise.all(
             req.files.dropPhoto.map(async (file) =>
-              uploadFileToS3(await convertToWebp(file), 'images/imageAdd'),
+              uploadFileToS3(await convertToWebp(file), 'images/imageAdd', s3LogInfo),
             ),
           )
         : [];
       const imageProjectNew = req.files.photoAva
-        ? await uploadFileToS3(await convertToWebp(req.files.photoAva[0]), 'images/imageAdd')
+        ? await uploadFileToS3(await convertToWebp(req.files.photoAva[0]), 'images/imageAdd', s3LogInfo)
         : null;
       const imageOpenNew = req.files.imageOpen
-        ? await uploadFileToS3(await convertToWebp(req.files.imageOpen[0]), 'images/imageAdd')
+        ? await uploadFileToS3(await convertToWebp(req.files.imageOpen[0]), 'images/imageAdd', s3LogInfo)
         : null;
       const imageCloseNew = req.files.imageClose
-        ? await uploadFileToS3(await convertToWebp(req.files.imageClose[0]), 'images/imageAdd')
+        ? await uploadFileToS3(await convertToWebp(req.files.imageClose[0]), 'images/imageAdd', s3LogInfo)
         : null;
 
       const imageTitlesFromClient = req.body.imageTitle
@@ -367,7 +372,7 @@ router.put(
         (image) => !normalizedUpdatedImages.includes(image),
       );
 
-      await Promise.all(imagesToRemove.map(deleteImageFromS3));
+      await Promise.all(imagesToRemove.map((url) => deleteImageFromS3(url, s3LogInfo)));
 
       await projectToUpdate.update({
         title: req.body.title,
@@ -418,7 +423,7 @@ router.put(
               const fileToUpload = file.mimetype.startsWith('image/')
                 ? await convertToWebp(file)
                 : file;
-              return uploadFileToS3(fileToUpload, 'images/imageAdd');
+              return uploadFileToS3(fileToUpload, 'images/imageAdd', s3LogInfo);
             }),
           )
         : [];
@@ -451,7 +456,7 @@ router.put(
         (image) => !normalizedNewDynamicImages.includes(image),
       );
 
-      await Promise.all(imagesToRemoveFromDynamicBlocks.map(deleteImageFromS3));
+      await Promise.all(imagesToRemoveFromDynamicBlocks.map((url) => deleteImageFromS3(url, s3LogInfo)));
 
       if (existingConstructor) {
         await existingConstructor.update({
@@ -556,6 +561,13 @@ router.delete('/:id', async (req, res) => {
       where: {
         id,
       },
+    });
+
+    logResourceActionFromSession(req, {
+      action: 'DELETE',
+      resourceType: 'project',
+      resourceId: id.toString(),
+      resourceName: post?.title || 'Проект',
     });
 
     logResourceActionFromSession(req, {
