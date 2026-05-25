@@ -134,3 +134,5 @@ dist
 .webpack-cache/
 
 build/*
+
+CLAUDE.md

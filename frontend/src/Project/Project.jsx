@@ -21,7 +21,7 @@ const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 export default function Project() {
   const [selectOnCompetencies, setSelectOnCompetencies] = useState('Все');
   const [selectedCity, setSelectedCity] = useState('');
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isError } = useProjects({
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending, isError } = useProjects({
     limit: 6,
     view: selectOnCompetencies,
     city: selectedCity,
@@ -59,8 +59,6 @@ export default function Project() {
 
   const handleModalClose = useCallback(() => {
     setModalCity(false);
-    setSelectedCity('');
-    setSelectOnCompetencies('Все');
   }, []);
 
   const { ref: sentinelRef, inView } = useInView({ threshold: 0 });
@@ -87,12 +85,25 @@ export default function Project() {
     });
   }, [projects, searchValue]);
 
+  if (isPending) {
+    return <p className={styles.notification}>Проекты загружаются.</p>;
+  }
+  if (!isPending && filteredProjects.length === 0) {
+    return <p className={styles.notification}>Проекты не найдены.</p>;
+  }
+  if (isFetchingNextPage) {
+    return <p className={styles.notification}>Загрузка...</p>;
+  }
+  if (isError) {
+    return <p className={styles.notification}>Не удалось загрузить проекты. Попробуйте обновить страницу.</p>;
+  }
+
   return (
     <>
       <Helmet>
         <title>MARKS GROUP</title>
       </Helmet>
-      <div className={styles.project_main}>
+      <section className={styles.project_main}>
         <div className={styles.project_slider_box}>
           <CompanySlider />
           <div className={styles.project_slider_text}>
@@ -100,45 +111,19 @@ export default function Project() {
             <span className={styles.projects_name_text}>Проекты</span>
           </div>
         </div>
-        {isMobile && (
-          <div className={styles.searchCityAddress_wrapper}>
-            <div className={styles.searchCityAddress_location_project_group}>
-              <label className={`${styles.searchCityAddress_label_project}`}>
-                <SearchInput resetKey={searchResetKey} onSearch={setSearchValue} />
-                <div className={styles.line_modal_project}></div>
-                <div className={styles.placeholder_modal_project}>
-                  <div className={styles.lupa_svg_modal_project}>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M12.9219 6.7676C12.9219 9.67654 10.5637 12.0347 7.6548 12.0347C4.74586 12.0347 2.3877 9.67654 2.3877 6.7676C2.3877 3.85865 4.74586 1.50049 7.6548 1.50049C10.5637 1.50049 12.9219 3.85865 12.9219 6.7676ZM10.7887 12.7669C9.85175 13.2573 8.78567 13.5347 7.6548 13.5347C3.91743 13.5347 0.887695 10.505 0.887695 6.7676C0.887695 3.03023 3.91743 0.000488281 7.6548 0.000488281C11.3922 0.000488281 14.4219 3.03023 14.4219 6.7676C14.4219 8.82566 13.5032 10.6691 12.0535 11.9103L14.7265 14.5833C15.0194 14.8762 15.0194 15.3511 14.7265 15.644C14.4336 15.9369 13.9587 15.9369 13.6658 15.644L10.7887 12.7669Z"
-                        fill="#959DA6"
-                      />
-                    </svg>
-                  </div>
-                  <p className={styles.text_placeholder_modal_project}>Ведите адрес или город</p>
-                </div>
-              </label>
-            </div>
-          </div>
-        )}
+        {isMobile && <SearchInput resetKey={searchResetKey} onSearch={setSearchValue} />}
         {(isMobile || isTablet) && (
-          <Swiper slidesPerView="auto" spaceBetween={8} className={styles.my_swiper2_button_group_project} touch="true">
+          <Swiper slidesPerView="auto" spaceBetween={8} touch="true">
             {visibleButtons.map((el, i) => (
               <SwiperSlide
                 key={el}
                 onClick={() => handleButtonClick(el)}
-                className={`${styles.menu__button__allProject} ${i === 0 ? styles.firstSlide : ''} ${isButtonActive(el) ? styles.active : ''}`}
-                style={{ width: 'fit-content' }}>
-                <p type="button" className={styles.menu_button_items}>
-                  {el}
-                </p>
+                className={`${styles.tabs} ${i === 0 ? styles.firstSlide : ''} ${isButtonActive(el) ? styles.active : ''}`}>
+                {el}
               </SwiperSlide>
             ))}
           </Swiper>
         )}
-
         {!isMobile && !isActive && (
           <div className={styles.menu_button_group_project_wrapper_main}>
             <div className={styles.menu_button_group_project}>
@@ -158,11 +143,6 @@ export default function Project() {
             onCityClick={handleButtonCityClick}
           />
         </Suspense>
-        {isError && (
-          <p style={{ textAlign: 'center', padding: '16px' }}>
-            Не удалось загрузить проекты. Попробуйте обновить страницу.
-          </p>
-        )}
         <>
           <section className={styles.list}>
             {filteredProjects.map((project) => {
@@ -176,9 +156,8 @@ export default function Project() {
             })}
           </section>
           <div ref={sentinelRef} />
-          {isFetchingNextPage && <p style={{ textAlign: 'center', padding: '16px' }}>Загрузка...</p>}
         </>
-      </div>
+      </section>
     </>
   );
 }
