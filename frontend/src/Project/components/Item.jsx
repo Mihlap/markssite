@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import { COLOR } from './const';
-import catPhoto from '../img/default-photo.jpeg';
-import styles from './styles/Project.module.css';
+import { COLOR } from '../const';
+import placehold from '../icon/placehold.webp';
+import styles from '../styles/Project.module.css';
 
 function parseCompetencies(raw) {
   if (!raw) return [];
@@ -15,9 +15,7 @@ function parseCompetencies(raw) {
 function CompetencyTag({ value, label }) {
   const color = COLOR[value];
   return (
-    <div
-      className={styles.skills_item}
-      style={{ color, borderColor: color}}>
+    <div className={styles.skills_item} style={{ color, borderColor: color }}>
       {label}
     </div>
   );
@@ -27,14 +25,14 @@ export default function Item({ project, photoSrc }) {
   const competencies = parseCompetencies(project.selectCompetencies);
 
   return (
-    <Link className={styles.item} to={`/projects/${project.id}`}>
+    <Link className={styles.item} to={`/project/${project.id}`}>
       <img
         src={photoSrc}
         alt={project.imageProject || 'Default Alt Text'}
         loading="eager"
         decoding="async"
         onError={(e) => {
-          e.currentTarget.src = catPhoto;
+          e.currentTarget.src = placehold;
         }}
         className={styles.item_img}
       />
@@ -51,11 +49,11 @@ export default function Item({ project, photoSrc }) {
             <p>{project.monthYear}</p>
           </div>
         </div>
-          <div className={styles.item_skills}>
-            {competencies.map((c) => (
-              <CompetencyTag key={c.value} value={c.value} label={c.label} />
-            ))}
-          </div>
+        <div className={styles.item_skills}>
+          {competencies.map((c) => (
+            <CompetencyTag key={c.value} value={c.value} label={c.label} />
+          ))}
+        </div>
       </div>
     </Link>
   );

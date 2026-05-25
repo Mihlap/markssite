@@ -3,7 +3,7 @@ import { useLocation, matchPath } from 'react-router-dom';
 import { useMemo } from 'react';
 
 const VACANCY_DETAIL_MATCHER = { path: '/hr/vacancies/:id', end: true };
-const PROJECT_DETAIL_MATCHER = { path: '/projects/:id', end: true };
+const PROJECT_DETAIL_MATCHER = { path: '/project/:id', end: true };
 const ARTICLE_DETAIL_MATCHER = { path: '/publication/:id', end: true };
 const JOURNAL_DETAIL_MATCHER = { path: '/journal/:id', end: true };
 

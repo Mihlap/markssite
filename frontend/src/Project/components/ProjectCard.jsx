@@ -4,18 +4,18 @@ import { useParams, Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { ScrollTrigger, MotionPathPlugin } from 'gsap/all';
-import ProjectCardSlider from '../UI/Project&ArticleCardSlider/ProjectCardSlider';
-import styles from './styles/ProjectCard.module.css';
-import { useProject, useProjects } from '../hooks';
-import SliderContainerProjectCard from '../UI/Project&ArticleCardSlider/SliderContainerProjectCard';
+import ProjectCardSlider from '../../UI/Project&ArticleCardSlider/ProjectCardSlider';
+import styles from '../styles/ProjectCard.module.css';
+import { useProject, useProjects } from '../../hooks';
+import SliderContainerProjectCard from '../../UI/Project&ArticleCardSlider/SliderContainerProjectCard';
 
-import { handleScroll, onVerticalScroll, onWheel, shareToVK, shareToTelegram, shareToWhatsApp } from './utils/utils';
-import placehold from './icon/placehold.webp';
-import next from '../icons/next.svg';
-import previous from '../icons/previous.svg';
-import ConstructorBlockRenderer from './ConstructorProject/ConstructorBlockRenderer';
-import NotFound from '../NotFound/NotFound';
-import { containsListTags, renderListWithDots } from './utils/utils';
+import { handleScroll, onVerticalScroll, onWheel, shareToVK, shareToTelegram, shareToWhatsApp } from '../utils/utils';
+import placehold from '../icon/placehold.webp';
+import next from '../../icons/next.svg';
+import previous from '../../icons/previous.svg';
+import ConstructorBlockRenderer from '../ConstructorProject/ConstructorBlockRenderer';
+import NotFound from '../../NotFound/NotFound';
+import { containsListTags, renderListWithDots } from '../utils/utils';
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
@@ -212,11 +212,6 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
 
       <div className={styles.main_project_card}>
         <ProjectCardSlider slidesCard={[project]} />
-
-        {/* <div className={styles.all_button_div} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-          <AllProjectsButton />
-        </div> */}
-
         <div className={styles.section_project__block__card}>
           <div className={styles.cart_project__block__card}>
             <div className={styles.cart_project__container__block__card}>

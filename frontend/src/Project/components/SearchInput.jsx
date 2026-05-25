@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import styles from './styles/Project.module.css';
+import styles from '../styles/Project.module.css';
 
 export default function SearchInput({ onSearch, resetKey }) {
   const [value, setValue] = useState('');

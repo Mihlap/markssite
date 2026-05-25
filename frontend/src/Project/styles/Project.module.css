@@ -277,6 +277,20 @@
 
 }
 
+.cityActive {
+  background-color: var(--black-1D2E43);
+  color: var(--white-F6F6F6);
+  outline-color: var(--black-1D2E43);
+}
+
+.cityActive> :nth-child(1) {
+  margin-right: 7.33px;
+}
+
+.cityActive :nth-child(3) {
+    transform: translate(10px, -1px) scale(0.8);
+}
+
 .btnCity {
   background: var(--light-light-gray-EBECEE) !important;
   outline: none !important; 
@@ -288,7 +302,7 @@
 }
 
 .btnCity:hover {
-  color: var(--black-1D2E43) !important;
+  color: var(--white-F6F6F6) !important;
   background: var(--light-gray-C0C5CB) !important;
 }
 

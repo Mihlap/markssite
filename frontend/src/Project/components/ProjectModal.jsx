@@ -1,29 +1,29 @@
 import { useState, useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
-import { BUTTON_CITY } from './const';
-import s from './styles/CityModal.module.css';
-import Button from './ui/Button';
-import { Icon1, Icon2 } from './icon';
+import { BUTTON_CITY } from '../const';
+import s from '../styles/ProjectModal.module.css';
+import Button from '../ui/Button';
+import { Icon1, Icon2 } from '../icon';
 
-export default function CityModal({ isOpen, onClose, currentLocation, selectedCity, onCityClick }) {
+export default function ProjectModal({ isOpen, onClose, currentLocation, selectedCity, onCityClick }) {
   const overlayRef = useRef(null);
   const panelRef = useRef(null);
   const [value, setValue] = useState('');
   const [focused, setFocused] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(-1);
+  // const [activeIndex, setActiveIndex] = useState(-1);
 
-  const suggestions = focused && value.trim()
-    ? BUTTON_CITY.filter((city) => city.toLowerCase().startsWith(value.trim().toLowerCase()))
-    : [];
+  const suggestions =
+    focused && value.trim()
+      ? BUTTON_CITY.filter((city) => city.toLowerCase().startsWith(value.trim().toLowerCase()))
+      : [];
 
-  useEffect(() => {
-    setActiveIndex(-1);
-  }, [value]);
+  // useEffect(() => {
+  //   setActiveIndex(-1);
+  // }, [value]);
 
   const handleSuggestionClick = (city) => {
     setValue('');
     setFocused(false);
-    setActiveIndex(-1);
     onCityClick(city);
   };
 
@@ -52,7 +52,6 @@ export default function CityModal({ isOpen, onClose, currentLocation, selectedCi
     }
   }, [isOpen]);
 
-
   return (
     <>
       <div ref={overlayRef} className={s.overlay} onClick={() => onClose()} />
@@ -65,7 +64,7 @@ export default function CityModal({ isOpen, onClose, currentLocation, selectedCi
             <p className={s.wrapCity_city}>{currentLocation}</p>
           </div>
 
-          <form onSubmit={(e) => e.preventDefault()}>
+          {/* <form onSubmit={(e) => e.preventDefault()}>
             <div className={s.searchWrapper}>
               <label>
                 <input
@@ -112,7 +111,10 @@ export default function CityModal({ isOpen, onClose, currentLocation, selectedCi
               {suggestions.length > 0 && (
                 <ul className={s.suggestions}>
                   {suggestions.map((city, i) => (
-                    <li key={city} className={`${s.suggestionItem} ${i === activeIndex ? s.suggestionItemActive : ''}`} onMouseDown={() => handleSuggestionClick(city)}>
+                    <li
+                      key={city}
+                      className={`${s.suggestionItem} ${i === activeIndex ? s.suggestionItemActive : ''}`}
+                      onMouseDown={() => handleSuggestionClick(city)}>
                       <span className={s.match}>{city.slice(0, value.trim().length)}</span>
                       <span className={s.rest}>{city.slice(value.trim().length)}</span>
                     </li>
@@ -120,7 +122,7 @@ export default function CityModal({ isOpen, onClose, currentLocation, selectedCi
                 </ul>
               )}
             </div>
-          </form>
+          </form> */}
 
           <div className={s.wrapBtn}>
             <p className={s.wrapBtn_title}>Наши объекты есть</p>

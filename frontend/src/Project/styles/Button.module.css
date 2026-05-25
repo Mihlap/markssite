@@ -15,6 +15,7 @@
 .button:hover {
     background-color: var(--dark-gray-566272);
     color: var(--white-F6F6F6);
+    outline: 1px solid var(--dark-gray-566272);
 }
 
 .button.active {
