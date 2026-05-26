@@ -1,10 +1,14 @@
 {
-  "window.autoDetectColorScheme": true,
-  "workbench.preferredDarkColorTheme": "Dark Modern",
-  "workbench.preferredHighContrastColorTheme": "Light Modern",
-  "cSpell.words": ["metalness", "Placemark", "Podzemproekt"],
+  "window.autoDetectColorScheme": false,
+  "workbench.colorTheme": "Default Dark Modern",
+  "workbench.preferredDarkColorTheme": "Default Dark Modern",
+  "workbench.preferredHighContrastColorTheme": "Default Light Modern",
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
-  "postman.settings.dotenv-detection-notification-visibility": false,
-  "files.autoSave": "afterDelay"
+  "cSpell.words": [
+    "metalness",
+    "Placemark",
+    "Podzemproekt"
+  ],
+  "postman.settings.dotenv-detection-notification-visibility": false
 }

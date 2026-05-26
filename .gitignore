@@ -1,5 +1,6 @@
 node_modules
 .cursor/
+.vscode/
 
 docs/
 
@@ -8,7 +9,6 @@ backend/logs/
 
 webpack cache
 frontend/.webpack-cache/
-.vscode
 .env
 .env.local
 .env.*.local
