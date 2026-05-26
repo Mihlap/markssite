@@ -107,10 +107,11 @@ router.get('/all', async (req, res) => {
     const { page = 1, limit = 12, view, city } = req.query;
     const offset = (page - 1) * limit;
 
-    console.log(city);
     const where = {};
-    if (view && view !== 'Все') where.viewConstruction = { [Op.like]: `%${view}%` };
-    if (city) where[Op.and] = [seqWhere(fn('lower', col('countryCity')), { [Op.like]: `%${city.toLowerCase()}%` })];
+    const andConditions = [];
+    if (view && view !== 'Все') andConditions.push({ viewConstruction: { [Op.like]: `%${view}%` } });
+    if (city) andConditions.push(seqWhere(fn('lower', col('countryCity')), { [Op.like]: `%${city.toLowerCase()}%` }));
+    if (andConditions.length > 0) where[Op.and] = andConditions;
 
     const { count, rows } = await Project.findAndCountAll({
       where,

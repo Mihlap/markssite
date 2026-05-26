@@ -11,7 +11,6 @@ const SearchInput = lazy(() => import('./components/SearchInput'));
 export default function ProjectsPage() {
   const [selectOnCompetencies, setSelectOnCompetencies] = useState('Все');
   const [selectedCity, setSelectedCity] = useState('');
-  const [searchValue, setSearchValue] = useState('');
   const [modalCity, setModalCity] = useState(false);
 
   const currentLocation = useGeolocation();
@@ -26,12 +25,6 @@ export default function ProjectsPage() {
 
   const projects = useMemo(() => data?.pages.flatMap((p) => p.data) ?? [], [data]);
 
-  const filteredProjects = useMemo(() => {
-    const query = searchValue.trim().toLowerCase();
-    if (!query) return projects;
-    return projects.filter((p) => (p?.location || '').toLowerCase().includes(query));
-  }, [projects, searchValue]);
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -42,7 +35,6 @@ export default function ProjectsPage() {
   );
 
   const handleTabsFilter = useCallback((viewConstruction) => {
-    setSelectedCity('');
     setSelectOnCompetencies(viewConstruction);
   }, []);
 
@@ -65,10 +57,14 @@ export default function ProjectsPage() {
     setSelectOnCompetencies('Все');
   }, []);
 
+  const handleSearchCity = useCallback((value) => {
+    setSelectedCity(value);
+  }, []);
+
   return (
     <>
       <CompanySlider />
-      {isMobile && <SearchInput onSearch={setSearchValue} />}
+      {(isMobile || isTablet) && <SearchInput onSearch={handleSearchCity} />}
       <FilterToolbar
         onFilter={handleTabsFilter}
         onModal={handleClickModal}
@@ -79,7 +75,7 @@ export default function ProjectsPage() {
         city={selectedCity}
       />
       <ProjectGrid
-        projects={filteredProjects}
+        projects={projects}
         isPending={isPending}
         isError={isError}
         isFetchingNextPage={isFetchingNextPage}
@@ -93,6 +89,7 @@ export default function ProjectsPage() {
           currentLocation={currentLocation}
           selectedCity={selectedCity}
           onCityClick={handleCityClick}
+          onSearch={handleSearchCity}
         />
       </Suspense>
     </>
