@@ -41,12 +41,12 @@ export default function Item({ project, photoSrc }) {
           <p title={project.title} className={styles.item_title}>
             {project.title}
           </p>
-          <div className={styles.item_desc}>
-            <p>{project.countryCity}</p>
-            <svg xmlns="http://www.w3.org/2000/svg" width="2" height="2" viewBox="0 0 2 2" fill="none">
+          <div title={project.countryCity} className={styles.item_desc_wrap}>
+            <p className={styles.item_city}>{project.countryCity}</p>
+            <svg xmlns="http://www.w3.org/2000/svg" width="2px" height="2px" fill="none">
               <circle cx="1" cy="1" r="1" fill="#959DA6" />
             </svg>
-            <p>{project.monthYear}</p>
+            <p className={styles.item_month}>{project.monthYear}</p>
           </div>
         </div>
         <div className={styles.item_skills}>

@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback, useMemo, lazy, Suspense } from 'react';
 import { useSelector } from 'react-redux';
 import CompanySlider from '../UI/Company_Slider/CompanySlider';
-import { useGeolocation, useProjects, useWindowWidth } from '../hooks';
+import { useProjects, useWindowWidth } from '../hooks';
 import FilterToolbar from './components/FilterToolbar';
 import ProjectGrid from './components/ProjectGrid';
 
@@ -13,7 +13,6 @@ export default function ProjectsPage() {
   const [selectedCity, setSelectedCity] = useState('');
   const [modalCity, setModalCity] = useState(false);
 
-  const currentLocation = useGeolocation();
   const { isMobile, isTablet } = useWindowWidth();
   const isHide = useSelector((state) => state.toggle.isActiveForButton1);
 
@@ -86,7 +85,6 @@ export default function ProjectsPage() {
         <ProjectModal
           isOpen={modalCity}
           onClose={handleModalClose}
-          currentLocation={currentLocation}
           selectedCity={selectedCity}
           onCityClick={handleCityClick}
           onSearch={handleSearchCity}

@@ -1,45 +1,100 @@
+/* ─── Base ─── */
 .button {
-    display: flex;
     padding: 8px 24px;
-    align-items: center;
-    justify-content: center;
-    border-radius: 2.125rem;
+    border-radius: 2rem;
     outline: 1px solid var(--black-1D2E43);
     background-color: transparent;
     white-space: nowrap;
-    color: var(--black-1D2E43);
     cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    color: var(--black-1D2E43);
+    font-family: var(--font-raleway);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    transition: background-color 0.3s ease, color 0.3s ease, outline-color 0.3s ease;
 }
 
-.button:hover {
-    background-color: var(--dark-gray-566272);
-    color: var(--white-F6F6F6);
-    outline: 1px solid var(--dark-gray-566272);
-}
-
-.button.active {
-    background-color: var(--black-1D2E43);
-    color: var(--white-F6F6F6);
-}
-
-.button.active:hover {
-    background-color: var(--black-1D2E43);
+/* ХОВЕР ТОЛЬКО ДЛЯ ПК */
+@media (hover: hover) {
+    .button:hover {
+        background-color: var(--dark-gray-566272);
+        color: var(--white-F6F6F6);
+        outline-color: var(--dark-gray-566272);
+    }
 }
 
 .button:disabled {
-    background-color: #959DA6;
-    border-color: #959DA6;
-    color: var(--white-F6F6F6);
     opacity: 0.6;
     pointer-events: none;
-    cursor: default;
 }
 
 .buttonLabel {
-    font-family: var(--font-raleway);
-    font-size: 0.875rem;
-    font-style: normal;
-    font-weight: var(--fw-400);
-    line-height: 1.25rem;
+    margin: 0;
+}
+
+/* ─── active ─── */
+.active {
+    background-color: var(--black-1D2E43);
+    color: var(--white-F6F6F6);
+    outline-color: var(--black-1D2E43);
+}
+
+/* ХОВЕР ТОЛЬКО ДЛЯ ПК */
+@media (hover: hover) {
+    .active:hover {
+        background-color: var(--dark-gray-566272);
+        outline: 1px solid var(--dark-gray-566272);
+    }
+}
+
+/* ─── city: город не выбран ─── */
+.city {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    padding-left: 16px;
+    padding-right: 16px;
+    background-color: var(--light-light-gray-EBECEE);
+}
+
+.city> :nth-child(1) {
+    margin-right: 7.33px;
+}
+
+/* ХОВЕР ТОЛЬКО ДЛЯ ПК */
+@media (hover: hover) {
+    .city:hover {
+        background-color: var(--light-gray-C0C5CB);
+        color: var(--white-F6F6F6);
+        outline: none;
+    }
+}
+
+/* ─── cityActive: город выбран ─── */
+.cityActive {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    padding-left: 16px;
+    padding-right: 16px;
+    background-color: var(--black-1D2E43);
+    color: var(--white-F6F6F6);
+}
+
+/* ХОВЕР ТОЛЬКО ДЛЯ ПК */
+@media (hover: hover) {
+    .cityActive:hover {
+        background-color: var(--dark-gray-566272);
+        outline: none;
+    }
+}
+
+.cityActive> :nth-child(1) {
+    margin-right: 7.33px;
+}
+
+.cityActive> :nth-child(3) {
+    transform: translate(8px, 0px) scale(0.8);
 }

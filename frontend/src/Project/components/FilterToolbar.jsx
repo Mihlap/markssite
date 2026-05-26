@@ -19,13 +19,14 @@ export default function FilterToolbar({ onFilter, onModal, onActive, onCityReset
 
   const cityButton = city ? (
     <Button
+      option="city"
+      isActive
       label={city}
-      icon={<Icon />}
+      iconLeft={<Icon />}
       iconRight={
         <span
           role="button"
           aria-label="Сбросить город"
-          className={s.btnCityReset}
           onClick={(e) => {
             e.stopPropagation();
             onCityReset();
@@ -34,22 +35,18 @@ export default function FilterToolbar({ onFilter, onModal, onActive, onCityReset
         </span>
       }
       onClick={onModal}
-      className={s.cityActive}
     />
   ) : (
-    <Button label="Выбрать город" onClick={onModal} icon={<Icon />} className={s.btnCity} />
+    <Button option="city" label="Выбрать город" onClick={onModal} iconLeft={<Icon />} />
   );
 
   return (
     <>
       {(isMobile || isTablet) && (
-        <Swiper slidesPerView="auto" spaceBetween={8} touch="true">
-          {BUTTON_CHOOSE.map((el, i) => (
-            <SwiperSlide
-              key={el}
-              onClick={() => onFilter(el)}
-              className={`${s.tabs} ${i === 0 ? s.firstSlide : ''} ${onActive(el) ? s.active : ''}`}>
-              {el}
+        <Swiper slidesPerView="auto" spaceBetween={8} touch="true" slidesOffsetBefore={16}>
+          {BUTTON_CHOOSE.map((el) => (
+            <SwiperSlide key={el} style={{ width: 'auto' }}>
+              <Button label={el} isActive={onActive(el)} onClick={() => onFilter(el)} />
             </SwiperSlide>
           ))}
         </Swiper>

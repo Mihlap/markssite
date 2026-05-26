@@ -53,44 +53,12 @@
   width: 100%;
 }
 
-.tabs {
-  display: flex;
-  width: auto;
-  padding: 8px 24px;
-  align-items: center;
-  justify-content: center;
-  border-radius: 2.125rem;
-  border: 1px solid var(--black-1D2E43);
-  background-color: transparent;
-  white-space: nowrap;
-  color: var(--black-1D2E43);
-  cursor: pointer;
-  transition: background-color 0.8s ease, color 0.8s ease;
-}
-
-.tabs:hover {
-  background-color: var(--dark-gray-566272);
-  color: var(--white-F6F6F6);
-  border: 1px solid var(--dark-gray-566272);
-  transition: background-color 0.4s ease, border 0.1s ease, color 0.4s ease;
-}
-
-.tabs.active {
-  background-color: var(--black-1D2E43);
-}
-
 .menu_button_items {
   font-family: var(--font-raleway);
   font-size: 0.875rem;
   font-style: normal;
   font-weight: var(--fw-400);
   line-height: 1.25rem;
-}
-
-
-.active {
-  background-color: var(--black-1D2E43);
-  color: var(--white-F6F6F6);
 }
 
 @media screen and (max-width: 2560px) {
@@ -135,11 +103,6 @@
   .menu_button_group_project_wrapper_main {
     display: none;
   }
-
-  .firstSlide {
-    margin-left: 1rem;
-  }
-
 
   .menu__button__allProject {
     transition: background-color 0.4s ease, color 0.4s ease;
@@ -266,45 +229,8 @@
     display: none;
   }
   
-  .firstSlide {
-    margin-left: 1rem;
-  }
-
-  .active {
-    background: var(--black-1D2E43);
-    color: var(--white-F6F6F6);
-  }
-
 }
 
-.cityActive {
-  background-color: var(--black-1D2E43);
-  color: var(--white-F6F6F6);
-  outline-color: var(--black-1D2E43);
-}
-
-.cityActive> :nth-child(1) {
-  margin-right: 7.33px;
-}
-
-.cityActive :nth-child(3) {
-    transform: translate(10px, -1px) scale(0.8);
-}
-
-.btnCity {
-  background: var(--light-light-gray-EBECEE) !important;
-  outline: none !important; 
-  padding-right: 1rem !important;
-  padding-left: 1rem !important;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.btnCity:hover {
-  color: var(--white-F6F6F6) !important;
-  background: var(--light-gray-C0C5CB) !important;
-}
 
 .list {
   display: grid;
@@ -426,7 +352,7 @@
   border-radius: 34px;
 }
 
-.item_desc {
+.item_desc_wrap {
   font-family: var(--font-raleway);
   color: var(--gray-959DA6);
   font-size: 10px;
@@ -436,8 +362,14 @@
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.item_city {
+
+}
+
+.item_month {
   white-space: nowrap;
-  overflow: hidden;
 }
 
 .notification {

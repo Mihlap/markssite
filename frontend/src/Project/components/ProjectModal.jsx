@@ -1,19 +1,20 @@
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { BUTTON_CITY } from '../const';
 import s from '../styles/ProjectModal.module.css';
 import Button from '../ui/Button';
 import { Icon1, Icon2 } from '../icon';
 import SearchInput from './SearchInput';
+import { useGeolocation } from '../../hooks';
 
 export default function ProjectModal({
   isOpen,
   onClose,
-  currentLocation,
   selectedCity,
   onCityClick,
   onSearch,
 }) {
+  const currentLocation = useGeolocation();
   const overlayRef = useRef(null);
   const panelRef = useRef(null);
 
@@ -54,9 +55,7 @@ export default function ProjectModal({
             <Icon1 />
             <p className={s.wrapCity_city}>{currentLocation}</p>
           </div>
-
           <SearchInput onSearch={onSearch} />
-
           <div className={s.wrapBtn}>
             <p className={s.wrapBtn_title}>Наши объекты есть</p>
             <div className={s.buttonGroup}>
