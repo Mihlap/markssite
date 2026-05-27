@@ -63,7 +63,7 @@ export default function ProjectsPage() {
   return (
     <>
       <CompanySlider />
-      {(isMobile || isTablet) && <SearchInput onSearch={handleSearchCity} />}
+      {(isMobile) && <SearchInput onSearch={handleSearchCity} />}
       <FilterToolbar
         onFilter={handleTabsFilter}
         onModal={handleClickModal}

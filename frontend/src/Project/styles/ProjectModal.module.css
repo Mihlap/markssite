@@ -65,12 +65,6 @@
 }
 
 .wrapCity_title {
-  color: var(--black-1D2E43);
-  font-family: var(--font-unbounded);
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 28px;
   margin-right: 13.83px;
 }
 
@@ -205,4 +199,12 @@
 
 .rest {
   color: #959DA6;
+}
+
+
+/* Экран меньше 1024px (2 колонки) */
+@media screen and (max-width: 1023px) {
+  .wrap {
+   padding-right: 43px;
+  }
 }

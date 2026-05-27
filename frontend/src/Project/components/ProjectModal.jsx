@@ -6,6 +6,7 @@ import Button from '../ui/Button';
 import { Icon1, Icon2 } from '../icon';
 import SearchInput from './SearchInput';
 import { useGeolocation } from '../../hooks';
+import { UiMarksHeadings } from '../../UI';
 
 export default function ProjectModal({
   isOpen,
@@ -51,9 +52,24 @@ export default function ProjectModal({
         <button className={s.closeModal} onClick={() => onClose()} />
         <div className={s.wrap}>
           <div className={s.wrapCity}>
-            <p className={s.wrapCity_title}>Вы&nbsp;здесь</p>
+            <UiMarksHeadings
+              level={2}
+              size="xl"
+              weight="500"
+              color="primary"
+              font="unbounded"
+              className={s.wrapCity_title}>
+              Вы&nbsp;здесь
+            </UiMarksHeadings>
             <Icon1 />
-            <p className={s.wrapCity_city}>{currentLocation}</p>
+            <UiMarksHeadings
+              level={2}
+              size="xl"
+              weight="300"
+              color="primary"
+              font="unbounded">
+              {currentLocation}
+            </UiMarksHeadings>
           </div>
           <SearchInput onSearch={onSearch} />
           <div className={s.wrapBtn}>

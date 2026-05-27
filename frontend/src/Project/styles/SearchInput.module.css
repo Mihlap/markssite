@@ -1,0 +1,108 @@
+.wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.icon {
+    position: absolute;
+    left: 0px;
+    bottom: 8px;
+    color: var(--gray-959DA6);
+    pointer-events: none;
+    transition: color 0.2s ease;
+}
+
+.input {
+    font-family: var(--font-raleway);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 6px 10px 6px 25px;
+    color: inherit;
+    width: 100%;
+    border-bottom: 1px solid var(--gray-959DA6);
+    transition: border-bottom-color 0.2s ease;
+}
+
+.input::placeholder {
+    font-size: 16px;
+    color: var(--gray-959DA6);
+    font-weight: 400;
+    line-height: 16px;
+}
+
+.input::-webkit-search-decoration,
+.input::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+}
+
+.label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-family: var(--font-raleway);
+    font-size: 16px;
+    line-height: 1;
+    font-weight: 400;
+    color: var(--gray-959DA6);
+    pointer-events: none;
+    transform-origin: left top;
+    transform: translate(23px, 7px);
+    will-change: transform;
+    transition: transform 0.25s ease-out, color 0.25s ease-out;
+}
+
+.wrap:focus-within .label,
+.input:not(:placeholder-shown) + .label {
+    transform: translate(0, -70%) scale(0.75);
+    color: var(--gray-959DA6);
+}
+.wrap:has(.input:not(:placeholder-shown)) .input {
+    border-bottom-color: var(--black-1D2E43);
+}
+.wrap:has(.input:not(:placeholder-shown)) .icon {
+    color: var(--black-1D2E43);
+}
+
+.wrap:has(.input:focus:not(:placeholder-shown)) .input {
+    border-bottom-color: var(--salmon-FF7F6A);
+}
+
+.dropdown {
+    position: absolute;
+    top: calc(100% + 1px);
+    left: 0;
+    right: 0;
+    list-style: none;
+    margin: 0;
+    padding: 4px 0;
+    background: var(--white-F6F6F6);
+    z-index: 100;
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.item {
+    font-family: var(--font-raleway);
+    padding: 8px 24px;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--gray-959DA6);
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.item:hover,
+.item[aria-selected='true'] {
+    color: var(--dark-gray-566272);
+    background: rgba(29, 46, 67, 0.06);
+}
+
+.highlight {
+    color: var(--salmon-FF7F6A);
+}

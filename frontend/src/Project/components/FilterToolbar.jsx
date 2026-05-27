@@ -42,7 +42,7 @@ export default function FilterToolbar({ onFilter, onModal, onActive, onCityReset
 
   return (
     <>
-      {(isMobile || isTablet) && (
+      {isMobile && (
         <Swiper slidesPerView="auto" spaceBetween={8} touch="true" slidesOffsetBefore={16}>
           {BUTTON_CHOOSE.map((el) => (
             <SwiperSlide key={el} style={{ width: 'auto' }}>
@@ -51,9 +51,10 @@ export default function FilterToolbar({ onFilter, onModal, onActive, onCityReset
           ))}
         </Swiper>
       )}
-      {!isMobile && !isHide && (
-        <div className={s.menu_button_group_project_wrapper_main}>
-          <div className={s.menu_button_group_project}>
+
+      {!isMobile && (
+        <div className={s.wrap_tabs}>
+          <div className={s.wrap_tabs_btn}>
             {BUTTON_CHOOSE.map((el, i) => (
               <Button key={i} label={el} isActive={onActive(el)} onClick={() => onFilter(el)} />
             ))}
