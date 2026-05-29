@@ -1,6 +1,5 @@
+@use '../StaffModalBlocksBase' as *;
 @import '../../App.css';
-@import '../StaffModalBlocksBase.scss';
-
 /* ===== Переопределение базовых стилей ===== */
 .staff_modal_stream {
   --stream-gap: 64px;

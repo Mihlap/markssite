@@ -1,6 +1,5 @@
+@use 'variables' as *;
 @import '../../../App.css';
-@import '../../../_variables.scss';
-
 .RatingSwiper {
   background-color: var(--white-F6F6F6);
   padding: 0;

@@ -1,6 +1,5 @@
-@import '../../../src/App.css';
-@import '../../../src/variables';
-
+@use 'variables' as *;
+@import '../../App.css';
 .categoryFiltersMain {
   padding: 2.12rem 2rem 0rem 2rem;
   width: 100%;

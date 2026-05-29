@@ -1,6 +1,5 @@
+@use 'variables' as *;
 @import '../../../App.css';
-@import '../../../_variables.scss';
-
 .SocialsSwiper {
   margin: rem(220) 0;
   background-color: var(--white-F6F6F6);

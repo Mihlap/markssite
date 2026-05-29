@@ -1,5 +1,5 @@
 # Logs
-logs
+logs/
 *.log
 *.session
 npm-debug.log*
@@ -73,6 +73,11 @@ web_modules/
 
 # Yarn Integrity file
 .yarn-integrity
+
+# Дампы БД (локальные бэкапы, не коммитить)
+backup.sql
+*.sql.backup
+backups/
 
 # dotenv environment variable files
 .env

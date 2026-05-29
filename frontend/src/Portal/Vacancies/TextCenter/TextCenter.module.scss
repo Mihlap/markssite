@@ -1,6 +1,5 @@
+@use 'variables' as *;
 @import '../../../App.css';
-@import '../../../_variables.scss';
-
 .TextCenter {
   $s: &;
   min-height: rem(1192);

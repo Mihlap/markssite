@@ -4,15 +4,27 @@ node_modules
 
 docs/
 
+# Сборки frontend (Vite: dist, CRA legacy: build)
+frontend/dist/
+frontend/build/
+frontend/.vite/
+
 # Журнал действий админки (ротация ~2 месяца)
 backend/logs/
 
+# Локальные дампы PostgreSQL
+backend/backup.sql
+backend/backups/
+*.sql.backup
+
+# Секреты и локальные env (шаблоны *.example — в репозитории)
 .env
 .env.local
 .env.*.local
-.env.example
+backend/.env
+frontend/.env
 .composeEnv
 composeEnv
 
-# webpack cache
+# Кэш сборщиков
 frontend/.webpack-cache/

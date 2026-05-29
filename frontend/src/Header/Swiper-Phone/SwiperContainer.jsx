@@ -6,7 +6,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/swiper-bundle.css';
 import SliderItems from './SliderItem';
-import styles from './SwiperContainer.css';
+import './SwiperContainer.css';
 import { Link } from 'react-router-dom';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
@@ -42,7 +42,7 @@ export default function SwiperContainer({ article1, article2 }) {
         //   }
         // }}
       >
-        <div className={styles.swiper_wrapper}>
+        <div className="swiper_wrapper">
           {combinedArticles &&
             combinedArticles.map((item, index) => {
               const firstPhoto = item.imageTitle.split(', ')[0];

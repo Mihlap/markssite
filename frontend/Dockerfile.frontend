@@ -4,19 +4,18 @@ LABEL version="1.0.0"
 
 WORKDIR /frontend/
 
-# Установка serve для статического сервера
 RUN npm install -g serve
 
-# Аргументы сборки для переменных окружения
 ARG REACT_APP_SERVER_HOST=http://localhost:3002
 ARG REACT_APP_API_URL=http://localhost:3002
 ARG REACT_APP_S3_BUCKET_URL
 
-# Установка переменных окружения для сборки
 ENV REACT_APP_SERVER_HOST=${REACT_APP_SERVER_HOST}
 ENV REACT_APP_API_URL=${REACT_APP_API_URL}
 ENV REACT_APP_S3_BUCKET_URL=${REACT_APP_S3_BUCKET_URL}
 ENV NODE_ENV=production
+ENV OBFUSCATOR=1
+ENV OBFUSCATOR_DOMAIN_LOCK=1
 
 COPY package*.json ./
 
@@ -26,6 +25,5 @@ COPY . .
 
 RUN npm run build
 
-# Используем serve для обслуживания статических файлов
-CMD ["serve", "-s", "build", "-l", "3000"]
+CMD ["serve", "-s", "dist", "-l", "3000"]
 

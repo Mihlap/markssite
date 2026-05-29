@@ -1,5 +1,4 @@
-@import './../_variables.scss';
-
+@use 'variables' as *;
 .FooterForm {
   $s: &;
   font-family: var(--font-unbounded);
