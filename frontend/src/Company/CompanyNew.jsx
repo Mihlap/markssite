@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-// import { useLocation } from 'react-router-dom';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './Company.module.scss';
@@ -49,6 +49,7 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleMouseHover }) {
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const [countPercent, setCountPercent] = useState(0);
   const [countHuman, setCountHuman] = useState(0);
@@ -84,16 +85,51 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
   const topCountersStartedRef = useRef(false);
   const [mobileTopCountersArmed, setMobileTopCountersArmed] = useState(false);
 
-  const armTopCounters = () => {
+  const [counterViewRef, counterInView] = useInView({
+    threshold: 0.2,
+    triggerOnce: true,
+  });
+
+  const armTopCounters = useCallback(() => {
+    if (topCountersStartedRef.current) return;
+    topCountersStartedRef.current = true;
+
     if (isMobile) {
       setMobileTopCountersArmed(true);
       return;
     }
 
-    if (topCountersStartedRef.current) return;
-    topCountersStartedRef.current = true;
     setStartTopCounters(true);
-  }
+  }, [isMobile]);
+
+  const setIntroCountersRef = useCallback(
+    (node) => {
+      blockSlider.current = node;
+      counterViewRef(node);
+    },
+    [counterViewRef],
+  );
+
+  useEffect(() => {
+    if (!counterInView) return;
+    armTopCounters();
+  }, [counterInView, armTopCounters]);
+
+  useEffect(() => {
+    const checkVisible = () => {
+      const el = blockSlider.current;
+      if (!el || topCountersStartedRef.current) return;
+
+      const rect = el.getBoundingClientRect();
+      const visible = rect.top < window.innerHeight * 0.85 && rect.bottom > window.innerHeight * 0.1;
+      if (visible) armTopCounters();
+    };
+
+    requestAnimationFrame(checkVisible);
+    const timer = setTimeout(checkVisible, 400);
+
+    return () => clearTimeout(timer);
+  }, [location.pathname, location.hash, armTopCounters]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -194,7 +230,7 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
             )}
           </div>
 
-          <div ref={blockSlider} className={styles.underSlider_text_wrapper}>
+          <div ref={setIntroCountersRef} className={styles.underSlider_text_wrapper}>
             <span className={styles.span_underSlider_text1}>
               Знаковые проекты от&nbsp;ведущих специалистов <br />
               в&nbsp;области комплексного проектирования
