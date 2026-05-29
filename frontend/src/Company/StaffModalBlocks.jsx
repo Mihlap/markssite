@@ -151,7 +151,14 @@ const detectBlockType = (block) => {
   if (id === 'fact' || has('интересный факт') || has('title fact')) return 'fact';
   if (id === 'quote' || has('цитата') || has('author') || has('автор')) return 'quote';
   if (id === 'personofyear' || has('человек года')) return 'personOfYear';
-  if (id === 'personwithname') return 'personWithName';
+  if (
+    id === 'personwithname' ||
+    id === 'posterperson' ||
+    headLabel === 'портрет сотрудника' ||
+    (has('портрет сотрудника') && has('фио') && !has('интересный факт'))
+  ) {
+    return 'personWithName';
+  }
 
   if (has('текстовый блок в рамке') || id === 'frametext') return 'frameText';
   if (has('текстовый блок с фоном') || id === 'bgtext') return 'bgText';
@@ -654,12 +661,21 @@ function StaffModalBlocks({ selectedCard, bucketUrl = '', styles: stylesProp }) 
           }
           case 'personWithName': {
             const src =
-              pickByIncludes(block, ['портрет'], 'file') ||
-              imgVal ||
+              fromBlock(block, { byLabel: 'Портрет сотрудника' }) ??
+              pickByIncludes(block, ['портрет'], 'file') ??
+              imgVal ??
               (typeof fileIndexes[0] === 'number' ? fromBlock(block, { index: fileIndexes[0] }) : null);
-            const name =
-              fromBlock(block, { byLabel: 'ФИО/Описание' }) ||
+            const rawName =
+              fromBlock(block, { byLabel: 'ФИО/Описание' }) ??
+              pickByIncludes(block, ['фио', 'имя', 'описание'], 'text') ??
               pickByIncludes(block, ['фио', 'имя', 'описание']);
+            const name =
+              typeof rawName === 'string'
+                ? rawName
+                    .replace(/<[^>]+>/g, '')
+                    .replace(/&nbsp;/gi, ' ')
+                    .trim()
+                : rawName;
             return (
               <div className={styles.staff_section} key={`b-${idx}`}>
                 <PersonWithNameBlock styles={styles} src={src} name={name} bucketUrl={bucketUrl} />
