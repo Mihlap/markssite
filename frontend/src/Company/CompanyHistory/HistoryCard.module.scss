@@ -184,6 +184,15 @@
     }
 }
 
+.card_image_photo {
+    opacity: 0;
+    transition: opacity 0.28s ease;
+
+    &.card_image_photo_loaded {
+        opacity: 1;
+    }
+}
+
 @media (hover: hover) and (pointer: fine) {
     .history_card:hover .card_image::after {
         opacity: 1;

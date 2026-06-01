@@ -30,12 +30,13 @@ export default function HistoryTimelineDesktop({
                             data-year={year}
                             data-last-cards={isLast ? 'true' : 'false'}
                         >
-                            {itemsToRender.map((item) => (
+                            {itemsToRender.map((item, cardIdx) => (
                                 <div key={item.id} className={styles.history_card_wrapper}>
                                     <HistoryCard
                                         item={item}
                                         onOpenChronicle={handleOpenChronicle}
                                         variant={item.img ? 1 : 2}
+                                        eagerImage={idx === 0 && cardIdx < 3}
                                     />
                                 </div>
                             ))}

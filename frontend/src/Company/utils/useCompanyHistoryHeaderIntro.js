@@ -191,7 +191,7 @@ export function useCompanyHistoryHeaderIntro({
             }
         };
 
-        const onScroll = () => {         
+        const onScroll = () => {
             if (!isDesktop && cardsFocused) return;
             const headerEl = historyHeaderRef.current;
             if (!headerEl) return;

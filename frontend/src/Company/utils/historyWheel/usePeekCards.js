@@ -136,7 +136,7 @@ export function createPeekCardsManager(container) {
 
             gsap.killTweensOf(nodes.left);
             gsap.killTweensOf(nodes.right);
-          
+
             const FLICKER_ZONE_PX = PEEK_MIN_VISIBLE + 18;
             if (visibleW <= FLICKER_ZONE_PX) {
                 setSplitInstant(nodes, { leftX: -SHIFT_X, rightX: +SHIFT_X });
@@ -225,7 +225,7 @@ export function createPeekCardsManager(container) {
             return;
         }
 
-        if (card.getAttribute('data-peek-snapped') !== 'true') {           
+        if (card.getAttribute('data-peek-snapped') !== 'true') {
             setSplitInstant(nodes, { leftX: -SHIFT_X, rightX: +SHIFT_X });
             try {
                 card.setAttribute('data-peek-primed', 'true');

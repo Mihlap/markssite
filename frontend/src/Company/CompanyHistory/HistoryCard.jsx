@@ -1,34 +1,62 @@
-import { memo } from 'react';
+import { memo, useEffect, useState } from 'react';
 import styles from './HistoryCard.module.scss';
+import { getHistoryPreviewSrc, toHistoryImageSrc } from '../utils/historyCardImageSrc';
 
-const bucket_url = (process.env.REACT_APP_S3_BUCKET_URL || '').replace(/\/+$/, '');
-
-const isHttp = (s) => typeof s === 'string' && /^https?:\/\//i.test(s);
-const toSrc = (raw) => {
-    if (!raw) return '';
-    if (isHttp(raw)) return raw;
-    if (!bucket_url) return String(raw);
-    return `${bucket_url}/${String(raw).replace(/^\/+/, '')}`;
-};
-
-function HistoryCard({ item, variant = 1, isBottom = false, onOpenChronicle }) {
-    const previewImgSrc = item?.previewImageUrl ? toSrc(item.previewImageUrl) : toSrc(item?.img);
+function HistoryCard({ item, variant = 1, isBottom = false, onOpenChronicle, eagerImage = false }) {
+    const previewImgSrc = getHistoryPreviewSrc(item);
     const hasImage = variant === 1 && !!previewImgSrc;
 
-    const avatarSrc = item?.avatarUrl ? toSrc(item.avatarUrl) : toSrc(item?.avatar);
+    const avatarSrc = item?.avatarUrl ? toHistoryImageSrc(item.avatarUrl) : toHistoryImageSrc(item?.avatar);
     const hasAvatar = !!avatarSrc;
+
+    const [imgLoaded, setImgLoaded] = useState(false);
+    const [imgFailed, setImgFailed] = useState(false);
+
+    useEffect(() => {
+        setImgLoaded(false);
+        setImgFailed(false);
+    }, [previewImgSrc]);
+
+    useEffect(() => {
+        if (!hasImage || !previewImgSrc) return undefined;
+
+        let cancelled = false;
+        const probe = new Image();
+        probe.decoding = 'async';
+        probe.src = previewImgSrc;
+
+        const markLoaded = () => {
+            if (!cancelled) setImgLoaded(true);
+        };
+        const markFailed = () => {
+            if (!cancelled) setImgFailed(true);
+        };
+
+        if (probe.complete && probe.naturalWidth > 0) {
+            markLoaded();
+        } else {
+            probe.onload = markLoaded;
+            probe.onerror = markFailed;
+        }
+
+        return () => {
+            cancelled = true;
+            probe.onload = null;
+            probe.onerror = null;
+        };
+    }, [hasImage, previewImgSrc]);
 
     const openChronicle = onOpenChronicle ?? item?.onOpenChronicle;
 
-    const handleCardClick = (e) => {
+    const handleCardClick = () => {
         if (openChronicle) {
             openChronicle(item);
         }
     };
-  
+
     const handleCardClickStop = (e) => {
         e?.stopPropagation?.();
-        handleCardClick(e);
+        handleCardClick();
     };
 
     return (
@@ -44,7 +72,7 @@ function HistoryCard({ item, variant = 1, isBottom = false, onOpenChronicle }) {
                     <div className={styles.card_content}>
                         {hasAvatar ? (
                             <div className={styles.card_avatar}>
-                                <img src={avatarSrc} alt="" className={styles.avatar_image} />
+                                <img src={avatarSrc} alt="" className={styles.avatar_image} loading="lazy" decoding="async" />
                             </div>
                         ) : null}
 
@@ -59,7 +87,7 @@ function HistoryCard({ item, variant = 1, isBottom = false, onOpenChronicle }) {
                 </div>
 
                 <div className={styles.split_right} data-split-right="true">
-                    {hasImage ? (
+                    {hasImage && !imgFailed ? (
                         <div
                             className={styles.card_image}
                             data-card-image="true"
@@ -70,7 +98,13 @@ function HistoryCard({ item, variant = 1, isBottom = false, onOpenChronicle }) {
                             <img
                                 src={previewImgSrc}
                                 alt={item?.title || ''}
+                                className={`${styles.card_image_photo} ${imgLoaded ? styles.card_image_photo_loaded : ''}`}
                                 draggable={false}
+                                loading={eagerImage ? 'eager' : 'lazy'}
+                                decoding="async"
+                                fetchPriority={eagerImage ? 'high' : 'auto'}
+                                onLoad={() => setImgLoaded(true)}
+                                onError={() => setImgFailed(true)}
                                 onDragStart={(e) => e.preventDefault()}
                                 onClick={handleCardClickStop}
                             />

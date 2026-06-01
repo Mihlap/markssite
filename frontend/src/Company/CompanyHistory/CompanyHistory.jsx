@@ -25,6 +25,7 @@ import timelineStyles from './HistoryTimeline.module.scss';
 import headerStyles from './CompanyHistoryHeader.module.scss';
 import cityVector from '../icons/cityVector.svg';
 import { normalizeConstructorGroups } from '../utils/historyModalUtils';
+import { preloadHistoryPreviews } from '../utils/historyCardImageSrc';
 
 gsap.registerPlugin(ScrollToPlugin);
 const HISTORY_HASHES = ['#history', '#section1'];
@@ -101,7 +102,7 @@ export default function CompanyHistory({
         triggerOnce: false,
     });
     const prevSectionInViewRef = useRef(false);
-    const hashNavigationRef = useHistoryHashNavigationFlag(HISTORY_HASHES);   
+    const hashNavigationRef = useHistoryHashNavigationFlag(HISTORY_HASHES);
 
     useEffect(() => {
         if (typeof window === 'undefined') return;
@@ -189,6 +190,32 @@ export default function CompanyHistory({
     useEffect(() => {
         dispatch(fetchCompanyHistory());
     }, [dispatch]);
+
+    useEffect(() => {
+        if (loading || !visibleItems.length) return undefined;
+        preloadHistoryPreviews(visibleItems, 10);
+        return undefined;
+    }, [loading, visibleItems]);
+
+    useEffect(() => {
+        if (loading || !visibleItems.length || !isDesktop) return undefined;
+
+        const revealCards = () => {
+            const wrappers = historyListRef.current?.querySelectorAll('[class*="history_card_wrapper"]');
+            if (!wrappers?.length) return;
+
+            wrappers.forEach((el) => {
+                if (!el.classList.contains(timelineStyles.animate)) {
+                    el.classList.add(timelineStyles.animate);
+                }
+            });
+        };
+
+        requestAnimationFrame(revealCards);
+        const timer = setTimeout(revealCards, 120);
+
+        return () => clearTimeout(timer);
+    }, [loading, visibleItems.length, isDesktop]);
 
     useCompanyHistoryHeaderIntro({
         isDesktop,
