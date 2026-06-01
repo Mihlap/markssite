@@ -1,7 +1,7 @@
 import clsx from 'clsx';
-import s from '../styles/Button.module.css';
+import s from './Tab.module.css';
 
-export default function Button({
+export default function Tab({
   label,
   isActive,
   disabled,
@@ -9,7 +9,7 @@ export default function Button({
   className,
   iconLeft,
   iconRight,
-  option = 'default', // Может быть 'default' или 'city'
+  option = 'default', // 'default' | 'city' | 'tab'
 }) {
   return (
     <button
@@ -23,6 +23,10 @@ export default function Button({
           // Логика для кнопки выбора города (заменяет обычные стили)
           [s.city]: option === 'city' && !isActive,
           [s.cityActive]: option === 'city' && isActive,
+
+          // Логика для таба
+          [s.tab]: option === 'tab' && !isActive,
+          [s.tabActive]: option === 'tab' && isActive,
         }
       )}
       onClick={onClick}

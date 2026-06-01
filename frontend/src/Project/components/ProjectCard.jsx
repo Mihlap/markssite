@@ -58,6 +58,10 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
     [refs]
   );
 
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
+
   useEffect(() => {
     requestAnimationFrame(() => {
       gsap.set([refs.title.current, refs.address.current], { opacity: 0 });

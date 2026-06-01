@@ -98,3 +98,31 @@
 .cityActive> :nth-child(3) {
     transform: translate(8px, 0px) scale(0.8);
 }
+
+/* ─── tab: inactive ─── */
+.tab {
+    font-weight: 400;
+    border-radius: 34px;
+    background: var(--white-F6F6F6);
+    outline: none;
+    box-shadow: -6px 1px 8.5px 0 rgba(10, 55, 78, 0.10), 1px 4px 10.7px 0 rgba(10, 55, 78, 0.16);
+}
+
+@media (hover: hover) {
+    .tab:hover {
+        background: var(--dark-gray-566272);
+        color: var(--white-F6F6F6);
+        outline: none;
+        box-shadow: none;
+    }
+}
+
+/* ─── tabActive: active ─── */
+.tabActive {
+    font-weight: 700;
+    border-radius: 34px;
+    background-color: var(--black-1D2E43);
+    color: var(--white-F6F6F6);
+    outline: none;
+    box-shadow: none;
+}

@@ -34,7 +34,7 @@ import MarksEntityRow from './Admin/ui/EntityRow/MarksEntityRow';
 // import Loading from './UI/Loading/christmas/Loading';
 
 const Header = lazy(() => import('./Header/Header'));
-const Contacts = lazy(() => import('./Contacts/Contacts'));
+const Contacts = lazy(() => import('./Contact/ContactPage'));
 
 const ProjectsPage = lazy(() => import('./Project/ProjectsPage'));
 const ProjectCard = lazy(() => import('./Project/components/ProjectCard'));

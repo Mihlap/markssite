@@ -1,7 +1,7 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { Icon } from '../icon';
-import Button from '../ui/Button';
+import {UiMarksFilterTab} from '../../UI';
 import { BUTTON_CHOOSE } from '../const';
 
 import s from '../styles/Project.module.css';
@@ -18,7 +18,7 @@ export default function FilterToolbar({ onFilter, onModal, onActive, onCityReset
   const [isMobile, isTablet] = isDevice;
 
   const cityButton = city ? (
-    <Button
+    <UiMarksFilterTab
       option="city"
       isActive
       label={city}
@@ -37,7 +37,7 @@ export default function FilterToolbar({ onFilter, onModal, onActive, onCityReset
       onClick={onModal}
     />
   ) : (
-    <Button option="city" label="Выбрать город" onClick={onModal} iconLeft={<Icon />} />
+    <UiMarksFilterTab option="city" label="Выбрать город" onClick={onModal} iconLeft={<Icon />} />
   );
 
   return (
@@ -46,7 +46,7 @@ export default function FilterToolbar({ onFilter, onModal, onActive, onCityReset
         <Swiper slidesPerView="auto" spaceBetween={8} touch="true" slidesOffsetBefore={16}>
           {BUTTON_CHOOSE.map((el) => (
             <SwiperSlide key={el} style={{ width: 'auto' }}>
-              <Button label={el} isActive={onActive(el)} onClick={() => onFilter(el)} />
+              <UiMarksFilterTab label={el} isActive={onActive(el)} onClick={() => onFilter(el)} />
             </SwiperSlide>
           ))}
         </Swiper>
@@ -56,7 +56,7 @@ export default function FilterToolbar({ onFilter, onModal, onActive, onCityReset
         <div className={s.wrap_tabs}>
           <div className={s.wrap_tabs_btn}>
             {BUTTON_CHOOSE.map((el, i) => (
-              <Button key={i} label={el} isActive={onActive(el)} onClick={() => onFilter(el)} />
+              <UiMarksFilterTab key={i} label={el} isActive={onActive(el)} onClick={() => onFilter(el)} />
             ))}
           </div>
           {cityButton}

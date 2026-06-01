@@ -3,7 +3,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './CompanySlider.css';
-import { UiMarksHeadings } from '../../UI';
+import { UiMarksTextBox } from '../../UI';
 
 const catPhoto = '../../img/default-photo.jpeg';
 
@@ -81,12 +81,12 @@ const CompanySlider = () => {
   return (
     <div className="company-slider-container">
       <div className="wrap-heading">
-        <UiMarksHeadings level={2} size="2xl" mobileSize="lg" weight="300" color="whiteSoft" font="unbounded">
+        <UiMarksTextBox variant="h2" size="2xl" mobileSize="lg" weight="300" color="whiteSoft" font="unbounded">
           Актуальные кейсы MARKS GROUP
-        </UiMarksHeadings>
-        <UiMarksHeadings level={1} size="5xl" mobileSize='4xl' weight="300" color="whiteSoft" font="unbounded">
+        </UiMarksTextBox>
+        <UiMarksTextBox variant="h1" size="5xl" mobileSize="4xl" weight="300" color="whiteSoft" font="unbounded">
           Проекты
-        </UiMarksHeadings>
+        </UiMarksTextBox>
       </div>
 
       <Slider {...settings}>

@@ -2,11 +2,11 @@ import { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { BUTTON_CITY } from '../const';
 import s from '../styles/ProjectModal.module.css';
-import Button from '../ui/Button';
+import {UiMarksFilterTab} from '../../UI';
 import { Icon1, Icon2 } from '../icon';
 import SearchInput from './SearchInput';
 import { useGeolocation } from '../../hooks';
-import { UiMarksHeadings } from '../../UI';
+import { UiMarksTextBox } from '../../UI';
 
 export default function ProjectModal({
   isOpen,
@@ -52,31 +52,26 @@ export default function ProjectModal({
         <button className={s.closeModal} onClick={() => onClose()} />
         <div className={s.wrap}>
           <div className={s.wrapCity}>
-            <UiMarksHeadings
-              level={2}
+            <UiMarksTextBox
+              variant="h2"
               size="xl"
               weight="500"
               color="primary"
               font="unbounded"
               className={s.wrapCity_title}>
               Вы&nbsp;здесь
-            </UiMarksHeadings>
+            </UiMarksTextBox>
             <Icon1 />
-            <UiMarksHeadings
-              level={2}
-              size="xl"
-              weight="300"
-              color="primary"
-              font="unbounded">
+            <UiMarksTextBox variant="h2" size="xl" weight="300" color="primary" font="unbounded">
               {currentLocation}
-            </UiMarksHeadings>
+            </UiMarksTextBox>
           </div>
           <SearchInput onSearch={onSearch} />
           <div className={s.wrapBtn}>
             <p className={s.wrapBtn_title}>Наши объекты есть</p>
             <div className={s.buttonGroup}>
               {BUTTON_CITY.map((el) => (
-                <Button key={el} label={el} isActive={el === selectedCity} onClick={() => onCityClick(el)} />
+                <UiMarksFilterTab key={el} label={el} isActive={el === selectedCity} onClick={() => onCityClick(el)} />
               ))}
             </div>
           </div>
