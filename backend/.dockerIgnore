@@ -1,1 +1,15 @@
 node_modules
+npm-debug.log
+.env
+.env.*
+.git
+.gitignore
+logs
+sessions
+backup.sql
+backups
+*.sql.backup
+*.md
+.eslintrc*
+eslint.config.*
+.dockerignore

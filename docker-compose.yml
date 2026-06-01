@@ -1,47 +1,57 @@
-version: '3.8'
+# Разработка: docker compose up --build
+# (переменные из backend/.env и frontend/.env)
+#
+# Production: раскомментировать блок в конце файла и выполнить:
+#   docker compose --env-file backend/.env --env-file frontend/.env up --build -d
 
 services:
   db:
-    container_name: db
+    container_name: markssite-db-dev
     image: postgres:15.4-alpine
-    restart: always
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
     environment:
-      - POSTGRES_DB=${DBNAME}
-      - POSTGRES_USER=${PGUSER}
-      - POSTGRES_PASSWORD=${PGPASS}
-      - PGDATA=/var/lib/postgresql/data/pgdata
+      PGDATA: /var/lib/postgresql/data/pgdata
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        export POSTGRES_USER="$$DB_USER"
+        export POSTGRES_PASSWORD="$$DB_PASS"
+        export POSTGRES_DB="$$DB_NAME"
+        exec docker-entrypoint.sh postgres
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_dev:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     networks:
       - markssite-network
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${PGUSER}" ]
+      test: ["CMD-SHELL", "pg_isready -U \"$$DB_USER\" -d \"$$DB_NAME\""]
       interval: 10s
       timeout: 5s
       retries: 5
 
   mainServer:
-    container_name: mainServerContainer
-    restart: always
+    image: markssite-backend:dev
+    container_name: markssite-backend-dev
+    restart: unless-stopped
     build:
       context: ./backend
       dockerfile: Dockerfile
+      target: development
+    env_file:
+      - ./backend/.env
+    environment:
+      NODE_ENV: development
+      DB_HOST: db
     ports:
       - "3002:3002"
-    environment:
-      - PORT=3002
-      - DB_HOST=db
-      - DB_USER=${PGUSER}
-      - DB_PASS=${PGPASS}
-      - DB_NAME=${DBNAME}
-      - DB_USER_PROD=${PGUSER}
-      - DB_PASS_PROD=${PGPASS}
-      - DB_NAME_PROD=${DBNAME}
-      - DB_HOST_PROD=db
-      - NODE_ENV=production
-      - SESSION_SECRET=${SESSION_SECRET:-dunno}
+    volumes:
+      - ./backend:/backend
+      - backend_node_modules:/backend/node_modules
+      - ./backend/sessions:/backend/sessions
+      - ./backend/images:/backend/images
     depends_on:
       db:
         condition: service_healthy
@@ -49,17 +59,23 @@ services:
       - markssite-network
 
   frontend:
-    container_name: frontendContainer
-    restart: always
+    image: markssite-frontend:dev
+    container_name: markssite-frontend-dev
+    restart: unless-stopped
     build:
       context: ./frontend
-      dockerfile: Dockerfile.frontend
-      args:
-        - REACT_APP_SERVER_HOST=${REACT_APP_SERVER_HOST:-http://localhost:3002}
-        - REACT_APP_API_URL=${REACT_APP_API_URL:-http://localhost:3002}
-        - REACT_APP_S3_BUCKET_URL=${REACT_APP_S3_BUCKET_URL:-}
+      dockerfile: Dockerfile
+      target: development
+    env_file:
+      - ./frontend/.env
+    environment:
+      DOCKER: "1"
+      CHOKIDAR_USEPOLLING: "true"
     ports:
       - "3000:3000"
+    volumes:
+      - ./frontend:/frontend
+      - frontend_node_modules:/frontend/node_modules
     depends_on:
       - mainServer
     networks:
@@ -70,6 +86,92 @@ networks:
     driver: bridge
 
 volumes:
-  postgres_data:
+  postgres_data_dev:
+  backend_node_modules:
+  frontend_node_modules:
 
-    # запуск: docker-compose --env-file composeEnv up --build
+# -----------------------------------------------------------------------------
+# Production (раскомментировать и закомментировать блок «Разработка» выше)
+# -----------------------------------------------------------------------------
+# services:
+#   db:
+#     container_name: markssite-db
+#     image: postgres:15.4-alpine
+#     restart: always
+#     env_file:
+#       - ./backend/.env
+#     environment:
+#       PGDATA: /var/lib/postgresql/data/pgdata
+#     entrypoint: ["/bin/sh", "-ec"]
+#     command:
+#       - |
+#         export POSTGRES_USER="$$DB_USER"
+#         export POSTGRES_PASSWORD="$$DB_PASS"
+#         export POSTGRES_DB="$$DB_NAME"
+#         exec docker-entrypoint.sh postgres
+#     volumes:
+#       - postgres_data:/var/lib/postgresql/data
+#     ports:
+#       - "5432:5432"
+#     networks:
+#       - markssite-network
+#     healthcheck:
+#       test: ["CMD-SHELL", "pg_isready -U \"$$DB_USER\" -d \"$$DB_NAME\""]
+#       interval: 10s
+#       timeout: 5s
+#       retries: 5
+#
+#   mainServer:
+#     image: markssite-backend:prod
+#     container_name: markssite-backend
+#     restart: always
+#     build:
+#       context: ./backend
+#       dockerfile: Dockerfile
+#       target: production
+#     env_file:
+#       - ./backend/.env
+#     environment:
+#       NODE_ENV: production
+#       DB_HOST: db
+#       DB_HOST_PROD: db
+#       DB_USER_PROD: ${DB_USER}
+#       DB_PASS_PROD: ${DB_PASS}
+#       DB_NAME_PROD: ${DB_NAME}
+#     ports:
+#       - "3002:3002"
+#     depends_on:
+#       db:
+#         condition: service_healthy
+#     networks:
+#       - markssite-network
+#
+#   frontend:
+#     image: markssite-frontend:prod
+#     container_name: markssite-frontend
+#     restart: always
+#     build:
+#       context: ./frontend
+#       dockerfile: Dockerfile
+#       target: production
+#       args:
+#         REACT_APP_SERVER_HOST: ${REACT_APP_SERVER_HOST}
+#         REACT_APP_API_URL: ${REACT_APP_API_URL}
+#         REACT_APP_S3_BUCKET_URL: ${REACT_APP_S3_BUCKET_URL}
+#         REACT_APP_API_KEY: ${REACT_APP_API_KEY}
+#         REACT_APP_ISDEV: ${REACT_APP_ISDEV:-false}
+#         REACT_APP_AUTH_TOKEN: ${REACT_APP_AUTH_TOKEN}
+#         REACT_APP_VK_API: ${REACT_APP_VK_API}
+#     ports:
+#       - "3000:3000"
+#     depends_on:
+#       - mainServer
+#     networks:
+#       - markssite-network
+#
+# networks:
+#   markssite-network:
+#     driver: bridge
+#
+# volumes:
+#   postgres_data:

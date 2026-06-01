@@ -17,14 +17,12 @@ backend/backup.sql
 backend/backups/
 *.sql.backup
 
-# Секреты и локальные env (шаблоны *.example — в репозитории)
+# Секреты и локальные env
 .env
 .env.local
 .env.*.local
 backend/.env
 frontend/.env
-.composeEnv
-composeEnv
 
 # Кэш сборщиков
 frontend/.webpack-cache/

@@ -1,20 +1,35 @@
-FROM node:18-alpine
+# syntax=docker/dockerfile:1
 
-WORKDIR /backend/
+FROM node:20-alpine AS base
 
-# Установка postgresql-client для проверки готовности БД
-RUN apk update && apk add --no-cache postgresql-client
+WORKDIR /backend
 
-COPY package*.json /backend/
+RUN apk add --no-cache postgresql-client
 
-RUN npm install
+COPY package*.json ./
 
-COPY . /backend/
+RUN npm ci
+
+FROM base AS development
+
+COPY . .
 
 EXPOSE 3002
 
-COPY ./startup.sh /backend/
+COPY startup-dev.sh ./
 
-RUN chmod +x /backend/startup.sh
+RUN chmod +x startup-dev.sh
 
-ENTRYPOINT [ "sh", "/backend/startup.sh" ]
+ENTRYPOINT ["sh", "startup-dev.sh"]
+
+FROM base AS production
+
+COPY . .
+
+EXPOSE 3002
+
+COPY startup.sh ./
+
+RUN chmod +x startup.sh
+
+ENTRYPOINT ["sh", "startup.sh"]

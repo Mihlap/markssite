@@ -1,0 +1,52 @@
+# syntax=docker/dockerfile:1
+
+FROM node:20-alpine AS development
+
+WORKDIR /frontend
+
+COPY package*.json ./
+
+RUN npm ci
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "3000"]
+
+FROM node:20-alpine AS production
+
+WORKDIR /frontend
+
+RUN npm install -g serve@14
+
+ARG REACT_APP_SERVER_HOST
+ARG REACT_APP_API_URL
+ARG REACT_APP_S3_BUCKET_URL
+ARG REACT_APP_API_KEY
+ARG REACT_APP_ISDEV=false
+ARG REACT_APP_AUTH_TOKEN
+ARG REACT_APP_VK_API
+
+ENV REACT_APP_SERVER_HOST=${REACT_APP_SERVER_HOST}
+ENV REACT_APP_API_URL=${REACT_APP_API_URL}
+ENV REACT_APP_S3_BUCKET_URL=${REACT_APP_S3_BUCKET_URL}
+ENV REACT_APP_API_KEY=${REACT_APP_API_KEY}
+ENV REACT_APP_ISDEV=${REACT_APP_ISDEV}
+ENV REACT_APP_AUTH_TOKEN=${REACT_APP_AUTH_TOKEN}
+ENV REACT_APP_VK_API=${REACT_APP_VK_API}
+ENV NODE_ENV=production
+ENV OBFUSCATOR=1
+ENV OBFUSCATOR_DOMAIN_LOCK=1
+
+COPY package*.json ./
+
+RUN npm ci
+
+COPY . .
+
+RUN npm run build
+
+EXPOSE 3000
+
+CMD ["serve", "-s", "dist", "-l", "3000"]

@@ -118,9 +118,14 @@ export default defineConfig(({ mode }) => {
       },
     },
     server: {
+      host: process.env.DOCKER === '1' ? '0.0.0.0' : undefined,
       port: 3000,
       strictPort: true,
       open: false,
+      watch:
+        process.env.CHOKIDAR_USEPOLLING === 'true'
+          ? { usePolling: true, interval: 1000 }
+          : undefined,
       proxy: {
         '/api': {
           target: apiTarget,
@@ -145,19 +150,19 @@ export default defineConfig(({ mode }) => {
       minify: isProd ? 'terser' : false,
       terserOptions: isProd
         ? {
-            compress: {
-              passes: 2,
-              drop_console: true,
-              drop_debugger: true,
-              pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.trace'],
-            },
-            mangle: {
-              safari10: true,
-            },
-            format: {
-              comments: false,
-            },
-          }
+          compress: {
+            passes: 2,
+            drop_console: true,
+            drop_debugger: true,
+            pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.trace'],
+          },
+          mangle: {
+            safari10: true,
+          },
+          format: {
+            comments: false,
+          },
+        }
         : undefined,
       rollupOptions: {
         output: {
