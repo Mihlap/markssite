@@ -16,13 +16,13 @@ import CategoryButton from './CategoryButton';
 import { categoriesConfig } from './categories.js';
 import styles from './CategoryFilters.module.scss';
 
-import { ReactComponent as SearchIcon } from '../icons/search.svg';
-import { ReactComponent as CloseIcon } from '../icons/close.svg';
+import SearchIcon from '../icons/search.svg?react';
+import CloseIcon from '../icons/close.svg?react';
 
-import { ReactComponent as Left1 } from '../icons/left1.svg';
-import { ReactComponent as Left2 } from '../icons/left2.svg';
-import { ReactComponent as Right1 } from '../icons/right1.svg';
-import { ReactComponent as Right2 } from '../icons/right2.svg';
+import Left1 from '../icons/left1.svg?react';
+import Left2 from '../icons/left2.svg?react';
+import Right1 from '../icons/right1.svg?react';
+import Right2 from '../icons/right2.svg?react';
 
 function DesktopCategoryFilters({ categoriesList }) {
   const dispatch = useDispatch();

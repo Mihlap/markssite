@@ -18,15 +18,15 @@ import cat4 from '../icons/cat4.svg';
 import cat5 from '../icons/cat5.svg';
 import cat6 from '../icons/cat6.svg';
 
-import { ReactComponent as LeftUp } from '../icons/leftUp.svg';
-import { ReactComponent as RightUp } from '../icons/rightUp.svg';
-import { ReactComponent as RightDown } from '../icons/rightDown.svg';
-import { ReactComponent as LeftDown } from '../icons/leftDown.svg';
+import LeftUp from '../icons/leftUp.svg?react';
+import RightUp from '../icons/rightUp.svg?react';
+import RightDown from '../icons/rightDown.svg?react';
+import LeftDown from '../icons/leftDown.svg?react';
 
-import { ReactComponent as LeftTop } from '../icons/leftTop.svg';
-import { ReactComponent as RightTop } from '../icons/rightTop.svg';
-import { ReactComponent as RightBottom } from '../icons/rightBottom.svg';
-import { ReactComponent as LeftBottom } from '../icons/leftBottom.svg';
+import LeftTop from '../icons/leftTop.svg?react';
+import RightTop from '../icons/rightTop.svg?react';
+import RightBottom from '../icons/rightBottom.svg?react';
+import LeftBottom from '../icons/leftBottom.svg?react';
 
 
 const TABS = {

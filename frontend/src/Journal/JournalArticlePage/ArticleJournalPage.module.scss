@@ -1,6 +1,5 @@
-@import '../../../src/App.css';
-@import '../../../src/variables';
-
+@use 'variables' as *;
+@import '../../App.css';
 .main_article_card {
   position: relative;
   width: 100%;

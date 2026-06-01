@@ -1,0 +1,343 @@
+@use '../StaffModalBlocksBase' as *;
+@import '../../App.css';
+/* ===== Переопределение базовых стилей ===== */
+.staff_modal_stream {
+  --stream-gap: 64px;
+}
+
+.staff_section {
+  scroll-margin-top: 80px;
+}
+
+/* ===== Портрет с именем - переопределение ===== */
+.staff_person_with_name {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+
+.staff_person_with_name_avatar {
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex: 0 0 420px;
+}
+
+.staff_person_with_name_avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  display: block;
+}
+
+.staff_person_with_name_text {
+  color: var(--gray-959DA6);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-weight: var(--fw-400);
+  font-size: 20px;
+  font-style: normal;
+  line-height: 28px;
+  text-align: center;
+}
+
+/* ===== Человек года - переопределение ===== */
+.staff_person_of_year_img {
+  width: 420px;
+  height: 420px;
+}
+
+/* ===== Специфичные стили для истории ===== */
+
+/* Обычный текст */
+.staff_text_block {
+  color: var(--black-1D2E43);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+/* Заголовок H2 */
+.modal_h2 {
+  font-family: var(--font-unbounded);
+  font-weight: var(--fw-300);
+  font-size: 1.5rem;
+  line-height: 2rem;
+  color: var(--black-1D2E43);
+  margin: 0 0 16px;
+}
+
+/* Изображение с описанием (горизонтальное) */
+.staff_img_desc {
+  display: flex;
+  gap: 16px;
+}
+
+.staff_img_desc_img {
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  object-fit: cover;
+}
+
+.staff_img_desc_text {
+  color: var(--black-1D2E43);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+/* Три изображения */
+.staff_three_images {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.staff_three_images_h {
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  object-fit: cover;
+}
+
+.staff_three_images_v {
+  grid-column: 1 / -1;
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  object-fit: cover;
+}
+
+/* Два вертикальных */
+.staff_two_vertical {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.staff_two_vertical_img {
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  object-fit: cover;
+}
+
+/* ===== Переопределение для переноса текста в блоке с полоской ===== */
+.staff_stripe_text_body {
+  min-width: 0;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+/* ===== Медиа-запросы для переопределения ===== */
+@media screen and (min-width: 1600px) {
+  .staff_person_with_name_text {
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .staff_fact_card {
+    gap: 24px;
+    padding: 40px;
+  }
+
+  .staff_fact_title {
+    font-size: 32px;
+    line-height: 40px;
+  }
+
+  .staff_fact_text,
+  .staff_fact_text p,
+  .staff_fact_text li {
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .staff_fact_author_name {
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .modal_md_container h1 {
+    font-size: 2rem;
+    line-height: 2.5rem;
+  }
+
+  .modal_md_container h2 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
+  .modal_md_container h3 {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: var(--fw-700);
+  }
+
+  .modal_md_container h4 {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1599px) {
+  .staff_modal_stream {
+    --stream-gap: 48px;
+  }
+
+  .staff_person_of_year_img {
+    width: 293px;
+    height: 298px;
+    border-radius: 180px;
+  }
+
+  .staff_person_with_name_avatar {
+    width: 293px;
+    height: 298px;
+    border-radius: 180px;
+    flex: 0 0 298px;
+  }
+
+  .staff_person_with_name_text {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .staff_fact_card {
+    padding: 32px;
+  }
+
+  .staff_fact_title {
+    font-size: 28px;
+    line-height: 36px;
+  }
+
+  .modal_md_container h1 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: var(--fw-300);
+  }
+
+  .modal_md_container h2 {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: var(--fw-300);
+  }
+
+  .modal_md_container h3 {
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+    font-weight: var(--fw-700);
+  }
+
+  .modal_md_container h4 {
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+    font-weight: var(--fw-300);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .staff_modal_stream {
+    --stream-gap: 40px;
+  }
+
+  .staff_person_of_year_img {
+    width: 180px;
+    height: 180px;
+  }
+
+  .staff_person_with_name_avatar {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    flex: 0 0 180px;
+  }
+
+  .staff_person_with_name_text {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .staff_frame_text {
+    padding: 16px;
+  }
+
+  .staff_fact_card {
+    padding: 24px;
+    gap: 16px;
+  }
+
+  .staff_fact_title {
+    font-size: 24px;
+    line-height: 32px;
+    order: 1;
+  }
+
+  .staff_fact_text {
+    order: 2;
+  }
+
+  .staff_fact_image_wrap {
+    order: 3;
+  }
+
+  .staff_fact_author_row {
+    order: 4;
+  }
+
+  .staff_fact_text,
+  .staff_fact_text p,
+  .staff_fact_text li {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .staff_fact_author_name {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .staff_three_images {
+    grid-template-columns: 1fr;
+  }
+
+  .staff_three_images .staff_three_images_v {
+    grid-column: auto;
+  }
+
+  .staff_two_vertical {
+    grid-template-columns: 1fr;
+  }
+
+  .modal_md_container h1 {
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+    font-weight: var(--fw-700);
+  }
+
+  .modal_md_container h2 {
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+    font-weight: var(--fw-300);
+  }
+
+  .modal_md_container h3 {
+    font-size: 1rem;
+    line-height: 1.375rem;
+    font-weight: var(--fw-700);
+  }
+
+  .modal_md_container h4 {
+    font-size: 1rem;
+    line-height: 1.375rem;
+    font-weight: var(--fw-300);
+  }
+}
