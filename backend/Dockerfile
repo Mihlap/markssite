@@ -16,11 +16,11 @@ COPY . .
 
 EXPOSE 3002
 
-COPY startup-dev.sh ./
+COPY startup.sh ./
 
-RUN chmod +x startup-dev.sh
+RUN chmod +x startup.sh
 
-ENTRYPOINT ["sh", "startup-dev.sh"]
+ENTRYPOINT ["sh", "startup.sh"]
 
 FROM base AS production
 
