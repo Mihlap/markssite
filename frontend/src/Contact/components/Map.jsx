@@ -33,7 +33,7 @@ export default function Map({ activeCity }) {
       <YMaps>
         <YMap
           key={mapKey}
-          defaultState={{ center: activeCity.coordinates, zoom: 11 }}
+          defaultState={{ center: activeCity.coordinates, zoom: 12, margin: [500, 0, 0, 0] }}
           width="100%"
           height="100%"
           query={{ apiKey }}
