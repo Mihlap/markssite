@@ -1,7 +1,23 @@
-.wrap {
+.wrapInto {
     position: absolute;
     width: 100%;
     z-index: 1;
+}
+
+@media (max-width: 430px) {
+    .wrapInto {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+}
+
+.wrap {
     display: flex;
     flex-direction: column;
     gap: 66px;
@@ -71,6 +87,7 @@
 
 @media (max-width: 430px) {
     .wrap {
+        overflow: clip;
         padding: 116px 16px 48px 16px;
     }
 
@@ -81,6 +98,10 @@
 
     .wrapRight {
         justify-self: auto;
+    }
+
+    .wrapEmail, .wrapContact, .wrapPr, .wrapTender  {
+        pointer-events: auto;
     }
 }
 

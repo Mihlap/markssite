@@ -1,8 +1,21 @@
 import { useState, useEffect } from 'react';
 import { YMaps, Map as YMap, Placemark } from '@r3flector/react-yandex-maps';
+import {
+  buildingInitialCustomization,
+  groundInitialCustomization,
+  roadsInitialCustomization,
+  waterInitialCustomization,
+} from '../const/common';
 import s from '../styles/Map.module.css';
 
 const apiKey = process.env.REACT_APP_API_KEY;
+
+const customization = [
+  waterInitialCustomization,
+  groundInitialCustomization,
+  roadsInitialCustomization,
+  buildingInitialCustomization,
+];
 
 const markerSVG =
   `<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">` +
@@ -23,7 +36,8 @@ export default function Map({ activeCity }) {
           defaultState={{ center: activeCity.coordinates, zoom: 11 }}
           width="100%"
           height="100%"
-          query={{ apiKey }}>
+          query={{ apiKey }}
+          options={{ customization }}>
           <Placemark
             geometry={activeCity.coordinates}
             options={{

@@ -1,14 +1,15 @@
 import React from 'react';
 import { UiMarksTextBox } from '../../UI';
 import { cityData } from '../const';
-import s from '../styles/Info.module.css';
 import FilterToolbar from './FilterToolbar';
-
+import s from '../styles/Info.module.css';
 const tabs = cityData.map((c) => c.name);
 
+
 export default function Info({ activeCity, onCityChange }) {
-  return (
-    <section className={s.wrap}>
+    return (
+    <section className={s.wrapInto}>
+    <div className={s.wrap}>
       <UiMarksTextBox
         variant="h1"
         size="5xl"
@@ -114,12 +115,13 @@ export default function Info({ activeCity, onCityChange }) {
             </UiMarksTextBox>
           </div>
         </div>
-      </div>
+    </div>
+    </div>
       <FilterToolbar
         tabs={tabs}
         activeTab={activeCity.name}
         onTabChange={(name) => onCityChange(cityData.find((c) => c.name === name))}
       />
-    </section>
+      </section>
   );
 }

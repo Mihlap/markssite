@@ -53,6 +53,24 @@ const cityData = [
     mail: 'mail@marksgroup.ru',
     hour: '+ 2 МСК',
   },
+  {
+    id: 5,
+    name: 'Ташкент',
+    coordinates: [41.2964, 69.275],
+    address: 'Tashkent, Oybek Street, 18/1',
+    phone: '+998 99 353 96 90',
+    mail: 'mail@marksgroup.ru',
+    hour: '+ 2 МСК',
+  },
+  {
+    id: 5,
+    name: 'Ташкент',
+    coordinates: [41.2964, 69.275],
+    address: 'Tashkent, Oybek Street, 18/1',
+    phone: '+998 99 353 96 90',
+    mail: 'mail@marksgroup.ru',
+    hour: '+ 2 МСК',
+  },
 ];
 
 export { cityData };

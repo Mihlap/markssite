@@ -43,7 +43,7 @@ export default function FilterToolbar({ onFilter, onModal, onActive, onCityReset
   return (
     <>
       {isMobile && (
-        <Swiper slidesPerView="auto" spaceBetween={8} touch="true" slidesOffsetBefore={16}>
+        <Swiper slidesPerView="auto" spaceBetween={8} slidesOffsetBefore={16}>
           {BUTTON_CHOOSE.map((el) => (
             <SwiperSlide key={el} style={{ width: 'auto' }}>
               <UiMarksFilterTab label={el} isActive={onActive(el)} onClick={() => onFilter(el)} />
