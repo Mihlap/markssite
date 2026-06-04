@@ -23,13 +23,16 @@ const markerSVG =
 
 export default function Map({ activeCity }) {
   const [mapKey, setMapKey] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
+    setIsLoaded(false);
     setMapKey((k) => k + 1);
   }, [activeCity]);
 
   return (
     <div className={s.wrap}>
+      {!isLoaded && <div className={s.skeleton} />}
       <YMaps>
         <YMap
           key={mapKey}
@@ -37,7 +40,8 @@ export default function Map({ activeCity }) {
           width="100%"
           height="100%"
           query={{ apiKey }}
-          options={{ customization }}>
+          options={{ customization }}
+          onLoad={() => setIsLoaded(true)}>
           <Placemark
             geometry={activeCity.coordinates}
             options={{
@@ -48,6 +52,11 @@ export default function Map({ activeCity }) {
           />
         </YMap>
       </YMaps>
+      <style>{`
+        [class*="ymaps-2"][class*="-ground-pane"] {
+          -webkit-filter: grayscale(80%) brightness(100%);
+        }
+      `}</style>
     </div>
   );
 }
