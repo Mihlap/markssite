@@ -10,10 +10,5 @@
     "Placemark",
     "Podzemproekt"
   ],
-  "postman.settings.dotenv-detection-notification-visibility": false,
-  "files.autoSave": "afterDelay",
-  "cursor.ai.enableCache": true,
-  "cursor.ai.cacheEnabled": true,
-  "cursor.model.cache": true,
-  "cursor.chat.cacheEnabled": true
+  "files.autoSave": "afterDelay"
 }
