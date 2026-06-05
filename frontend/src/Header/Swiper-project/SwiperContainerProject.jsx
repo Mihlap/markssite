@@ -79,8 +79,8 @@ const SwiperContainerProject = ({ projects }) => {
                       try {
                         const selectCompetencies = project.selectCompetencies;
 
-                        if (Array.isArray(selectCompetencies)) {                     
-                        } else if (typeof project.selectCompetencies === 'string') {                          
+                        if (Array.isArray(selectCompetencies)) {
+                        } else if (typeof project.selectCompetencies === 'string') {
                           if (!project.selectCompetencies.includes(',')) {
                             const label = project.selectCompetencies.trim();
                             return (
@@ -98,7 +98,7 @@ const SwiperContainerProject = ({ projects }) => {
                                 {label}
                               </div>
                             );
-                          } else {                            
+                          } else {
                             return project.selectCompetencies.split(',').map((value) => {
                               const label = value.trim();
                               return (

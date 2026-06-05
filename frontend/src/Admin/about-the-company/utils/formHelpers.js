@@ -1,5 +1,5 @@
 import compressImageFile from 'browser-image-compression';
-const { transliterate } = require('transliteration');
+import { transliterate } from 'transliteration';
 
 export const removePreviewPhoto = (
   previewPhotos,
