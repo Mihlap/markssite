@@ -76,7 +76,7 @@ export default function SearchInput({ onSearch }) {
         value={value}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
-        placeholder=" "
+        placeholder=""
         autoComplete="off"
         className={s.input}
       />

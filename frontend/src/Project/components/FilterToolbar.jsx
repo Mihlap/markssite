@@ -4,7 +4,7 @@ import { Icon } from '../icon';
 import {UiMarksFilterTab} from '../../UI';
 import { BUTTON_CHOOSE } from '../const';
 
-import s from '../styles/Project.module.css';
+import s from '../styles/FilretToolbar.module.css';
 
 function CrossIcon() {
   return (
@@ -15,7 +15,7 @@ function CrossIcon() {
 }
 
 export default function FilterToolbar({ onFilter, onModal, onActive, onCityReset, isHide, isDevice = [], city }) {
-  const [isMobile, isTablet] = isDevice;
+  const [isMobile] = isDevice;
 
   const cityButton = city ? (
     <UiMarksFilterTab
@@ -43,7 +43,7 @@ export default function FilterToolbar({ onFilter, onModal, onActive, onCityReset
   return (
     <>
       {isMobile && (
-        <Swiper slidesPerView="auto" spaceBetween={8} slidesOffsetBefore={16}>
+        <Swiper slidesPerView="auto" spaceBetween={8} slidesOffsetBefore={16} className={s.wrap_swiper}>
           {BUTTON_CHOOSE.map((el) => (
             <SwiperSlide key={el} style={{ width: 'auto' }}>
               <UiMarksFilterTab label={el} isActive={onActive(el)} onClick={() => onFilter(el)} />

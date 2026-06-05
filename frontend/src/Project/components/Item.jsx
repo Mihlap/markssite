@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { COLOR } from '../const';
 import placehold from '../icon/placehold.webp';
-import styles from '../styles/Project.module.css';
+import styles from '../styles/Item.module.css';
 
 function parseCompetencies(raw) {
   if (!raw) return [];
@@ -25,7 +25,7 @@ export default function Item({ project, photoSrc }) {
   const competencies = parseCompetencies(project.selectCompetencies);
 
   return (
-    <Link className={styles.item} to={`/project/${project.id}`}>
+    <Link to={`/project/${project.id}`} className={styles.item}>
       <img
         src={photoSrc}
         alt={project.imageProject || 'Default Alt Text'}
@@ -36,20 +36,19 @@ export default function Item({ project, photoSrc }) {
         }}
         className={styles.item_img}
       />
-      <div className={styles.item_wrap}>
-        <div className={styles.item_top}>
-          <p title={project.title} className={styles.item_title}>
-            {project.title}
-          </p>
-          <div title={project.countryCity} className={styles.item_desc_wrap}>
-            <p className={styles.item_city}>{project.countryCity}</p>
-            <svg xmlns="http://www.w3.org/2000/svg" width="2px" height="2px" fill="none">
-              <circle cx="1" cy="1" r="1" fill="#959DA6" />
-            </svg>
-            <p className={styles.item_month}>{project.monthYear}</p>
+      <div className={styles.item_content}>
+        <div className={styles.item_info}>
+          <div className={styles.item_title_wrap}>
+            <p className={styles.item_title} title={project.title}>
+              {project.title}
+            </p>
+          </div>
+          <div className={styles.item_meta} title={project.countryCity}>
+            <p className={styles.item_location}>{project.countryCity}</p>
+            <p className={styles.item_date}>{project.monthYear}</p>
           </div>
         </div>
-        <div className={styles.item_skills}>
+        <div className={styles.item_skills_wrap}>
           {competencies.map((c) => (
             <CompetencyTag key={c.value} value={c.value} label={c.label} />
           ))}

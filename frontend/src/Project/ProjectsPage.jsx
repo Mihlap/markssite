@@ -5,6 +5,8 @@ import { useProjects, useWindowWidth } from '../hooks';
 import FilterToolbar from './components/FilterToolbar';
 import ProjectGrid from './components/ProjectGrid';
 
+import s from './styles/ProjectPage.module.css';
+
 const ProjectModal = lazy(() => import('./components/ProjectModal'));
 const SearchInput = lazy(() => import('./components/SearchInput'));
 
@@ -63,7 +65,12 @@ export default function ProjectsPage() {
   return (
     <>
       <CompanySlider />
-      {(isMobile) && <SearchInput onSearch={handleSearchCity} />}
+      {/* <div className={s.wrap}> */}
+      {isMobile && (
+        <Suspense fallback={<>Loading...</>}>
+          <SearchInput onSearch={handleSearchCity} />
+        </Suspense>
+      )}
       <FilterToolbar
         onFilter={handleTabsFilter}
         onModal={handleClickModal}
@@ -73,6 +80,7 @@ export default function ProjectsPage() {
         isDevice={[isMobile, isTablet]}
         city={selectedCity}
       />
+      {/* </div> */}
       <ProjectGrid
         projects={projects}
         isPending={isPending}

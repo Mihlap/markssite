@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import Item from './Item';
-import styles from '../styles/Project.module.css';
+import styles from '../styles/ProjectGrid.module.css';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 

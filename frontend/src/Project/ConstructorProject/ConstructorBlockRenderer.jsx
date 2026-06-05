@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Slider from 'react-slick';
 import styles from './ConstructorBlockRenderer.module.scss';
-import '../styles/Project.module.css';
 
 import playIcon from '../../icons/play.svg';
 import pauseIcon from '../../icons/pause.svg';
@@ -27,7 +26,7 @@ const arrowStyles = {
   cursor: 'pointer',
 };
 
-const PrevArrow = ({ props, onClick, onMouseEnter, onMouseLeave }) => (
+const PrevArrow = ({ onClick, onMouseEnter, onMouseLeave }) => (
   <div
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
@@ -67,7 +66,7 @@ const PrevArrow = ({ props, onClick, onMouseEnter, onMouseLeave }) => (
   </div>
 );
 
-const NextArrow = ({ props, onClick, onMouseEnter, onMouseLeave }) => (
+const NextArrow = ({ onClick, onMouseEnter, onMouseLeave }) => (
   <div
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
@@ -200,7 +199,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
     );
   };
 
-  const renderThreeImages = (block, index) => {
+  const renderThreeImages = (block) => {
     const images = block[0].value;
     //  Проверяем, есть ли картинки в блоке
     if (!images || images.length < 1) {
@@ -239,7 +238,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
       </div>
     );
   };
-  const renderTwoImage = (block, index) => {
+  const renderTwoImage = (block) => {
     const images = block[0].value;
     return (
       <div className={`${styles.imageBlockTwo} ${styles.imageBlockTwo_project}`}>
