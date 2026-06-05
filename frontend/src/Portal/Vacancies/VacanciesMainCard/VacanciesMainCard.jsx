@@ -39,7 +39,7 @@ import vectorAround2 from '../icons/vectorAround2.svg';
 import BenefitsVacancy from '../BenefitsVacancy/BenefitsVacancy';
 
 // hooks
-import { useWindowWidth } from '../../hooks/useWindowWidth';
+import { useWindowWidth } from '../../../hooks/useWindowWidth';
 
 // const
 import { advantages } from './const/advantages';

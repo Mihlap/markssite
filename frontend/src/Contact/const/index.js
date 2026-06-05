@@ -1,0 +1,58 @@
+const cityData = [
+  {
+    id: 0,
+    name: 'Москва',
+    coordinates: [55.783, 37.5804],
+    address: 'Москва, 3-я ул. Ямского Поля, д. 20, с. 1, офис 704',
+    phone: '+7 (495) 120-12-26',
+    mail: 'mail@marksgroup.ru',
+    hour: '',
+  },
+  {
+    id: 1,
+    name: 'Санкт-Петербург',
+    coordinates: [59.918079, 30.312706],
+    address: 'Санкт-Петербург, Державинский переулок, д. 5',
+    phone: '+7 (495) 120-12-26',
+    mail: 'mail@marksgroup.ru',
+    hour: '',
+  },
+  {
+    id: 2,
+    name: 'Воронеж',
+    coordinates: [51.653696, 39.178566],
+    address: 'Воронеж, ул. Ворошилова, д. 1а',
+    phone: '+7 (495) 120-12-26',
+    mail: 'mail@marksgroup.ru',
+    hour: '',
+  },
+  {
+    id: 3,
+    name: 'Оренбург',
+    coordinates: [51.804, 55.1053],
+    address: 'Оренбург, пр. Нижний, д. 17, офис 305',
+    phone: '+7 (3532) 22-86-96',
+    mail: 'mail@marksgroup.ru',
+    hour: '+ 2 МСК',
+  },
+  {
+    id: 4,
+    name: 'Челябинск',
+    coordinates: [55.1566, 61.3018],
+    address: 'Челябинск, ул. Северная, д. 52/3',
+    phone: null,
+    mail: null,
+    hour: '+ 2 МСК',
+  },
+  {
+    id: 5,
+    name: 'Ташкент',
+    coordinates: [41.2964, 69.275],
+    address: 'Tashkent, Oybek Street, 18/1',
+    phone: '+998 99 353 96 90',
+    mail: 'mail@marksgroup.ru',
+    hour: '+ 2 МСК',
+  },
+];
+
+export { cityData };

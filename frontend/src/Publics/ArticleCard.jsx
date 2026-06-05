@@ -11,7 +11,7 @@ import ArticleCardSlider from '../UI/ArticleCardSlider.jsx/ArticleCardSlider';
 import SliderContainerArticleCard from '../UI/Project&ArticleCardSlider/SlideContainerArticleCard';
 
 import { getFetchFormArticle } from '../store/Slice/articleSlice';
-import { handleScroll, onVerticalScroll, onWheel, containsListTags, renderListWithDots } from '../Project/utils';
+import { handleScroll, onVerticalScroll, onWheel, containsListTags, renderListWithDots } from '../Project/utils/utils';
 import { shareToVK, shareToTelegram } from './utils';
 
 import styles from './ArticleCard.module.css';
@@ -185,7 +185,6 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
   }, [verticalHandler, wheelHandler, scrollHandler]);
 
   if (!article) return null;
-  
   return (
     <>
       <Helmet>

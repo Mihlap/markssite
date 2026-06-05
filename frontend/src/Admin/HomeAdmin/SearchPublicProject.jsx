@@ -1,40 +1,35 @@
 import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { DndContext, closestCenter, PointerSensor, useSensor, useSensors, DragOverlay } from '@dnd-kit/core';
 import { SortableContext, rectSortingStrategy, arrayMove } from '@dnd-kit/sortable';
 import SortableItem from './SortableItem';
 import Item from './Item';
 import {
-  deleteProject,
-  searchProgectMainPostzapros,
-  updateProjectOrderSuccess,
-  updateProjectOrderReplacement,
-} from '../../store/Slice/searchProjectMainSlice';
+  useProjects,
+  useFeaturedProjects,
+  useAddFeaturedProject,
+  useDeleteFeaturedProject,
+  useUpdateFeaturedOrder,
+} from '../../hooks';
 import { UiMarksButton, UiMarksInput, UiMarksGrayWrap } from '../ui';
 import { useNotification } from './utils/useNotification';
 import Notification from './Notification';
 import styles from './HomeAdmin.module.scss';
 
+export default function SearchPublicProject() {
+  const { data: featuredData = [] } = useFeaturedProjects();
+  const { data: projectsData } = useProjects({ limit: 200 });
+  const projects = useMemo(() => projectsData?.pages.flatMap((p) => p.data) ?? [], [projectsData]);
 
-// const MOCK_ITEMS = Array.from({ length: 14 }, (_, i) => ({ IdProject: i + 1 }));
-
-
-export default function SearchPublicProject({
-  projects,
-  arrIdProject,
-  setSearchId,
-  setIsButtonDisabled,
-  setSavedId,
-  searchId,
-  savedId,
-  isButtonDisabled,
-}) {
-  const dispatch = useDispatch();
+  const { mutate: addFeatured } = useAddFeaturedProject();
+  const { mutate: deleteFeatured } = useDeleteFeaturedProject();
+  const { mutate: updateOrder } = useUpdateFeaturedOrder();
   const { message, showMessage } = useNotification();
 
-  const list = useMemo(() => arrIdProject.filter((p) => p && p.IdProject), [arrIdProject]);
+  const [searchId, setSearchId] = useState('');
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
-  // TODO: заменить MOCK_ITEMS на list и раскомментировать useEffect для реальных данных
+  const list = useMemo(() => featuredData.filter((p) => p && p.IdProject), [featuredData]);
+
   const [flatList, setFlatList] = useState(list);
   const [activeId, setActiveId] = useState(null);
   const listIdsRef = useRef(new Set(list.map((p) => p.IdProject)));
@@ -50,13 +45,8 @@ export default function SearchPublicProject({
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
   );
 
-  const handleDragStart = useCallback((event) => {
-    setActiveId(event.active.id);
-  }, []);
-
-  const handleDragCancel = useCallback(() => {
-    setActiveId(null);
-  }, []);
+  const handleDragStart = useCallback((event) => setActiveId(event.active.id), []);
+  const handleDragCancel = useCallback(() => setActiveId(null), []);
 
   const handleDragEnd = useCallback(
     (event) => {
@@ -68,44 +58,39 @@ export default function SearchPublicProject({
         const oldIndex = prev.findIndex((p) => p.IdProject === active.id);
         const newIndex = prev.findIndex((p) => p.IdProject === over.id);
         const next = arrayMove(prev, oldIndex, newIndex);
-        dispatch(updateProjectOrderSuccess(next));
-        dispatch(updateProjectOrderReplacement(next));
+        updateOrder(next);
         return next;
       });
       showMessage('Порядок сохранён', 'update');
     },
-    [dispatch, showMessage]
+    [updateOrder, showMessage]
   );
 
   const handleFormDelete = useCallback(
     (id) => {
-      dispatch(deleteProject(id));
+      deleteFeatured(id);
       showMessage('Проект удален с главной страницы', 'delete');
     },
-    [dispatch, showMessage]
+    [deleteFeatured, showMessage]
   );
 
-  const filterProjectsById = useCallback(async () => {
+  const handleAdd = useCallback(async () => {
     const found = projects.find((p) => p.id === +searchId);
 
     if (!found) {
       showMessage('Проект с таким id не найден', 'error');
       return;
     }
-
     if (list.some((p) => p.IdProject === +searchId)) {
       showMessage('Проект уже добавлен на главную', 'error');
       return;
     }
 
-    try {
-      dispatch(searchProgectMainPostzapros(found, setSearchId, setSavedId));
-      showMessage('Проект добавлен', 'ok');
-    } catch {
-      showMessage('Ошибка при сохранении проекта', 'error');
-    }
-  }, [dispatch, list, projects, searchId, showMessage, setSearchId, setSavedId]);
-
+    addFeatured(found);
+    setSearchId('');
+    setIsButtonDisabled(true);
+    showMessage('Проект добавлен', 'ok');
+  }, [addFeatured, list, projects, searchId, showMessage]);
 
   return (
     <UiMarksGrayWrap customStyles={{ padding: '24px' }}>
@@ -118,30 +103,24 @@ export default function SearchPublicProject({
           </div>
         </SortableContext>
         <DragOverlay adjustScale style={{ transformOrigin: '0 0' }}>
-          {activeId ? (
-            <Item
-              id={activeId}
-              isDragging
-              onDelete={handleFormDelete}
-            />
-          ) : null}
+          {activeId ? <Item id={activeId} isDragging onDelete={handleFormDelete} /> : null}
         </DragOverlay>
       </DndContext>
 
-      <div className={styles.wrapInput} onKeyDown={(e) => e.key === 'Enter' && filterProjectsById()}>
+      <div className={styles.wrapInput} onKeyDown={(e) => e.key === 'Enter' && handleAdd()}>
         <UiMarksInput
           type="number"
           name="project-id"
           label="Добавить id проекта"
           placeholder="id проекта"
-          value={savedId ?? searchId}
+          value={searchId}
           onChange={(e) => {
             setSearchId(e.target.value);
             setIsButtonDisabled(e.target.value === '');
           }}
         />
       </div>
-      <UiMarksButton color="blue" disabled={isButtonDisabled} onClick={filterProjectsById} className={styles.btn}>
+      <UiMarksButton color="blue" disabled={isButtonDisabled} onClick={handleAdd} className={styles.btn}>
         Добавить на главную
       </UiMarksButton>
 

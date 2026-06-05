@@ -1,22 +1,22 @@
 import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
 import { useParams, Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { ScrollTrigger, MotionPathPlugin } from 'gsap/all';
-import ProjectCardSlider from '../UI/Project&ArticleCardSlider/ProjectCardSlider';
-import styles from './ProjectCard.module.css';
-import { getFetchForm } from '../store/Slice/projectSlice';
-import SliderContainerProjectCard from '../UI/Project&ArticleCardSlider/SliderContainerProjectCard';
+import ProjectCardSlider from '../../UI/Project&ArticleCardSlider/ProjectCardSlider';
+import styles from '../styles/ProjectCard.module.css';
+import { useProject, useProjects } from '../../hooks';
+import SliderContainerProjectCard from '../../UI/Project&ArticleCardSlider/SliderContainerProjectCard';
 
-import { handleScroll, onVerticalScroll, onWheel, shareToVK, shareToTelegram, shareToWhatsApp } from './utils';
-import catPhoto from '../img/default-photo.jpeg';
-import next from '../icons/next.svg';
-import previous from '../icons/previous.svg';
-import ConstructorBlockRenderer from './ConstructorProject/ConstructorBlockRenderer';
-import NotFound from '../NotFound/NotFound';
-import { containsListTags, renderListWithDots } from '../Project/utils';
+import { handleScroll, onVerticalScroll, onWheel, shareToVK, shareToTelegram, shareToWhatsApp } from '../utils/utils';
+import placehold from '../icon/placehold.webp';
+import next from '../../icons/next.svg';
+import previous from '../../icons/previous.svg';
+import ConstructorBlockRenderer from '../ConstructorProject/ConstructorBlockRenderer';
+import NotFound from '../../NotFound/NotFound';
+import { containsListTags, renderListWithDots } from '../utils/utils';
+import AllProjectsButton from '../../UI/ButtonsProjects/AllProjectsButton';
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
@@ -24,18 +24,10 @@ const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMouseHover }) => {
   const { id } = useParams();
-  const dispatch = useDispatch();
-  const sliderCardRef = useRef(null);  
-  const projectsRaw = useSelector((state) => state.project.projects); 
-  const projects = useMemo(() => (Array.isArray(projectsRaw) ? projectsRaw : []), [projectsRaw]);
-
-  useEffect(() => {
-    if (!projects.length) {
-      dispatch(getFetchForm());
-    }
-  }, [dispatch, projects.length]);
-
-  const project = useMemo(() => projects.find((item) => item.id === Number(id)), [projects, id]);
+  const sliderCardRef = useRef(null);
+  const { data: project, isLoading: isProjectLoading } = useProject(id);
+  const { data: projectsData } = useProjects({ limit: 20 });
+  const projects = useMemo(() => projectsData?.pages.flatMap((p) => p.data) ?? [], [projectsData]);
 
   const [enableVerticalScroll, setEnableVerticalScroll] = useState(true);
   const [isHorizontalScroll, setIsHorizontalScroll] = useState(false);
@@ -67,7 +59,11 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
     [refs]
   );
 
-  useEffect(() => { 
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
+
+  useEffect(() => {
     requestAnimationFrame(() => {
       gsap.set([refs.title.current, refs.address.current], { opacity: 0 });
       gsap.to(refs.title.current, { duration: 1, opacity: 1, delay: 0.5 });
@@ -90,7 +86,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [elementsRight]);
- 
+
   useEffect(() => {
     const el = sliderCardRef.current;
     if (!el) return;
@@ -124,7 +120,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
   const nextProject = projects[nextIndex];
 
   const getImageSource = useCallback((image) => {
-    if (!image) return catPhoto;
+    if (!image) return placehold;
     const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
     return image.startsWith('http') ? image : `${bucket_url}/images/imageAdd/${image}`;
   }, []);
@@ -207,11 +203,11 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
         { value: project?.long, text: 'Длинна', unit: 'км' },
       ].filter((item) => item.value),
     [project]
-  ); 
- 
-  if (!projects.length) return null;
+  );
+
+  if (isProjectLoading) return null;
   if (!project) return <NotFound />;
-  
+
   return (
     <>
       <Helmet>
@@ -222,10 +218,9 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
       <div className={styles.main_project_card}>
         <ProjectCardSlider slidesCard={[project]} />
 
-        {/* <div className={styles.all_button_div} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <div className={styles.all_button_div} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           <AllProjectsButton />
-        </div> */}
-
+        </div>
         <div className={styles.section_project__block__card}>
           <div className={styles.cart_project__block__card}>
             <div className={styles.cart_project__container__block__card}>
@@ -472,7 +467,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                 ? randomProject.imageProject.startsWith('http')
                   ? randomProject.imageProject
                   : `${bucket_url}/images/imageAdd/${randomProject.imageProject}`
-                : catPhoto;
+                : placehold;
 
               return (
                 <SwiperSlide

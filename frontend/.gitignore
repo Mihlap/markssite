@@ -128,7 +128,8 @@ dist
 # Кэш сборщиков
 .webpack-cache/
 .vite/
-
+build/*
+CLAUDE.md
 # Артефакты сборки
-build/
 dist/
+package-lock.json
