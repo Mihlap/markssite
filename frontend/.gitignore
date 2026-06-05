@@ -132,3 +132,4 @@ build/*
 CLAUDE.md
 # Артефакты сборки
 dist/
+package-lock.json

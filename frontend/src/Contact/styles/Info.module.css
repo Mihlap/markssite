@@ -31,7 +31,7 @@
     align-self: end;
     justify-self: end;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     gap: 28px;
 }
 
