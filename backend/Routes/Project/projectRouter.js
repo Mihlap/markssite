@@ -110,7 +110,15 @@ router.get('/all', async (req, res) => {
     const where = {};
     const andConditions = [];
     if (view && view !== 'Все') andConditions.push({ viewConstruction: { [Op.like]: `%${view}%` } });
-    if (city) andConditions.push(seqWhere(fn('lower', col('countryCity')), { [Op.like]: `%${city.toLowerCase()}%` }));
+    if (city) {
+      const cityLower = city.toLowerCase();
+      andConditions.push({
+        [Op.or]: [
+          seqWhere(fn('lower', col('countryCity')), { [Op.like]: `%${cityLower}%` }),
+          seqWhere(fn('lower', col('location')), { [Op.like]: `%${cityLower}%` }),
+        ],
+      });
+    }
     if (andConditions.length > 0) where[Op.and] = andConditions;
 
     const { count, rows } = await Project.findAndCountAll({

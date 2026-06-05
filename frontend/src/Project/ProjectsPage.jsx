@@ -5,7 +5,6 @@ import { useProjects, useWindowWidth } from '../hooks';
 import FilterToolbar from './components/FilterToolbar';
 import ProjectGrid from './components/ProjectGrid';
 
-import s from './styles/ProjectPage.module.css';
 
 const ProjectModal = lazy(() => import('./components/ProjectModal'));
 const SearchInput = lazy(() => import('./components/SearchInput'));

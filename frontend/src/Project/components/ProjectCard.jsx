@@ -16,6 +16,7 @@ import previous from '../../icons/previous.svg';
 import ConstructorBlockRenderer from '../ConstructorProject/ConstructorBlockRenderer';
 import NotFound from '../../NotFound/NotFound';
 import { containsListTags, renderListWithDots } from '../utils/utils';
+import AllProjectsButton from '../../UI/ButtonsProjects/AllProjectsButton';
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
@@ -216,6 +217,10 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
 
       <div className={styles.main_project_card}>
         <ProjectCardSlider slidesCard={[project]} />
+
+        <div className={styles.all_button_div} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+          <AllProjectsButton />
+        </div>
         <div className={styles.section_project__block__card}>
           <div className={styles.cart_project__block__card}>
             <div className={styles.cart_project__container__block__card}>

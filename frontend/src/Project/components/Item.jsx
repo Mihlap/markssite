@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { COLOR } from '../const';
 import placehold from '../icon/placehold.webp';
+import { UiMarksTextBox } from '../../UI';
 import styles from '../styles/Item.module.css';
 
 function parseCompetencies(raw) {
@@ -38,14 +39,33 @@ export default function Item({ project, photoSrc }) {
       />
       <div className={styles.item_content}>
         <div className={styles.item_info}>
-          <div className={styles.item_title_wrap}>
-            <p className={styles.item_title} title={project.title}>
-              {project.title}
-            </p>
-          </div>
+              <UiMarksTextBox
+                variant="p"
+                size="sm"
+                weight="700"
+                color="primary"
+                font="raleway"
+                title={project.title}
+                className={styles.item_title}>
+                {project.title || 'Заголовок'}
+              </UiMarksTextBox>
           <div className={styles.item_meta} title={project.countryCity}>
-            <p className={styles.item_location}>{project.countryCity}</p>
-            <p className={styles.item_date}>{project.monthYear}</p>
+            <UiMarksTextBox
+              variant="p"
+              font="raleway"
+              weight="400"
+              color="muted"
+              className={styles.item_location}>
+              {project.countryCity}
+            </UiMarksTextBox>
+            <UiMarksTextBox
+              variant="p"
+              font="raleway"
+              weight="400"
+              color="muted"
+              className={styles.item_date}>
+              {project.monthYear}
+            </UiMarksTextBox>
           </div>
         </div>
         <div className={styles.item_skills_wrap}>

@@ -1,11 +1,12 @@
 import clsx from 'clsx';
 import s from './Styles.module.css';
 
-export default function TextBox({ variant = 'h1', size, mobileSize, bigSize, weight, color, mobileColor, font, className, href, children }) {
+export default function TextBox({ variant = 'h1', size, mobileSize, bigSize, weight, color, mobileColor, font, className, href, title, children }) {
   const Tag = variant;
   return (
     <Tag
       href={href}
+      title={title}
       className={clsx(
         size && s[`size-${size}`],
         mobileSize && s[`mobile-${mobileSize}`],
