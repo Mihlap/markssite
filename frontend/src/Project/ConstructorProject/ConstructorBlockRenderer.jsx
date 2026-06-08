@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Slider from 'react-slick';
 import styles from './ConstructorBlockRenderer.module.scss';
-import '../stylePaginationSlider.css';
 
 import playIcon from '../../icons/play.svg';
 import pauseIcon from '../../icons/pause.svg';
@@ -9,8 +8,8 @@ import playIconMobile from '../../icons/playMobile.svg';
 import pauseIconMobile from '../../icons/pauseMobile.svg';
 import fullscreen from '../../icons/full_screen.svg';
 import fullscreen_exit from '../../icons/fullscreen_exit.svg';
-import { containsListTags } from '../../Project/utils';
-import { renderListWithDots } from '../../Project/utils';
+import { containsListTags } from '../utils/utils';
+import { renderListWithDots } from '../utils/utils';
 
 const isMobileScreen = window.innerWidth <= 1024;
 
@@ -27,7 +26,7 @@ const arrowStyles = {
   cursor: 'pointer',
 };
 
-const PrevArrow = ({ props, onClick, onMouseEnter, onMouseLeave }) => (
+const PrevArrow = ({ onClick, onMouseEnter, onMouseLeave }) => (
   <div
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
@@ -67,7 +66,7 @@ const PrevArrow = ({ props, onClick, onMouseEnter, onMouseLeave }) => (
   </div>
 );
 
-const NextArrow = ({ props, onClick, onMouseEnter, onMouseLeave }) => (
+const NextArrow = ({ onClick, onMouseEnter, onMouseLeave }) => (
   <div
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
@@ -200,7 +199,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
     );
   };
 
-  const renderThreeImages = (block, index) => {
+  const renderThreeImages = (block) => {
     const images = block[0].value;
     //  Проверяем, есть ли картинки в блоке
     if (!images || images.length < 1) {
@@ -239,7 +238,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
       </div>
     );
   };
-  const renderTwoImage = (block, index) => {
+  const renderTwoImage = (block) => {
     const images = block[0].value;
     return (
       <div className={`${styles.imageBlockTwo} ${styles.imageBlockTwo_project}`}>
@@ -313,7 +312,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
           style={i === activeSlide ? activeDotStyle : inactiveDotStyle} // сравнение с активным слайдом
         />
       ),
-      infinite: true,   
+      infinite: true,
       slidesToShow: 1,
       slidesToScroll: 1,
       arrows: dotsVisible, // Включение стрелочек
@@ -378,7 +377,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
       setIsHovered(false);
     };
 
-    const handleFullscreen = () => {  
+    const handleFullscreen = () => {
       const containerElement = document.documentElement;
 
       if (containerElement.requestFullscreen) {
@@ -573,24 +572,66 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
               <div className={styles.buttonWrapperBlock}>
                 {isPlaying ? (
                   isHovered && (
-                    <button className={styles.buttonPause} onClick={() => { videoRef.current?.pause(); setIsPlaying(false); setIsHovered(false); }}>
-                      <img src={pauseIconToUse} alt="pause" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />
+                    <button
+                      className={styles.buttonPause}
+                      onClick={() => {
+                        videoRef.current?.pause();
+                        setIsPlaying(false);
+                        setIsHovered(false);
+                      }}>
+                      <img
+                        src={pauseIconToUse}
+                        alt="pause"
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
+                      />
                     </button>
                   )
                 ) : (
-                  <button className={styles.buttonPlayBlock} onClick={() => { videoRef.current?.play(); setIsPlaying(true); setIsHovered(false); }}>
-                    <img src={playIconToUse} alt="play" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />
+                  <button
+                    className={styles.buttonPlayBlock}
+                    onClick={() => {
+                      videoRef.current?.play();
+                      setIsPlaying(true);
+                      setIsHovered(false);
+                    }}>
+                    <img
+                      src={playIconToUse}
+                      alt="play"
+                      onMouseEnter={handleMouseEnter}
+                      onMouseLeave={handleMouseLeave}
+                    />
                   </button>
                 )}
               </div>
               <div className={styles.buttonWrapperBlock1}>
                 {!isFullscreen ? (
-                  <button className={styles.buttonFullscreen} onClick={() => { document.documentElement.requestFullscreen?.(); setIsFullscreen(true); }}>
-                    <img src={fullscreen} alt="fullscreen" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />
+                  <button
+                    className={styles.buttonFullscreen}
+                    onClick={() => {
+                      document.documentElement.requestFullscreen?.();
+                      setIsFullscreen(true);
+                    }}>
+                    <img
+                      src={fullscreen}
+                      alt="fullscreen"
+                      onMouseEnter={handleMouseEnter}
+                      onMouseLeave={handleMouseLeave}
+                    />
                   </button>
                 ) : (
-                  <button className={styles.buttonExitFullscreen} onClick={() => { document.exitFullscreen?.(); setIsFullscreen(false); }}>
-                    <img src={fullscreen_exit} alt="exit fullscreen" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />
+                  <button
+                    className={styles.buttonExitFullscreen}
+                    onClick={() => {
+                      document.exitFullscreen?.();
+                      setIsFullscreen(false);
+                    }}>
+                    <img
+                      src={fullscreen_exit}
+                      alt="exit fullscreen"
+                      onMouseEnter={handleMouseEnter}
+                      onMouseLeave={handleMouseLeave}
+                    />
                   </button>
                 )}
               </div>

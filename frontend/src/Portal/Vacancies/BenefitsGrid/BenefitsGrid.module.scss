@@ -1,6 +1,5 @@
+@use 'variables' as *;
 @import '../../../App.css';
-@import '../../../_variables.scss';
-
 .BenefitsGrid {
   padding: rem(180) 0;
   background: linear-gradient(

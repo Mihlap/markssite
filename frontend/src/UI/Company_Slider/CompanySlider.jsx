@@ -3,6 +3,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './CompanySlider.css';
+import { UiMarksTextBox } from '../../UI';
 
 const catPhoto = '../../img/default-photo.jpeg';
 
@@ -12,10 +13,10 @@ const CompanySlider = () => {
   const [lineWidth, setLineWidth] = useState(22);
 
   const slidesCard = [
-    { imageTitle: 'wine-park1.png' },
-    { imageTitle: 'mfk-slava2.png' },
-    { imageTitle: 'prime-park3.png' },
-    { imageTitle: 'badaevsky4.png' },
+    { imageTitle: 'wine-park1.webp' },
+    { imageTitle: 'mfk-slava2.webp' },
+    { imageTitle: 'prime-park3.webp' },
+    { imageTitle: 'badaevsky4.webp' },
   ];
 
   const imagePaths = slidesCard.flatMap((slide) => {
@@ -79,10 +80,19 @@ const CompanySlider = () => {
 
   return (
     <div className="company-slider-container">
+      <div className="wrap-heading">
+        <UiMarksTextBox variant="h2" size="2xl" mobileSize="lg" weight="300" color="whiteSoft" font="unbounded">
+          Актуальные кейсы MARKS GROUP
+        </UiMarksTextBox>
+        <UiMarksTextBox variant="h1" size="5xl" mobileSize="4xl" weight="300" color="whiteSoft" font="unbounded">
+          Проекты
+        </UiMarksTextBox>
+      </div>
+
       <Slider {...settings}>
         {imagePaths.map((path, index) => (
           <div key={index} className="company-slider-slide">
-            <img className="company-slider-slide-img" src={path} alt={`Slide ${index + 1}`} />
+            <img className="company-slider-slide-img" loading="eager" src={path} alt={`Slide ${index + 1}`} />
           </div>
         ))}
       </Slider>
@@ -92,8 +102,7 @@ const CompanySlider = () => {
             <button
               key={index}
               className={`button_slider ${activeButtonIndex === index ? 'active' : ''}`}
-              onClick={() => handleButtonClick(index)}
-            >
+              onClick={() => handleButtonClick(index)}>
               {String(index + 1).padStart(2, '0')}
             </button>
           ))}

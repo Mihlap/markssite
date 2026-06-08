@@ -12,8 +12,8 @@ import CategoryButton from './CategoryButton';
 import { categoriesConfig } from './categories.js';
 import styles from './CategoryFilters.module.scss';
 
-import { ReactComponent as SearchIcon } from '../icons/search.svg';
-import { ReactComponent as CloseIcon } from '../icons/close.svg';
+import SearchIcon from '../icons/search.svg?react';
+import CloseIcon from '../icons/close.svg?react';
 
 function MobileCategoryFilters({ categoriesList }) {
   const dispatch = useDispatch();

@@ -1,6 +1,5 @@
-@import '../../../src/App.css';
-@import '../../../src/variables';
-
+@use 'variables' as *;
+@import '../../App.css';
 .scrollWrapper {
   width: 100%;
   overflow-x: auto;

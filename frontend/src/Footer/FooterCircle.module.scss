@@ -1,5 +1,4 @@
-@import './../_variables.scss';
-
+@use 'variables' as *;
 .FooterCircle {
   $s: &;
   $action-box-height: rem(250);

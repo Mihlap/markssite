@@ -4,38 +4,46 @@ import styles from '../Company/Company.module.scss';
 
 import bracket from '../icons/bracket.svg';
 
-const CounterCompanyMobile = () => {
+const TARGETS = {
+  specialists: 1300,
+  projects: 200,
+  years: 20,
+};
+
+const CounterCompanyMobile = ({ armed = false }) => {
   const [countPercentM, setCountPercentM] = useState(0);
   const [countHumanM, setCountHumanM] = useState(0);
   const [countProjectM, setCountProjectM] = useState(0);
   const [activeCounter, setActiveCounter] = useState(0);
   const [finishedCounters, setFinishedCounters] = useState([]);
-  const blockSlider = useRef();
+  const blockSlider = useRef(null);
 
   useEffect(() => {
+    if (!armed) return;
+
     const timer1 = setTimeout(() => {
-      if (countPercentM < 1300 && activeCounter === 0) {
-        setCountPercentM(countPercentM + 20);
+      if (countPercentM < TARGETS.specialists && activeCounter === 0) {
+        setCountPercentM((value) => value + 20);
       }
-      if (countProjectM < 200 && activeCounter === 1) {
-        setCountProjectM(countProjectM + 5);
+      if (countProjectM < TARGETS.projects && activeCounter === 1) {
+        setCountProjectM((value) => value + 5);
       }
-      if (countHumanM < 20 && activeCounter === 2) {
-        setCountHumanM(countHumanM + 1);
+      if (countHumanM < TARGETS.years && activeCounter === 2) {
+        setCountHumanM((value) => value + 1);
       }
     }, 50);
 
     const delayTimer = setTimeout(() => {
-      if (countPercentM >= 1300 && !finishedCounters.includes(0)) {
+      if (countPercentM >= TARGETS.specialists && !finishedCounters.includes(0)) {
         setActiveCounter(1);
-        setFinishedCounters([...finishedCounters, 0]);
+        setFinishedCounters((prev) => [...prev, 0]);
       }
-      if (countProjectM >= 200 && !finishedCounters.includes(1)) {
+      if (countProjectM >= TARGETS.projects && !finishedCounters.includes(1)) {
         setActiveCounter(2);
-        setFinishedCounters([...finishedCounters, 1]);
+        setFinishedCounters((prev) => [...prev, 1]);
       }
-      if (countHumanM >= 19 && !finishedCounters.includes(2)) {
-        setFinishedCounters([...finishedCounters, 2]);
+      if (countHumanM >= TARGETS.years - 1 && !finishedCounters.includes(2)) {
+        setFinishedCounters((prev) => [...prev, 2]);
       }
     }, 600);
 
@@ -43,9 +51,11 @@ const CounterCompanyMobile = () => {
       clearTimeout(timer1);
       clearTimeout(delayTimer);
     };
-  }, [countPercentM, countHumanM, countProjectM, activeCounter, finishedCounters]);
+  }, [armed, countPercentM, countHumanM, countProjectM, activeCounter, finishedCounters]);
 
   useEffect(() => {
+    if (!armed || !blockSlider.current) return;
+
     const elements = blockSlider.current.children;
 
     gsap.from(elements, {
@@ -54,7 +64,7 @@ const CounterCompanyMobile = () => {
       stagger: 0.5,
       ease: 'power2.out',
     });
-  }, [activeCounter]);
+  }, [armed, activeCounter]);
 
   return (
     <div className={styles.div_counter_wrapper}>

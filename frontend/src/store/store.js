@@ -1,10 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import projectSlice from './Slice/projectSlice';
 import companyHistoryReducer from './Slice/companyHistorySlice';
 import StaffSliceNew from './Slice/StaffSliceNew';
 import counterSlice from './Slice/counterSlice';
 import articleSlice from './Slice/articleSlice';
-import searchProjectMainSlice from './Slice/searchProjectMainSlice';
 import searchArticlePublicLeft from './Slice/searchArticlePublicLeftSlice';
 import searchArticlePublicRightReducer from './Slice/searchArticlePublicRightSlice';
 import searchVacancyMainSlice from './Slice/searchVacancyMainSlice';
@@ -25,11 +23,9 @@ export default configureStore({
   reducer: {
     user: userReducer,
     auth: authReducer,
-    project: projectSlice,
     staff: StaffSliceNew,
     counter: counterSlice,
     article: articleSlice,
-    searchproject: searchProjectMainSlice,
     searchvacancy: searchVacancyMainSlice,
     searchArticlePublicLeft: searchArticlePublicLeft,
     searchArticlePublicRight: searchArticlePublicRightReducer,

@@ -1,0 +1,36 @@
+.wrap_tabs {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 32px;
+    padding-top: 32px;
+    padding-left: 27px;
+    padding-right: 27px;
+}
+
+/* Экран меньше 1024px (2 колонки) */
+@media screen and (max-width: 1023px) {
+    .wrap_tabs {
+        gap: 16px;
+    }
+}
+
+.wrap_tabs_btn {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 8px;
+}
+
+@media (max-width: 1024px) {
+    .wrap_tabs {
+        padding-left: 55px;
+        padding-right: 55px;
+    }
+}
+
+
+@media (max-width: 430px) {
+    .wrap_swiper {
+        padding: 1px;
+    }
+}

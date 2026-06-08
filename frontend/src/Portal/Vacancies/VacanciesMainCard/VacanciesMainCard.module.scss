@@ -1,3 +1,4 @@
+@use 'sass:list';
 @import '../../../App.css';
 
 @mixin text($fz,
@@ -65,8 +66,8 @@
     width: $w;
     height: $h;
 
-    // если передали позиционные свойства – добавить их
-    @if length($pos)>0 {
+  
+    @if list.length($pos) > 0 {
       @each $key, $value in $pos {
         #{$key}: $value;
       }

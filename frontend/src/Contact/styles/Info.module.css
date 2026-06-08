@@ -1,0 +1,187 @@
+.wrapInto {
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+}
+
+.wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 66px;
+    padding: 116px 125px 76px 152px;
+    background:
+        linear-gradient(262deg, rgba(117, 187, 253, 0.09) 0%, rgba(123, 163, 217, 0.05) 44.63%, rgba(117, 187, 253, 0.09) 100%),
+        linear-gradient(257deg, rgba(246, 246, 246, 0.00) -74.04%, #F6F6F6 33.9%);
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.16);
+}
+
+.wrapContent {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.wrapLeft {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+}
+
+.wrapRight {
+    align-self: end;
+    justify-self: end;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 28px;
+}
+
+.wrapEmail {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.wrapContact {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.email {
+    position: relative;
+    left: 29px;
+    transition: color 0.2s;
+}
+
+.email::before {
+    content: '';
+    width: 13.5px;
+    height: 13.5px;
+    background-color: var(--black-1D2E43);
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: -29px;
+    transform: translateY(-33%);
+    transition: background-color 0.2s;
+}
+
+.email:hover {
+    color: var(--blue-75BBFD);
+}
+
+.email:hover::before {
+    background-color: var(--blue-75BBFD);
+}
+
+.point {
+    position: relative;
+    transition: color 0.2s;
+}
+
+.point::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background-color: var(--black-1D2E43);
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: -18px;
+    transform: translateY(-33%);
+    transition: background-color 0.2s;
+}
+
+.point:hover {
+    color: var(--blue-75BBFD);
+}
+
+.point:hover::before {
+    background-color: var(--blue-75BBFD);
+}
+
+@media (min-width: 2560px) {
+    .email::before {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+@media (min-width: 1680px) {
+    .wrap {
+        padding: 148px 250px 134px 259px;
+    }
+
+    .wrapRight {
+        justify-self: left;
+    }
+}
+
+@media (max-width: 1024px) {
+    .wrap {
+        padding: 116px 56px 80px 55px;
+    }
+}
+
+@media (max-width: 820px) {
+    .wrap {
+        padding: 116px 36px 80px 35px;
+    }
+}
+
+@media (max-width: 768px) {
+    .wrap {
+        gap: 32px;
+        padding: 116px 55px 56px 56px;
+    }
+
+    .wrapContent {
+        grid-template-columns: none;
+        gap: 36px;
+    }
+
+    .wrapRight {
+        justify-self: auto;
+        padding-left: 18px;
+    }
+
+    .email::before {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+@media (max-width: 430px) {
+    .wrapInto {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .wrap {
+        overflow: clip;
+        padding: 116px 16px 48px 16px;
+        pointer-events: auto
+    }
+
+    .wrapContent {
+        grid-template-columns: none;
+        gap: 54px;
+    }
+
+    .wrapRight {
+        pointer-events: auto;
+    }
+
+    .wrapEmail,
+    .wrapContact,
+    .wrapPr,
+    .wrapTender {
+        pointer-events: auto;
+    }
+}

@@ -1,21 +1,35 @@
-FROM node:18-alpine
+# syntax=docker/dockerfile:1
 
-WORKDIR /backend/
+FROM node:20-alpine AS base
 
-#RUN apk update && apk add postgresql-client
+WORKDIR /backend
 
-COPY package*.json /backend/
+RUN apk add --no-cache postgresql-client
 
-#RUN npm cache clean --force
-RUN npm install
-#RUN npm install bcrypt
+COPY package*.json ./
 
-COPY . /backend/
+RUN npm ci
+
+FROM base AS development
+
+COPY . .
 
 EXPOSE 3002
 
-COPY ./startup.sh /backend/
+COPY startup.sh ./
 
-RUN chmod +x /backend/startup.sh
+RUN chmod +x startup.sh
 
-ENTRYPOINT [ "sh", "/backend/startup.sh" ]
+ENTRYPOINT ["sh", "startup.sh"]
+
+FROM base AS production
+
+COPY . .
+
+EXPOSE 3002
+
+COPY startup.sh ./
+
+RUN chmod +x startup.sh
+
+ENTRYPOINT ["sh", "startup.sh"]

@@ -1,6 +1,5 @@
+@use 'variables' as *;
 @import '../../../App.css';
-@import '../../../_variables.scss';
-
 .DirectionsGrid {
   display: grid;
   grid-template-rows: 1fr 1fr;

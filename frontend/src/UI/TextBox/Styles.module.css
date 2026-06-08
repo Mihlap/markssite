@@ -1,0 +1,201 @@
+/* size */
+.size-sm {
+    font-size: 0.875rem;
+    line-height: 1.43;
+}
+
+.size-md {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.size-lg {
+    font-size: 1.125rem;
+    line-height: 1.56;
+}
+
+.size-xl {
+    font-size: 1.25rem;
+    line-height: 1.4;
+}
+
+.size-2xl {
+    font-size: 1.5rem;
+    line-height: 1.33;
+}
+
+.size-3xl {
+    font-size: 1.875rem;
+    line-height: 1.2;
+}
+
+.size-4xl {
+    font-size: 2rem;
+    line-height: 1.25;
+}
+
+.size-4_5xl {
+    font-size: 2.5rem;
+    line-height: 1.2;
+}
+
+.size-5xl {
+    font-size: 3rem;
+    line-height: 1.33;
+}
+
+/* weight */
+.fw-300 {
+    font-weight: var(--fw-300);
+}
+
+.fw-400 {
+    font-weight: var(--fw-400);
+}
+
+.fw-500 {
+    font-weight: var(--fw-500);
+}
+
+.fw-600 {
+    font-weight: var(--fw-600);
+}
+
+.fw-700 {
+    font-weight: var(--fw-700);
+}
+
+.fw-800 {
+    font-weight: var(--fw-800);
+}
+
+.fw-900 {
+    font-weight: var(--fw-900);
+}
+
+/* color */
+.color-primary {
+    color: var(--black-1D2E43);
+}
+
+.color-secondary {
+    color: var(--dark-gray-566272);
+}
+
+.color-muted {
+    color: var(--gray-959DA6);
+}
+
+.color-white {
+    color: var(--originWhite-FFFFFF);
+}
+
+.color-whiteSoft {
+    color: var(--white-F6F6F6);
+}
+
+.color-blue {
+    color: var(--blue-75BBFD);
+}
+
+.color-orange {
+    color: var(--orange-FE5000);
+}
+
+/* font */
+.font-raleway {
+    font-family: var(--font-raleway);
+}
+
+.font-unbounded {
+    font-family: var(--font-unbounded);
+}
+
+.font-inter {
+    font-family: var(--font-inter);
+}
+
+/* mobile size */
+@media (max-width: 768px) {
+    .mobile-sm {
+        font-size: 0.875rem;
+        line-height: 1.43;
+    }
+
+    .mobile-md {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+
+    .mobile-lg {
+        font-size: 1.125rem;
+        line-height: 1.56;
+    }
+
+    .mobile-xl {
+        font-size: 1.25rem;
+        line-height: 1.4;
+    }
+
+    .mobile-2xl {
+        font-size: 1.5rem;
+        line-height: 1.33;
+    }
+
+    .mobile-3xl {
+        font-size: 1.875rem;
+        line-height: 1.2;
+    }
+
+    .mobile-4xl {
+        font-size: 2rem;
+        line-height: 1.25;
+    }
+
+    .mobile-5xl {
+        font-size: 3rem;
+        line-height: 1.33;
+    }
+
+    .colorPhone-secondary {
+        color: var(--dark-gray-566272);
+    }
+}
+
+@media (min-width: 2560px) {
+
+    .big-md {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+
+    .big-lg {
+        font-size: 1.125rem;
+        line-height: 1.56;
+    }
+
+    .big-2xl {
+        font-size: 1.5rem;
+        line-height: 1.33;
+    }
+
+    .big-4xl {
+        font-size: 2rem;
+        line-height: 1.25;
+    }
+
+    .big-4_5xl {
+        font-size: 2.5rem;
+        line-height: 1.2;
+    }
+
+    .big-5xl {
+        font-size: 3rem;
+        line-height: 1.33;
+    }
+
+    .big-6xl {
+        font-size: 3.75rem;
+        line-height: 1.15;
+    }
+}

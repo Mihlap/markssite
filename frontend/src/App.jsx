@@ -34,10 +34,10 @@ import MarksEntityRow from './Admin/ui/EntityRow/MarksEntityRow';
 // import Loading from './UI/Loading/christmas/Loading';
 
 const Header = lazy(() => import('./Header/Header'));
-const Contacts = lazy(() => import('./Contacts/Contacts'));
+const Contacts = lazy(() => import('./Contact/ContactPage'));
 
-const Project = lazy(() => import('./Project/Project'));
-const ProjectCard = lazy(() => import('./Project/ProjectCard'));
+const ProjectsPage = lazy(() => import('./Project/ProjectsPage'));
+const ProjectCard = lazy(() => import('./Project/components/ProjectCard'));
 
 const Publics = lazy(() => import('./Publics/Publics'));
 const ArticleCard = lazy(() => import('./Publics/ArticleCard'));
@@ -140,8 +140,7 @@ export default function App() {
     }
   }, [location.pathname, dispatch]);
 
-  const shouldShowGlobalLoader =
-    !IS_DEV && loading && !isPortalPage && !isInformationPage && !isFooterFormPage;
+  const shouldShowGlobalLoader = !IS_DEV && loading && !isPortalPage && !isInformationPage && !isFooterFormPage;
 
   return (
     <HelmetProvider>
@@ -174,23 +173,11 @@ export default function App() {
                 path="/project"
                 element={
                   <PageFade>
-                    <Project
-                      handleMouseEnter={handleMouseEnter}
-                      handleMouseLeave={handleMouseLeave}
-                      handleMouseHover={handleMouseHover}
-                    />
+                    <ProjectsPage />
                   </PageFade>
                 }
               />
 
-              <Route
-                path="/project/:viewConstruction?"
-                element={
-                  <PageFade>
-                    <Project />
-                  </PageFade>
-                }
-              />
 
               <Route
                 path="/test"
@@ -209,7 +196,7 @@ export default function App() {
               />
 
               <Route
-                path="/projects/:id"
+                path="/project/:id"
                 element={
                   <PageFade>
                     <ProjectCard

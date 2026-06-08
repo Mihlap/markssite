@@ -1,6 +1,5 @@
+@use 'variables' as *;
 @import '../../../App.css';
-@import '../../../_variables.scss';
-
 .ArrowsSwiper {
   display: flex;
   justify-content: flex-end;

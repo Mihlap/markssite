@@ -1,0 +1,128 @@
+/* ─── Base ─── */
+.button {
+    padding: 8px 24px;
+    border-radius: 2rem;
+    outline: 1px solid var(--black-1D2E43);
+    background-color: transparent;
+    white-space: nowrap;
+    cursor: pointer;
+    color: var(--black-1D2E43);
+    font-family: var(--font-raleway);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    transition: background-color 0.3s ease, color 0.3s ease, outline-color 0.3s ease;
+}
+
+/* ХОВЕР ТОЛЬКО ДЛЯ ПК */
+@media (hover: hover) {
+    .button:hover {
+        background-color: var(--dark-gray-566272);
+        color: var(--white-F6F6F6);
+        outline-color: var(--dark-gray-566272);
+    }
+}
+
+.button:disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.buttonLabel {
+    margin: 0;
+}
+
+/* ─── active ─── */
+.active {
+    background-color: var(--black-1D2E43);
+    color: var(--white-F6F6F6);
+    outline-color: var(--black-1D2E43);
+}
+
+/* ХОВЕР ТОЛЬКО ДЛЯ ПК */
+@media (hover: hover) {
+    .active:hover {
+        background-color: var(--dark-gray-566272);
+        outline: 1px solid var(--dark-gray-566272);
+    }
+}
+
+/* ─── city: город не выбран ─── */
+.city {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    padding-left: 16px;
+    padding-right: 16px;
+    background-color: var(--light-light-gray-EBECEE);
+}
+
+.city> :nth-child(1) {
+    margin-right: 7.33px;
+}
+
+/* ХОВЕР ТОЛЬКО ДЛЯ ПК */
+@media (hover: hover) {
+    .city:hover {
+        background-color: var(--light-gray-C0C5CB);
+        color: var(--white-F6F6F6);
+        outline: none;
+    }
+}
+
+/* ─── cityActive: город выбран ─── */
+.cityActive {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    padding-left: 16px;
+    padding-right: 16px;
+    background-color: var(--black-1D2E43);
+    color: var(--white-F6F6F6);
+}
+
+/* ХОВЕР ТОЛЬКО ДЛЯ ПК */
+@media (hover: hover) {
+    .cityActive:hover {
+        background-color: var(--dark-gray-566272);
+        outline: none;
+    }
+}
+
+.cityActive> :nth-child(1) {
+    margin-right: 7.33px;
+}
+
+.cityActive> :nth-child(3) {
+    transform: translate(8px, 0px) scale(0.8);
+}
+
+/* ─── tab: inactive ─── */
+.tab {
+    font-weight: 400;
+    border-radius: 34px;
+    background: var(--white-F6F6F6);
+    outline: none;
+    box-shadow: -6px 1px 8.5px 0 rgba(10, 55, 78, 0.10), 1px 4px 10.7px 0 rgba(10, 55, 78, 0.16);
+}
+
+@media (hover: hover) {
+    .tab:hover {
+        background: var(--dark-gray-566272);
+        color: var(--white-F6F6F6);
+        outline: none;
+        box-shadow: none;
+    }
+}
+
+/* ─── tabActive: active ─── */
+.tabActive {
+    font-weight: 700;
+    border-radius: 34px;
+    background-color: var(--black-1D2E43);
+    color: var(--white-F6F6F6);
+    outline: none;
+    box-shadow: none;
+}

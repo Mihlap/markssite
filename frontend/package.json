@@ -2,7 +2,7 @@
   "name": "markssite",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:5000",
+  "type": "module",
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
@@ -16,10 +16,11 @@
     "@react-three/postprocessing": "^2.16.2",
     "@react-three/rapier": "^1.4.0",
     "@reduxjs/toolkit": "^1.9.5",
+    "@tanstack/react-query": "^5.100.11",
+    "@tanstack/react-query-devtools": "^5.100.11",
     "axios": "^1.13.5",
     "browser-image-compression": "^2.0.2",
     "clsx": "^2.1.1",
-    "dotenv": "^16.0.3",
     "framer-motion": "^10.15.1",
     "gsap": "^3.13.0",
     "katex": "^0.16.21",
@@ -32,10 +33,9 @@
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
-    "react-dotenv": "^0.1.3",
     "react-helmet-async": "^2.0.5",
     "react-hook-form": "^7.71.1",
-    "react-intersection-observer": "^9.4.4",
+    "react-intersection-observer": "^9.16.0",
     "react-katex": "^3.0.1",
     "react-map-gl": "^8.0.4",
     "react-markdown": "^9.0.3",
@@ -60,47 +60,32 @@
     "three": "^0.164.1",
     "transliteration": "^2.3.5",
     "use-debounce": "^10.0.4",
-    "uuid": "^14.0.0",
-    "web-vitals": "^2.1.4"
+    "uuid": "^14.0.0"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "dev": "react-scripts start",
-    "build": "cross-env GENERATE_SOURCEMAP=false react-app-rewired build",
-    "test": "react-app-rewired test",
-    "eject": "react-scripts eject",
+    "predev": "npm run dev:stop",
+    "dev": "vite",
+    "dev:stop": "npx --yes kill-port 3000 3001 4173",
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "preview:build": "npm run build && vite preview",
     "format": "prettier --write .",
     "figma:publish": "figma-connect publish --documentUrl https://www.figma.com/design/yJRiwzNoy1JZChUCpZt9fy/%D0%A1%D0%B0%D0%B9%D1%82-MARKSGROUP",
     "figma:parse": "figma-connect parse"
   },
   "overrides": {
-    "webpack-dev-server": "4.15.2",
-    "postcss": "8.4.31",
     "cross-spawn": "~7.0.5",
-    "path-to-regexp": "0.1.13",
     "@babel/runtime": "7.26.10",
     "tough-cookie": "4.1.3",
-    "shell-quote": "1.7.3",
-    "yargs-parser": "13.1.2",
-    "serialize-javascript": "~7.0.3",
-    "nth-check": "2.0.1",
-    "resolve-url-loader": "5.0.0",
     "brace-expansion": "2.0.3",
     "form-data": "4.0.4",
-    "on-headers": "1.1.0",
     "js-yaml": "^4.1.1",
     "@remix-run/router": ">=1.23.2",
-    "qs": "~6.14.2",
     "lodash": "4.18.1",
     "lodash-es": "4.18.1",
     "undici": "~7.24.0",
-    "jsonpath": "1.3.0",
-    "underscore": "~1.13.8",
-    "@tootallnate/once": "~3.0.1",
     "immutable": "~5.1.5",
-    "svgo": "~4.0.1",
-    "dottie": "~2.0.7",
-    "bn.js": "~4.12.3",
     "flatted": "~3.4.2",
     "yaml": "~1.10.3",
     "picomatch": "~2.3.2",
@@ -108,54 +93,20 @@
       "quill": "2.0.2"
     }
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all",
-      "last 2 Safari versions",
-      "not safari < 10",
-      "not chrome < 51",
-      "not android < 5",
-      "not ie < 12"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 2 Safari versions",
-      "last 1 firefox version"
-    ]
-  },
-  "peerDependencies": {
-    "postcss": "^8.0.0"
-  },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@figma/code-connect": "^1.1.0",
     "@hookform/devtools": "^4.1.1",
-    "autoprefixer": "^10.4.20",
-    "babel-plugin-transform-remove-console": "^6.9.4",
-    "cross-env": "^10.1.0",
-    "css-minimizer-webpack-plugin": "^8.0.0",
+    "@vitejs/plugin-react": "^4.7.0",
     "eslint": "^8.57.1",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
     "globals": "^16.4.0",
-    "postcss": "8.4.31",
-    "postcss-import": "^16.1.0",
-    "postcss-preset-env": "^10.1.4",
+    "javascript-obfuscator": "^4.1.1",
     "prettier": "^3.6.2",
-    "react-app-rewired": "2.2.1",
-    "react-scripts": "5.0.1",
     "sass": "^1.78.0",
-    "sass-loader": "^16.0.2",
-    "webpack-bundle-analyzer": "^4.10.2",
-    "webpack-obfuscator": "^3.5.1"
+    "terser": "^5.44.0",
+    "vite": "^6.4.0",
+    "vite-plugin-svgr": "^4.5.0"
   }
 }

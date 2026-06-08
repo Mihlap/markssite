@@ -1,0 +1,496 @@
+import { useEffect } from 'react';
+import gsap from 'gsap';
+import { flushSync } from 'react-dom';
+import headerStyles from '../../CompanyHistory/CompanyHistoryHeader.module.scss';
+
+import {
+    stopWheelHard,
+    isHistoryActive,
+    isEventInsideModal,
+    computeSnapY,
+    getSectionAbs,
+    shouldConsiderSnap,
+    clearRecentlyExitedIfFar,
+    getMaxHorizontalOffsetToCenterLast,
+    setFocusPhaseEntering,
+    setFocusPhaseReady,
+    killVTween,
+} from './wheelShared';
+
+export function useWheelEnterSnap({
+    sectionRef,
+    cardsFocused,
+    historyListRef,
+    timelineWrapperRef,
+    historyHeaderRef,
+    marksGroupRef,
+    titleRef,
+    subtitleLineRef,
+    subtitleLine1Ref,
+    subtitleLine2Ref,
+    backgroundRef,
+    cardsFocusInProgressRef,
+    exitToParentInProgressRef,
+    hasScrollToCardsTriggered,
+    hasScrollToHeaderTriggered,
+    hasSplitTriggered,
+    hasRestoreTriggered,
+    textAnimationReady,
+    headerIntroInProgressRef,
+    returnedToSliderRef,
+    setCardsFocused,
+    showAndPlaceHistoryTag,
+    hideHistoryTag,
+    showYearsScale,
+    hideYearsScale,
+    horizontalOffsetRef,
+    recentlyExitedCardsRef,
+    vScrollYRef,
+    lockScrollRef,
+    lockYRef,
+    applyingRef,
+    vTweenRef,
+    isDesktop,
+}) {
+    const applyFocusGrid = (wrapper) => {
+        if (!wrapper) return;
+        wrapper.style.setProperty('grid-template-rows', '1fr auto 1fr', 'important');
+        wrapper.style.setProperty('height', '100vh', 'important');
+
+        const rowTop = wrapper.querySelector('.cards_row_top');
+        const rowBot = wrapper.querySelector('.cards_row_bottom');
+        const tl = wrapper.querySelector('.timeline');
+
+        if (rowTop) {
+            rowTop.style.setProperty('grid-row', '1', 'important');
+            rowTop.style.setProperty('align-self', 'end', 'important');
+        }
+        if (rowBot) {
+            rowBot.style.setProperty('grid-row', '3', 'important');
+            rowBot.style.setProperty('align-self', 'start', 'important');
+        }
+        if (tl) {
+            tl.style.setProperty('grid-row', '2', 'important');
+            tl.style.setProperty('align-self', 'center', 'important');
+            tl.style.setProperty('margin', '0', 'important');
+        }
+    };
+
+    useEffect(() => {
+        if (isDesktop === false) return;
+        const SNAP_ZONE = 300;
+        const STEP_CLAMP = 900;
+        const EASE = 'power2.out';
+        const DUR = 0.2;
+
+        const activateCardsFocus = (timelineEl, cardsEl, fromBottom) => {
+            hideHistoryTag?.(true);
+            hideYearsScale?.(true);
+
+            cardsFocusInProgressRef.current = true;
+
+            if (fromBottom) {
+                const maxOffset = getMaxHorizontalOffsetToCenterLast(timelineEl, horizontalOffsetRef);
+                horizontalOffsetRef.current = maxOffset;
+                gsap.set(timelineEl, { x: -maxOffset, force3D: true });
+            } else {
+                horizontalOffsetRef.current = 0;
+                gsap.set(timelineEl, { x: 0, force3D: true });
+            }
+
+            const lineEl = timelineEl.querySelector('[class*="timeline_line"]');
+            const lineTopBefore = lineEl ? lineEl.getBoundingClientRect().top : null;
+
+            cardsEl.style.marginTop = '0';
+            cardsEl.style.marginBottom = '0';
+            cardsEl.style.top = '0';
+            cardsEl.style.height = '100vh';
+            cardsEl.style.display = 'block';
+            cardsEl.style.boxSizing = 'border-box';
+            cardsEl.style.overflow = 'visible';
+            cardsEl.style.overscrollBehavior = 'contain';
+
+            setFocusPhaseEntering(sectionRef);
+
+            flushSync(() => setCardsFocused(true));
+
+            const timelineWrapper = timelineEl?.parentElement;
+            applyFocusGrid(timelineWrapper);
+
+            if (lineTopBefore != null && lineEl) {
+                const lineTopAfter = lineEl.getBoundingClientRect().top;
+                const delta = Math.round(lineTopBefore - lineTopAfter);
+                if (Math.abs(delta) > 0.5) {
+                    const newY = Math.max(0, window.pageYOffset - delta);
+                    lockYRef.current = newY;
+                    vScrollYRef.current = newY;
+                    window.scrollTo(0, newY);
+                }
+            }
+
+            showYearsScale?.(false, { duration: 0.9, ease: 'power2.inOut' });
+
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    const lineEl = timelineWrapper?.querySelector('[class*="timeline_line"]');
+                    const lineRect = lineEl?.getBoundingClientRect();
+                    let targetScrollY;
+                    if (lineRect) {
+                        const lineCenterInViewport = lineRect.top + lineRect.height / 2;
+                        targetScrollY = window.pageYOffset + lineCenterInViewport - window.innerHeight / 2;
+                    } else {
+                        targetScrollY = cardsEl.getBoundingClientRect().top + window.pageYOffset;
+                    }
+
+                    applyingRef.current = true;
+
+                    gsap.to(window, {
+                        duration: 0.26,
+                        ease: 'power2.out',
+                        overwrite: 'auto',
+                        scrollTo: { y: targetScrollY, autoKill: false },
+                        onUpdate: () => {
+                            lockYRef.current = window.pageYOffset;
+                            vScrollYRef.current = lockYRef.current;
+                        },
+                        onComplete: () => {
+                            cardsEl.style.setProperty('overflow', 'hidden', 'important');
+
+                            applyingRef.current = false;
+                            cardsFocusInProgressRef.current = false;
+                            lockScrollRef.current = false;
+
+                            setFocusPhaseReady(sectionRef);
+
+                            showAndPlaceHistoryTag?.({ duration: 0.3, ease: 'power2.out' });
+                        },
+                    });
+                });
+            });
+        };
+
+        const onScroll = () => {
+            if (!lockScrollRef.current) return;
+            if (applyingRef.current) return;
+
+            const y = window.pageYOffset;
+            if (Math.abs(y - lockYRef.current) > 1) {
+                applyingRef.current = true;
+                window.scrollTo(0, lockYRef.current);
+                applyingRef.current = false;
+            }
+        };
+
+        const onWheel = (e) => {
+            if (isEventInsideModal(e)) return;
+            if (cardsFocused) return;
+            if (cardsFocusInProgressRef.current) return;
+            if (exitToParentInProgressRef.current || returnedToSliderRef.current) return;
+            if (!isHistoryActive(sectionRef, e)) return;
+
+            const timelineEl = timelineWrapperRef.current;
+            const cardsEl = historyListRef.current;
+            if (!timelineEl || !cardsEl) return;
+
+            const sectionAbs = getSectionAbs(sectionRef);
+            const snapY = computeSnapY(timelineEl);
+
+            const dyRaw = e.deltaY;
+            const dx = e.deltaX || 0;
+            if (Math.abs(dx) > Math.abs(dyRaw)) return;
+
+            const y0 = window.pageYOffset;
+            const dy = gsap.utils.clamp(-STEP_CLAMP, STEP_CLAMP, dyRaw);
+            const y1 = y0 + dy;
+
+            const recentExit = recentlyExitedCardsRef.current;
+            if (recentExit.active) {
+                const sameDir = (recentExit.dir === 'up' && dy < 0) ||
+                    (recentExit.dir === 'down' && dy > 0);
+                if (sameDir) {
+                    clearRecentlyExitedIfFar(recentlyExitedCardsRef, snapY);
+                    return;
+                }
+                recentlyExitedCardsRef.current.active = false;
+            }
+
+            const needCatch = shouldConsiderSnap(y0, y1, snapY, sectionAbs, SNAP_ZONE);
+            if (!needCatch) return;
+
+            stopWheelHard(e);
+
+            lockScrollRef.current = true;
+            vScrollYRef.current = y0;
+            lockYRef.current = y0;
+
+            killVTween(vTweenRef);
+            applyingRef.current = true;
+
+            vTweenRef.current = gsap.to(window, {
+                duration: DUR,
+                ease: EASE,
+                overwrite: 'auto',
+                scrollTo: { y: snapY, autoKill: false },
+                onUpdate: () => {
+                    lockYRef.current = window.pageYOffset;
+                    vScrollYRef.current = lockYRef.current;
+                },
+                onComplete: () => {
+                    applyingRef.current = false;
+
+                    const fromBottom = dy < 0;
+                    activateCardsFocus(timelineEl, cardsEl, fromBottom);
+                },
+            });
+        };
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('wheel', onWheel, { passive: false, capture: true });
+
+        return () => {
+            window.removeEventListener('scroll', onScroll);
+            window.removeEventListener('wheel', onWheel, { capture: true });
+            killVTween(vTweenRef);
+            lockScrollRef.current = false;
+            applyingRef.current = false;
+        };
+    }, [
+        isDesktop,
+        sectionRef,
+        cardsFocused,
+        historyListRef,
+        timelineWrapperRef,
+        cardsFocusInProgressRef,
+        exitToParentInProgressRef,
+        returnedToSliderRef,
+        setCardsFocused,
+        horizontalOffsetRef,
+        recentlyExitedCardsRef,
+        vScrollYRef,
+        lockScrollRef,
+        lockYRef,
+        applyingRef,
+        vTweenRef,
+        showAndPlaceHistoryTag,
+        hideHistoryTag,
+        showYearsScale,
+        hideYearsScale,
+    ]);
+
+    useEffect(() => {
+        if (isDesktop === false) return;
+        const snap1 = gsap.utils?.snap ? gsap.utils.snap(1) : (v) => Math.round(v);
+
+        const handleWheelDown = (e) => {
+            if (isEventInsideModal(e)) return;
+            if (!isHistoryActive(sectionRef, e)) return;
+            if (e.deltaY <= 0) return;
+
+            const headerEl = historyHeaderRef.current;
+            const cardsEl = historyListRef.current;
+            if (!headerEl || !cardsEl) return;
+
+            const triggerY = window.innerHeight * 0.25;
+            const headerRect = headerEl.getBoundingClientRect();
+            const cardsRect = cardsEl.getBoundingClientRect();
+
+            const isInHeader =
+                triggerY >= headerRect.top &&
+                triggerY <= headerRect.bottom &&
+                !(triggerY >= cardsRect.top && triggerY <= cardsRect.bottom);
+
+            if (!isInHeader) return;
+            if (!textAnimationReady.current || headerIntroInProgressRef.current) return;
+            if (hasScrollToCardsTriggered.current) return;
+            if (cardsFocused || cardsFocusInProgressRef.current) return;
+
+            const winY0 = window.pageYOffset;
+
+            stopWheelHard(e);
+
+            gsap.killTweensOf(window);
+            window.scrollTo(0, winY0);
+
+            hasScrollToCardsTriggered.current = true;
+            hasScrollToHeaderTriggered.current = false;
+
+            const marksGroup = marksGroupRef.current;
+            const title = titleRef.current;
+            const subtitleLine = subtitleLineRef.current;
+            const descLine1 = subtitleLine1Ref.current;
+            const descLine2 = subtitleLine2Ref.current;
+            if (!marksGroup || !title) return;
+
+            hasSplitTriggered.current = true;
+            hasRestoreTriggered.current = false;
+
+            gsap.killTweensOf([cardsEl, marksGroup, title, subtitleLine, descLine1, descLine2].filter(Boolean));
+
+            [marksGroup, title, subtitleLine, descLine1, descLine2]
+                .filter(Boolean)
+                .forEach((el) => {
+                    const x = gsap.getProperty(el, 'x');
+                    const opacity = gsap.getProperty(el, 'opacity');
+                    gsap.set(el, { x, opacity, force3D: true });
+                    el.classList.remove(headerStyles.animate);
+                    el.style.animation = 'none';
+                    el.style.transition = 'none';
+                });
+
+            const tl = gsap.timeline({ defaults: { overwrite: 'auto', force3D: true }, paused: true });
+
+            hideYearsScale?.(true);
+            tl.call(() => showYearsScale?.(false, { duration: 1.2, ease: 'power2.inOut' }), null, 0);
+
+            const backgroundEl = backgroundRef.current;
+            if (backgroundEl) {
+                const rect = backgroundEl.getBoundingClientRect();
+                const shiftY = -Math.max(1, rect.height);
+                tl.to(backgroundEl, { y: snap1(shiftY), duration: 1.2, ease: 'power2.inOut' }, 0);
+            }
+
+            tl.fromTo(
+                marksGroup,
+                { x: gsap.getProperty(marksGroup, 'x') || 0, opacity: gsap.getProperty(marksGroup, 'opacity') || 1 },
+                { x: '-100vw', opacity: 0, duration: 0.8, ease: 'power2.in' },
+                0
+            );
+
+            [title, subtitleLine, descLine1, descLine2].filter(Boolean).forEach((el) => {
+                tl.fromTo(
+                    el,
+                    { x: gsap.getProperty(el, 'x') || 0, opacity: gsap.getProperty(el, 'opacity') || 1 },
+                    { x: '100vw', opacity: 0, duration: 0.8, ease: 'power2.in' },
+                    0
+                );
+            });
+
+            const flipLineEl = timelineWrapperRef.current?.querySelector('[class*="timeline_line"]');
+            const flipLineTopBefore = flipLineEl ? flipLineEl.getBoundingClientRect().top : null;
+
+            const rectBefore = cardsEl.getBoundingClientRect();
+            const topBefore = Math.round(rectBefore.top);
+            const leftBefore = Math.round(rectBefore.left);
+
+            const currentX = Number(gsap.getProperty(cardsEl, 'x') || 0);
+            const currentY = Number(gsap.getProperty(cardsEl, 'y') || 0);
+
+            cardsFocusInProgressRef.current = true;
+
+            hideHistoryTag?.(true);
+            setFocusPhaseEntering(sectionRef);
+
+            cardsEl.style.willChange = 'transform';
+            cardsEl.style.transition = 'none';
+            cardsEl.style.transform = 'translateZ(0)';
+
+            flushSync(() => setCardsFocused(true));
+
+            applyFocusGrid(timelineWrapperRef.current);
+
+            const flipLineTopAfter = flipLineEl ? flipLineEl.getBoundingClientRect().top : null;
+            const rectAfter = cardsEl.getBoundingClientRect();
+            const leftAfter = Math.round(rectAfter.left);
+
+            const deltaX = leftBefore - leftAfter;
+            const deltaY = (flipLineTopBefore != null && flipLineTopAfter != null)
+                ? Math.round(flipLineTopBefore - flipLineTopAfter)
+                : Math.round(topBefore - Math.round(rectAfter.top));
+
+            let lockedX = snap1(currentX + deltaX);
+            let initialY = snap1(currentY + deltaY);
+
+            gsap.set(cardsEl, { x: lockedX, y: initialY, immediateRender: true, force3D: true });
+
+            requestAnimationFrame(() => {
+                const winY1 = window.pageYOffset;
+                const deltaScroll = winY1 - winY0;
+
+                if (Math.abs(deltaScroll) > 0.5) {
+                    window.scrollTo(0, winY0);
+                    const yNow = Number(gsap.getProperty(cardsEl, 'y') || 0);
+                    gsap.set(cardsEl, { y: snap1(yNow - deltaScroll), immediateRender: true, force3D: true });
+                }
+
+                const r = cardsEl.getBoundingClientRect();
+                const deltaLeft = Math.round(r.left) - leftBefore;
+
+                if (Math.abs(deltaLeft) >= 1) {
+                    const xNow = Number(gsap.getProperty(cardsEl, 'x') || 0);
+                    lockedX = snap1(xNow - deltaLeft);
+                    gsap.set(cardsEl, { x: lockedX, immediateRender: true, force3D: true });
+                }
+
+                const rectStable = cardsEl.getBoundingClientRect();
+                const topStable = Math.round(rectStable.top);
+                const yNow = Number(gsap.getProperty(cardsEl, 'y') || 0);
+
+                const targetTopInViewport = 0;
+                const shiftY = targetTopInViewport - topStable;
+                const finalY = snap1(yNow + shiftY);
+
+                tl.to(
+                    cardsEl,
+                    {
+                        x: lockedX,
+                        y: finalY,
+                        duration: 1.2,
+                        ease: 'power2.inOut',
+                        overwrite: 'auto',
+                        autoRound: true,
+                        onUpdate: () => {
+                            const cx = Number(gsap.getProperty(cardsEl, 'x') || 0);
+                            if (Math.abs(cx - lockedX) > 0.1) {
+                                gsap.set(cardsEl, { x: lockedX, immediateRender: true });
+                            }
+                        },
+                        onComplete: () => {
+                            cardsEl.style.width = '';
+                            cardsEl.style.minWidth = '';
+                            cardsEl.style.maxWidth = '';
+                            cardsEl.style.height = '';
+                            cardsEl.style.minHeight = '';
+                            cardsEl.style.willChange = '';
+                            cardsEl.style.transition = '';
+
+                            cardsFocusInProgressRef.current = false;
+                            setFocusPhaseReady(sectionRef);
+
+                            showAndPlaceHistoryTag?.({ duration: 2.0, ease: 'sine.out' });
+                        },
+                    },
+                    0
+                );
+
+                tl.play(0);
+            });
+        };
+
+        window.addEventListener('wheel', handleWheelDown, { passive: false });
+        return () => window.removeEventListener('wheel', handleWheelDown);
+    }, [
+        isDesktop,
+        sectionRef,
+        cardsFocused,
+        historyHeaderRef,
+        historyListRef,
+        marksGroupRef,
+        titleRef,
+        subtitleLineRef,
+        subtitleLine1Ref,
+        subtitleLine2Ref,
+        backgroundRef,
+        cardsFocusInProgressRef,
+        textAnimationReady,
+        headerIntroInProgressRef,
+        hasScrollToCardsTriggered,
+        hasScrollToHeaderTriggered,
+        hasSplitTriggered,
+        hasRestoreTriggered,
+        setCardsFocused,
+        showAndPlaceHistoryTag,
+        hideHistoryTag,
+        showYearsScale,
+        hideYearsScale,
+    ]);
+}
