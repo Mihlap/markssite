@@ -166,6 +166,7 @@
     .wrap {
         overflow: clip;
         padding: 116px 16px 48px 16px;
+        pointer-events: auto
     }
 
     .wrapContent {
@@ -174,7 +175,7 @@
     }
 
     .wrapRight {
-        justify-self: auto;
+        pointer-events: auto;
     }
 
     .wrapEmail,
