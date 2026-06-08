@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { UiMarksTextBox } from '../../UI';
 import { cityData } from '../const';
 import FilterToolbar from './FilterToolbar';
