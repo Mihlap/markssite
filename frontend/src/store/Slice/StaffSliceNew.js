@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { normalizeStaffCategories } from '../../Company/utils/staffVisibility';
 
 const HOST = (process.env.REACT_APP_SERVER_HOST || process.env.REACT_APP_API_URL || '').replace(/\/+$/, '');
 const api = axios.create({
@@ -8,15 +9,7 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
-const normalizeCategory = (val) =>
-  Array.isArray(val)
-    ? val
-    : val
-      ? String(val)
-        .split(',')
-        .map((s) => s.trim())
-        .filter(Boolean)
-      : [];
+const normalizeCategory = (val) => normalizeStaffCategories(val);
 
 const pickDynamicBlocks = (it) => {
   if (Array.isArray(it?.dynamicBlocks) && it.dynamicBlocks.length) return it.dynamicBlocks;
@@ -28,17 +21,15 @@ const pickDynamicBlocks = (it) => {
 
 const normalizeStaffItem = (it) => ({
   ...it,
-  category: Array.isArray(it?.category)
-    ? it.category
-    : it?.category
-      ? String(it.category)
-        .split(',')
-        .map((v) => v.trim())
-        .filter(Boolean)
-      : [],
+  category: normalizeStaffCategories(it?.category),
   visibilityByCategory: it?.visibilityByCategory || {},
   dynamicBlocks: pickDynamicBlocks(it),
 });
+
+const mapStaffLists = (state, mapper) => {
+  state.items = mapper(state.items);
+  state.adminItems = mapper(state.adminItems);
+};
 
 async function maybeUploadImage(imgFile) {
   if (!imgFile) return null;
@@ -76,9 +67,12 @@ export const deleteStaffMarkdownFile = createAsyncThunk(
   }
 );
 
-export const fetchStaffAsync = createAsyncThunk('staff/fetchAll', async (_, { rejectWithValue }) => {
+export const fetchStaffAsync = createAsyncThunk('staff/fetchAll', async (arg, { rejectWithValue }) => {
   try {
-    const { data } = await api.get('/api-stuffs/stuffs', { params: { includeHidden: true } });
+    const category = typeof arg === 'string' ? arg : arg?.category;
+    const params = { includeHidden: true };
+    if (category) params.category = category;
+    const { data } = await api.get('/api-stuffs/stuffs', { params });
     return data;
   } catch (e) {
     return rejectWithValue(e.response?.data || e.message);
@@ -188,19 +182,19 @@ export const copyStaffAsync = createAsyncThunk('staff/copy', async (id, { reject
 
 const staffSlice = createSlice({
   name: 'staff',
-  initialState: { items: [], loading: false, error: null, copiedId: null },
+  initialState: { items: [], adminItems: [], loading: false, adminLoading: false, error: null, copiedId: null },
   reducers: {},
   extraReducers: (b) => {
     b.addCase(fetchStaffAsync.pending, (s) => {
-      s.loading = true;
+      s.adminLoading = true;
       s.error = null;
     })
       .addCase(fetchStaffAsync.fulfilled, (s, a) => {
-        s.loading = false;
-        s.items = (a.payload || []).map(normalizeStaffItem);
+        s.adminLoading = false;
+        s.adminItems = (a.payload || []).map(normalizeStaffItem);
       })
       .addCase(fetchStaffAsync.rejected, (s, a) => {
-        s.loading = false;
+        s.adminLoading = false;
         s.error = a.payload || 'Ошибка';
       })
       .addCase(fetchStaffByCategoryPublic.pending, (s) => {
@@ -216,26 +210,29 @@ const staffSlice = createSlice({
         s.error = a.payload || a.error?.message || 'Ошибка';
       })
       .addCase(createStaffAsync.fulfilled, (s, a) => {
-        s.items = [...s.items, normalizeStaffItem(a.payload)];
+        const next = normalizeStaffItem(a.payload);
+        mapStaffLists(s, (list) => [...list, next]);
       })
       .addCase(updateStaffAsync.fulfilled, (s, a) => {
         const updated = normalizeStaffItem(a.payload);
-        s.items = s.items.map((x) => (x.id === updated.id ? updated : x));
+        mapStaffLists(s, (list) => list.map((x) => (x.id === updated.id ? updated : x)));
       })
       .addCase(deleteStaffAsync.pending, (s, a) => {
         const { id, category } = a.meta.arg || {};
         if (id == null) return;
 
         if (category) {
-          s.items = s.items
-            .map((it) => {
-              if (it.id !== id) return it;
-              const remaining = (it.category || []).filter((c) => c !== category);
-              return remaining.length ? { ...it, category: remaining } : null;
-            })
-            .filter(Boolean);
+          mapStaffLists(s, (list) =>
+            list
+              .map((it) => {
+                if (it.id !== id) return it;
+                const remaining = (it.category || []).filter((c) => c !== category);
+                return remaining.length ? { ...it, category: remaining } : null;
+              })
+              .filter(Boolean)
+          );
         } else {
-          s.items = s.items.filter((x) => x.id !== id);
+          mapStaffLists(s, (list) => list.filter((x) => x.id !== id));
         }
       })
       .addCase(deleteStaffAsync.fulfilled, (s, a) => {
@@ -243,25 +240,27 @@ const staffSlice = createSlice({
         const id = payload.id ?? a.meta?.arg?.id;
 
         if (payload.categoryRemoved) {
-          s.items = s.items
-            .map((it) => {
-              if (it.id !== id) return it;
-              const remaining = Array.isArray(payload.remainingCategories)
-                ? payload.remainingCategories
-                : (it.category || []).filter((c) => c !== payload.categoryRemoved);
-              return remaining.length ? { ...it, category: remaining } : null;
-            })
-            .filter(Boolean);
+          mapStaffLists(s, (list) =>
+            list
+              .map((it) => {
+                if (it.id !== id) return it;
+                const remaining = Array.isArray(payload.remainingCategories)
+                  ? payload.remainingCategories
+                  : (it.category || []).filter((c) => c !== payload.categoryRemoved);
+                return remaining.length ? { ...it, category: remaining } : null;
+              })
+              .filter(Boolean)
+          );
           return;
         }
 
         if (payload.deleted || (payload.id && !payload.categoryRemoved)) {
-          s.items = s.items.filter((x) => x.id !== id);
+          mapStaffLists(s, (list) => list.filter((x) => x.id !== id));
           return;
         }
 
         if (typeof payload === 'number' || typeof payload === 'string') {
-          s.items = s.items.filter((x) => x.id !== payload);
+          mapStaffLists(s, (list) => list.filter((x) => x.id !== payload));
         }
       })
       .addCase(deleteStaffAsync.rejected, (s, a) => {
@@ -269,47 +268,63 @@ const staffSlice = createSlice({
       })
       .addCase(toggleVisibilityStaffAsync.pending, (s, a) => {
         const { id, isVisible, category } = a.meta.arg || {};
-        s.items = s.items.map((it) => {
-          if (it.id !== id) return it;
-          if (category) {
-            return { ...it, visibilityByCategory: { ...(it.visibilityByCategory || {}), [category]: isVisible } };
-          }
-          return { ...it, isVisible };
-        });
+        mapStaffLists(s, (list) =>
+          list.map((it) => {
+            if (it.id !== id) return it;
+            if (category) {
+              const next = {
+                ...it,
+                visibilityByCategory: { ...(it.visibilityByCategory || {}), [category]: isVisible },
+              };
+              return isVisible ? { ...next, isVisible: true } : next;
+            }
+            return { ...it, isVisible };
+          })
+        );
       })
       .addCase(toggleVisibilityStaffAsync.fulfilled, (s, a) => {
         const { id, isVisible, category } = a.payload || {};
-        s.items = s.items.map((it) => {
-          if (it.id !== id) return it;
-          if (category) {
-            return { ...it, visibilityByCategory: { ...(it.visibilityByCategory || {}), [category]: isVisible } };
-          }
-          return { ...it, isVisible };
-        });
+        mapStaffLists(s, (list) =>
+          list.map((it) => {
+            if (it.id !== id) return it;
+            if (category) {
+              const next = {
+                ...it,
+                visibilityByCategory: { ...(it.visibilityByCategory || {}), [category]: isVisible },
+              };
+              return isVisible ? { ...next, isVisible: true } : next;
+            }
+            return { ...it, isVisible };
+          })
+        );
       })
       .addCase(toggleVisibilityStaffAsync.rejected, (s, a) => {
         const { id, category } = a.meta.arg || {};
-        s.items = s.items.map((it) => {
-          if (it.id !== id) return it;
-          if (category) {
-            const cur = it.visibilityByCategory?.[category];
-            return {
-              ...it,
-              visibilityByCategory:
-                typeof cur === 'boolean'
-                  ? { ...(it.visibilityByCategory || {}), [category]: !cur }
-                  : { ...(it.visibilityByCategory || {}) },
-            };
-          }
-          return typeof it.isVisible === 'boolean' ? { ...it, isVisible: !it.isVisible } : it;
-        });
+        mapStaffLists(s, (list) =>
+          list.map((it) => {
+            if (it.id !== id) return it;
+            if (category) {
+              const cur = it.visibilityByCategory?.[category];
+              return {
+                ...it,
+                visibilityByCategory:
+                  typeof cur === 'boolean'
+                    ? { ...(it.visibilityByCategory || {}), [category]: !cur }
+                    : { ...(it.visibilityByCategory || {}) },
+              };
+            }
+            return typeof it.isVisible === 'boolean' ? { ...it, isVisible: !it.isVisible } : it;
+          })
+        );
         s.error = a.payload || a.error?.message || 'Ошибка переключения видимости';
       })
       .addCase(reorderStaffAsync.fulfilled, (s, a) => {
         const map = new Map(a.payload.map(({ id, sortIndex }) => [id, sortIndex]));
-        s.items = s.items
-          .map((it) => (map.has(it.id) ? { ...it, sortIndex: map.get(it.id) } : it))
-          .sort((a, b) => (a.sortIndex ?? 0) - (b.sortIndex ?? 0));
+        mapStaffLists(s, (list) =>
+          list
+            .map((it) => (map.has(it.id) ? { ...it, sortIndex: map.get(it.id) } : it))
+            .sort((a, b) => (a.sortIndex ?? 0) - (b.sortIndex ?? 0))
+        );
       })
       .addCase(copyStaffAsync.fulfilled, (s, a) => {
         s.copiedId = a.payload;

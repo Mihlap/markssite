@@ -9,6 +9,134 @@ const { logResourceAction } = require('../utils/fileLogger');
 
 const router = express.Router();
 
+const normCategory = (s) =>
+  String(s || '')
+    .toLowerCase()
+    .replace(/\s+/g, ' ')
+    .replace(/[-–—]/g, '-')
+    .trim();
+
+const categoryAliasSet = (displayName) => {
+  const n = normCategory(displayName);
+  if (['руководство', 'leadership', 'management'].includes(n)) {
+    return new Set(['руководство', 'leadership', 'management']);
+  }
+  if (
+    [
+      'научное сопровождение',
+      'научно-техническое сопровождение',
+      'scientific support',
+      'science',
+      'руководители отделов',
+      'department managers',
+    ].includes(n)
+  ) {
+    return new Set([
+      'научное сопровождение',
+      'научно-техническое сопровождение',
+      'scientific support',
+      'science',
+      'руководители отделов',
+      'department managers',
+    ]);
+  }
+  if (n === 'hr') return new Set(['hr']);
+  return new Set([n]);
+};
+
+const categoryDbKeys = (displayName) => {
+  const n = normCategory(displayName);
+  if (['руководство', 'leadership', 'management'].includes(n)) {
+    return ['Руководство', 'Management', 'leadership'];
+  }
+  if (
+    [
+      'научное сопровождение',
+      'научно-техническое сопровождение',
+      'scientific support',
+      'science',
+      'руководители отделов',
+      'department managers',
+    ].includes(n)
+  ) {
+    return [
+      'Научно-техническое сопровождение',
+      'Научное сопровождение',
+      'Scientific support',
+      'Руководители отделов',
+      'Department managers',
+      'science',
+    ];
+  }
+  if (n === 'hr') return ['HR', 'hr'];
+  return [displayName];
+};
+
+const CANONICAL_CATEGORY = {
+  руководство: 'Руководство',
+  leadership: 'Руководство',
+  management: 'Руководство',
+  'научное сопровождение': 'Научно-техническое сопровождение',
+  'научно-техническое сопровождение': 'Научно-техническое сопровождение',
+  'scientific support': 'Научно-техническое сопровождение',
+  science: 'Научно-техническое сопровождение',
+  'руководители отделов': 'Руководители отделов',
+  'department managers': 'Руководители отделов',
+  hr: 'HR',
+};
+
+const canonicalizeCategoryList = (cats) => {
+  const arr = Array.isArray(cats) ? cats : cats ? [cats] : [];
+  const unique = new Set();
+  for (const c of arr) {
+    const key = normCategory(c);
+    unique.add(CANONICAL_CATEGORY[key] || c);
+  }
+  return [...unique];
+};
+
+const formatStaffRow = (row) => {
+  const plain = row?.toJSON ? row.toJSON() : row;
+  return {
+    ...plain,
+    category: canonicalizeCategoryList(plain.category),
+  };
+};
+
+const staffBelongsToCategory = (staff, displayCategory) => {
+  const aliases = categoryAliasSet(displayCategory);
+  const hasAlias = (v) => aliases.has(normCategory(v));
+  const cats = Array.isArray(staff?.category) ? staff.category : staff?.category ? [staff.category] : [];
+  return cats.some(hasAlias);
+};
+
+const resolveVisibilityKey = (staff, displayCategory) => {
+  const aliases = categoryAliasSet(displayCategory);
+  const hasAlias = (v) => aliases.has(normCategory(v));
+  const cats = Array.isArray(staff?.category) ? staff.category : staff?.category ? [staff.category] : [];
+  return cats.find(hasAlias) || displayCategory;
+};
+
+const isStaffVisibleInCategory = (staff, displayCategory) => {
+  if (!staffBelongsToCategory(staff, displayCategory)) return false;
+
+  const aliases = categoryAliasSet(displayCategory);
+  const hasAlias = (v) => aliases.has(normCategory(v));
+  const vbc =
+    staff?.visibilityByCategory && typeof staff.visibilityByCategory === 'object'
+      ? staff.visibilityByCategory
+      : {};
+
+  for (const [key, value] of Object.entries(vbc)) {
+    if (hasAlias(key)) {
+      if (value === false) return false;
+      if (value === true) return true;
+    }
+  }
+
+  return staff?.isVisible !== false;
+};
+
 const toArray = (v) => (Array.isArray(v) ? v : v ? [v] : []);
 
 const STAFF_BASE_DIR = 'images/imageStaff';
@@ -139,7 +267,10 @@ router.get('/stuffs', async (req, res) => {
     const where = {};
     const showHidden = String(includeHidden).toLowerCase() === 'true';
     if (!showHidden) where.isVisible = true;
-    if (category) where.category = { [Op.contains]: [category] };
+    if (category) {
+      const keys = categoryDbKeys(category);
+      where[Op.or] = keys.map((key) => ({ category: { [Op.contains]: [key] } }));
+    }
 
     const rows = await StaffNew.findAll({
       where,
@@ -159,10 +290,10 @@ router.get('/stuffs', async (req, res) => {
 
     const out =
       !showHidden && category
-        ? rows.filter((r) => (r.visibilityByCategory || {})[category] !== false)
+        ? rows.filter((r) => isStaffVisibleInCategory(r, category))
         : rows;
 
-    res.json(out);
+    res.json(out.map(formatStaffRow));
   } catch (e) {
     console.error(e);
     res.status(500).json({ error: 'Ошибка получения списка сотрудников' });
@@ -577,9 +708,12 @@ router.patch('/stuffs/:id/visibility', async (req, res) => {
 
     if (category) {
       const vbc = { ...(row.visibilityByCategory || {}) };
-      vbc[category] = !!isVisible;
-      await row.update({ visibilityByCategory: vbc });
-      return res.json({ id, category, isVisible: !!isVisible });
+      const key = resolveVisibilityKey(row, category);
+      vbc[key] = !!isVisible;
+      const updates = { visibilityByCategory: vbc };
+      if (isVisible) updates.isVisible = true;
+      await row.update(updates);
+      return res.json({ id, category: key, isVisible: !!isVisible });
     }
 
     await row.update({ isVisible: !!isVisible });

@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchStaffAsync, deleteStaffAsync, toggleVisibilityStaffAsync, reorderStaffAsync } from '../../../store/Slice/StaffSliceNew';
+import { useDispatch } from 'react-redux';
+import { deleteStaffAsync, toggleVisibilityStaffAsync, reorderStaffAsync } from '../../../store/Slice/StaffSliceNew';
 import s from './Styles.module.css';
 import { UiMarksButton, UiMarksDialog, UiMarksDeleteModal } from '../../ui';
 import StaffForm from './StaffForm';
 import { useAdminUser } from '../../hooks/useAdminUser';
 import List from './List';
+import { isStaffVisibleInCategory } from '../../../Company/utils/staffVisibility';
 
-
-export default function StaffMain({ items, user }) {
+export default function StaffMain({ items, user, currentCategory, loading, error, onStaffChanged }) {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
@@ -19,7 +19,6 @@ export default function StaffMain({ items, user }) {
   const isFormDirtyRef = useRef(false);
   const formRef = useRef(null);
 
-  const { loading, error } = useSelector((state) => state.staff);
   const { canDelete, canAdd, canEdit, canDrag } = useAdminUser(user);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [orderedItems, setOrderedItems] = useState(items || []);
@@ -33,9 +32,20 @@ export default function StaffMain({ items, user }) {
     setIsOpen(true);
   }, []);
 
-  const handleToggle = useCallback((el) => {
-    dispatch(toggleVisibilityStaffAsync({ id: el.id, isVisible: !el.isVisible }));
-  }, [dispatch]);
+  const handleToggle = useCallback(
+    (el) => {
+      if (!currentCategory) return;
+      const visibleNow = isStaffVisibleInCategory(el, currentCategory);
+      dispatch(
+        toggleVisibilityStaffAsync({
+          id: el.id,
+          isVisible: !visibleNow,
+          category: currentCategory,
+        }),
+      ).finally(() => onStaffChanged?.());
+    },
+    [currentCategory, dispatch, onStaffChanged],
+  );
 
   const handleDelete = useCallback((el) => {
     setDeleteTarget({ id: el.id, name: el.name });
@@ -43,13 +53,9 @@ export default function StaffMain({ items, user }) {
 
   const handleDeleteConfirm = useCallback(() => {
     if (!deleteTarget) return;
-    dispatch(deleteStaffAsync({ id: deleteTarget.id }));
+    dispatch(deleteStaffAsync({ id: deleteTarget.id })).finally(() => onStaffChanged?.());
     setDeleteTarget(null);
-  }, [dispatch, deleteTarget]);
-
-  useEffect(() => {
-    dispatch(fetchStaffAsync());
-  }, [dispatch]);
+  }, [dispatch, deleteTarget, onStaffChanged]);
 
   const handleDialogClose = useCallback(() => {
     if (isFormDirtyRef.current) {
@@ -90,13 +96,18 @@ export default function StaffMain({ items, user }) {
       ) : (
         <List
           items={orderedItems}
+          category={currentCategory}
           canDrag={canDrag}
           canEdit={canEdit}
           canDelete={canDelete}
           onEdit={handleEdit}
           onToggle={handleToggle}
           onDelete={handleDelete}
-          onReorder={(next) => dispatch(reorderStaffAsync(next.map((it, i) => ({ id: it.id, sortIndex: i }))))}
+          onReorder={(next) =>
+            dispatch(reorderStaffAsync(next.map((it, i) => ({ id: it.id, sortIndex: i })))).finally(() =>
+              onStaffChanged?.(),
+            )
+          }
         />
       )}
 
@@ -107,8 +118,12 @@ export default function StaffMain({ items, user }) {
             Вы точно хотите удалить <br /> сотрудника «{deleteTarget?.name}»?
           </>
         }
-        // description="Удалённого сотрудника вернуть будет невозможно"
-        description={<>Если вы удалите информацию о сотруднике, вернуть <br/>ее будет невозможно</>}
+        description={
+          <>
+            Если вы удалите информацию о сотруднике, вернуть <br />
+            ее будет невозможно
+          </>
+        }
         onConfirm={handleDeleteConfirm}
         onClose={() => setDeleteTarget(null)}
       />
@@ -134,6 +149,7 @@ export default function StaffMain({ items, user }) {
             setIsOpen(false);
             setEditData(null);
             setIsFormLoading(false);
+            onStaffChanged?.();
           }}
         />
       </UiMarksDialog>
