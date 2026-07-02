@@ -13,6 +13,7 @@ import SkeletonLoaderSlider from './SkeletonLoader/SkeletonLoaderSlider';
 import StaffModalBlocks from './StaffModalBlocks';
 
 import { isHttp, encodePathnameOnly, absolutizeToBucket } from './utils/media';
+import { isStaffVisibleInCategory } from './utils/staffVisibility';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
@@ -21,23 +22,6 @@ const CAT_META = [
   { name: 'Научно-техническое сопровождение', key: 'science' },
   { name: 'HR', key: 'hr' },
 ];
-
-const norm = (s) =>
-  String(s || '')
-    .toLowerCase()
-    .replace(/\s+/g, ' ')
-    .replace(/[-–—]/g, '-')
-    .trim();
-
-const aliasSetFor = (displayName) => {
-  const n = norm(displayName);
-  if (n === 'руководство') return new Set(['руководство', 'leadership']);
-  if (n === 'научное сопровождение' || n === 'научно-техническое сопровождение') {
-    return new Set(['научное сопровождение', 'научно-техническое сопровождение', 'science']);
-  }
-  if (n === 'hr') return new Set(['hr']);
-  return new Set([n]);
-};
 
 const normalizeUrl = (v) => absolutizeToBucket(v, bucket_url);
 
@@ -122,30 +106,14 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
 
   useEffect(() => {
     if (category) {
-      dispatch(fetchStaffByCategoryPublic(undefined));
+      dispatch(fetchStaffByCategoryPublic(category));
     }
   }, [category, dispatch]);
 
   const filtered = useMemo(() => {
     const arr = Array.isArray(items) ? items : [];
     if (!category) return arr;
-
-    const aliases = aliasSetFor(category);
-    const hasAlias = (v) => aliases.has(norm(v));
-
-    return arr.filter((it) => {
-      if (it?.isVisible === false) return false;
-
-      const cats = Array.isArray(it?.category) ? it.category : [];
-      if (!cats.some(hasAlias)) return false;
-
-      const vbc =
-        it?.visibilityByCategory && typeof it.visibilityByCategory === 'object' ? it.visibilityByCategory : {};
-      for (const [k, v] of Object.entries(vbc)) {
-        if (v === false && hasAlias(k)) return false;
-      }
-      return true;
-    });
+    return arr.filter((it) => isStaffVisibleInCategory(it, category));
   }, [items, category]);
 
   const ordered = useMemo(() => {

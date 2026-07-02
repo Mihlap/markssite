@@ -12,7 +12,17 @@ const swapIds = (ids, fromId, toId) => {
   return next;
 };
 
-const List = ({ items: externalItems, canDrag, canEdit, canDelete, onEdit, onToggle, onDelete, onReorder }) => {
+const List = ({
+  items: externalItems,
+  category,
+  canDrag,
+  canEdit,
+  canDelete,
+  onEdit,
+  onToggle,
+  onDelete,
+  onReorder,
+}) => {
   const [orderIds, setOrderIds] = useState(() => (externalItems || []).map((x) => x.id));
   const [dragId, setDragId] = useState(null);
   const [dirty, setDirty] = useState(false);
@@ -69,6 +79,7 @@ const List = ({ items: externalItems, canDrag, canEdit, canDelete, onEdit, onTog
             <Item
               key={el.id}
               el={el}
+              category={category}
               draggable={canDrag}
               isDragging={dragId === el.id}
               onDragStart={canDrag ? (e) => handleDragStart(e, el.id) : undefined}

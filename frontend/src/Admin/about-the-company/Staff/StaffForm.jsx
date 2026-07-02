@@ -19,9 +19,15 @@ const toStaffImgUrl = (img) => {
 
 const CATEGORY_OPTIONS = [
   { value: 'Руководство', label: 'Руководство' },
-  { value: 'Научное сопровождение', label: 'Научное сопровождение' },
+  { value: 'Научно-техническое сопровождение', label: 'Научно-техническое сопровождение' },
   { value: 'HR', label: 'HR' },
 ];
+
+const normalizeCategoryValue = (value) => {
+  const n = String(value || '').toLowerCase().trim();
+  if (n === 'научное сопровождение') return 'Научно-техническое сопровождение';
+  return value;
+};
 
 const EMPTY_VALUES = {
   name: '',
@@ -180,7 +186,10 @@ const StaffForm = forwardRef(function StaffForm(
       name: editStaffData.name || '',
       position: editStaffData.position || '',
       description: editStaffData.description || '',
-      category: (editStaffData.category || []).map((c) => ({ value: c, label: c })),
+      category: (editStaffData.category || []).map((c) => {
+        const value = normalizeCategoryValue(c);
+        return { value, label: value };
+      }),
       photoAva: editStaffData.img ? [toStaffImgUrl(editStaffData.img)] : [],
       constructorBlocks: (editStaffData.dynamicBlocks || []).map(fromOldFormat).filter(Boolean),
     });
@@ -259,7 +268,9 @@ const StaffForm = forwardRef(function StaffForm(
       name: data.name || '',
       position: data.position || '',
       description: data.description || '',
-      category: Array.isArray(data.category) ? data.category.map((o) => o.value) : [],
+      category: Array.isArray(data.category)
+        ? data.category.map((o) => normalizeCategoryValue(o.value))
+        : [],
       img: photoAvaExisting || null,
       isVisible: true,
       dynamicBlocks: oldFormatBlocks,

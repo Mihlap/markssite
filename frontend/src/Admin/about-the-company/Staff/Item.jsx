@@ -2,10 +2,12 @@ import React from 'react';
 import { Icon6 } from '../../ui/EntityRow/icon';
 import MarksEntityActions from '../../ui/EntityRow/MarksEntityActions';
 import photoSrc from './utils/photo';
+import { isStaffVisibleInCategory } from '../../../Company/utils/staffVisibility';
 import s from './Styles.module.css';
 
 const Item = ({
   el,
+  category,
   draggable,
   isDragging,
   onDragStart,
@@ -38,7 +40,7 @@ const Item = ({
           {canEdit && (
             <MarksEntityActions
               canDelete={canDelete}
-              hidden={el?.hidden ?? !el?.isVisible}
+              hidden={!isStaffVisibleInCategory(el, category)}
               onEdit={() => onEdit(el)}
               onToggle={() => onToggle(el)}
               onDelete={() => onDelete(el)}
