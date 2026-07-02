@@ -26,3 +26,4 @@ frontend/.env
 
 # Кэш сборщиков
 frontend/.webpack-cache/
+composeEnv
