@@ -5,12 +5,6 @@ import ContentWithChapters from './ContentSection';
 import AsyncImage from './AsyncImage';
 import styles from './JournalCard.module.scss';
 
-import butt1 from '../icons/butt11.svg';
-import butt1m from '../icons/butt11m.svg';
-import butt2 from '../icons/butt22.svg';
-import butt2m from '../icons/butt22m.svg';
-import butt3 from '../icons/butt33.svg';
-
 import cat1 from '../icons/cat1.svg';
 import cat2 from '../icons/cat2.svg';
 import cat3 from '../icons/cat3.svg';
@@ -139,8 +133,6 @@ function JournalCard({ journal, index }) {
               setActiveTab(TABS.ARTICLE);
             }}
             style={{
-              WebkitMask: `url(${isMobile ? butt1m : butt1}) no-repeat center / contain`,
-              mask: `url(${isMobile ? butt1m : butt1}) no-repeat center / contain`,
               backgroundColor: articleColor,
               color: getButtonTextColor(articleColor),
             }}>
@@ -156,8 +148,6 @@ function JournalCard({ journal, index }) {
               setActiveTab(TABS.ANNOTATION);
             }}
             style={{
-              WebkitMask: `url(${isMobile ? butt2m : butt2}) no-repeat center / contain`,
-              mask: `url(${isMobile ? butt2m : butt2}) no-repeat center / contain`,
               backgroundColor: annotationColor,
               color: getButtonTextColor(annotationColor),
             }}>
@@ -174,8 +164,6 @@ function JournalCard({ journal, index }) {
                 setActiveTab(TABS.CONTENT);
               }}
               style={{
-                WebkitMask: `url(${butt3}) no-repeat center / contain`,
-                mask: `url(${butt3}) no-repeat center / contain`,
                 backgroundColor: contentColor,
                 color: getButtonTextColor(contentColor),
               }}>
