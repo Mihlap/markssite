@@ -1,5 +1,17 @@
 @use 'variables' as *;
 @import '../../App.css';
+
+@mixin journal-tab-mask($image) {
+  -webkit-mask-image: url($image);
+  mask-image: url($image);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+}
+
 .journalCard {
   display: flex;
   justify-content: center;
@@ -142,6 +154,7 @@
     align-items: center;
     justify-content: center;
     width: 19.94rem;
+    height: 2.4rem;
     border: none;
     pointer-events: auto;
     color: var(--originWhite-FFFFFF);
@@ -155,7 +168,6 @@
 
   &__tabBtn.active {
     z-index: 999;
-    height: 2.4rem;
   }
 
   .activeTab1 {
@@ -203,15 +215,26 @@
   .tabBtn1 {
     text-align: center;
     justify-content: center;
+    @include journal-tab-mask('../icons/butt11.svg');
+
+    @media screen and (max-width: 767px) {
+      @include journal-tab-mask('../icons/butt11m.svg');
+    }
   }
 
   .tabBtn2 {
     margin-left: -8rem;
+    @include journal-tab-mask('../icons/butt22.svg');
+
+    @media screen and (max-width: 767px) {
+      @include journal-tab-mask('../icons/butt22m.svg');
+    }
   }
 
   .tabBtn3 {
     margin-left: -7.3rem;
     color: var(--black-1D2E43);
+    @include journal-tab-mask('../icons/butt33.svg');
   }
 
   .tabTextArticle {
@@ -656,11 +679,12 @@
 
     &__tabBtn {
       max-width: 17rem;
+      height: 2.3rem;
       margin-left: -1.5px;
     }
 
     &__tabBtn.active {
-      height: 2.3rem;
+      z-index: 999;
     }
 
     .tabBtn1 {
@@ -755,11 +779,12 @@
 
     &__tabBtn {
       max-width: 15rem;
+      height: 2.5rem;
       margin-left: -0.9rem;
     }
 
     &__tabBtn.active {
-      height: 2.5rem;
+      z-index: 999;
     }
 
     .tabText {
@@ -829,7 +854,6 @@
     margin: 0rem 0.5rem 1.5rem 0.5rem;
   }
 }
-
 // ------------------------------------------------------------------
 // Немного подрезаем область видимость кнопок
 // ------------------------------------------------------------------
@@ -879,3 +903,4 @@
     clip-path: inset(0 2.3rem 0 2.3rem);
   }
 }
+
