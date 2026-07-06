@@ -1,10 +1,5 @@
 /* глобальный стили  */
 
-@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;700;900&family=Unbounded:wght@300&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;700;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Unbounded:wght@200..900&display=swap');
-
 /* это шрифт для прелоудера  */
 @font-face {
   font-family: 'MyCustomFont';
