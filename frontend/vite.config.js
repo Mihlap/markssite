@@ -88,7 +88,7 @@ export default defineConfig(({ mode }) => {
       treatJsFilesAsJsx(),
       react({ include: /\.(jsx|js|tsx|ts)$/ }),
       svgr({ include: '**/*.svg?react' }),
-      isProd && process.env.OBFUSCATOR === '1' && obfuscateOutputChunks(),
+      isProd && process.env.OBFUSCATOR !== '0' && obfuscateOutputChunks(),
     ].filter(Boolean),
     css: {
       devSourcemap: !isProd,

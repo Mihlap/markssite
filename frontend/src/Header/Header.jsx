@@ -179,7 +179,7 @@ const Header = React.memo(
               {videoSrc && (
                 <video
                   playsInline
-                  preload="metadata"
+                  preload="none"
                   webkitplaysinline="true"
                   autoPlay
                   muted

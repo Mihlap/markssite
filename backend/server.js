@@ -120,15 +120,9 @@ app.use((err, req, res, next) => {
 //   cert: fs.readFileSync(sslCertPath),
 // };
 
-// const httpServer = http.createServer(app);
-// const httpsServer = https.createServer(credentials, app);
-
-// app.listen(PORT, () => {
-//   console.log(`HTTP server started on port ${PORT}`);
-// });
-
-// httpsServer.listen(PORT, () => {
-//   console.log(`HTTP server started on port ${PORT}`);
+// !!!!для прода расскоментировать и закоментировать последний абзац
+// app.listen(PORT, '127.0.0.1', () => {
+//   console.log(`Старт server --->🔥 ${PORT} 🔥<---`);
 // });
 
 app.listen(PORT, () => {
