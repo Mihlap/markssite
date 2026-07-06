@@ -23,8 +23,6 @@ const queryClient = new QueryClient({
 
 axios.defaults.withCredentials = true;
 
-axios.defaults.withCredentials = true;
-
 const root = document.getElementById('root');
 
 ReactDOM.createRoot(root).render(
