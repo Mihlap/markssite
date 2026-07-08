@@ -52,7 +52,7 @@ button {
 
 /* Fonts */
 :root {
-  --font-unbounded: 'Unbounded', serif;
+  --font-unbounded: 'Unbounded Variable', sans-serif;
   --font-inter: 'Inter', sans-serif;
   --font-raleway: 'Raleway', sans-serif;
   --font-MyCustomFont: 'MyCustomFont', sans-serif;
