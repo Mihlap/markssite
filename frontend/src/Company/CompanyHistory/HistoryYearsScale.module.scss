@@ -176,7 +176,7 @@
 }
 
 .label {
-    font-family: Unbounded, sans-serif;
+    font-family: var(--font-unbounded);
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -198,7 +198,7 @@
 
 .tick:not(.active):hover .label {
     color: var(--gray-959DA6, #959da6);
-    font-family: Unbounded, sans-serif;
+    font-family: var(--font-unbounded);
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -216,7 +216,7 @@
 
 .active .label {
     color: var(--blue-A8DBF6, #75bbfd);
-    font-family: Unbounded, sans-serif;
+    font-family: var(--font-unbounded);
     font-size: 20px;
     font-style: normal;
     font-weight: 400;
@@ -238,7 +238,7 @@
 }
 
 .dotsLabel {
-    font-family: Unbounded, sans-serif;
+    font-family: var(--font-unbounded);
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -251,7 +251,7 @@
 
 .dotsTick:hover .dotsLabel {
     color: var(--gray-959DA6, #959da6);
-    font-family: Unbounded, sans-serif;
+    font-family: var(--font-unbounded);
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
