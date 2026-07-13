@@ -59,4 +59,19 @@ const cityData = [
   },
 ];
 
-export { cityData, marker };
+const secondaryContacts = [
+  {
+    email: 'mail@marksgroup.ru',
+    description: 'По общим вопросам',
+  },
+  {
+    email: 'subcontractor@marksgroup.ru',
+    description: 'По вопросам субпроектирования',
+  },
+  {
+    email: 'pr@marksgroup.ru',
+    description: 'По вопросам PR, публикаций в СМИ, участия в конференциях',
+  },
+];
+
+export { cityData, marker, secondaryContacts };

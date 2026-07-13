@@ -6,9 +6,9 @@ import { useWindowWidth } from '../../hooks/useWindowWidth';
 import s from '../styles/Toolbar.module.css';
 
 export default function FilterToolbar({ tabs = [], activeTab, onTabChange }) {
-    const { isMobile, isTablet } = useWindowWidth();
+    const { width } = useWindowWidth();
 
-    if (isMobile || isTablet) {
+    if (width <= 1024) {
       return (
         <Swiper slidesPerView="auto" spaceBetween={8} className={s.swiper}>
           {tabs.map((tab) => (
