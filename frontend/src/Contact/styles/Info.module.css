@@ -8,7 +8,7 @@
     display: flex;
     flex-direction: column;
     gap: 66px;
-    padding: 116px 125px 76px 152px;
+    padding: 116px 125px 62px 152px;
     background:
         linear-gradient(262deg, rgba(117, 187, 253, 0.09) 0%, rgba(123, 163, 217, 0.05) 44.63%, rgba(117, 187, 253, 0.09) 100%),
         linear-gradient(257deg, rgba(246, 246, 246, 0.00) -74.04%, #F6F6F6 33.9%);
@@ -152,6 +152,38 @@
     background-color: var(--blue-75BBFD);
 }
 
+.toolbarSlot {
+    flex-shrink: 0;
+    pointer-events: auto;
+}
+
+@media (max-width: 1024px) {
+    .toolbarSlot {
+        padding-top: 24px;
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 768px) {
+    .toolbarSlot {
+        padding-bottom: 16px;
+    }
+}
+
+@media (min-width: 1025px) {
+    .wrapInto {
+        display: flex;
+        flex-direction: column;
+        pointer-events: none;
+    }
+
+    .wrap {
+        flex-shrink: 0;
+        pointer-events: auto;
+        padding-bottom: 62px;
+    }
+}
+
 @media (min-width: 1230px) and (max-width: 1679px) {
     .wrapContent {
         grid-template-columns: minmax(0, 1fr) minmax(0, max-content);
@@ -174,7 +206,7 @@
 
 @media (min-width: 1680px) {
     .wrap {
-        padding: 148px 250px 134px 259px;
+        padding: 148px 250px 62px 259px;
     }
 
     .title {
@@ -278,7 +310,7 @@
     }
 
     .wrap {
-        padding: 116px 56px 32px 55px;
+        padding: 116px 56px 62px 56px;
         flex-shrink: 0;
         pointer-events: auto;
     }
