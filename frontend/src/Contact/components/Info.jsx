@@ -200,7 +200,7 @@ export default function Info({ activeCity, onCityChange, onOverlayResize }) {
         </div>
       </div>
 
-      <div ref={toolbarRef}>
+      <div ref={toolbarRef} className={s.toolbarSlot}>
         <FilterToolbar
           tabs={tabs}
           activeTab={activeCity.name}

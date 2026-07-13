@@ -3,20 +3,34 @@
     flex-wrap: wrap;
     gap: 8px;
     padding-top: 24px;
-    padding-left: 146px;
+    padding-bottom: 0;
+    box-sizing: border-box;
 }
 
 .swiper {
     width: 100%;
-    padding-top: 24px;
     pointer-events: auto;
 }
 
-@media (max-width: 1024px) {
-    .wrap, .swiper {
-        padding-left: 55px;
-        padding-top: 24px;
+@media (min-width: 1230px) {
+    .wrap {
+        padding-left: 146px;
+    }
+}
+
+@media (min-width: 1025px) and (max-width: 1229px) {
+    .wrap {
+        padding-left: 56px;
+    }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+    .wrap,
+    .swiper {
+        padding-left: 0;
+        padding-top: 0;
         padding-bottom: 24px;
+        box-sizing: border-box;
     }
 }
 
@@ -26,22 +40,10 @@
     }
 }
 
-@media (max-width: 820px) {
-    .swiper {
-        padding-left: 35px;
-    }
-}
-
 @media (max-width: 768px) {
-    .wrap, .swiper {
-        padding-left: 55px;
-    }
-}
-
-@media (max-width: 430px) {
+    .wrap,
     .swiper {
-        padding-left: 16px;
-        padding-bottom: 16px;
-        pointer-events: auto;
+        padding-left: 0;
+        padding-bottom: 0;
     }
 }
