@@ -1,4 +1,4 @@
-import { useEffect, useState, Suspense, lazy } from 'react';
+import { useEffect, useState, Suspense, lazy, useCallback, useRef } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import './App.css';
@@ -30,6 +30,7 @@ import ButtonAdmin from './UI/ButtonAdmin/ButtonAdmin';
 import CustomCursor from './UI/CustomCursor/CustomCursor';
 import CookieComponent from './UI/CookieComponent/CookieComponent';
 import Loading from './Loading/LoadingNew';
+import RouteMounted from './UI/RouteMounted/RouteMounted';
 import MarksEntityRow from './Admin/ui/EntityRow/MarksEntityRow';
 // import Loading from './UI/Loading/christmas/Loading';
 
@@ -70,6 +71,24 @@ const Applications = lazy(() => import('./Admin/applications/Applications'));
 
 const NotFound = lazy(() => import('./NotFound/NotFound'));
 
+function LazyPage({ onMounted, children }) {
+  return (
+    <PageFade>
+      <RouteMounted onMounted={onMounted}>{children}</RouteMounted>
+    </PageFade>
+  );
+}
+
+function shouldSkipGlobalLoader(path) {
+  const normalized = path.toLowerCase();
+  return (
+    normalized === '/information' ||
+    path.startsWith('/admin') ||
+    path.startsWith('/hr/') ||
+    path === '/footerForm'
+  );
+}
+
 export default function App() {
   const user = useSelector((state) => state.auth.user);
   const currentPage = useSelector((state) => state.user.currentPage);
@@ -79,19 +98,28 @@ export default function App() {
   const location = useLocation();
   const dispatch = useDispatch();
 
+  const isInitialPageLoadRef = useRef(true);
+
   const [loading, setLoading] = useState(() => {
     if (IS_DEV) return false;
     const path = typeof window !== 'undefined' ? window.location.pathname : '';
-    return path.toLowerCase() !== '/information';
+    return !shouldSkipGlobalLoader(path);
   });
-  const [isReady, setIsReady] = useState(IS_DEV);
+  const [isReady, setIsReady] = useState(() => {
+    if (IS_DEV) return true;
+    const path = typeof window !== 'undefined' ? window.location.pathname : '';
+    return shouldSkipGlobalLoader(path);
+  });
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const [pageMounted, setPageMounted] = useState(false);
 
+  const isHomePage = location.pathname === '/';
   const isPortalPage = location.pathname.startsWith('/hr/');
-  const isInformationPage = location.pathname.toLowerCase() === '/information';
   const isFooterFormPage = location.pathname === '/footerForm';
   const isAdminPage = location.pathname.startsWith('/admin');
   const isNavPreviewPage = location.pathname === '/navbar';
+
+  const markPageMounted = useCallback(() => setPageMounted(true), []);
 
   useEffect(() => {
     dispatch(checkUserAuth());
@@ -118,21 +146,43 @@ export default function App() {
   const handleMouseLeaveFooterWhite = () => dispatch(textLeaveWhiteFooter());
 
   useEffect(() => {
-    if (videoLoaded) {
+    if (!isInitialPageLoadRef.current) return;
+
+    isInitialPageLoadRef.current = false;
+    setPageMounted(false);
+    setVideoLoaded(false);
+
+    if (IS_DEV || shouldSkipGlobalLoader(location.pathname)) {
+      setLoading(false);
       setIsReady(true);
     }
-  }, [videoLoaded]);
+  }, [location.pathname]);
 
   useEffect(() => {
-    if (IS_DEV) return;
-    if (isReady) return;
+    if (!loading) return;
+
+    if (IS_DEV) {
+      setIsReady(true);
+      return;
+    }
+
+    if (isHomePage) {
+      setIsReady(videoLoaded && pageMounted);
+      return;
+    }
+
+    setIsReady(pageMounted);
+  }, [loading, isHomePage, videoLoaded, pageMounted]);
+
+  useEffect(() => {
+    if (!loading || IS_DEV || isReady || shouldSkipGlobalLoader(location.pathname)) return undefined;
 
     const timer = setTimeout(() => {
       setIsReady(true);
     }, 12000);
 
     return () => clearTimeout(timer);
-  }, [isReady]);
+  }, [loading, isReady, location.pathname]);
 
   useEffect(() => {
     if (!location.pathname.startsWith('/admin')) {
@@ -140,7 +190,7 @@ export default function App() {
     }
   }, [location.pathname, dispatch]);
 
-  const shouldShowGlobalLoader = !IS_DEV && loading && !isPortalPage && !isInformationPage && !isFooterFormPage;
+  const shouldShowGlobalLoader = !IS_DEV && loading && !shouldSkipGlobalLoader(location.pathname);
 
   return (
     <HelmetProvider>
@@ -157,7 +207,7 @@ export default function App() {
               <Route
                 path="/"
                 element={
-                  <PageFade>
+                  <LazyPage onMounted={markPageMounted}>
                     <Header
                       handleMouseEnter={handleMouseEnter}
                       handleMouseLeave={handleMouseLeave}
@@ -165,16 +215,16 @@ export default function App() {
                       handleSpecialHover={handleSpecialHover}
                       setVideoLoaded={setVideoLoaded}
                     />
-                  </PageFade>
+                  </LazyPage>
                 }
               />
 
               <Route
                 path="/project"
                 element={
-                  <PageFade>
+                  <LazyPage onMounted={markPageMounted}>
                     <ProjectsPage />
-                  </PageFade>
+                  </LazyPage>
                 }
               />
 
@@ -198,100 +248,100 @@ export default function App() {
               <Route
                 path="/project/:id"
                 element={
-                  <PageFade>
+                  <LazyPage onMounted={markPageMounted}>
                     <ProjectCard
                       handleMouseEnter={handleMouseEnter}
                       handleMouseLeave={handleMouseLeave}
                       handleMouseHover={handleMouseHover}
                     />
-                  </PageFade>
+                  </LazyPage>
                 }
               />
 
               <Route
                 path="/company"
                 element={
-                  <PageFade>
+                  <LazyPage onMounted={markPageMounted}>
                     <CompanyNew
                       handleMouseEnter={handleMouseEnter}
                       handleMouseLeave={handleMouseLeave}
                       handleMouseHover={handleMouseHover}
                     />
-                  </PageFade>
+                  </LazyPage>
                 }
               />
 
               <Route
                 path="/publication"
                 element={
-                  <PageFade>
+                  <LazyPage onMounted={markPageMounted}>
                     <Publics
                       handleMouseEnter={handleMouseEnter}
                       handleMouseLeave={handleMouseLeave}
                       handleMouseHover={handleMouseHover}
                     />
-                  </PageFade>
+                  </LazyPage>
                 }
               />
 
               <Route
                 path="/publication/:id"
                 element={
-                  <PageFade>
+                  <LazyPage onMounted={markPageMounted}>
                     <ArticleCard
                       handleMouseEnter={handleMouseEnter}
                       handleMouseLeave={handleMouseLeave}
                       handleMouseHover={handleMouseHover}
                     />
-                  </PageFade>
+                  </LazyPage>
                 }
               />
 
               <Route
                 path="/journalPage"
                 element={
-                  <PageFade>
+                  <LazyPage onMounted={markPageMounted}>
                     <JournalMain
                       handleMouseEnter={handleMouseEnter}
                       handleMouseLeave={handleMouseLeave}
                       handleMouseHover={handleMouseHover}
                     />
-                  </PageFade>
+                  </LazyPage>
                 }
               />
 
               <Route
                 path="/journal/:id"
                 element={
-                  <PageFade>
+                  <LazyPage onMounted={markPageMounted}>
                     <ArticleJournalPage />
-                  </PageFade>
+                  </LazyPage>
                 }
               />
 
               <Route
                 path="/contacts"
                 element={
-                  <PageFade>
+                  <LazyPage onMounted={markPageMounted}>
                     <Contacts
                       handleMouseEnter={handleMouseEnter}
                       handleMouseLeave={handleMouseLeave}
                       handleMouseHover={handleMouseHover}
                     />
-                  </PageFade>
+                  </LazyPage>
                 }
               />
 
               <Route
                 path="/information"
                 element={
-                  <PageFade>
+                  <LazyPage onMounted={markPageMounted}>
                     <Information
                       handleMouseEnter={handleMouseEnter}
                       handleMouseLeave={handleMouseLeave}
                       handleMouseHover={handleMouseHover}
                     />
-                  </PageFade>
+                  </LazyPage>
                 }
               />
 
@@ -299,63 +349,63 @@ export default function App() {
               <Route
                 path="/hr/home"
                 element={
-                  <PageFade>
+                  <LazyPage onMounted={markPageMounted}>
                     <VacanciesMain3
                       handleMouseEnter={handleMouseEnter}
                       handleMouseLeave={handleMouseLeave}
                       handleMouseHover={handleMouseHover}
                     />
-                  </PageFade>
+                  </LazyPage>
                 }
               />
               <Route
                 path="/hr/vacancies"
                 element={
-                  <PageFade>
+                  <LazyPage onMounted={markPageMounted}>
                     <VacanciesComponent
                       handleMouseEnter={handleMouseEnter}
                       handleMouseLeave={handleMouseLeave}
                       handleMouseHover={handleMouseHover}
                     />
-                  </PageFade>
+                  </LazyPage>
                 }
               />
               <Route
                 path="/hr/internships"
                 element={
-                  <PageFade>
+                  <LazyPage onMounted={markPageMounted}>
                     <Internships
                       handleMouseEnter={handleMouseEnter}
                       handleMouseLeave={handleMouseLeave}
                       handleMouseHover={handleMouseHover}
                     />
-                  </PageFade>
+                  </LazyPage>
                 }
               />
               <Route
                 path="/hr/vacancies/:id"
                 element={
-                  <PageFade>
+                  <LazyPage onMounted={markPageMounted}>
                     <VacanciesMainCard
                       handleMouseEnter={handleMouseEnter}
                       handleMouseLeave={handleMouseLeave}
                       handleMouseHover={handleMouseHover}
                     />
-                  </PageFade>
+                  </LazyPage>
                 }
               />
 
               <Route
                 path="/footerForm"
                 element={
-                  <PageFade>
+                  <LazyPage onMounted={markPageMounted}>
                     <FooterForm
                       handleMouseEnterFooter={handleMouseEnterFooterWhite}
                       handleMouseEnterFooterMore={handleMouseEnterFooterWhiteMore}
                       handleMouseLeaveFooter={handleMouseLeaveFooterWhite}
                       handleMouseLeave={handleMouseLeave}
                     />
-                  </PageFade>
+                  </LazyPage>
                 }
               />
 
@@ -363,9 +413,9 @@ export default function App() {
                 <Route
                   path="/signup"
                   element={
-                    <PageFade>
+                    <LazyPage onMounted={markPageMounted}>
                       <SignUpPage />
-                    </PageFade>
+                    </LazyPage>
                   }
                 />
               )}
@@ -373,9 +423,9 @@ export default function App() {
               <Route
                 path="/login"
                 element={
-                  <PageFade>
+                  <LazyPage onMounted={markPageMounted}>
                     <Login />
-                  </PageFade>
+                  </LazyPage>
                 }
               />
 
@@ -383,9 +433,9 @@ export default function App() {
                 <Route
                   path="/admin/*"
                   element={
-                    <PageFade>
+                    <LazyPage onMounted={markPageMounted}>
                       <Admin user={user} onPageChange={handlePageChange} />
-                    </PageFade>
+                    </LazyPage>
                   }>
                   <Route index element={<HomeAdmin />} />
                   <Route path="home" element={<HomeAdmin />} />
@@ -396,9 +446,9 @@ export default function App() {
                     path="add-a-company"
                     element={
                       user?.name === 'hr778' ? (
-                        <PageFade>
+                        <LazyPage onMounted={markPageMounted}>
                           <AdminHRPortal user={user} />
-                        </PageFade>
+                        </LazyPage>
                       ) : (
                         <AdminCompany user={user} />
                       )
@@ -411,9 +461,9 @@ export default function App() {
               <Route
                 path="*"
                 element={
-                  <PageFade>
+                  <LazyPage onMounted={markPageMounted}>
                     <NotFound />
-                  </PageFade>
+                  </LazyPage>
                 }
               />
             </Routes>
