@@ -1,13 +1,25 @@
 const express = require('express');
 require('dotenv').config();
 // const https = require('https');
-// const fs = require('fs');
+const fs = require('fs');
 const morgan = require('morgan');
 const cors = require('cors');
 const path = require('path');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 const rateLimit = require('express-rate-limit');
+
+/** Vite пишет в frontend/build; legacy — backend/build (до миграции). */
+function resolveClientBuildPath() {
+  const candidates = [
+    path.join(__dirname, '..', 'frontend', 'build'),
+    path.join(__dirname, 'build'),
+  ];
+  for (const dir of candidates) {
+    if (fs.existsSync(path.join(dir, 'index.html'))) return dir;
+  }
+  return candidates[0];
+}
 
 const authRouter = require('./Routes/authRouter');
 const newStaffsRouter = require('./Routes/newStaffsRouter');
@@ -99,7 +111,15 @@ app.use('/videos', express.static(videoPath, { maxAge: '5d', immutable: true }))
 app.use('/public/assets', express.static(path.join(__dirname, 'assets'), { maxAge: '5d' }));
 app.use(session(sessionConfig));
 
-const clientBuildPath = path.join(__dirname, '..', 'frontend', 'build');
+const clientBuildPath = resolveClientBuildPath();
+const clientIndexHtml = path.join(clientBuildPath, 'index.html');
+if (!fs.existsSync(clientIndexHtml)) {
+  console.error(
+    `[static] Нет ${clientIndexHtml}. На сервере: cd ../frontend && npm run build && pm2 restart RUmg`,
+  );
+} else {
+  console.log(`[static] SPA: ${clientBuildPath}`);
+}
 app.use(express.static(clientBuildPath));
 
 app.use('/api/auth', authRouter);
@@ -120,7 +140,15 @@ app.use('/api-journal', journalRouter);
 app.use('/api-upload', journalRouter);
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(clientBuildPath, 'index.html'));
+  if (!fs.existsSync(clientIndexHtml)) {
+    return res
+      .status(503)
+      .type('text/plain')
+      .send(
+        `SPA build missing: ${clientIndexHtml}\nRun: cd frontend && npm run build`,
+      );
+  }
+  return res.sendFile(clientIndexHtml);
 });
 
 app.use((err, req, res, next) => {
