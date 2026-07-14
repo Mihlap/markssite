@@ -1,7 +1,7 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { InputMask } from '@react-input/mask';
 import { Link } from 'react-router-dom';
-import styles from './VacancyFormContact.module.css';
+import styles from './VacancyFormContact.module.scss';
 import 'react-phone-number-input/style.css';
 
 const Host = process.env.REACT_APP_SERVER_HOST;

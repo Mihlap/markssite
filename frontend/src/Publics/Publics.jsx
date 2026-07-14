@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 import { useDispatch, useSelector } from 'react-redux';
 import { getFetchFormArticle, setSelectedType } from '../store/Slice/articleSlice';
 import { fetchToggleStateForButton2Async } from '../store/Slice/toggleSlice';

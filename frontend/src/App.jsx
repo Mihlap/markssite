@@ -2,7 +2,6 @@ import { useEffect, useState, Suspense, lazy, useCallback, useRef } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import './App.css';
-import 'swiper/css';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { checkUserAuth } from './store/Slice/authSlice';
@@ -27,12 +26,13 @@ import { IS_DEV } from './const/is-dev';
 import NavBar from './UI/NavBar/NavBar';
 import PageFade from './UI/PageFade/PageFade';
 import ButtonAdmin from './UI/ButtonAdmin/ButtonAdmin';
-import CustomCursor from './UI/CustomCursor/CustomCursor';
-import CookieComponent from './UI/CookieComponent/CookieComponent';
 import Loading from './Loading/LoadingNew';
 import RouteMounted from './UI/RouteMounted/RouteMounted';
-import MarksEntityRow from './Admin/ui/EntityRow/MarksEntityRow';
 // import Loading from './UI/Loading/christmas/Loading';
+
+const CustomCursor = lazy(() => import('./UI/CustomCursor/CustomCursor'));
+const CookieComponent = lazy(() => import('./UI/CookieComponent/CookieComponent'));
+const MarksEntityRow = lazy(() => import('./Admin/ui/EntityRow/MarksEntityRow'));
 
 const Header = lazy(() => import('./Header/Header'));
 const Contacts = lazy(() => import('./Contact/ContactPage'));
@@ -232,16 +232,18 @@ export default function App() {
               <Route
                 path="/test"
                 element={
-                  <MarksEntityRow
-                    title="Ведущий инженер-конструктор"
-                    desc="Экспертно-аналитический отдел"
-                    id="9062234144"
-                    role="manager"
-                    visible="legenda"
-                    onEdit
-                    onToggle
-                    onDelete
-                  />
+                  <LazyPage onMounted={markPageMounted}>
+                    <MarksEntityRow
+                      title="Ведущий инженер-конструктор"
+                      desc="Экспертно-аналитический отдел"
+                      id="9062234144"
+                      role="manager"
+                      visible="legenda"
+                      onEdit
+                      onToggle
+                      onDelete
+                    />
+                  </LazyPage>
                 }
               />
 
@@ -468,7 +470,9 @@ export default function App() {
               />
             </Routes>
 
-            <CookieComponent />
+            <Suspense fallback={null}>
+              <CookieComponent />
+            </Suspense>
 
             {!isFooterFormPage && showNavbarFooter && currentPage !== 'add' && (
               <>
@@ -490,7 +494,11 @@ export default function App() {
               </>
             )}
 
-            {showNavbarFooter && currentPage !== 'add' && <CustomCursor />}
+            {showNavbarFooter && currentPage !== 'add' && (
+              <Suspense fallback={null}>
+                <CustomCursor />
+              </Suspense>
+            )}
           </div>
         </Suspense>
 
