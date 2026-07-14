@@ -1,0 +1,102 @@
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.88rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  width: calc(33.33% - 1.88rem);
+  max-height: 30rem;
+}
+
+.image {
+  width: 100%;
+  min-height: 21rem;
+  max-height: 21rem;
+  border-radius: 1rem;
+  background: linear-gradient(90deg, #e8e8e8 25%, #f0f0f0 50%, #e8e8e8 75%);
+  background-size: 200% 100%;
+  animation: card-grid-shimmer 1.5s infinite linear;
+}
+
+.content {
+  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.line {
+  border-radius: 4px;
+  background: linear-gradient(90deg, #e8e8e8 25%, #f0f0f0 50%, #e8e8e8 75%);
+  background-size: 200% 100%;
+  animation: card-grid-shimmer 1.5s infinite linear;
+}
+
+.title {
+  height: 14px;
+  width: 90%;
+}
+
+.titleShort {
+  height: 14px;
+  width: 60%;
+}
+
+.meta {
+  height: 10px;
+  width: 70%;
+  margin-top: 0.25rem;
+}
+
+@keyframes card-grid-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@media screen and (min-width: 2000px) and (max-width: 3000px) {
+  .card {
+    width: calc(25% - 1.88rem);
+  }
+
+  .image {
+    min-height: 26rem;
+    max-height: 26rem;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .card {
+    width: calc(50% - 1.88rem);
+    max-height: none;
+    margin-bottom: 1rem;
+  }
+
+  .card:nth-child(n + 5) {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .grid {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .card {
+    width: 100%;
+    max-height: none;
+  }
+
+  .card:nth-child(n + 2) {
+    display: none;
+  }
+}
