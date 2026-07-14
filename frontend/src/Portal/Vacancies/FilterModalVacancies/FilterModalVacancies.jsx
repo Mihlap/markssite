@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import Modal from 'react-modal';
-import styles from '../VacanciesMain/VacanciesComponent/VacanciesComponent.module.css';
+import styles from '../VacanciesMain/VacanciesComponent/VacanciesComponent.module.scss';
 import { fetchFilteredVacancies, setActiveFilters } from '../../../store/Slice/vacanciesSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
