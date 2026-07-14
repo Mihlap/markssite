@@ -60,7 +60,22 @@ app.use(
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Methods', 'HEAD, GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Content-Security-Policy', "default-src 'self'");
+  res.header(
+    'Content-Security-Policy',
+    [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' https://mc.yandex.ru https://yastatic.net",
+      "style-src 'self' 'unsafe-inline'",
+      "img-src 'self' data: blob: https:",
+      "media-src 'self' blob: https:",
+      "font-src 'self' data:",
+      "connect-src 'self' https: http://localhost:* http://127.0.0.1:*",
+      "frame-src 'self' https:",
+      "worker-src 'self' blob:",
+      "object-src 'none'",
+      "base-uri 'self'",
+    ].join('; '),
+  );
   next();
 });
 
@@ -83,7 +98,9 @@ app.use('/images', express.static(imagesPath, { maxAge: '5d' }));
 app.use('/videos', express.static(videoPath, { maxAge: '5d', immutable: true }));
 app.use('/public/assets', express.static(path.join(__dirname, 'assets'), { maxAge: '5d' }));
 app.use(session(sessionConfig));
-app.use(express.static(path.join(__dirname, 'build')));
+
+const clientBuildPath = path.join(__dirname, '..', 'frontend', 'build');
+app.use(express.static(clientBuildPath));
 
 app.use('/api/auth', authRouter);
 app.use('/api/legend', legendRouter);
@@ -103,7 +120,7 @@ app.use('/api-journal', journalRouter);
 app.use('/api-upload', journalRouter);
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  res.sendFile(path.join(clientBuildPath, 'index.html'));
 });
 
 app.use((err, req, res, next) => {

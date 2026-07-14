@@ -19,7 +19,6 @@ function treatJsFilesAsJsx() {
   };
 }
 
-/** CRA-совместимость: process.env.REACT_APP_* → убрать после миграции на import.meta.env.VITE_* */
 function craEnvDefine(mode) {
   const env = loadEnv(mode, __dirname, 'REACT_APP_');
   return Object.fromEntries(
@@ -33,15 +32,18 @@ const LOCAL_PREVIEW_DOMAINS = ['localhost', '127.0.0.1'];
 function getObfuscatorOptions() {
   const options = {
     compact: true,
-    controlFlowFlattening: false,
+    controlFlowFlattening: true,
+    controlFlowFlatteningThreshold: 0.35,
     deadCodeInjection: false,
     debugProtection: false,
     debugProtectionInterval: 0,
-    disableConsoleOutput: true,
-    mangle: true,
-    rotateStringArray: false,
+    disableConsoleOutput: false,
+    identifierNamesGenerator: 'hexadecimal',
+    renameGlobals: false,
     selfDefending: false,
     stringArray: false,
+    splitStrings: false,
+    transformObjectKeys: false,
     unicodeEscapeSequence: false,
   };
 
@@ -53,7 +55,18 @@ function getObfuscatorOptions() {
 }
 
 const OBFUSCATOR_CHUNK_SKIP =
-  /(?:^|\/)(three|editor|mediapipe|vendor|index)-[a-zA-Z0-9]+\.js$/;
+  /(?:^|\/)(three|editor|mediapipe|vendor|react-katex|swiper|motion|dnd\.esm|browser-image-compression|slick-theme|Notifications?|ScrollTrigger)-[a-zA-Z0-9_-]+\.js$/i;
+
+function isAppChunk(fileName, chunk) {
+  if (OBFUSCATOR_CHUNK_SKIP.test(fileName)) return false;
+  const modules = chunk.moduleIds || [];
+  if (modules.length === 0) return true;
+  const fromSrc = modules.some((id) => /[\\/]src[\\/]/.test(id));
+  const mostlyVendor = modules.every(
+    (id) => /node_modules/.test(id) || id.startsWith('\0'),
+  );
+  return fromSrc && !mostlyVendor;
+}
 
 function obfuscateOutputChunks() {
   return {
@@ -61,13 +74,11 @@ function obfuscateOutputChunks() {
     apply: 'build',
     enforce: 'post',
     generateBundle(_options, bundle) {
+      const options = getObfuscatorOptions();
       for (const [fileName, chunk] of Object.entries(bundle)) {
         if (chunk.type !== 'chunk' || !fileName.endsWith('.js')) continue;
-        if (OBFUSCATOR_CHUNK_SKIP.test(fileName)) continue;
-        chunk.code = JavaScriptObfuscator.obfuscate(
-          chunk.code,
-          getObfuscatorOptions(),
-        ).getObfuscatedCode();
+        if (!isAppChunk(fileName, chunk)) continue;
+        chunk.code = JavaScriptObfuscator.obfuscate(chunk.code, options).getObfuscatedCode();
       }
     },
   };
@@ -87,8 +98,8 @@ export default defineConfig(({ mode }) => {
     plugins: [
       treatJsFilesAsJsx(),
       react({ include: /\.(jsx|js|tsx|ts)$/ }),
-      svgr({ include: '**/*.svg?react' }),
-      isProd && process.env.OBFUSCATOR !== '0' && obfuscateOutputChunks(),
+      svgr({ include: '**/*.svg?react' }),     
+      isProd && process.env.OBFUSCATOR === '1' && obfuscateOutputChunks(),
     ].filter(Boolean),
     css: {
       devSourcemap: !isProd,
@@ -112,7 +123,8 @@ export default defineConfig(({ mode }) => {
       strictPort: true,
     },
     build: {
-      outDir: 'dist',
+      outDir: 'build',
+      emptyOutDir: true,
       sourcemap: false,
       cssMinify: isProd,
       minify: isProd ? 'terser' : false,
