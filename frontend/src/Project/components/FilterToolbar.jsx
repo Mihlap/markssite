@@ -1,4 +1,5 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 
 import { Icon } from '../icon';
 import {UiMarksFilterTab} from '../../UI';
