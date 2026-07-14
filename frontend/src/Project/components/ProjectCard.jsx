@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { useParams, Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 import { ScrollTrigger, MotionPathPlugin } from 'gsap/all';
 import ProjectCardSlider from '../../UI/Project&ArticleCardSlider/ProjectCardSlider';
 import styles from '../styles/ProjectCard.module.css';

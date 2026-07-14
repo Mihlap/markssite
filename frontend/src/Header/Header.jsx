@@ -8,6 +8,7 @@ import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore from 'swiper';
 import { Navigation } from 'swiper/modules';
+import 'swiper/css';
 
 import SwiperContainer from './Swiper-Phone/SwiperContainer';
 import SwiperContainerProject from './Swiper-project/SwiperContainerProject';

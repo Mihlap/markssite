@@ -6,6 +6,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 
 import ArticleCardSlider from '../UI/ArticleCardSlider.jsx/ArticleCardSlider';
 import SliderContainerArticleCard from '../UI/Project&ArticleCardSlider/SlideContainerArticleCard';

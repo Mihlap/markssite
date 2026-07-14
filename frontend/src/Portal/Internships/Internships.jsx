@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useDispatch, useSelector } from 'react-redux';
-import styles from '../Vacancies/VacanciesMain/VacanciesComponent/VacanciesComponent.module.css';
+import styles from '../Vacancies/VacanciesMain/VacanciesComponent/VacanciesComponent.module.scss';
 import 'swiper/css';
 import { getFetchForm, getVacanciesByDirection } from '../../store/Slice/vacanciesSlice';
 import { setPreviousPage } from '../../store/Slice/previousPageSlice';

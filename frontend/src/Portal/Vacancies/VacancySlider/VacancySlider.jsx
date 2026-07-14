@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 import styles from '../VacanciesMainCard/VacanciesMainCard.module.scss';
 
 import slider1 from '../icons/slider1.png';

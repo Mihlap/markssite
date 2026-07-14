@@ -1,5 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import placehold from '../../Project/icon/placehold.webp';
 
 import '.././Company_Slider/CompanySlider.css';

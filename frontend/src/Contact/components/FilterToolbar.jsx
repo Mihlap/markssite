@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 
 import { UiMarksFilterTab } from '../../UI';
 import { useWindowWidth } from '../../hooks/useWindowWidth';

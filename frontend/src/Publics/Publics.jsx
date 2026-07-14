@@ -2,9 +2,11 @@ import { useEffect, useState, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 import { useDispatch, useSelector } from 'react-redux';
 import { getFetchFormArticle, setSelectedType } from '../store/Slice/articleSlice';
 import { fetchToggleStateForButton2Async } from '../store/Slice/toggleSlice';
+import CardGridSkeleton from '../UI/CardGridSkeleton/CardGridSkeleton';
 import styles from './Publics.module.css';
 import catPhoto from '../img/default-photo.jpeg';
 
@@ -13,9 +15,12 @@ const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 export default function Publics({ handleMouseEnter, handleMouseLeave, handleMouseHover }) {
   const dispatch = useDispatch();
   const articles = useSelector((state) => state.article.article);
+  const articlesLoading = useSelector((state) => state.article.loading);
+  const articlesError = useSelector((state) => state.article.error);
   const isActive = useSelector((state) => state.toggle.isActiveForButton2);
 
   const [selectArticle, setSelectArticle] = useState('Все');
+  const [isSwitchingType, setIsSwitchingType] = useState(false);
   const [videoSrc, setVideoSrc] = useState(null);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const isMobile = screenWidth <= 1024;
@@ -51,9 +56,18 @@ export default function Publics({ handleMouseEnter, handleMouseLeave, handleMous
     dispatch(fetchToggleStateForButton2Async());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (!articlesLoading && isSwitchingType) {
+      const timer = window.setTimeout(() => setIsSwitchingType(false), 150);
+      return () => window.clearTimeout(timer);
+    }
+    return undefined;
+  }, [articlesLoading, isSwitchingType]);
+
   const handleButtonClick = useCallback(
     (selected) => {
       if (selected !== selectArticle) {
+        setIsSwitchingType(true);
         setSelectArticle(selected);
         dispatch(setSelectedType(selected));
         dispatch(getFetchFormArticle());
@@ -61,6 +75,8 @@ export default function Publics({ handleMouseEnter, handleMouseLeave, handleMous
     },
     [dispatch, selectArticle]
   );
+
+  const showArticlesSkeleton = articlesLoading || isSwitchingType;
 
   return (
     <>
@@ -144,41 +160,47 @@ export default function Publics({ handleMouseEnter, handleMouseLeave, handleMous
 
         <section className={styles.section_article}>
           <div className={styles.section_article__block}>
-            {articles.map((article) => {
-              const firstImageName = article.imageTitle?.split(',')[0]?.trim();
-              const firstImagePath =
-                firstImageName && firstImageName.includes('https')
-                  ? firstImageName
-                  : `${bucket_url}/images/imageArticle/${firstImageName || catPhoto}`;
+            {articlesError ? (
+              <p>Не удалось загрузить публикации. Обновите страницу.</p>
+            ) : showArticlesSkeleton ? (
+              <CardGridSkeleton count={6} />
+            ) : (
+              articles.map((article) => {
+                const firstImageName = article.imageTitle?.split(',')[0]?.trim();
+                const firstImagePath =
+                  firstImageName && firstImageName.includes('https')
+                    ? firstImageName
+                    : `${bucket_url}/images/imageArticle/${firstImageName || catPhoto}`;
 
-              return (
-                <Link key={article.id} to={`/publication/${article.id}`} className={styles.section_article__block_cart}>
-                  <div className={styles.cart_article}>
-                    <div className={styles.cart_article__container}>
-                      <img
-                        className={styles.cart_article__img}
-                        src={firstImagePath}
-                        alt={article.imageTitle || 'Default Alt Text'}
-                        onMouseEnter={handleMouseHover}
-                        onMouseLeave={handleMouseLeave}
-                      />
-                      <div className={styles.article_content__wrapper}>
-                        <div className={styles.cart_article_title}>{article.title}</div>
-                      </div>
-                      <div className={styles.cart_article__address}>
-                        {article.city}
-                        <div className={styles.cart_article__address__svg}>
-                          <svg width="2" height="2" viewBox="0 0 2 2" fill="none">
-                            <circle cx="1" cy="1" r="1" fill="#959DA6" />
-                          </svg>
+                return (
+                  <Link key={article.id} to={`/publication/${article.id}`} className={styles.section_article__block_cart}>
+                    <div className={styles.cart_article}>
+                      <div className={styles.cart_article__container}>
+                        <img
+                          className={styles.cart_article__img}
+                          src={firstImagePath}
+                          alt={article.imageTitle || 'Default Alt Text'}
+                          onMouseEnter={handleMouseHover}
+                          onMouseLeave={handleMouseLeave}
+                        />
+                        <div className={styles.article_content__wrapper}>
+                          <div className={styles.cart_article_title}>{article.title}</div>
                         </div>
-                        {article.dataMonthYear}
+                        <div className={styles.cart_article__address}>
+                          {article.city}
+                          <div className={styles.cart_article__address__svg}>
+                            <svg width="2" height="2" viewBox="0 0 2 2" fill="none">
+                              <circle cx="1" cy="1" r="1" fill="#959DA6" />
+                            </svg>
+                          </div>
+                          {article.dataMonthYear}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Link>
-              );
-            })}
+                  </Link>
+                );
+              })
+            )}
           </div>
         </section>
       </div>
