@@ -203,6 +203,15 @@
   word-break: break-word;
 }
 
+.text_block a,
+.text_framed a,
+.blockHeadingTitle__text a,
+.quote_block_constainer a {
+  color: #389fff;
+  text-decoration: underline;
+  word-break: break-word;
+}
+
 // <<< ====== стили для блока c цитатой и автором  ====== >>>
 
 .quote_block_constainer {
