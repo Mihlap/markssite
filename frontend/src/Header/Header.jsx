@@ -39,7 +39,7 @@ const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 const Header = React.memo(
-  ({ handleMouseEnter, handleMouseLeave, handleMouseHover, handleSpecialHover, setVideoLoaded }) => {
+  ({ handleMouseEnter, handleMouseLeave, handleMouseHover, handleSpecialHover }) => {
     const videoSource = {
       large: `${bucket_url}/images/video/main_company_full.mp4`,
       medium: `${bucket_url}/images/video/main_company_ipad.mp4`,
@@ -180,13 +180,11 @@ const Header = React.memo(
               {videoSrc && (
                 <video
                   playsInline
-                  preload="none"
-                  webkitplaysinline="true"
+                  preload="metadata"
                   autoPlay
                   muted
                   loop
                   id="bg-video"
-                  onCanPlayThrough={() => setVideoLoaded(true)}
                   className={styles.bg_video}>
                   <source src={videoSrc} type="video/mp4" />
                 </video>

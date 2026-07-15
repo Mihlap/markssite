@@ -110,10 +110,8 @@ export default function App() {
     const path = typeof window !== 'undefined' ? window.location.pathname : '';
     return shouldSkipGlobalLoader(path);
   });
-  const [videoLoaded, setVideoLoaded] = useState(false);
   const [pageMounted, setPageMounted] = useState(false);
 
-  const isHomePage = location.pathname === '/';
   const isPortalPage = location.pathname.startsWith('/hr/');
   const isFooterFormPage = location.pathname === '/footerForm';
   const isAdminPage = location.pathname.startsWith('/admin');
@@ -150,7 +148,6 @@ export default function App() {
 
     isInitialPageLoadRef.current = false;
     setPageMounted(false);
-    setVideoLoaded(false);
 
     if (IS_DEV || shouldSkipGlobalLoader(location.pathname)) {
       setLoading(false);
@@ -164,22 +161,16 @@ export default function App() {
     if (IS_DEV) {
       setIsReady(true);
       return;
-    }
-
-    if (isHomePage) {
-      setIsReady(videoLoaded && pageMounted);
-      return;
-    }
-
+    }  
     setIsReady(pageMounted);
-  }, [loading, isHomePage, videoLoaded, pageMounted]);
+  }, [loading, pageMounted]);
 
   useEffect(() => {
     if (!loading || IS_DEV || isReady || shouldSkipGlobalLoader(location.pathname)) return undefined;
 
     const timer = setTimeout(() => {
       setIsReady(true);
-    }, 12000);
+    }, 8000);
 
     return () => clearTimeout(timer);
   }, [loading, isReady, location.pathname]);
@@ -213,7 +204,6 @@ export default function App() {
                       handleMouseLeave={handleMouseLeave}
                       handleMouseHover={handleMouseHover}
                       handleSpecialHover={handleSpecialHover}
-                      setVideoLoaded={setVideoLoaded}
                     />
                   </LazyPage>
                 }

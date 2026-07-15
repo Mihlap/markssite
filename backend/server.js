@@ -56,9 +56,13 @@ app.set('trust proxy', 1);
 const sessionConfig = {
   name: 'user_marks_group',
   secret: process.env.SESSION_SECRET ?? 'dunno',
-  resave: true,
+  resave: false,
   saveUninitialized: false,
-  store: new FileStore({ path: sessionsPath }),
+  store: new FileStore({
+    path: sessionsPath,    
+    retries: 0,
+    logFn: () => {},
+  }),
   cookie: {
     maxAge: 10 * 24 * 60 * 60 * 1000,
     httpOnly: true,
