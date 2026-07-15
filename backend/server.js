@@ -1,6 +1,6 @@
 const express = require('express');
 require('dotenv').config();
-// const https = require('https');
+const https = require('https');
 const fs = require('fs');
 const morgan = require('morgan');
 const cors = require('cors');
@@ -8,18 +8,6 @@ const path = require('path');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 const rateLimit = require('express-rate-limit');
-
-/** Vite пишет в frontend/build; legacy — backend/build (до миграции). */
-function resolveClientBuildPath() {
-  const candidates = [
-    path.join(__dirname, '..', 'frontend', 'build'),
-    path.join(__dirname, 'build'),
-  ];
-  for (const dir of candidates) {
-    if (fs.existsSync(path.join(dir, 'index.html'))) return dir;
-  }
-  return candidates[0];
-}
 
 const authRouter = require('./Routes/authRouter');
 const newStaffsRouter = require('./Routes/newStaffsRouter');
@@ -40,19 +28,42 @@ const journalRouter = require('./Routes/Journal/journalRouter');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+const sslKeyPath = '/SSL Marksgroup/certificate.key';
+const sslCertPath = '/SSL Marksgroup/certificate.crt';
+const useHttps = fs.existsSync(sslKeyPath) && fs.existsSync(sslCertPath);
+
+const sessionsPath = path.join(__dirname, 'sessions');
+if (!fs.existsSync(sessionsPath)) {
+  fs.mkdirSync(sessionsPath, { recursive: true });
+}
+
+function resolveClientBuildPath() {
+  const candidates = [
+    path.join(__dirname, '..', 'frontend', 'build'),
+    path.join(__dirname, 'build'),
+  ];
+  for (const dir of candidates) {
+    if (fs.existsSync(path.join(dir, 'index.html'))) return dir;
+  }
+  return candidates[0];
+}
+
+const clientBuildPath = resolveClientBuildPath();
+const clientIndexHtml = path.join(clientBuildPath, 'index.html');
+
+app.set('trust proxy', 1);
+
 const sessionConfig = {
   name: 'user_marks_group',
   secret: process.env.SESSION_SECRET ?? 'dunno',
   resave: true,
   saveUninitialized: false,
-  store: new FileStore(),
+  store: new FileStore({ path: sessionsPath }),
   cookie: {
-    maxAge: 10 * 24 * 60 * 60 * 1000, // 10 дней
+    maxAge: 10 * 24 * 60 * 60 * 1000,
     httpOnly: true,
-    sameSite: 'lax', // 'lax' или 'strict' для HTTP
-    secure: false, // false для HTTP
-    // sameSite: 'none', // 'none' для HTTPS
-    // secure: true, // true для HTTPS
+    sameSite: 'lax',
+    secure: useHttps,
   },
 };
 
@@ -76,14 +87,15 @@ app.use((req, res, next) => {
     'Content-Security-Policy',
     [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' https://mc.yandex.ru https://yastatic.net",
-      "style-src 'self' 'unsafe-inline'",
+      "script-src 'self' 'unsafe-inline' https://mc.yandex.ru https://yastatic.net https://api-maps.yandex.ru https://*.maps.yandex.net https://*.api-maps.yandex.ru",
+      "style-src 'self' 'unsafe-inline' https://yastatic.net",
       "img-src 'self' data: blob: https:",
       "media-src 'self' blob: https:",
-      "font-src 'self' data:",
+      "font-src 'self' data: https://yastatic.net",
       "connect-src 'self' https: http://localhost:* http://127.0.0.1:*",
       "frame-src 'self' https:",
       "worker-src 'self' blob:",
+      "child-src 'self' blob:",
       "object-src 'none'",
       "base-uri 'self'",
     ].join('; '),
@@ -91,14 +103,15 @@ app.use((req, res, next) => {
   next();
 });
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 минут
-  max: 5000, // максимум 5000 запросов с одного IP за 15 минут
-  message: 'Слишком много запросов с этого IP, попробуйте позже',
-  standardHeaders: true,
-  legacyHeaders: false,
-});
-app.use(limiter);
+app.use(
+  rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 5000,
+    message: 'Слишком много запросов с этого IP, попробуйте позже',
+    standardHeaders: true,
+    legacyHeaders: false,
+  }),
+);
 
 const imagesPath = path.join(__dirname, 'images');
 const videoPath = path.join(__dirname, 'images/video');
@@ -110,17 +123,6 @@ app.use('/images', express.static(imagesPath, { maxAge: '5d' }));
 app.use('/videos', express.static(videoPath, { maxAge: '5d', immutable: true }));
 app.use('/public/assets', express.static(path.join(__dirname, 'assets'), { maxAge: '5d' }));
 app.use(session(sessionConfig));
-
-const clientBuildPath = resolveClientBuildPath();
-const clientIndexHtml = path.join(clientBuildPath, 'index.html');
-if (!fs.existsSync(clientIndexHtml)) {
-  console.error(
-    `[static] Нет ${clientIndexHtml}. На сервере: cd ../frontend && npm run build && pm2 restart RUmg`,
-  );
-} else {
-  console.log(`[static] SPA: ${clientBuildPath}`);
-}
-app.use(express.static(clientBuildPath));
 
 app.use('/api/auth', authRouter);
 app.use('/api/legend', legendRouter);
@@ -139,14 +141,25 @@ app.use('/api-events', vacancyEventRouter);
 app.use('/api-journal', journalRouter);
 app.use('/api-upload', journalRouter);
 
-app.get('*', (req, res) => {
+if (!fs.existsSync(clientIndexHtml)) {
+  console.error(
+    `[static] Нет ${clientIndexHtml}. На сервере: cd ../frontend && npm run build && pm2 restart RUmg`,
+  );
+} else {
+  console.log(`[static] SPA: ${clientBuildPath}`);
+}
+app.use(express.static(clientBuildPath));
+
+app.get('*', (req, res, next) => {
+  const p = req.path || '';
+  if (p.startsWith('/api') || p.startsWith('/search')) {
+    return next();
+  }
   if (!fs.existsSync(clientIndexHtml)) {
     return res
       .status(503)
       .type('text/plain')
-      .send(
-        `SPA build missing: ${clientIndexHtml}\nRun: cd frontend && npm run build`,
-      );
+      .send(`SPA build missing: ${clientIndexHtml}\nRun: cd frontend && npm run build`);
   }
   return res.sendFile(clientIndexHtml);
 });
@@ -157,19 +170,20 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something went wrong!');
 });
 
-// const sslKeyPath = '/SSL Marksgroup/certificate.key';
-// const sslCertPath = '/SSL Marksgroup/certificate.crt';
+const onListen = () => {
+  console.log(`Старт server --->🔥 ${PORT} (${useHttps ? 'https' : 'http'}) 🔥<---`);
+};
 
-// const credentials = {
-//   key: fs.readFileSync(sslKeyPath),
-//   cert: fs.readFileSync(sslCertPath),
-// };
-
-// !!!!для прода расскоментировать и закоментировать последний абзац
-// app.listen(PORT, '127.0.0.1', () => {
-//   console.log(`Старт server --->🔥 ${PORT} 🔥<---`);
-// });
-
-app.listen(PORT, () => {
-  console.log(`Старт server --->🔥 ${PORT} 🔥<---`);
-});
+if (useHttps) {
+  https
+    .createServer(
+      {
+        key: fs.readFileSync(sslKeyPath),
+        cert: fs.readFileSync(sslCertPath),
+      },
+      app,
+    )
+    .listen(PORT, '127.0.0.1', onListen);
+} else {
+  app.listen(PORT, onListen);
+}
