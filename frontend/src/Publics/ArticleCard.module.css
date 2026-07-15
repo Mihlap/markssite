@@ -143,6 +143,13 @@
   word-break: break-word;
 }
 
+.title_text a,
+.leftImg1_object_text1 a {
+  color: #389fff;
+  text-decoration: underline;
+  word-break: break-word;
+}
+
 /* << =============== правый блок контента с информацией =============== >> */
 .header_content_right {
   position: absolute;
