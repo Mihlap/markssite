@@ -195,7 +195,28 @@ export const containsListTags = (htmlString) => {
 };
 
 
+export const linkifyHtml = (htmlString) => {
+  if (!htmlString || typeof htmlString !== 'string') return htmlString || '';
+
+  let insideLink = 0;
+  return htmlString.replace(/(<[^>]+>)|([^<]+)/g, (match, tag, text) => {
+    if (tag) {
+      if (/^<a\b/i.test(tag)) insideLink += 1;
+      else if (/^<\/a\b/i.test(tag)) insideLink = Math.max(0, insideLink - 1);
+      return tag;
+    }
+    if (insideLink > 0) return text;
+
+    return text.replace(
+      /(https?:\/\/[^\s<>"']+?)([.,;:!?)\]»"]*)(?=\s|$)/g,
+      (_m, url, trailing) =>
+        `<a href="${url.replace(/"/g, '&quot;')}" target="_blank" rel="noopener noreferrer">${url}</a>${trailing}`,
+    );
+  });
+};
+
 export const renderListWithDots = (htmlString) => {
+  if (!htmlString || typeof htmlString !== 'string') return htmlString || '';
 
   const withNonBreakingSpaces = htmlString.replace(/ {2}/g, ' &nbsp;');
 
@@ -221,7 +242,7 @@ export const renderListWithDots = (htmlString) => {
     return processParagraph(pAttributes, pContent);
   });
 
-  return newListHTML;
+  return linkifyHtml(newListHTML);
 };
 
 function processListItem(attributes, content) {
