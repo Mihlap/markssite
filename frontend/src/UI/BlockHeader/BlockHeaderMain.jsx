@@ -108,7 +108,7 @@ const BlockHeaderMain = ({ handleMouseEnter, handleMouseLeave }) => {
                   ))}
                   <div className={styles.button_block_wrapper}>
                     <Link
-                      to={`/project?${blockData[index].path}#block-header-anchor`}
+                      to={`/project?viewConstruction=${encodeURIComponent(blockData[index].title)}#block-header-anchor`}
                       className={styles.button_block}
                       onMouseEnter={handleMouseEnter}
                       onMouseLeave={handleMouseLeave}
