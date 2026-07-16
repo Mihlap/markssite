@@ -4,8 +4,9 @@ import { Helmet } from 'react-helmet-async';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFetchFormArticle, setSelectedType } from '../store/Slice/articleSlice';
+import { useInView } from 'react-intersection-observer';
 import { fetchToggleStateForButton2Async } from '../store/Slice/toggleSlice';
+import { useArticles } from '../hooks';
 import CardGridSkeleton from '../UI/CardGridSkeleton/CardGridSkeleton';
 import styles from './Publics.module.css';
 import catPhoto from '../img/default-photo.jpeg';
@@ -14,16 +15,20 @@ const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 export default function Publics({ handleMouseEnter, handleMouseLeave, handleMouseHover }) {
   const dispatch = useDispatch();
-  const articles = useSelector((state) => state.article.article);
-  const articlesLoading = useSelector((state) => state.article.loading);
-  const articlesError = useSelector((state) => state.article.error);
   const isActive = useSelector((state) => state.toggle.isActiveForButton2);
 
   const [selectArticle, setSelectArticle] = useState('Все');
-  const [isSwitchingType, setIsSwitchingType] = useState(false);
   const [videoSrc, setVideoSrc] = useState(null);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const isMobile = screenWidth <= 1024;
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending, isError } = useArticles({
+    limit: 6,
+    type: selectArticle,
+  });
+
+  const articles = useMemo(() => data?.pages.flatMap((p) => p.data) ?? [], [data]);
+  const { ref: sentinelRef, inView } = useInView({ threshold: 0 });
 
   const videoSource = useMemo(
     () => ({
@@ -52,31 +57,18 @@ export default function Publics({ handleMouseEnter, handleMouseLeave, handleMous
   }, [videoSource]);
 
   useEffect(() => {
-    dispatch(getFetchFormArticle());
     dispatch(fetchToggleStateForButton2Async());
   }, [dispatch]);
 
   useEffect(() => {
-    if (!articlesLoading && isSwitchingType) {
-      const timer = window.setTimeout(() => setIsSwitchingType(false), 150);
-      return () => window.clearTimeout(timer);
+    if (inView && hasNextPage) {
+      fetchNextPage();
     }
-    return undefined;
-  }, [articlesLoading, isSwitchingType]);
+  }, [inView, hasNextPage, fetchNextPage]);
 
-  const handleButtonClick = useCallback(
-    (selected) => {
-      if (selected !== selectArticle) {
-        setIsSwitchingType(true);
-        setSelectArticle(selected);
-        dispatch(setSelectedType(selected));
-        dispatch(getFetchFormArticle());
-      }
-    },
-    [dispatch, selectArticle]
-  );
-
-  const showArticlesSkeleton = articlesLoading || isSwitchingType;
+  const handleButtonClick = useCallback((selected) => {
+    setSelectArticle((prev) => (prev === selected ? prev : selected));
+  }, []);
 
   return (
     <>
@@ -123,7 +115,7 @@ export default function Publics({ handleMouseEnter, handleMouseLeave, handleMous
             </div>
           </div>
         )}
-       
+
         {isMobile && (
           <div className={styles.menu_button_group_articles1}>
             <Swiper
@@ -160,10 +152,12 @@ export default function Publics({ handleMouseEnter, handleMouseLeave, handleMous
 
         <section className={styles.section_article}>
           <div className={styles.section_article__block}>
-            {articlesError ? (
+            {isError ? (
               <p>Не удалось загрузить публикации. Обновите страницу.</p>
-            ) : showArticlesSkeleton ? (
+            ) : isPending ? (
               <CardGridSkeleton count={6} />
+            ) : articles.length === 0 ? (
+              <p>Публикации не найдены.</p>
             ) : (
               articles.map((article) => {
                 const firstImageName = article.imageTitle?.split(',')[0]?.trim();
@@ -202,6 +196,8 @@ export default function Publics({ handleMouseEnter, handleMouseLeave, handleMous
               })
             )}
           </div>
+          <div ref={sentinelRef} />
+          {isFetchingNextPage && <p className={styles.articles_loading_more}>Загрузка...</p>}
         </section>
       </div>
     </>
