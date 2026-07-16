@@ -58,6 +58,12 @@
     word-wrap: break-word;
     white-space: pre-wrap;
     word-break: break-word;
+
+    a {
+      color: #389fff;
+      text-decoration: underline;
+      word-break: break-word;
+    }
   }
 }
 
