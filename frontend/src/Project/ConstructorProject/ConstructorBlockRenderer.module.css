@@ -54,6 +54,12 @@
   word-break: break-word;
 }
 
+.blockHeadingTitle__text a {
+  color: #389fff;
+  text-decoration: underline;
+  word-break: break-word;
+}
+
 .gridContainer {
   display: grid;
   grid-template-columns: 1fr 1fr;

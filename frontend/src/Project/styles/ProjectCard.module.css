@@ -335,6 +335,12 @@
   word-break: break-word;
 }
 
+.description_object_text1 a {
+  color: #389fff;
+  text-decoration: underline;
+  word-break: break-word;
+}
+
 .blockHeadingTitle_heading {
   color: var(--black-1D2E43);
   font-family: var(--font-unbounded);
