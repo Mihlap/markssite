@@ -121,6 +121,17 @@
   background-color: var(--white-F6F6F6);
 }
 
+.articles_loading_more {
+  font-family: var(--font-raleway);
+  font-style: normal;
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: var(--fw-400);
+  line-height: 1.25rem;
+  padding: 1rem 0;
+  color: var(--dark-gray-566272);
+}
+
 .section_article__block {
   display: flex;
   flex-wrap: wrap;

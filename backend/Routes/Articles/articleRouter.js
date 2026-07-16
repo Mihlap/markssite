@@ -2,6 +2,7 @@ const express = require('express');
 const {
   URL
 } = require('url');
+const { Op } = require('sequelize');
 const {
   Articles,
   ConstructorArticles,
@@ -331,12 +332,10 @@ router.put(
           .flatMap((block) => block.value)
           .filter(Boolean);
 
-      // Extract kept URLs from pre-update JSON (http strings)
       const keptDynamicImages = extractImages(dynamicBlocksContent)
         .map((img) => img.trim())
         .filter((img) => img.startsWith('http'));
-
-      // Final image list = kept existing URLs + newly uploaded S3 URLs
+   
       const finalDynamicImages = [...keptDynamicImages, ...dynamicImagesNew];
 
       const normalizedExistingDynamicImages = existingDynamicImages.map(extractFileName);
@@ -384,15 +383,19 @@ router.get('/getzapros', async (req, res) => {
   try {
     const page = parseInt(req.query.page, 10);
     const limit = parseInt(req.query.limit, 10);
+    const type = typeof req.query.type === 'string' ? req.query.type.trim() : '';
+
+    const where = {};
+    if (type && type !== 'Все') {
+      where.selectCompetencies = { [Op.like]: `%${type}%` };
+    }
 
     if (page && limit && page > 0 && limit > 0) {
       const offset = (page - 1) * limit;
-
+      
       const { count, rows } = await Articles.findAndCountAll({
-        include: [ConstructorArticles],
-        order: [
-          ['id', 'DESC']
-        ],
+        where,
+        order: [['id', 'DESC']],
         limit,
         offset,
       });
@@ -403,15 +406,14 @@ router.get('/getzapros', async (req, res) => {
           total: count,
           page,
           limit,
-          totalPages: Math.ceil(count / limit),
+          totalPages: Math.ceil(count / limit) || 0,
         },
       });
     } else {
       const data = await Articles.findAll({
+        where,
         include: [ConstructorArticles],
-        order: [
-          ['id', 'DESC']
-        ]
+        order: [['id', 'DESC']],
       });
 
       res.json(data);
