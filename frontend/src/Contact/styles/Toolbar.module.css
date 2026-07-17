@@ -24,12 +24,18 @@
     }
 }
 
+@media (max-width: 1024px) {
+    .wrap,
+    .swiper {
+        padding-bottom: 0;
+    }
+}
+
 @media (max-width: 1024px) and (min-width: 769px) {
     .wrap,
     .swiper {
         padding-left: 0;
         padding-top: 0;
-        padding-bottom: 24px;
         box-sizing: border-box;
     }
 }
