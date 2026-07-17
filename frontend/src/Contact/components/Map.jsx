@@ -5,10 +5,22 @@ import { useWindowWidth } from '../../hooks/useWindowWidth';
 import s from '../styles/Map.module.css';
 
 const apiKey = process.env.REACT_APP_API_KEY;
+const LAPTOP_MAX_WIDTH = 1600;
+
+function getMinVisibleMapPx(viewportHeight, width) {
+  if (width > 1024) {
+    return Math.round(Math.min(360, Math.max(220, viewportHeight * 0.38)));
+  }
+  if (width > 430) {
+    return Math.round(Math.min(300, Math.max(200, viewportHeight * 0.34)));
+  }
+  return Math.round(Math.min(260, Math.max(168, viewportHeight * 0.32)));
+}
 
 function getMapMargin(width, { top, bottom }) {
   if (width > 1024) {
-    return [550, 0, 0, 0];
+    const topMargin = Math.max(Math.round(top) || 550, 0);
+    return [topMargin, 0, 0, 0];
   }
 
   const topMargin = Math.max(Math.round(top), 0);
@@ -19,20 +31,49 @@ function getMapMargin(width, { top, bottom }) {
   return [topMargin, 0, bottomMargin, 0];
 }
 
-function getMarginBucket(width, overlayInsets) {
-  if (width > 1024) return 'desktop';
+function getMapHeightPx(width, viewportHeight, { top, bottom }) {
+  const minVisible = getMinVisibleMapPx(viewportHeight, width);
+  const needed = (Math.round(top) || 0) + minVisible + (Math.round(bottom) || 0);
+ 
+  if (width > LAPTOP_MAX_WIDTH) {
+    return needed > viewportHeight ? needed : null;
+  }
+
+  return Math.max(viewportHeight, needed);
+}
+
+function getMarginBucket(width, overlayInsets, mapHeightPx) {
   const { top, bottom } = overlayInsets;
-  return `overlay-${Math.round(top / 20) * 20}-${Math.round(bottom / 20) * 20}`;
+  return `overlay-${Math.round(top / 20) * 20}-${Math.round(bottom / 20) * 20}-${mapHeightPx || 0}`;
 }
 
 export default function Map({ activeCity, overlayInsets = { top: 0, bottom: 0 } }) {
   const { width } = useWindowWidth();
+  const [viewportHeight, setViewportHeight] = useState(() => window.innerHeight);
   const [mapKey, setMapKey] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    let timeout;
+    const onResize = () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => setViewportHeight(window.innerHeight), 150);
+    };
+    window.addEventListener('resize', onResize);
+    return () => {
+      clearTimeout(timeout);
+      window.removeEventListener('resize', onResize);
+    };
+  }, []);
+
+  const mapHeightPx = useMemo(
+    () => getMapHeightPx(width, viewportHeight, overlayInsets),
+    [width, viewportHeight, overlayInsets],
+  );
   const mapMargin = useMemo(() => getMapMargin(width, overlayInsets), [width, overlayInsets]);
   const marginBucket = useMemo(
-    () => getMarginBucket(width, overlayInsets),
-    [width, overlayInsets],
+    () => getMarginBucket(width, overlayInsets, mapHeightPx),
+    [width, overlayInsets, mapHeightPx],
   );
 
   useEffect(() => {
@@ -41,7 +82,7 @@ export default function Map({ activeCity, overlayInsets = { top: 0, bottom: 0 } 
   }, [activeCity, marginBucket]);
 
   return (
-    <div className={s.wrap}>
+    <div className={s.wrap} style={mapHeightPx ? { height: mapHeightPx } : undefined}>
       {!isLoaded && <div className={s.skeleton} />}
       <YMaps>
         <YMap

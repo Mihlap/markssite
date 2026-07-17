@@ -20,9 +20,9 @@ export default function Info({ activeCity, onCityChange, onOverlayResize }) {
       const toolbarEl = toolbarRef.current;
       if (!wrapEl) return;
 
-      const isMobileLayout = window.innerWidth <= 430;
+      const isOverlaySplitLayout = window.innerWidth <= 1024;
 
-      if (isMobileLayout) {
+      if (isOverlaySplitLayout) {
         onOverlayResize({
           top: wrapEl.getBoundingClientRect().height,
           bottom: toolbarEl?.getBoundingClientRect().height ?? 0,
@@ -199,6 +199,8 @@ export default function Info({ activeCity, onCityChange, onOverlayResize }) {
           </div>
         </div>
       </div>
+
+      <div className={s.mapPeek} aria-hidden="true" />
 
       <div ref={toolbarRef} className={s.toolbarSlot}>
         <FilterToolbar
