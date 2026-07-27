@@ -2763,6 +2763,14 @@
     }
 
     .main_vacancyWrapper__3dGroup {
+      @supports (-webkit-touch-callout: none) {
+        overflow: visible;
+
+        .background8 {
+          z-index: 0;
+        }
+      }
+
       .background4 {
         width: 6rem;
         height: 6rem;

@@ -34,7 +34,7 @@ function getMapMargin(width, { top, bottom }) {
 function getMapHeightPx(width, viewportHeight, { top, bottom }) {
   const minVisible = getMinVisibleMapPx(viewportHeight, width);
   const needed = (Math.round(top) || 0) + minVisible + (Math.round(bottom) || 0);
- 
+
   if (width > LAPTOP_MAX_WIDTH) {
     return needed > viewportHeight ? needed : null;
   }
@@ -42,9 +42,9 @@ function getMapHeightPx(width, viewportHeight, { top, bottom }) {
   return Math.max(viewportHeight, needed);
 }
 
-function getMarginBucket(width, overlayInsets, mapHeightPx) {
+function getMarginBucket(width, overlayInsets) {
   const { top, bottom } = overlayInsets;
-  return `overlay-${Math.round(top / 20) * 20}-${Math.round(bottom / 20) * 20}-${mapHeightPx || 0}`;
+  return `overlay-${Math.round(top / 20) * 20}-${Math.round(bottom / 20) * 20}-${width > 1024 ? 'd' : 'm'}`;
 }
 
 export default function Map({ activeCity, overlayInsets = { top: 0, bottom: 0 } }) {
@@ -55,10 +55,19 @@ export default function Map({ activeCity, overlayInsets = { top: 0, bottom: 0 } 
 
   useEffect(() => {
     let timeout;
+    let lastWidth = window.innerWidth;
+
     const onResize = () => {
       clearTimeout(timeout);
-      timeout = setTimeout(() => setViewportHeight(window.innerHeight), 150);
+      timeout = setTimeout(() => {
+        const nextWidth = window.innerWidth;     
+        if (nextWidth !== lastWidth) {
+          lastWidth = nextWidth;
+          setViewportHeight(window.innerHeight);
+        }
+      }, 150);
     };
+
     window.addEventListener('resize', onResize);
     return () => {
       clearTimeout(timeout);
@@ -72,8 +81,8 @@ export default function Map({ activeCity, overlayInsets = { top: 0, bottom: 0 } 
   );
   const mapMargin = useMemo(() => getMapMargin(width, overlayInsets), [width, overlayInsets]);
   const marginBucket = useMemo(
-    () => getMarginBucket(width, overlayInsets, mapHeightPx),
-    [width, overlayInsets, mapHeightPx],
+    () => getMarginBucket(width, overlayInsets),
+    [width, overlayInsets],
   );
 
   useEffect(() => {
