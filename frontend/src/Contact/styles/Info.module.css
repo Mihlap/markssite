@@ -457,7 +457,7 @@
     .mapPeek {
         display: block;
         flex: 1 1 0;
-        min-height: clamp(200px, 30dvh, 280px);
+        min-height: clamp(200px, 30svh, 280px);
         pointer-events: none;
     }
 
@@ -499,7 +499,7 @@
     .mapPeek {
         display: block;
         flex: 1 1 0;
-        min-height: clamp(168px, 32dvh, 260px);
+        min-height: clamp(168px, 32svh, 260px);
         pointer-events: none;
     }
 
