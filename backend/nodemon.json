@@ -1,0 +1,17 @@
+{
+  "watch": [
+    "server.js",
+    "Routes",
+    "db",
+    "models",
+    "middleware",
+    "controllers"
+  ],
+  "ext": "js,json",
+  "ignore": [
+    "node_modules/*",
+    "sessions/*",
+    "images/*"
+  ],
+  "delay": "500ms"
+}
