@@ -45,7 +45,7 @@
     "react-phone-number-input": "^3.2.23",
     "react-quill-new": "^3.3.3",
     "react-redux": "^8.0.5",
-    "react-router-dom": "^6.30.3",
+    "react-router": "^7.18.1",
     "react-select": "^5.7.3",
     "react-slick": "^0.29.0",
     "react-transition-group": "^4.4.5",
@@ -72,6 +72,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "preview:build": "npm run build && vite preview",
+    "smoke:router": "node ./scripts/smoke-react-router.mjs",
     "format": "prettier --write .",
     "figma:publish": "figma-connect publish --documentUrl https://www.figma.com/design/yJRiwzNoy1JZChUCpZt9fy/%D0%A1%D0%B0%D0%B9%D1%82-MARKSGROUP",
     "figma:parse": "figma-connect parse"

@@ -1,5 +1,5 @@
 import { useEffect, useState, Suspense, lazy, useCallback, useRef } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router';
 import { HelmetProvider } from 'react-helmet-async';
 import './App.css';
 

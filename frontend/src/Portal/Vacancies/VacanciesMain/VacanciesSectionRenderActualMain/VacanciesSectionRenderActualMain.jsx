@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import styles from '../VacanciesSectionRender/VacanciesSectionRender.module.scss';
 import LoadingCircle from '../../../../Loading/LoadingCircle';
 import buttonLink from '../../icons/buttonLink.svg';

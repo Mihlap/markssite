@@ -1,5 +1,5 @@
 // useNavLinks.jsx
-import { useLocation, matchPath } from 'react-router-dom';
+import { useLocation, matchPath } from 'react-router';
 import { useMemo } from 'react';
 import { baseNavConfig, hrNavConfig } from '../const/routes';
 

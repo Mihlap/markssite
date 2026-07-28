@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import styles from './NotFound.module.scss';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 const NotFound = () => {
   const errorNumberRef = useRef(null);

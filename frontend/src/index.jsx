@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import store from './store/store';
 import App from './App';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { IS_DEV } from './const/is-dev';
 
@@ -29,15 +29,7 @@ axios.defaults.withCredentials = true;
 const root = document.getElementById('root');
 
 ReactDOM.createRoot(root).render(
-  <BrowserRouter
-    future={{
-      v7_relativeSplatPath: true,
-      v7_startTransition: true,
-      v7_fetcherPersist: true,
-      v7_normalizeFormMethod: true,
-      v7_partialHydration: true,
-      v7_skipActionErrorRevalidation: true,
-    }}>
+  <BrowserRouter>
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <App />

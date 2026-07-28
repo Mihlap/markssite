@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import PropTypes from 'prop-types';
 import { InputMask } from '@react-input/mask';
 import Select from 'react-select';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 const HOST = process.env.REACT_APP_SERVER_HOST;
 

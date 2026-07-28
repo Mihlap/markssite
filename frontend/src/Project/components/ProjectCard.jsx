@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router';
 import gsap from 'gsap';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
