@@ -72,7 +72,6 @@
     "build": "vite build",
     "preview": "vite preview",
     "preview:build": "npm run build && vite preview",
-    "smoke:router": "node ./scripts/smoke-react-router.mjs",
     "format": "prettier --write .",
     "figma:publish": "figma-connect publish --documentUrl https://www.figma.com/design/yJRiwzNoy1JZChUCpZt9fy/%D0%A1%D0%B0%D0%B9%D1%82-MARKSGROUP",
     "figma:parse": "figma-connect parse"
