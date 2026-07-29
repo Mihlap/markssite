@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 import styles from '../../Header/Header.module.css';
 
 export default function ButtonAdmin({ user, handleMouseEnter, handleMouseLeave }) {

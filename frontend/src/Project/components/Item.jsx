@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { COLOR } from '../const';
 import placehold from '../icon/placehold.webp';
 import { UiMarksTextBox } from '../../UI';

@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './AllProjectsButton.module.css';
 // import previous from '../../icons/previous.svg';
 // import next from '../../icons/next.svg'
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 const PreviousNextButton = () => {
   return (

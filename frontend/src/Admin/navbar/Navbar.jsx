@@ -1,5 +1,5 @@
 import React, { useRef, useLayoutEffect } from 'react';
-import { NavLink, useNavigate, useLocation } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { logoutUser } from '../../store/Slice/authSlice';
 import { resetCurrentPage } from '../../store/Slice/userSlice';

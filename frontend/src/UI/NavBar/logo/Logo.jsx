@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router';
 import clsx from 'clsx';
 import logo from '../icon/logo.svg';
 import iconhr from '../icon/hr.svg';

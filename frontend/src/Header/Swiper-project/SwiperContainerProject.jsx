@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwipeCore from 'swiper';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
@@ -65,7 +65,7 @@ const SwiperContainerProject = ({ projects }) => {
             }
             return (
               <SwiperSlide className="swiper_container_item_projects" key={`${project.id}_${index}`}>
-                <Link key={project.id} to={`/projects/${project.id}`}>
+                <Link key={project.id} to={`/project/${project.id}`}>
                   <SliderItemProject
                     title={project.title}
                     src={

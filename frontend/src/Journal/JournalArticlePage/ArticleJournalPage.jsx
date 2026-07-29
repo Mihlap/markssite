@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import gsap from 'gsap';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchJournals } from '../../store/Slice/journalSlice';
 import 'katex/dist/katex.min.css';

@@ -1,4 +1,4 @@
-import { matchPath } from 'react-router-dom';
+import { matchPath } from 'react-router';
 
 export const isRouteActive = (pathname, hash, targetPath) => {
   if (!targetPath) return false;

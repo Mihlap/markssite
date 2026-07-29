@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import styles from './ArticleTableOfContents.module.scss';
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);

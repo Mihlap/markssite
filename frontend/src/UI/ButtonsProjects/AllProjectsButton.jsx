@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import style from './AllProjectsButton.module.css';
 
