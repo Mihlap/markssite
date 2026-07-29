@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, useMemo, lazy, Suspense } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router';
 import clsx from 'clsx';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';

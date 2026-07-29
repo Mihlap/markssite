@@ -5,7 +5,7 @@ import { CSSPlugin } from 'gsap/CSSPlugin';
 import './BlockHeader.scss';
 
 import mySvg from '../../Header/img/slider_block_header_icon.svg';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 const BlockHeader = () => {
   const accordionsRef = useRef(null);

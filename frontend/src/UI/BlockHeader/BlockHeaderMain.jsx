@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { blockData } from './utils.js';
 import styles from './BlockHeaderMain.module.css';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 const BlockHeaderMain = ({ handleMouseEnter, handleMouseLeave }) => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);

@@ -7,7 +7,7 @@ import 'swiper/css/pagination';
 import 'swiper/swiper-bundle.css';
 import SliderItems from './SliderItem';
 import './SwiperContainer.css';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 

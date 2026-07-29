@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router';
 import { motion } from 'framer-motion';
 import FooterInfo from './FooterInfo';
 import styles from './FooterCircle.module.scss';

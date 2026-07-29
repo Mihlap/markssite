@@ -1,5 +1,5 @@
 // frontend/src/UI/NavBar/hooks/useHrNavMeta.jsx;
-import { useLocation, matchPath } from 'react-router-dom';
+import { useLocation, matchPath } from 'react-router';
 import { useMemo } from 'react';
 
 const VACANCY_DETAIL_MATCHER = { path: '/hr/vacancies/:id', end: true };

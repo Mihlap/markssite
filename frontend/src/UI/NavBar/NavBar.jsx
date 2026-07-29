@@ -2,7 +2,7 @@ import { useState, useRef, lazy, Suspense, useEffect, useCallback } from 'react'
 import gsap from 'gsap';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { useGSAP } from '@gsap/react';
-import { NavLink, useNavigate, Link } from 'react-router-dom';
+import { NavLink, useNavigate, Link } from 'react-router';
 import clsx from 'clsx';
 import { useNavLinks } from './hooks/useNavLinks';
 import { useHrNavMeta } from './hooks/useHrNavMeta';

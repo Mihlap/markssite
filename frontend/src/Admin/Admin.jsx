@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router';
 import Navbar from './navbar/Navbar';
 import { UiMarksButton } from './ui';
 import styles from './Admin.module.scss';

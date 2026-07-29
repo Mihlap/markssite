@@ -1,5 +1,5 @@
 import { memo, forwardRef, useState, useEffect, useRef, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { ClipIcon, Icon1 } from '../index.js';
 
 import styles from './Styles.module.css';

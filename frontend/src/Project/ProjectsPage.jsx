@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useMemo, lazy, Suspense } from 'react';
 import { useSelector } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import CompanySlider from '../UI/Company_Slider/CompanySlider';
 import { useProjects, useWindowWidth } from '../hooks';
 import FilterToolbar from './components/FilterToolbar';

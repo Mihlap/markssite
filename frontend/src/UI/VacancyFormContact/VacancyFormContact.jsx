@@ -1,7 +1,7 @@
 import React, { useRef, useState, useMemo, useCallback, useEffect } from 'react';
 import { InputMask } from '@react-input/mask';
 import Select from 'react-select';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import styles from './VacancyFormContact.module.scss';
 import 'react-phone-number-input/style.css';
 import icon_tg from '../../Portal/Vacancies/icons/icon_tg.svg';

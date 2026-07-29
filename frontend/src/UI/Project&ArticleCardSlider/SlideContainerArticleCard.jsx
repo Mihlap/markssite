@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwipeCore from 'swiper';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';

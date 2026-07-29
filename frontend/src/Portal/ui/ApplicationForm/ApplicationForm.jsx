@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { useIsInternship } from './hooks/useIsInternship';
 import { directionOptions, maskOptions } from './const/index.js';
 import Input from '../Input/Input.jsx';

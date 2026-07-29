@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
 import gsap from 'gsap';
@@ -502,7 +502,7 @@ const Header = React.memo(
                     className={`${styles.slider_container_item_card} ${index === 0 ? styles.slider_container_item_card_first : ''
                       }`}
                     style={index % 2 === 1 ? { paddingTop: '10rem' } : {}}>
-                    <Link to={`/projects/${project.id}`}>
+                    <Link to={`/project/${project.id}`}>
                       <div className={styles.wrapper_container_item_card}>
                         <img
                           onMouseEnter={handleMouseHover}
