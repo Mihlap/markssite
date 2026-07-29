@@ -163,7 +163,7 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
     if (!startTopCounters) return;
 
     const timer1 = setTimeout(() => {
-      if (countPercent < 1300) setCountPercent(countPercent + 20);
+      if (countPercent < 1150) setCountPercent(Math.min(1150, countPercent + 20));
       if (countProject < 200) setCountProject(countProject + 5);
       if (countHuman < 20) setCountHuman(countHuman + 1);
     }, 50);
