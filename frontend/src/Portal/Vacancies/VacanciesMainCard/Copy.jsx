@@ -331,7 +331,7 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
             <div className={styles.main_vacancyWrapper__wrapperCountBlock}>
               <div className={styles.countItem}>
                 <div className={styles.countLabel}>На&nbsp;рынке</div>
-                <div className={styles.countValue}>19&nbsp;лет</div>
+                <div className={styles.countValue}>20&nbsp;лет</div>
               </div>
               <div className={styles.countItem}>
                 <img className={styles.offerHeart2} src={heart2} alt={heart2} />
@@ -341,7 +341,7 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
                   alt={window.innerWidth <= 767 ? 'vectorAround2' : 'vectorAround'}
                 />
                 <div className={styles.countLabel}>Специалистов</div>
-                <div className={styles.countValue}>&gt;1300</div>
+                <div className={styles.countValue}>&gt;1150</div>
               </div>
               <div className={styles.countItem1}>
                 <div className={styles.countLabel}>

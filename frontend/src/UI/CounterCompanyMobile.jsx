@@ -5,7 +5,7 @@ import styles from '../Company/Company.module.scss';
 import bracket from '../icons/bracket.svg';
 
 const TARGETS = {
-  specialists: 1300,
+  specialists: 1150,
   projects: 200,
   years: 20,
 };
@@ -23,7 +23,7 @@ const CounterCompanyMobile = ({ armed = false }) => {
 
     const timer1 = setTimeout(() => {
       if (countPercentM < TARGETS.specialists && activeCounter === 0) {
-        setCountPercentM((value) => value + 20);
+        setCountPercentM((value) => Math.min(TARGETS.specialists, value + 20));
       }
       if (countProjectM < TARGETS.projects && activeCounter === 1) {
         setCountProjectM((value) => value + 5);
