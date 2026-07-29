@@ -65,7 +65,7 @@ const SwiperContainerProject = ({ projects }) => {
             }
             return (
               <SwiperSlide className="swiper_container_item_projects" key={`${project.id}_${index}`}>
-                <Link key={project.id} to={`/projects/${project.id}`}>
+                <Link key={project.id} to={`/project/${project.id}`}>
                   <SliderItemProject
                     title={project.title}
                     src={

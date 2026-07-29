@@ -502,7 +502,7 @@ const Header = React.memo(
                     className={`${styles.slider_container_item_card} ${index === 0 ? styles.slider_container_item_card_first : ''
                       }`}
                     style={index % 2 === 1 ? { paddingTop: '10rem' } : {}}>
-                    <Link to={`/projects/${project.id}`}>
+                    <Link to={`/project/${project.id}`}>
                       <div className={styles.wrapper_container_item_card}>
                         <img
                           onMouseEnter={handleMouseHover}

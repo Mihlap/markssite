@@ -401,7 +401,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
                 className={styles.button_project_link_projectCard1}
-                to={`/projects/${previousProject.id}`}>
+                to={`/project/${previousProject.id}`}>
                 <div className={styles.previous_svg_projectCard}>
                   <img src={previous} alt="Previous" />
                   <span className={styles.previous__span_projectCard}>{previousProject.title}</span>
@@ -413,7 +413,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
                 className={styles.button_project_link_projectCard2}
-                to={`/projects/${nextProject.id}`}>
+                to={`/project/${nextProject.id}`}>
                 <div className={styles.next_svg_projectCard}>
                   <span className={styles.next__span_projectCard}>{nextProject.title}</span>
                   <img src={next} alt="Next" />
@@ -475,7 +475,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                   key={randomProject.id}
                   className={styles.slider_container_item_card_projectCard}
                   style={{ paddingTop: index % 2 === 1 ? '10rem' : '0' }}>
-                  <Link to={`/projects/${randomProject.id}`}>
+                  <Link to={`/project/${randomProject.id}`}>
                     <div className={styles.wrapper_container_item_card_projectCard}>
                       <img
                         className={styles.container__imageTitle_projectCard}
