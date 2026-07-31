@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useRef, useEffect, useCallback } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useEffect, useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { DevTool } from '@hookform/devtools';
@@ -15,6 +15,29 @@ const toStaffImgUrl = (img) => {
   if (!img) return null;
   if (img.startsWith('http')) return img;
   return `${S3_URL}/images/imageStaff/${img}`;
+};
+
+const ALLOWED_FILE_TYPES = [
+  'image/png',
+  'image/jpeg',
+  'image/jpg',
+  'image/heic',
+  'image/HEIC',
+  'image/avif',
+  'image/webp',
+];
+
+const SUPPORTED_FORMATS = 'PNG, JPG, HEIC, AVIF, WebP';
+
+const validateFileType = (file) => {
+  if (!file) return null;
+  if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+    return `Неподдерживаемый тип файла: ${file.type}. Разрешённые типы: ${SUPPORTED_FORMATS}`;
+  }
+  if (file.size > 10 * 1024 * 1024) {
+    return 'Файл слишком большой.';
+  }
+  return null;
 };
 
 const CATEGORY_OPTIONS = [
@@ -131,6 +154,7 @@ const StaffForm = forwardRef(function StaffForm(
 ) {
   const dispatch = useDispatch();
   const photoAvaRef = useRef(null);
+  const [serverError, setServerError] = useState(null);
 
   const handleMarkdownUpload = useCallback(
     (file) => dispatch(uploadStaffMarkdownFile(file)).unwrap(),
@@ -258,9 +282,27 @@ const StaffForm = forwardRef(function StaffForm(
     if (hasBlockError) return;
 
     const photoAvaNew = (data.photoAva || []).filter((f) => f instanceof File);
+    if (photoAvaNew[0]) {
+      const err = validateFileType(photoAvaNew[0]);
+      if (err) { setError('photoAva', { type: 'custom', message: err }); return; }
+    }
     const photoAvaExisting = (data.photoAva || []).find((f) => !(f instanceof File)) || '';
 
     const blocks = data.constructorBlocks || [];
+    for (const block of blocks) {
+      const files = [];
+      if (block.type === 'imageWithDesc' || block.type === 'quote') files.push(...(block.image || []));
+      if (block.type === 'interestingFact') {
+        files.push(...(block.image || []));
+        files.push(...(block.ava || []));
+      }
+      for (const f of files) {
+        if (f instanceof File) {
+          const err = validateFileType(f);
+          if (err) { setServerError(err); return; }
+        }
+      }
+    }
     const oldFormatBlocks = blocks.map(toOldFormat);
 
     const form = new FormData();
@@ -293,11 +335,18 @@ const StaffForm = forwardRef(function StaffForm(
       }
     }
 
-    if (editStaffData) {
-      await dispatch(updateStaffAsync({ id: editStaffData.id, formData: form }));
-    } else {
-      await dispatch(createStaffAsync(form));
+    try {
+      if (editStaffData) {
+        await dispatch(updateStaffAsync({ id: editStaffData.id, formData: form })).unwrap();
+      } else {
+        await dispatch(createStaffAsync(form)).unwrap();
+      }
+    } catch (err) {
+      const message = typeof err === 'string' ? err : err?.error || err?.message || 'Ошибка при сохранении';
+      setServerError(message);
+      return;
     }
+    setServerError(null);
     reset();
     onSuccess?.();
   };
@@ -305,6 +354,7 @@ const StaffForm = forwardRef(function StaffForm(
   return (
     <>
     <form id="add-form-staff" className={s.form} onSubmit={handleSubmit(onSubmit)}>
+      {serverError && <div className={s.serverError}>{serverError}</div>}
       <UiMarksGrayWrap customStyles={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px' }}>
         <Controller
           name="photoAva"
@@ -317,6 +367,7 @@ const StaffForm = forwardRef(function StaffForm(
                   variant="portrait"
                   onRemove={() => {
                     onChange([]);
+                    setServerError(null);
                     if (photoAvaRef.current) photoAvaRef.current.value = '';
                   }}
                   label="Портрет сотрудника "
@@ -333,8 +384,19 @@ const StaffForm = forwardRef(function StaffForm(
                   error={fieldState.error?.message}
                   onChange={(e) => {
                     const file = e.target.files[0];
-                    onChange(file ? [file] : []);
-                    if (file) clearErrors('photoAva');
+                    if (file) {
+                    const error = validateFileType(file);
+                    if (error) {
+                      setError('photoAva', { type: 'custom', message: error });
+                      e.target.value = '';
+                      return;
+                    }
+                      setServerError(null);
+                      onChange([file]);
+                      clearErrors('photoAva');
+                    } else {
+                      onChange([]);
+                    }
                   }}
                 />
               )}
