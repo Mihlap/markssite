@@ -47,13 +47,23 @@ export default function StaffMain({ items, user, currentCategory, loading, error
     [currentCategory, dispatch, onStaffChanged],
   );
 
-  const handleDelete = useCallback((el) => {
-    setDeleteTarget({ id: el.id, name: el.name });
-  }, []);
+  const handleDelete = useCallback(
+    (el) => {
+      setDeleteTarget({
+        id: el.id,
+        name: el.name,
+        category: currentCategory,
+        inMultipleCategories: (el.category || []).length > 1,
+      });
+    },
+    [currentCategory],
+  );
 
   const handleDeleteConfirm = useCallback(() => {
     if (!deleteTarget) return;
-    dispatch(deleteStaffAsync({ id: deleteTarget.id })).finally(() => onStaffChanged?.());
+    dispatch(deleteStaffAsync({ id: deleteTarget.id, category: deleteTarget.category })).finally(() =>
+      onStaffChanged?.(),
+    );
     setDeleteTarget(null);
   }, [dispatch, deleteTarget, onStaffChanged]);
 
@@ -119,10 +129,17 @@ export default function StaffMain({ items, user, currentCategory, loading, error
           </>
         }
         description={
-          <>
-            Если вы удалите информацию о сотруднике, вернуть <br />
-            ее будет невозможно
-          </>
+          deleteTarget?.inMultipleCategories ? (
+            <>
+              Сотрудник будет удален только из категории <br />
+              «{deleteTarget?.category}». В других категориях он останется
+            </>
+          ) : (
+            <>
+              Если вы удалите информацию о сотруднике, вернуть <br />
+              ее будет невозможно
+            </>
+          )
         }
         onConfirm={handleDeleteConfirm}
         onClose={() => setDeleteTarget(null)}
