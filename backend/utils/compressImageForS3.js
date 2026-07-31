@@ -1,6 +1,6 @@
 const sharp = require('sharp');
 
-const MAX_IMAGE_BYTES = 4 * 1024 * 1024;
+const MAX_IMAGE_BYTES = 2 * 1024 * 1024;
 const MAX_SIDE = 1920;
 
 const isImage = (file) => Boolean(file?.mimetype?.startsWith('image/') && file?.buffer);

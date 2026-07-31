@@ -9,6 +9,20 @@ const { logResourceAction } = require('../utils/fileLogger');
 
 const router = express.Router();
 
+function wrapMulter(middleware) {
+  return (req, res, next) => {
+    middleware(req, res, (err) => {
+      if (err) {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+          return res.status(400).json({ error: 'Файл слишком большой. Максимальный размер: 10 МБ' });
+        }
+        return res.status(400).json({ error: err.message || 'Ошибка загрузки файла' });
+      }
+      next();
+    });
+  };
+}
+
 const normCategory = (s) =>
   String(s || '')
     .toLowerCase()
@@ -340,7 +354,7 @@ router.post('/stuffs', async (req, res) => {
   }
 });
 
-router.post('/upload', fileMiddleware.single('file'), async (req, res) => {
+router.post('/upload', wrapMulter(fileMiddleware.single('file')), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ error: 'Файл не передан' });
     const userInfo = req.session?.user ? {
@@ -356,7 +370,7 @@ router.post('/upload', fileMiddleware.single('file'), async (req, res) => {
   }
 });
 
-router.post('/stuffs-mp', fileMiddleware.any(), async (req, res) => {
+router.post('/stuffs-mp', wrapMulter(fileMiddleware.any()), async (req, res) => {
   const t = await sequelize.transaction();
   try {
     const userInfo = req.session?.user ? {
@@ -468,7 +482,7 @@ router.post('/stuffs-mp', fileMiddleware.any(), async (req, res) => {
   }
 });
 
-router.post('/upload-markdown-file', fileMiddleware.single('markdownFile'), async (req, res) => {
+router.post('/upload-markdown-file', wrapMulter(fileMiddleware.single('markdownFile')), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ message: 'Файл не найден в запросе' });
 
@@ -492,7 +506,7 @@ router.post('/upload-markdown-file', fileMiddleware.single('markdownFile'), asyn
   }
 });
 
-router.put('/stuffs-mp/:id', fileMiddleware.any(), async (req, res) => {
+router.put('/stuffs-mp/:id', wrapMulter(fileMiddleware.any()), async (req, res) => {
   const t = await sequelize.transaction();
   try {
     const id = req.params.id;
