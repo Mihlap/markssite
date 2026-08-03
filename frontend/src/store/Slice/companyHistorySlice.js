@@ -5,7 +5,7 @@ const HOST = (process.env.REACT_APP_SERVER_HOST || process.env.REACT_APP_API_URL
 const api = axios.create({
   baseURL: HOST,
   withCredentials: true,
-  headers: { 'Content-Type': 'application/json' },
+  headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-cache', Pragma: 'no-cache' },
 });
 
 const API_BASE = '/api/legend';
