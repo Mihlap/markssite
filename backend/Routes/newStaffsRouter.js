@@ -225,6 +225,32 @@ const deleteImageFromS3Safe = async (fileUrlOrKey, logInfo = null) => {
   } catch { }
 };
 
+const collectReferencedStaffFileUrls = async (excludedStaffId) => {
+  const referenced = new Set();
+  const excludedId = Number(excludedStaffId);
+
+  const allStaff = await StaffNew.findAll({
+    attributes: ['id', 'img'],
+    include: [{ model: ConstructorStaffNew, as: 'ConstructorStaffNews' }],
+  });
+
+  allStaff.forEach((staff) => {
+    if (staff.id === excludedId) return;
+    if (staff.img) referenced.add(staff.img.trim());
+    for (const c of staff.ConstructorStaffNews || []) {
+      if (c.image) referenced.add(c.image.trim());
+      const inputs = flattenInputs(c.data);
+      const fileInputs = inputs
+        .filter((inp) => inp?.type === 'file')
+        .flatMap((inp) => toArray(inp.value))
+        .filter(Boolean);
+      fileInputs.forEach((u) => referenced.add(String(u).trim()));
+    }
+  });
+
+  return referenced;
+};
+
 
 function extractMarkdownLinks(markdownText = '') {
   const links = [];
@@ -639,7 +665,11 @@ router.put('/stuffs-mp/:id', wrapMulter(fileMiddleware.any()), async (req, res) 
       .filter(Boolean)
       .filter((v) => !newAll.includes(v));
 
-    await Promise.all(toDelete.map((url) => deleteImageFromS3Safe(url, userInfo)));
+    const staffReferencedUrls = await collectReferencedStaffFileUrls(id);
+
+    await Promise.all(toDelete
+      .filter((url) => !staffReferencedUrls.has(url))
+      .map((url) => deleteImageFromS3Safe(url, userInfo)));
 
     await Promise.all(
       removedMd.map(async (url) => {
@@ -873,6 +903,8 @@ router.delete('/stuffs/:id', async (req, res) => {
       resourceId: id,
     } : null;
 
+    const staffReferencedUrls = await collectReferencedStaffFileUrls(id);
+
     if (category) {
       const cur = Array.isArray(staff.category) ? staff.category : [];
       if (!cur.includes(category)) {
@@ -904,7 +936,9 @@ router.delete('/stuffs/:id', async (req, res) => {
         const unique = [
           ...new Set(files.map((x) => (typeof x === 'string' ? x.trim() : x)).filter(Boolean)),
         ];
-        await Promise.all(unique.map((url) => deleteImageFromS3Safe(url, userInfo)));
+        await Promise.all(unique
+          .filter((url) => !staffReferencedUrls.has(url))
+          .map((url) => deleteImageFromS3Safe(url, userInfo)));
 
         await Promise.all(
           mdLinks.map(async (url) => {
@@ -955,7 +989,9 @@ router.delete('/stuffs/:id', async (req, res) => {
     const unique = [
       ...new Set(files.map((x) => (typeof x === 'string' ? x.trim() : x)).filter(Boolean)),
     ];
-    await Promise.all(unique.map((url) => deleteImageFromS3Safe(url, userInfo)));
+    await Promise.all(unique
+      .filter((url) => !staffReferencedUrls.has(url))
+      .map((url) => deleteImageFromS3Safe(url, userInfo)));
 
     await Promise.all(
       mdLinks.map(async (url) => {

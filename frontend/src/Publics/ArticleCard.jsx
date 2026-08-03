@@ -20,6 +20,7 @@ import catPhoto from '../img/default-photo.jpeg';
 import next from '.././icons/next.svg';
 import previous from '.././icons/previous.svg';
 import ConstructorBlockRenderer from './ConstructorArticle/ConstructorBlockRender';
+import AllArticlesButton from '../UI/ButtonsArticles/AllArticlesButton';
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
@@ -195,6 +196,10 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
 
       <div className={`${styles.main_article_card} article-card`}>
         <ArticleCardSlider slidesCard={[article]} />
+
+        <div className={styles.all_button_div} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+          <AllArticlesButton />
+        </div>
 
         <div className={styles.section_article__block__card}>
           <div className={styles.cart_article__block__card}>

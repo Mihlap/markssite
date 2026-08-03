@@ -477,6 +477,43 @@ router.delete('/deletezapros/:id', async (req, res) => {
       return res.status(404).json({ message: 'Запись не найдена' });
     }
 
+    const normalizedId = Number(id);
+
+    const normalizeUrlKey = (url) => {
+      try {
+        return decodeURIComponent(url).split('?')[0];
+      } catch {
+        return url.split('?')[0];
+      }
+    };
+
+    const collectReferencedJournalUrls = async () => {
+      const referenced = new Set();
+
+      const journals = await Journal.findAll({
+        attributes: ['id', 'attachments', 'authors', 'markdown_content'],
+      });
+
+      journals.forEach((journal) => {
+        if (journal.id === normalizedId) return;
+        if (Array.isArray(journal.attachments)) {
+          journal.attachments.filter(Boolean).forEach((url) => referenced.add(normalizeUrlKey(url)));
+        }
+        if (Array.isArray(journal.authors)) {
+          journal.authors.forEach((author) => {
+            if (author?.image) referenced.add(normalizeUrlKey(author.image));
+          });
+        }
+        extractMarkdownLinks(journal.markdown_content || '').forEach((url) =>
+          referenced.add(normalizeUrlKey(url)),
+        );
+      });
+
+      return referenced;
+    };
+
+    const referencedUrls = await collectReferencedJournalUrls();
+
     const normalizeFileName = (url) => {
       let decodedUrl = url;
       try {
@@ -491,7 +528,8 @@ router.delete('/deletezapros/:id', async (req, res) => {
     };
 
     const extractAndDeleteFiles = async (fileUrls, isMarkdown = false, isPdf = false) => {
-      const uniqueUrls = [...new Set(fileUrls.map(normalizeFileName))];
+      const toDelete = fileUrls.filter((url) => !referencedUrls.has(normalizeUrlKey(url)));
+      const uniqueUrls = [...new Set(toDelete.map(normalizeFileName))];
 
       await Promise.all(
         uniqueUrls.map(async (fileName) => {

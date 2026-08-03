@@ -277,9 +277,8 @@ router.delete('/delete-event/:id', async (req, res) => {
       if (event.files && Array.isArray(event.files)) {
         // eslint-disable-next-line no-restricted-syntax
         for (const fileUrl of event.files) {
-          const fileName = getFileNameFromUrl(fileUrl);
           // eslint-disable-next-line no-await-in-loop
-          await deleteFileFromS3(fileName, 'images/imageEvent', s3LogInfo);
+          await deleteImageIfUnused(fileUrl, id, s3LogInfo);
         }
       }
 
