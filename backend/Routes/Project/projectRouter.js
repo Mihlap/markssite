@@ -6,6 +6,7 @@ const fileMiddleware = require('../../middleware/file');
 const { convertToWebp } = require('../../utils/convertToWebp');
 const { uploadFileToS3, deleteFileFromS3 } = require('../../s3Utils/s3Service');
 const { logResourceActionFromSession, buildS3LogInfo } = require('../../utils/fileLogger');
+const { extractBlockFileUrls } = require('../../utils/extractBlockFileUrls');
 
 const router = express.Router();
 
@@ -77,6 +78,43 @@ const deleteImageFromS3 = async (fileUrl, logInfo = null) => {
   } else {
     console.log(`Не удалось извлечь имя файла и папку из URL: ${fileUrl}`);
   }
+};
+
+const collectReferencedImageUrls = async (excludedProjectId) => {
+  const referenced = new Set();
+  const excludedId = Number(excludedProjectId);
+
+  const projects = await Project.findAll({
+    attributes: ['id', 'imageTitle', 'imageProject', 'imageOpen', 'imageClose'],
+  });
+
+  projects.forEach((project) => {
+    if (project.id === excludedId) return;
+    [project.imageTitle, project.imageProject, project.imageOpen, project.imageClose].forEach((value) => {
+      if (!value) return;
+      value.split(',').forEach((item) => {
+        const trimmed = item.trim();
+        if (trimmed) referenced.add(trimmed);
+      });
+    });
+  });
+
+  const constructors = await Constructor.findAll({
+    attributes: ['idBlock', 'image', 'data'],
+  });
+
+  constructors.forEach((constructor) => {
+    if (constructor.idBlock === excludedId) return;
+    if (constructor.image) {
+      constructor.image.split(',').forEach((item) => {
+        const trimmed = item.trim();
+        if (trimmed) referenced.add(trimmed);
+      });
+    }
+    extractBlockFileUrls(constructor.data).forEach((url) => referenced.add(url));
+  });
+
+  return referenced;
 };
 
 const updateDynamicBlocksContent = (blocks, newImages) => {
@@ -381,6 +419,9 @@ router.put(
 
       const extractFileName = (url) => url.split('/').pop().split('?')[0];
 
+      const referencedUrls = await collectReferencedImageUrls(projectId);
+      const referencedFileNames = new Set([...referencedUrls].map(extractFileName));
+
       const normalizedCurrentImages = [
         ...currentImageTitles,
         ...currentImageProjects,
@@ -399,9 +440,11 @@ router.put(
         .filter(Boolean)
         .map(extractFileName);
 
-      const imagesToRemove = normalizedCurrentImages.filter(
-        (image) => !normalizedUpdatedImages.includes(image),
-      );
+      const imagesToRemove = normalizedCurrentImages
+        .filter(
+          (image) => !normalizedUpdatedImages.includes(image),
+        )
+        .filter((fileName) => !referencedFileNames.has(fileName));
 
       await Promise.all(imagesToRemove.map((url) => deleteImageFromS3(url, s3LogInfo)));
 
@@ -483,9 +526,11 @@ router.put(
       const normalizedExistingDynamicImages = existingDynamicImages.map(extractFileName);
       const normalizedNewDynamicImages = newDynamicImages.map(extractFileName);
 
-      const imagesToRemoveFromDynamicBlocks = normalizedExistingDynamicImages.filter(
-        (image) => !normalizedNewDynamicImages.includes(image),
-      );
+      const imagesToRemoveFromDynamicBlocks = normalizedExistingDynamicImages
+        .filter(
+          (image) => !normalizedNewDynamicImages.includes(image),
+        )
+        .filter((fileName) => !referencedFileNames.has(fileName));
 
       await Promise.all(
         imagesToRemoveFromDynamicBlocks.map((url) => deleteImageFromS3(url, s3LogInfo)),
@@ -530,18 +575,26 @@ router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const post = await Project.findByPk(id);
+    if (!post) {
+      return res.status(404).json({ message: 'Проект не найден' });
+    }
     const deleteConstructorImg = await Constructor.findOne({
       where: {
         idBlock: id,
       },
     });
 
-    const normalizeFileName = (url) => url.split('/').pop().split('?')[0];
+    const referencedUrls = await collectReferencedImageUrls(id);
 
     const extractAndDeleteImages = async (imageUrls) => {
-      const normalizedUrls = [...new Set(imageUrls.map(normalizeFileName))];
+      const normalizedUrls = [...new Set(imageUrls.map((url) => url.trim()).filter(Boolean))];
       // eslint-disable-next-line no-restricted-syntax
       for (const imageUrl of normalizedUrls) {
+        if (referencedUrls.has(imageUrl)) {
+          console.log(`Файл ${imageUrl} ещё используется в других проектах — пропуск удаления`);
+          // eslint-disable-next-line no-continue
+          continue;
+        }
         const result = extractFileNameAndFolderFromUrl(imageUrl);
         if (result) {
           const { fileName, folder } = result;
@@ -561,6 +614,10 @@ router.delete('/:id', async (req, res) => {
     if (deleteConstructorImg?.image) {
       const imageConstructorNames = deleteConstructorImg.image.split(', ').map((img) => img.trim());
       await extractAndDeleteImages(imageConstructorNames);
+    }
+
+    if (deleteConstructorImg?.data) {
+      await extractAndDeleteImages(extractBlockFileUrls(deleteConstructorImg.data));
     }
 
     if (post.imageTitle) {

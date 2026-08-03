@@ -1,12 +1,21 @@
+const path = require('path');
+const crypto = require('crypto');
 const { Upload } = require('@aws-sdk/lib-storage');
 const { DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const { s3Client, BUCKET_NAME } = require('./s3Client');
 const { logFileAction } = require('../utils/fileLogger');
 const { compressImageForS3 } = require('../utils/compressImageForS3');
 
+function makeUniqueFileName(originalName) {
+  const base = path.basename(originalName || 'image', path.extname(originalName || '')) || 'image';
+  const ext = path.extname(originalName || '') || '';
+  const uniquePart = `${Date.now()}-${crypto.randomBytes(6).toString('hex')}`;
+  return `${base}-${uniquePart}${ext}`;
+}
+
 async function uploadFileToS3(file, folder, logInfo = null) {
   const prepared = await compressImageForS3(file);
-  const fileName = prepared.originalname;
+  const fileName = makeUniqueFileName(prepared.originalname);
   const uploadParams = {
     Bucket: BUCKET_NAME,
     Key: `${folder}/${fileName}`,

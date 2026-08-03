@@ -961,15 +961,6 @@
     /* position: static; */
   }
 
-  .all_button_div button {
-    background-color: var(--white-F6F6F6);
-    color: var(--black-1D2E43);
-  }
-
-  .all_button_div svg {
-    fill: var(--black-1D2E43);
-  }
-
   .section_article__block__card {
     position: static;
     background: linear-gradient(
