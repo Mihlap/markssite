@@ -88,6 +88,13 @@ app.use('/images', express.static(imagesPath, { maxAge: '5d' }));
 app.use('/videos', express.static(videoPath, { maxAge: '5d', immutable: true }));
 app.use('/public/assets', express.static(path.join(__dirname, 'assets'), { maxAge: '5d' }));
 
+app.use(/^\/(api|search)/, (req, res, next) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
+  next();
+});
+
 app.use(session(sessionConfig));
 
 app.use('/api/auth', authRouter);

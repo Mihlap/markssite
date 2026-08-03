@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { queryClient } from '../../lib/queryClient';
 
 const serverHost = process.env.REACT_APP_SERVER_HOST;
 
@@ -177,6 +178,7 @@ export const fetchArticle = createAsyncThunk('article/fetchArticle', async (form
       dispatch(getDynamicData(articleId));
     }
     dispatch(setArticleId(null));
+    queryClient.invalidateQueries({ queryKey: ['articles'] });
   } catch (error) {
     console.error('Error while fetching or processing article:', error);
     dispatch(fetchArticleFailure(error.response?.data?.message || error.message));
@@ -220,6 +222,7 @@ export const deleteFormArticle = (id) => async (dispatch) => {
   try {
     await axios.delete(`${serverHost}/api-article/deletezapros/${id}`);
     dispatch(deleteArticleSuccess(id));
+    queryClient.invalidateQueries({ queryKey: ['articles'] });
   } catch (error) {
     dispatch(deleteArticleFailure(error.message));
   }

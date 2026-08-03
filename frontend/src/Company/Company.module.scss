@@ -5,6 +5,7 @@
   flex-direction: column;
   height: 100%;
   width: 100%;
+  overflow-x: clip;
   padding-bottom: 60px;
 }
 
@@ -1045,7 +1046,6 @@
 
   .my_swiper_button_group {
     padding: 0 1rem !important;
-    overflow: visible !important;
     display: flex;
     left: 0;
     width: 100%;
@@ -1100,6 +1100,7 @@
     height: 100%;
     padding-left: 1rem;
     margin-right: 0;
+    padding-right: 0;
   }
 
   .swiper_pagination_container {
@@ -1123,13 +1124,16 @@
 
   .modal_wrapper {
     width: 100%;
+    max-width: 100%;
     height: auto;
+    overflow-x: hidden;
     overflow-y: scroll;
     // top: 51px;
   }
 
   .modal_context {
     padding: 0 1rem;
+    max-width: 100%;
   }
 
   .modal_close {
