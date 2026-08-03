@@ -18,6 +18,13 @@ const ReactQueryDevtools = lazy(() =>
 
 axios.defaults.withCredentials = true;
 
+axios.interceptors.request.use((config) => {
+  config.headers = config.headers ?? {};
+  config.headers['Cache-Control'] = 'no-cache';
+  config.headers['Pragma'] = 'no-cache';
+  return config;
+});
+
 const root = document.getElementById('root');
 
 ReactDOM.createRoot(root).render(
