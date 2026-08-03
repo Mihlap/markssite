@@ -10,6 +10,8 @@
   cursor: pointer;
   border-radius: 2.125rem;
   transition: background-color 0.4s ease;
+  gap: 0.5rem;
+  white-space: nowrap;
 }
 
 .button_link_vacancy {
@@ -24,6 +26,8 @@
   cursor: pointer;
   border-radius: 2.125rem;
   transition: background-color 0.4s ease;
+  gap: 0.5rem;
+  white-space: nowrap;
 }
 
 .button_link_allProjectButton {
@@ -36,11 +40,13 @@
 
 .button_name_allProjectButton {
   display: flex;
+  align-items: center;
   font-family: var(--font-raleway);
   font-style: normal;
   font-size: 0.875rem;
   font-weight: var(--fw-400);
   line-height: 1.25rem;
+  white-space: nowrap;
 }
 
 .button_link:hover {

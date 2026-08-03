@@ -15,6 +15,7 @@ const {
   deleteFileFromS3
 } = require('../../s3Utils/s3Service');
 const { logResourceActionFromSession, buildS3LogInfo } = require('../../utils/fileLogger');
+const { extractBlockFileUrls } = require('../../utils/extractBlockFileUrls');
 
 const router = express.Router();
 
@@ -69,6 +70,43 @@ const deleteImageFromS3 = async (fileUrl, logInfo = null) => {
   } else {
     console.log(`Не удалось извлечь имя файла и папку из URL: ${fileUrl}`);
   }
+};
+
+const collectReferencedImageUrls = async (excludedArticleId) => {
+  const referenced = new Set();
+  const excludedId = Number(excludedArticleId);
+
+  const articles = await Articles.findAll({
+    attributes: ['id', 'imageTitle', 'imageAuthor', 'imageOpen', 'imageClose'],
+  });
+
+  articles.forEach((article) => {
+    if (article.id === excludedId) return;
+    [article.imageTitle, article.imageAuthor, article.imageOpen, article.imageClose].forEach((value) => {
+      if (!value) return;
+      value.split(',').forEach((item) => {
+        const trimmed = item.trim();
+        if (trimmed) referenced.add(trimmed);
+      });
+    });
+  });
+
+  const constructors = await ConstructorArticles.findAll({
+    attributes: ['idBlock', 'image', 'data'],
+  });
+
+  constructors.forEach((constructor) => {
+    if (constructor.idBlock === excludedId) return;
+    if (constructor.image) {
+      constructor.image.split(',').forEach((item) => {
+        const trimmed = item.trim();
+        if (trimmed) referenced.add(trimmed);
+      });
+    }
+    extractBlockFileUrls(constructor.data).forEach((url) => referenced.add(url));
+  });
+
+  return referenced;
 };
 
 const updateDynamicBlocksContent = (blocks, newImages) => {
@@ -273,6 +311,9 @@ router.put(
 
       const extractFileName = (url) => url.split('/').pop().split('?')[0];
 
+      const referencedUrls = await collectReferencedImageUrls(articleId);
+      const referencedFileNames = new Set([...referencedUrls].map(extractFileName));
+
       const normalizedCurrentImages = [...currentImageTitles, ...currentImageAuthors, ...currentImageOpens, ...currentImageCloses]
         .filter(Boolean)
         .map(extractFileName);
@@ -281,7 +322,9 @@ router.put(
         .filter(Boolean)
         .map(extractFileName);
 
-      const imagesToRemove = normalizedCurrentImages.filter((image) => !normalizedUpdatedImages.includes(image));
+      const imagesToRemove = normalizedCurrentImages
+        .filter((image) => !normalizedUpdatedImages.includes(image))
+        .filter((fileName) => !referencedFileNames.has(fileName));
 
       await Promise.all(imagesToRemove.map((url) => deleteImageFromS3(url, s3LogInfo)));
 
@@ -341,7 +384,9 @@ router.put(
       const normalizedExistingDynamicImages = existingDynamicImages.map(extractFileName);
       const normalizedFinalDynamicImages = finalDynamicImages.map(extractFileName);
 
-      const imagesToRemoveFromDynamicBlocks = normalizedExistingDynamicImages.filter((image) => !normalizedFinalDynamicImages.includes(image));
+      const imagesToRemoveFromDynamicBlocks = normalizedExistingDynamicImages
+        .filter((image) => !normalizedFinalDynamicImages.includes(image))
+        .filter((fileName) => !referencedFileNames.has(fileName));
 
       await Promise.all(imagesToRemoveFromDynamicBlocks.map((url) => deleteImageFromS3(url, s3LogInfo)));
 
@@ -459,18 +504,26 @@ router.delete('/deletezapros/:id', async (req, res) => {
       id
     } = req.params;
     const post = await Articles.findByPk(id);
+    if (!post) {
+      return res.status(404).json({ message: 'Статья не найдена' });
+    }
     const deleteConstructorImg = await ConstructorArticles.findOne({
       where: {
         idBlock: id
       }
     });
 
-    const normalizeFileName = (url) => url.split('/').pop().split('?')[0];
+    const referencedUrls = await collectReferencedImageUrls(id);
 
     const extractAndDeleteImages = async (imageUrls) => {
-      const normalizedUrls = [...new Set(imageUrls.map(normalizeFileName))];
+      const normalizedUrls = [...new Set(imageUrls.map((url) => url.trim()).filter(Boolean))];
       // eslint-disable-next-line no-restricted-syntax
       for (const imageUrl of normalizedUrls) {
+        if (referencedUrls.has(imageUrl)) {
+          console.log(`Файл ${imageUrl} ещё используется в других записях — пропуск удаления`);
+          // eslint-disable-next-line no-continue
+          continue;
+        }
         const result = extractFileNameAndFolderFromUrl(imageUrl);
         if (result) {
           const {
@@ -493,6 +546,10 @@ router.delete('/deletezapros/:id', async (req, res) => {
     if (deleteConstructorImg?.image) {
       const imageConstructorNames = deleteConstructorImg.image.split(', ').map((img) => img.trim());
       await extractAndDeleteImages(imageConstructorNames);
+    }
+
+    if (deleteConstructorImg?.data) {
+      await extractAndDeleteImages(extractBlockFileUrls(deleteConstructorImg.data));
     }
 
     if (post.imageTitle) {
