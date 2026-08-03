@@ -6,23 +6,15 @@ import { Provider } from 'react-redux';
 import store from './store/store';
 import App from './App';
 import { BrowserRouter } from 'react-router';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { IS_DEV } from './const/is-dev';
+import { queryClient } from './lib/queryClient';
 
 const ReactQueryDevtools = lazy(() =>
   import('@tanstack/react-query-devtools').then((module) => ({
     default: module.ReactQueryDevtools,
   }))
 );
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60 * 60,
-      retry: 1,
-    },
-  },
-});
 
 axios.defaults.withCredentials = true;
 

@@ -54,8 +54,8 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
   const article = useMemo(() => articles.find((i) => i.id === Number(id)), [articles, id]);
 
   useEffect(() => {
-    if (!articles.length) dispatch(getFetchFormArticle());
-  }, [dispatch, articles.length]);
+    dispatch(getFetchFormArticle());
+  }, [dispatch, id]);
 
   const previousArticle = useMemo(() => {
     if (!articles.length || !article) return null;
