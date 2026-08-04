@@ -110,8 +110,21 @@
 
 /* Стили для мобильной версии сайта блока AllProjectButton начинаются тут */
 @media screen and (max-width: 767px) {
+  .button_link {
+    border-radius: 14px;
+    background: var(--white-F6F6F6, #F6F6F6);
+  }
+
+  .button_link .button_name_allProjectButton {
+    color: var(--black-1D2E43, #1D2E43);
+  }
+
+  .button_link svg path {
+    stroke: var(--black-1D2E43, #1D2E43);
+  }
+
   .button_link:hover {
-    background: rgba(246, 246, 246, 0.42);
+    background: var(--white-F6F6F6, #F6F6F6);
   }
 
   .button_link_vacancy:hover {
