@@ -24,11 +24,9 @@ const NavBar = () => {
   const [isNavbarHidden, setIsNavbarHidden] = useState(false);
   const container = useRef();
 
-  // сustom hooks 
   const { pathname, hash, isCompany, isVacancyDetail, isProjectDetail, isArticleDetail, isJournalDetail, isInternship, linkBack, textBack, isHrPortal } = useHrNavMeta();
   const { primary, cta } = useNavLinks();
 
-  // Прокрутка к якорю или элементу на странице
   const scrollToAnchor = (hashOrId) => {
     if (!hashOrId || typeof window === 'undefined') return false;
     const targetHash = hashOrId.startsWith('#') ? hashOrId : `#${hashOrId}`;
@@ -43,14 +41,12 @@ const NavBar = () => {
     return true;
   };
 
-  // Делим путь на базовый маршрут и хеш
   const getPathParts = (path) => {
     if (typeof path !== 'string') return { basePath: '', hash: '' };
     const [basePath, rawHash] = path.split('#');
     return { basePath, hash: rawHash ? `#${rawHash}` : '' };
   };
 
-  // Переход к нужному разделу компании с учетом текущей страницы
   const goToCompanySection = (hashOrId) => {
     if (!hashOrId) return;
     const targetHash = hashOrId.startsWith('#') ? hashOrId : `#${hashOrId}`;
@@ -65,7 +61,6 @@ const NavBar = () => {
     });
   };
 
-  // Закрытие дропдауна с плавной анимацией
   const closeDropdown = useCallback((afterClose) => {
     const finish = () => {
       setShowDropdownContent(false);
@@ -92,14 +87,12 @@ const NavBar = () => {
     });
   }, []);
 
-  // Открываем дропдаун по id
-  const openDropdown = (id) => {
+ const openDropdown = (id) => {
     setOpenDropDownId(id);
     setLinkChildren(true);
     setShowDropdownContent(false);
   };
-
-  // Переоткрываем дропдаун после закрытия для плавного перехода
+ 
   const reopenDropdown = (id) => {
     const reopen = () => openDropdown(id);
     if (typeof window !== 'undefined' && typeof window.requestAnimationFrame === 'function') {
@@ -109,7 +102,6 @@ const NavBar = () => {
     }
   };
 
-  // Навигация по ссылкам с предварительным закрытием меню
   const handlerLink = (path) => {
     if (!path) return;
     closeDropdown(() => {
@@ -117,7 +109,6 @@ const NavBar = () => {
     });
   };
 
-  // Закрытие бургер-меню
   const closeMenu = () => setIsMenuOpen(false);
 
   useEffect(() => {
@@ -125,7 +116,6 @@ const NavBar = () => {
     return () => { document.body.style.overflow = ''; };
   }, [isMenuOpen]);
 
-  // Навигация с учетом хеша и возможной прокрутки
   const navigateWithHash = (path) => {
     if (!path) return;
     const { basePath, hash: targetHash } = getPathParts(path);
@@ -137,14 +127,12 @@ const NavBar = () => {
     navigate(path);
   };
 
-  // Навигация из сайдбара
   const handleSidebarNavigate = (path) => {
     if (!path) return;
     closeMenu();
     navigateWithHash(path);
   };
-
-  // Переход к разделам компании из сайдбара
+ 
   const handleSidebarCompanySection = (hashOrId) => {
     if (!hashOrId) return;
     closeMenu();
@@ -154,16 +142,14 @@ const NavBar = () => {
   const NAV_CLOSED_HEIGHT = 60;
   const dropdownRef = useRef(null);
 
-  // Рассчитываем высоту раскрытого меню для анимации
   const getOpenHeight = () => {
     const dropdownHeight = dropdownRef.current?.getBoundingClientRect().height ?? 0;
     if (!dropdownHeight) {
-      return openDropDownId === 3 ? 240 : 284; // fallback
+      return openDropDownId === 3 ? 240 : 284;
     }
     return Math.ceil(NAV_CLOSED_HEIGHT + dropdownHeight);
   };
 
-  // Анимируем изменение высоты навбара при раскрытии дропдауна
   useGSAP(
     () => {
       if (!container.current || !linkChildren) return;
@@ -178,8 +164,7 @@ const NavBar = () => {
     },
     { dependencies: [linkChildren, openDropDownId] }
   );
-
-  // Прокручиваем к форме после загрузки, если в адресе есть #form
+  
   useEffect(() => {
     if (typeof window === 'undefined') return;
     if (hash !== '#form') return;
@@ -194,7 +179,6 @@ const NavBar = () => {
     return () => window.clearTimeout(retryId);
   }, [hash, pathname]);
 
-  // Закрываем дропдаун при клике или тапе вне него
   useEffect(() => {
     if (openDropDownId === null) return;
 
@@ -214,7 +198,6 @@ const NavBar = () => {
   }, [closeDropdown, openDropDownId]);
 
 
-  // Прячем/показываем навбар при прокрутке (кроме страниц вакансии/стажировки)
   useEffect(() => {
     if (typeof window === 'undefined') return;
     if (isVacancyDetail || isInternship) {
@@ -371,7 +354,7 @@ const NavBar = () => {
             {cta.map(({ id, label, path, external, variant }) => {
               const baseClasses = clsx(styles['navbar-link'], variant && styles[`navbar-link--${variant}`]);
               return external ? (
-                <a key={id} href={path} className={styles['navbar-item-en']} target="_blank" rel="noreferrer">
+                <a key={id} href={path} className={styles['navbar-item-en']}>
                   {label}
                 </a>
               ) : (
