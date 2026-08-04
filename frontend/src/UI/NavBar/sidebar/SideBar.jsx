@@ -21,7 +21,6 @@ export default function SideBar({
   const sidebarRef = useRef(null);
   const [openDropdownId, setOpenDropdownId] = useState(null);
 
-  // сustom hooks
   const { pathname, hash, isVacancyDetail, linkBack, textBack, showSidebarLogo, isHrPortal } = useHrNavMeta();
   const contactEmail = isHrPortal ? 'hr@marksgroup.ru' : 'mail@marksgroup.ru';
 
@@ -204,7 +203,7 @@ export default function SideBar({
                   <ul key={id} className={styles['navbar-sidebar-cta--contact-list']}>
                     {!isVacancyDetail && (
                       <li className={styles['navbar-sidebar-cta--contact-item']}>
-                        <a href={path} target="_blank" rel="noreferrer" onClick={handleExternalClick}>
+                        <a href={path} onClick={handleExternalClick}>
                           {label}
                         </a>
                       </li>
