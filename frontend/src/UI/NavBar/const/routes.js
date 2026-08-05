@@ -17,7 +17,7 @@ export const baseNavConfig = {
           description: 'Научные достижения, интервью и статьи ведущих профессиональных и публицистических изданий',
           path: '/publication',
         },
-        { id: 2, label: 'MARKS jornal', description: 'Научный журнал', path: '/journalPage' },
+        { id: 2, label: 'MARKS journal', description: 'Научный журнал', path: '/journalPage' },
       ],
     },
     { id: 4, type: 'link', label: 'Контакты', path: '/contacts' },
