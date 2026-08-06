@@ -181,7 +181,7 @@ authRouter.get('/user', (req, res) => {
   if (req.session.user) {
     return res.status(200).json(req.session.user);
   }
-  return res.status(401).json({ message: 'Пользователь не авторизован' });
+  return res.status(200).json(null);
 });
 
 authRouter.get('/allUsers', async (req, res) => {

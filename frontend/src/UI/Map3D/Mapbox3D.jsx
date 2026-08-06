@@ -5,7 +5,7 @@ import styles from './Mapbox.module.css';
 import Marker from './Marker';
 import Popup from './Popup';
 
-const apiKey = process.env.REACT_APP_API_KEY;
+// const apiKey = process.env.REACT_APP_API_KEY;
 
 const Mapbox3D = memo(() => {
   const [selectedPopup, setSelectedPopup] = useState(null);
@@ -75,7 +75,7 @@ const Mapbox3D = memo(() => {
 
   return (
     <div className={styles.map}> 
-      <YMaps query={{ apikey: apiKey, lang: 'ru_RU' }}>
+      <YMaps query={{ lang: 'ru_RU' }}>
         <Map
           defaultState={{
             center: [55.77, 37.5804],
