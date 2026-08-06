@@ -4,7 +4,7 @@ import { marker } from '../const';
 import { useWindowWidth } from '../../hooks/useWindowWidth';
 import s from '../styles/Map.module.css';
 
-const apiKey = process.env.REACT_APP_API_KEY;
+// const apiKey = process.env.REACT_APP_API_KEY;
 const LAPTOP_MAX_WIDTH = 1600;
 
 function getMinVisibleMapPx(viewportHeight, width) {
@@ -99,7 +99,6 @@ export default function Map({ activeCity, overlayInsets = { top: 0, bottom: 0 } 
           defaultState={{ center: activeCity.coordinates, zoom: 12, margin: mapMargin }}
           width="100%"
           height="100%"
-          query={{ apiKey }}
           options={{ suppressMapOpenBlock: true }}
           onLoad={() => setIsLoaded(true)}>
           <Placemark
