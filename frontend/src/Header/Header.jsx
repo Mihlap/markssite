@@ -312,7 +312,8 @@ const Header = React.memo(
                             <button
                               onMouseEnter={handleMouseEnter}
                               onMouseLeave={handleMouseLeave}
-                              className={styles.card_button}>
+                              className={styles.card_button}
+                              aria-label="Перейти к публикации">
                               <svg
                                 width="32"
                                 height="32"
@@ -403,7 +404,8 @@ const Header = React.memo(
                             <button
                               onMouseEnter={handleMouseEnter}
                               onMouseLeave={handleMouseLeave}
-                              className={`${styles.card_button} ${styles.extra_button_class}`}>
+                              className={`${styles.card_button} ${styles.extra_button_class}`}
+                              aria-label="Перейти к публикации">
                               <svg
                                 width="32"
                                 height="32"
