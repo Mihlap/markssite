@@ -116,6 +116,10 @@ export default function App() {
   const isFooterFormPage = location.pathname === '/footerForm';
   const isAdminPage = location.pathname.startsWith('/admin');
   const isNavPreviewPage = location.pathname === '/navbar';
+  const isCoarsePointer =
+    typeof window !== 'undefined' &&
+    !!window.matchMedia &&
+    window.matchMedia('(pointer: coarse)').matches;
 
   const markPageMounted = useCallback(() => setPageMounted(true), []);
 
@@ -484,7 +488,7 @@ export default function App() {
               </>
             )}
 
-            {showNavbarFooter && currentPage !== 'add' && (
+            {!isCoarsePointer && showNavbarFooter && currentPage !== 'add' && (
               <Suspense fallback={null}>
                 <CustomCursor />
               </Suspense>
