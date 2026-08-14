@@ -136,9 +136,13 @@ const SwiperContainerProject = ({ projects }) => {
         {combinedProjects.map((_, index) => (
           <button
             key={index}
+            type="button"
+            aria-label={`Перейти к слайду ${index + 1} из ${combinedProjects.length}`}
             className={`swiper_pagination_bullet_ProjectCard ${currentIndex === index ? 'active' : ''}`}
             onClick={() => handlePageClick(index)}
-          />
+          >
+            <span className="visually-hidden">Слайд {index + 1}</span>
+          </button>
         ))}
       </div>
     </div>

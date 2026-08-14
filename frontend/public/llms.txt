@@ -1,0 +1,21 @@
+# MARKS GROUP
+
+> MARKS GROUP — архитектурно-строительная компания полного цикла. Мы проектируем, инженерим и реализуем сложные объекты: от жилых комплексов и бизнес-центров до общественных пространств.
+
+MARKS GROUP объединяет команды архитекторов, инженеров-конструкторов, BIM-специалистов и дизайнеров. Компания работает на рынке с 2005 года и реализовала более 350 проектов общей площадью свыше 4,5 млн м².
+
+## Разделы сайта
+
+- [Главная](https://marksgroup.ru/)
+- [Проекты](https://marksgroup.ru/project)
+- [О компании](https://marksgroup.ru/company)
+- [Публикации](https://marksgroup.ru/publication)
+- [Журнал](https://marksgroup.ru/journalPage)
+- [Контакты](https://marksgroup.ru/contacts)
+- [Информация](https://marksgroup.ru/information)
+
+## Карьера в MARKS GROUP
+
+- [Вакансии](https://marksgroup.ru/hr/vacancies)
+- [Стажировки](https://marksgroup.ru/hr/internships)
+- [HR-портал](https://marksgroup.ru/hr/home)
