@@ -141,7 +141,16 @@ export default defineConfig(({ mode }) => {
           }
         : undefined,
       rollupOptions: {
-        output: { chunkFileNames: 'assets/[name]-[hash].js' },
+        output: {
+          chunkFileNames: 'assets/[name]-[hash].js',
+          manualChunks: {
+            react: ['react', 'react-dom', 'react-router'],
+            gsap: ['gsap', '@gsap/react'],
+            swiper: ['swiper', 'swiper/react', 'swiper/modules'],
+            redux: ['redux', 'react-redux', '@reduxjs/toolkit'],
+            'react-query': ['@tanstack/react-query'],
+          },
+        },
       },
       chunkSizeWarningLimit: 3500,
     },
