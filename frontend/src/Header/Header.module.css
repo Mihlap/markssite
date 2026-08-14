@@ -1171,3 +1171,25 @@ svg path {
     white-space: normal;
   }
 }
+
+.mapPlaceholder {
+  width: 100%;
+  height: 64.5vh;
+  padding: 0px 0.1vw;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .mapPlaceholder {
+    width: 100%;
+    height: 40vh;
+    padding: 0;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .mapPlaceholder {
+    width: 100%;
+    height: 70vh;
+    padding: 0;
+  }
+}

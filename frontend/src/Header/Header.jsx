@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react';
+import React, { useEffect, useRef, useState, useMemo, Suspense, lazy } from 'react';
 import { Link, NavLink } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
@@ -13,7 +13,7 @@ import 'swiper/css';
 import SwiperContainer from './Swiper-Phone/SwiperContainer';
 import SwiperContainerProject from './Swiper-project/SwiperContainerProject';
 import SliderHeader from '../UI/SliderHeader/SliderHeader';
-import Mapbox3D from '../UI/Map3D/Mapbox3D';
+const Mapbox3D = lazy(() => import('../UI/Map3D/Mapbox3D'));
 import Error from '../Loading/Error/Error';
 import BlockHeaderMain from '../UI/BlockHeader/BlockHeaderMain';
 
@@ -49,7 +49,9 @@ const Header = React.memo(
     const [, setCurrentSlideIndex] = useState(0);
     const [videoSrc, setVideoSrc] = useState(null);
     const [isDesktopRewardsTitle, setIsDesktopRewardsTitle] = useState(window.innerWidth >= 1025);
+    const [mapVisible, setMapVisible] = useState(false);
     const sliderCardRef = useRef(null);
+    const mapSectionRef = useRef(null);
 
     const { error } = useSelector((state) => state.article);
     const dispatch = useDispatch();
@@ -66,6 +68,24 @@ const Header = React.memo(
 
     useEffect(() => {
       window.scrollTo(0, 0);
+    }, []);
+
+    useEffect(() => {
+      const el = mapSectionRef.current;
+      if (!el) return;
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            setMapVisible(true);
+            observer.disconnect();
+          }
+        },
+        { rootMargin: '600px' }
+      );
+
+      observer.observe(el);
+      return () => observer.disconnect();
     }, []);
 
     useEffect(() => {
@@ -428,14 +448,20 @@ const Header = React.memo(
             </div>
 
             <div className={styles.most}>
-              <img className={styles.image_most} loading="lazy" src="./assets/most2.png" alt="" />
+              <img className={styles.image_most} loading="lazy" src="./assets/most2.webp" alt="" />
             </div>
 
             <div className={styles.block_header_maim_wrapper} id="blockHeaderMain">
               <BlockHeaderMain handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} />
             </div>
 
-            <Mapbox3D />
+            <div ref={mapSectionRef} className={styles.mapPlaceholder}>
+              {mapVisible && (
+                <Suspense fallback={null}>
+                  <Mapbox3D />
+                </Suspense>
+              )}
+            </div>
           </div>
 
           <div className={styles.sliderMobile_container}>
