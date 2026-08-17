@@ -613,11 +613,11 @@ font-family: var(--font-raleway);
     padding-top: 30px;
   }
 
-  .menu_button_group_vacancy_swiper_mobile {
+  .menu_button_group_vacancy_wrapper_main_swiper .menu_button_group_vacancy_swiper_mobile {
     padding-left: 17vw;
   }
 
-  .menu__button__choose__vacancyFilter_mobile {
+  .menu_button_group_vacancy_swiper_mobile .menu__button__choose__vacancyFilter_mobile {
     display: flex;
     width: fit-content;
     max-height: calc(100% - 8px);
@@ -634,7 +634,7 @@ font-family: var(--font-raleway);
     cursor: none;
   }
 
-  .menu__button__choose__vacancyFilter_mobile_dop {
+  .menu_button_group_vacancy_swiper_mobile .menu__button__choose__vacancyFilter_mobile_dop {
     display: flex;
     width: fit-content;
     max-height: calc(100% - 8px);
@@ -651,7 +651,7 @@ font-family: var(--font-raleway);
     cursor: none;
   }
 
-  .menu_button_items_vacancyTex_clear {
+  .menu_button_group_vacancy_swiper_mobile .menu_button_items_vacancyTex_clear {
     display: flex;
     width: fit-content;
     max-height: calc(100% - 6px);
@@ -855,7 +855,7 @@ font-family: var(--font-raleway);
     padding-top: 24px;
   }
 
-  .menu_button_group_vacancy_swiper_mobile {
+  .menu_button_group_vacancy_wrapper_main_swiper .menu_button_group_vacancy_swiper_mobile {
     width: 100%;
     overflow: hidden;
     padding-left: 1rem;
@@ -873,7 +873,7 @@ font-family: var(--font-raleway);
     align-items: center;
   } */
 
-  .menu__button__choose__vacancyFilter_mobile {
+  .menu_button_group_vacancy_swiper_mobile .menu__button__choose__vacancyFilter_mobile {
     display: flex;
     width: auto;
     max-height: calc(100% - 8px);
@@ -891,7 +891,7 @@ font-family: var(--font-raleway);
     cursor: none;
   }
 
-  .menu__button__choose__vacancyFilter_mobile_dop {
+  .menu_button_group_vacancy_swiper_mobile .menu__button__choose__vacancyFilter_mobile_dop {
     display: flex;
     width: fit-content;
     max-height: calc(100% - 8px);
@@ -909,7 +909,7 @@ font-family: var(--font-raleway);
     cursor: none;
   }
 
-  .menu_button_items_vacancyTex_clear {
+  .menu_button_group_vacancy_swiper_mobile .menu_button_items_vacancyTex_clear {
     display: flex;
     width: fit-content;
     max-height: calc(100% - 6px);

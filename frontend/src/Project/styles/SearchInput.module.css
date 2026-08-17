@@ -108,7 +108,7 @@
     color: var(--salmon-FF7F6A);
 }
 
-@media (max-width: 430px) {
+@media (max-width: 767px) {
     .wrap {
         padding-left: 16px;
         padding-right: 16px;

@@ -29,8 +29,9 @@
 }
 
 
-@media (max-width: 430px) {
+@media (max-width: 767px) {
     .wrap_swiper {
-        padding: 1px;
+        padding-top: 1px;
+        padding-bottom: 1px;
     }
 }
