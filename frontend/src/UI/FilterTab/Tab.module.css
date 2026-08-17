@@ -2,7 +2,9 @@
 .button {
     padding: 8px 24px;
     border-radius: 2rem;
-    outline: 1px solid var(--black-1D2E43);
+    border: 1px solid var(--black-1D2E43);
+    -webkit-appearance: none;
+    appearance: none;
     background-color: transparent;
     white-space: nowrap;
     cursor: pointer;
@@ -19,7 +21,7 @@
     .button:hover {
         background-color: var(--dark-gray-566272);
         color: var(--white-F6F6F6);
-        outline-color: var(--dark-gray-566272);
+        border-color: var(--dark-gray-566272);
     }
 }
 
@@ -36,14 +38,14 @@
 .active {
     background-color: var(--black-1D2E43);
     color: var(--white-F6F6F6);
-    outline-color: var(--black-1D2E43);
+    border-color: var(--black-1D2E43);
 }
 
 /* ХОВЕР ТОЛЬКО ДЛЯ ПК */
 @media (hover: hover) {
     .active:hover {
         background-color: var(--dark-gray-566272);
-        outline: 1px solid var(--dark-gray-566272);
+        border: 1px solid var(--dark-gray-566272);
     }
 }
 
@@ -52,7 +54,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    outline: none;
+    border: none;
     padding-left: 16px;
     padding-right: 16px;
     background-color: var(--light-light-gray-EBECEE);
@@ -76,7 +78,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    outline: none;
+    border: none;
     padding-left: 16px;
     padding-right: 16px;
     background-color: var(--black-1D2E43);
@@ -104,7 +106,7 @@
     font-weight: 400;
     border-radius: 34px;
     background: var(--white-F6F6F6);
-    outline: none;
+    border: none;
     box-shadow: -6px 1px 8.5px 0 rgba(10, 55, 78, 0.10), 1px 4px 10.7px 0 rgba(10, 55, 78, 0.16);
 }
 
@@ -123,6 +125,6 @@
     border-radius: 34px;
     background-color: var(--black-1D2E43);
     color: var(--white-F6F6F6);
-    outline: none;
+    border: none;
     box-shadow: none;
 }
