@@ -568,6 +568,7 @@
 
 .main_vacancyWrapper {
   position: relative;
+  overflow-x: clip;
 
   .main_vacancy_block {
     display: flex;
@@ -2446,6 +2447,8 @@
 
   /* стили мобильной версии  */
   @media screen and (max-width: 767px) {
+    overflow-x: clip;
+
     .main_vacancy_block {
       display: flex;
       width: 100%;

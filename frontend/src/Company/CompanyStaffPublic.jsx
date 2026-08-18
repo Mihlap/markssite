@@ -61,6 +61,19 @@ const photoSrc = (row) => {
   return encodePathnameOnly(raw);
 };
 
+const extractFirstSentence = (str) => {
+  const s = String(str || '').trim();
+  if (!s) return '';
+  const m = s.match(/^.*?[.!?…](\s|$)|^[^\n]+/);
+  const out = (m ? m[0] : s).trim();
+  return out.replace(/[.!?…]+$/, '').trim();
+};
+
+const staffPosition = (row) => {
+  if (row?.position && String(row.position).trim()) return String(row.position).trim();
+  return extractFirstSentence(row?.description);
+};
+
 export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave, handleMouseHover }) {
   const dispatch = useDispatch();
   const { items, loading, error } = useSelector((s) => s.staff);
@@ -258,7 +271,7 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
                   />
                 </div>
                 <div className={styles.container__item_name_stuff}>{el.name}</div>
-                <div className={styles.container__item_position_stuff}>{el.position}</div>
+                <div className={styles.container__item_position_stuff}>{staffPosition(el)}</div>
               </li>
             ))
           ) : (
@@ -298,7 +311,7 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
                     />
                   </div>
                   <div className={styles.container__item_name_stuff}>{el.name}</div>
-                  <div className={styles.container__item_position_stuff}>{el.position}</div>
+                  <div className={styles.container__item_position_stuff}>{staffPosition(el)}</div>
                 </SwiperSlide>
               ))}
             </Swiper>
@@ -336,7 +349,7 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
                     />
                   </div>
                   <div className={styles.container__item_name_stuff}>{el.name}</div>
-                  <div className={styles.container__item_position_stuff}>{el.position}</div>
+                  <div className={styles.container__item_position_stuff}>{staffPosition(el)}</div>
                 </SwiperSlide>
               ))}
             </Swiper>
