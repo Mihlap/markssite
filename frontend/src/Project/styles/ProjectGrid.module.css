@@ -129,8 +129,8 @@
     }
 }
 
-/* Для экранов от 0px до 1920px */
-@media (max-width: 430px) {
+/* Для экранов от 0px до 767px */
+@media (max-width: 767px) {
     .list {
         grid-template-columns: 1fr;
         padding-left: 1rem;
