@@ -1,9 +1,22 @@
 import React from 'react';
 import { Icon6 } from '../../ui/EntityRow/icon';
 import MarksEntityActions from '../../ui/EntityRow/MarksEntityActions';
-import photoSrc from './utils/photo';
 import { isStaffVisibleInCategory } from '../../../Company/utils/staffVisibility';
+import { reorderFullName } from '../../../Company/utils/reorderFullName';
 import s from './Styles.module.css';
+
+const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
+const NO_PHOTO = `${bucket_url}/images/imageStaff/no_photo.png`;
+
+const photoSrc = (item) => {
+  const key = item?.img;
+  if (!key) return NO_PHOTO;
+  const val = String(key);
+  if (/^https?:\/\//i.test(val)) return val;
+  const base = String(bucket_url || '').replace(/\/+$/, '');
+  if (val.includes('/')) return `${base}/${val.replace(/^\/+/, '')}`;
+  return `${base}/images/imageStaff/${val}`;
+};
 
 const Item = ({
   el,
@@ -35,7 +48,7 @@ const Item = ({
         <div className={s.iconDrag}>
           <Icon6 />
         </div>
-        <img className={s.itemImg} src={photoSrc(el)} alt="staff" />
+        <img className={s.itemImg} src={photoSrc(el)} alt="staff" onError={(e) => { e.currentTarget.src = NO_PHOTO; }} />
         <div className={s.wrapBtn}>
           {canEdit && (
             <MarksEntityActions
@@ -48,7 +61,7 @@ const Item = ({
           )}
         </div>
       </div>
-      <div className={s.itemName}>{el?.name}</div>
+      <div className={s.itemName}>{reorderFullName(el?.name)}</div>
     </div>
   );
 };

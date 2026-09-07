@@ -14,6 +14,7 @@ import StaffModalBlocks from './StaffModalBlocks';
 
 import { isHttp, encodePathnameOnly, absolutizeToBucket } from './utils/media';
 import { isStaffVisibleInCategory } from './utils/staffVisibility';
+import { reorderFullName } from './utils/reorderFullName';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
@@ -264,13 +265,13 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
                     onError={(e) => {
                       e.currentTarget.src = `${bucket_url}/images/imageStaff/no_photo.png`;
                     }}
-                    alt={el.name || 'staff'}
+                    alt={reorderFullName(el.name) || 'staff'}
                     loading="lazy"
                     decoding="async"
                     draggable={false}
                   />
                 </div>
-                <div className={styles.container__item_name_stuff}>{el.name}</div>
+                <div className={styles.container__item_name_stuff}>{reorderFullName(el.name)}</div>
                 <div className={styles.container__item_position_stuff}>{staffPosition(el)}</div>
               </li>
             ))
@@ -304,13 +305,13 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
                       onError={(e) => {
                         e.currentTarget.src = `${bucket_url}/images/imageStaff/no_photo.png`;
                       }}
-                      alt={el.name || 'staff'}
+                      alt={reorderFullName(el.name) || 'staff'}
                       loading="lazy"
                       decoding="async"
                       draggable={false}
                     />
                   </div>
-                  <div className={styles.container__item_name_stuff}>{el.name}</div>
+                  <div className={styles.container__item_name_stuff}>{reorderFullName(el.name)}</div>
                   <div className={styles.container__item_position_stuff}>{staffPosition(el)}</div>
                 </SwiperSlide>
               ))}
@@ -342,13 +343,13 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
                       onError={(e) => {
                         e.currentTarget.src = `${bucket_url}/images/imageStaff/no_photo.png`;
                       }}
-                      alt={el.name || 'staff'}
+                      alt={reorderFullName(el.name) || 'staff'}
                       loading="lazy"
                       decoding="async"
                       draggable={false}
                     />
                   </div>
-                  <div className={styles.container__item_name_stuff}>{el.name}</div>
+                  <div className={styles.container__item_name_stuff}>{reorderFullName(el.name)}</div>
                   <div className={styles.container__item_position_stuff}>{staffPosition(el)}</div>
                 </SwiperSlide>
               ))}
@@ -392,11 +393,11 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
 
             <div className={styles.modal_container}>
               <div className={styles.modal}>
-                <img className={styles.modal_img_stuff} src={selectedCard.img} alt={selectedCard.name} />
+                <img className={styles.modal_img_stuff} src={selectedCard.img} alt={reorderFullName(selectedCard.name)} />
               </div>
             </div>
 
-            <div className={styles.modal_name_stuff}>{selectedCard.name}</div>
+            <div className={styles.modal_name_stuff}>{reorderFullName(selectedCard.name)}</div>
 
             {(selectedCard.description || selectedCard.position) && (
               <div className={styles.modal_description_stuff}>{selectedCard.description || selectedCard.position}</div>
