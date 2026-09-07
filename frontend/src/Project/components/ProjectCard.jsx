@@ -383,15 +383,17 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                 ))}
               </div>
 
-              <div className={`${styles.item} ${styles.item_img_close}`}>
-                <img
-                  ref={refs.leftImg4}
-                  className={`${styles.item_img} ${styles.item_img_close1}`}
-                  src={imageCloseSource}
-                  alt=""
-                  loading="lazy"
-                />
-              </div>
+              {project?.imageClose && (
+                <div className={`${styles.item} ${styles.item_img_close}`}>
+                  <img
+                    ref={refs.leftImg4}
+                    className={`${styles.item_img} ${styles.item_img_close1}`}
+                    src={imageCloseSource}
+                    alt=""
+                    loading="lazy"
+                  />
+                </div>
+              )}
             </div>
           </div>
 
