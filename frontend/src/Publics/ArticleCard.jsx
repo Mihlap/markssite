@@ -306,11 +306,13 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
               ))}
             </div>
 
-            <div className={styles.item_container_imageClose} ref={imageClose}>
-              <div className={styles.item}>
-                <img className={styles.item_img_close} src={imageCloseSource} alt="" loading="lazy" />
+            {article?.imageClose && (
+              <div className={styles.item_container_imageClose} ref={imageClose}>
+                <div className={styles.item}>
+                  <img className={styles.item_img_close} src={imageCloseSource} alt="" loading="lazy" />
+                </div>
               </div>
-            </div>
+            )}
 
             <div className={styles.container_author_wrapper}>
               <div className={styles.container_author_address_imageClose_share_article}>

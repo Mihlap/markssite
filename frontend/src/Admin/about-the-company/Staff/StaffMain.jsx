@@ -7,6 +7,7 @@ import StaffForm from './StaffForm';
 import { useAdminUser } from '../../hooks/useAdminUser';
 import List from './List';
 import { isStaffVisibleInCategory } from '../../../Company/utils/staffVisibility';
+import { reorderFullName } from '../../../Company/utils/reorderFullName';
 
 export default function StaffMain({ items, user, currentCategory, loading, error, onStaffChanged }) {
   const dispatch = useDispatch();
@@ -125,7 +126,7 @@ export default function StaffMain({ items, user, currentCategory, loading, error
         isOpen={!!deleteTarget}
         title={
           <>
-            Вы точно хотите удалить <br /> сотрудника «{deleteTarget?.name}»?
+            Вы точно хотите удалить <br /> сотрудника «{reorderFullName(deleteTarget?.name)}»?
           </>
         }
         description={
