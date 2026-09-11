@@ -1,8 +1,8 @@
 const express = require('express');
 const { URL } = require('url');
 const crypto = require('crypto');
-const { sequelize, StaffNew, ConstructorStaffNew } = require('../db/models');
 const { Op } = require('sequelize');
+const { sequelize, StaffNew, ConstructorStaffNew } = require('../db/models');
 const fileMiddleware = require('../middleware/file');
 const { uploadFileToS3, deleteFileFromS3 } = require('../s3Utils/s3Service');
 const { logResourceAction } = require('../utils/fileLogger');
@@ -535,7 +535,7 @@ router.post('/upload-markdown-file', wrapMulter(fileMiddleware.single('markdownF
 router.put('/stuffs-mp/:id', wrapMulter(fileMiddleware.any()), async (req, res) => {
   const t = await sequelize.transaction();
   try {
-    const id = req.params.id;
+    const {id} = req.params;
 
     const userInfo = req.session?.user ? {
       userName: req.session.user.name,

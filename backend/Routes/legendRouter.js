@@ -407,7 +407,7 @@ router.post('/', async (req, res, next) => {
 router.put('/:id', async (req, res, next) => {
   const t = await Legend.sequelize.transaction();
   try {
-    const id = req.params.id;
+    const {id} = req.params;
     const { year, title, img, description, hidden, order, userId, constructor } = req.body;
 
     const legend = await Legend.findByPk(id, { transaction: t });
@@ -611,7 +611,7 @@ router.patch('/order/bulk', async (req, res, next) => {
 router.delete('/:id', async (req, res, next) => {
   const t = await Legend.sequelize.transaction();
   try {
-    const id = req.params.id;
+    const {id} = req.params;
 
     const legend = await Legend.findByPk(id, {
       transaction: t,
@@ -853,7 +853,7 @@ router.post('/mp', fileMiddleware.any(), async (req, res) => {
 router.put('/mp/:id', fileMiddleware.any(), async (req, res) => {
   const t = await Legend.sequelize.transaction();
   try {
-    const id = req.params.id;
+    const {id} = req.params;
 
     const userInfo = req.session?.user
       ? {

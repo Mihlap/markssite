@@ -686,7 +686,7 @@ router.get('/featured', async (req, res) => {
 
 router.post('/featured', async (req, res) => {
   try {
-    const project = req.body.project;
+    const {project} = req.body;
     const saved = await ProjectMain.create({ project, IdProject: project.id });
 
     logResourceActionFromSession(req, {

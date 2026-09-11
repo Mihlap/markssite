@@ -9,11 +9,10 @@ async function compressImageForS3(file, maxBytes = MAX_IMAGE_BYTES) {
   if (!isImage(file)) return file;
   if (file.buffer.length <= maxBytes) return file;
 
-  // SVG/битые/неподдерживаемые форматы не должны валить загрузку формы
   try {
     const baseName = String(file.originalname || 'image').replace(/\.[^.]+$/, '') || 'image';
     let quality = 82;
-    let buffer = file.buffer;
+    let {buffer} = file;
 
     while (quality >= 40) {
       buffer = await sharp(file.buffer)
