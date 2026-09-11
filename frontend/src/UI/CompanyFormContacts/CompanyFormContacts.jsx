@@ -1,6 +1,5 @@
-import React, { useState, useCallback, useRef } from 'react';
+﻿import React, { useState, useCallback, useRef } from 'react';
 import { InputMask } from '@react-input/mask';
-import 'react-phone-number-input/style.css';
 import styles from './CompanyFormContacts.module.css';
 
 const Host = process.env.REACT_APP_SERVER_HOST;

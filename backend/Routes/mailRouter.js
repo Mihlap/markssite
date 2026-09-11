@@ -218,12 +218,12 @@ mailRouter.post('/portalSubmitForm/v2', upload.array('resumeFiles', 2), async (r
   }
 
   const emailBody = `
-  Имя: ${name ? name : ''}
-  Телефон: ${phone ? phone : ''}
+  Имя: ${name || ''}
+  Телефон: ${phone || ''}
   ${city ? `Город: ${city}` : ''}
   ${choose ? `Выбранное направление: ${choose}` : ''}
-  Сопроводительное письмо: ${letter ? letter : ''}
-  Ссылка на резюме/портфолио: ${resume ? resume : ''}
+  Сопроводительное письмо: ${letter || ''}
+  Ссылка на резюме/портфолио: ${resume || ''}
 `;
 
   const mailOptions = {

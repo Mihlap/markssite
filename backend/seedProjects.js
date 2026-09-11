@@ -1,4 +1,4 @@
-'use strict';
+
 
 const { Project, Constructor } = require('./db/models');
 
