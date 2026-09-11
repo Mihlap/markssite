@@ -223,20 +223,16 @@ router.put(
         return String(value);
       };
 
-      const normalizeAuthorsForComparison = (authorsArray) => {
-        return JSON.stringify(
+      const normalizeAuthorsForComparison = (authorsArray) => JSON.stringify(
           authorsArray.map((author) => ({
             ...author,
             image: author.image ? author.image.split('?timestamp=')[0] : null,
           }))
         );
-      };
 
-      const normalizeAttachmentsForComparison = (attachmentsArray) => {
-        return JSON.stringify(
+      const normalizeAttachmentsForComparison = (attachmentsArray) => JSON.stringify(
           attachmentsArray.map((attachment) => attachment.split('?timestamp=')[0])
         );
-      };
 
       const oldTitle = normalizeValue(journal.title, '');
       const oldPublicationDate = journal.publication_date ? String(journal.publication_date) : '';

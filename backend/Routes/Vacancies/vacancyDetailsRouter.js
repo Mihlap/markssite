@@ -49,9 +49,9 @@ router.post(
     }
 
     let photoAva = '';
-    if (req.files && req.files['photoAva']) {
+    if (req.files && req.files.photoAva) {
       try {
-        photoAva = await uploadFileToS3(req.files['photoAva'][0], 'images/slideCard', userInfo);
+        photoAva = await uploadFileToS3(req.files.photoAva[0], 'images/slideCard', userInfo);
       } catch (error) {
         console.error('Ошибка при загрузке фото на S3:', error);
         return res.status(500).json({ error: 'Ошибка при загрузке фото' });
@@ -118,8 +118,8 @@ router.put('/update-slide/:id', fileMiddleware.fields([{ name: 'photoAva', maxCo
         slide.photoAva = '';
       }
 
-      if (req.files && req.files['photoAva']) {
-        const fileUrl = await uploadFileToS3(req.files['photoAva'][0], 'images/slideCard', userInfo);
+      if (req.files && req.files.photoAva) {
+        const fileUrl = await uploadFileToS3(req.files.photoAva[0], 'images/slideCard', userInfo);
         slide.photoAva = fileUrl;
       }
 
